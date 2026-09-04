@@ -18,6 +18,8 @@
 | 7 | Research before building | ✅ | This file = the research. Add new ideas at the bottom. | — |
 | 8 | Checklist file | ✅ | Section 3 below. | — |
 | 9 | Short, simple answers in chat | ✅ | Rule saved in `CLAUDE.md` (Claude reads it every session). | — |
+| 10 | Walk through the room like a game (Iron Man lab style) and explore | ✅ Yes | Character/first-person controls (WASD + mouse; joystick on phone), physics for walls, glowing hologram UI. | Free |
+| 11 | AI voice welcomes and guides the visitor | ✅ Yes | Pre-recorded voice MP3 (ElevenLabs free) or browser voice (Web Speech API). Needs one "Enter" click first. | Free |
 
 ---
 
@@ -152,6 +154,45 @@
 - Small touches: custom cursor, click sound (optional), confetti on "Download resume".
 - Rule: fun but fast. Every sticker must load in < 100 ms. Respect "reduce motion" setting.
 
+### 10 · Walk through the room (Iron Man lab)  🕹️
+
+**How it works**
+- You control a **character** (or a first-person camera) with **W A S D + mouse**. On phone: an on-screen **joystick** or "tap where to go".
+- Walls and furniture are solid → **physics** (Rapier via `@react-three/rapier`) stops you walking through them.
+- Walk near the laptop / wall / hologram → a **prompt** appears ("Press E — Projects") → panel opens. Same for Resume, About, AI bot.
+- **Iron Man look:** dark room, blue-cyan glowing edges, floating **hologram screens** (transparent panels with scanlines), **bloom** glow (postprocessing), soft particle dust, low hum sound (optional).
+- Already done by others → https://taha-shajarian.ir (walk a character in a room) and https://jayransijn.com (full world).
+
+**Things to know**
+- This is the **hardest** 3D item. Order: static room first (click hotspots) → then add walking on top. Both can exist: "Walk" mode and "Quick tour" mode (click the 3 views).
+- Recruiters are busy → always keep a **"Skip to projects"** button. Never trap them in a game.
+- Phones: walking works but is fiddly → phone gets "tap to move" or the 2D fallback.
+
+**Tools (all free):** React Three Fiber · Drei (`KeyboardControls`, `PointerLockControls`) · Rapier physics · `@react-three/postprocessing` (Bloom) · a free character from https://www.mixamo.com (Adobe, free) or a simple capsule.
+
+---
+
+### 11 · AI voice guide  🔊
+
+**How it works**
+1. Visitor clicks **"Enter room"** (browsers block sound until one click — no way around this).
+2. A voice says: *"Hi, welcome to Karthikeyan's room. Walk to the desk to see his projects, or ask me anything."*
+3. Captions show the same text (some people are muted / deaf / in an office).
+4. Mute button always visible.
+
+**Voice options**
+| Option | Quality | Cost | Notes |
+|--------|---------|------|-------|
+| **Pre-recorded MP3** (make once with https://elevenlabs.io free tier) | ⭐⭐⭐ natural | Free | **Recommended for welcome + fixed lines.** File ships with the site, zero runtime cost. |
+| **Browser voice** (Web Speech API `speechSynthesis`) | ⭐⭐ a bit robotic | Free, no server | Good for **chatbot replies** — text changes every time, so MP3 won't work. |
+| Live AI voice API (ElevenLabs / OpenAI TTS) per reply | ⭐⭐⭐ | Free tier is small | Nice but can run out; use only if traffic is low. |
+
+**Bonus:** visitor can **talk** to the bot (mic) → Web Speech API `SpeechRecognition` → free, works in Chrome/Edge (not all browsers). Text input stays as fallback.
+
+**Rule:** voice is a garnish. Everything must work with sound off.
+
+---
+
 ---
 
 ## 3. Checklist — what's done
@@ -184,6 +225,11 @@
 - [ ] Wall view + frames → Awards, photos
 - [ ] Corner view → Contact, Resume
 - [ ] Loading screen, Draco compression, phone fallback
+- [ ] "Enter room" screen (also unlocks sound)
+- [ ] Walk mode: WASD + mouse, joystick on phone (#10)
+- [ ] Physics walls (Rapier) + "Press E" prompts near objects (#10)
+- [ ] Iron Man look: hologram panels, bloom glow (#10)
+- [ ] "Skip to projects" button always visible
 
 ### Phase 4 · AI chatbot (#2)
 - [ ] Write "facts about me" text
@@ -191,6 +237,9 @@
 - [ ] `api/chat.ts` function
 - [ ] Chat UI in the room (corner view)
 - [ ] "Leave your email" flow
+- [ ] Welcome voice MP3 + captions + mute (#11)
+- [ ] Bot replies read aloud with browser voice (#11)
+- [ ] Mic input (optional) (#11)
 
 ### Phase 5 · Database (#5)
 - [ ] Supabase project
