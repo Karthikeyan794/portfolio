@@ -215,8 +215,7 @@
 ### Phase 2 · 2D site (mobile + fallback)
 - [x] Hero, About, Projects, Awards, Experience, Contact (placeholder text)
 - [x] Motion from your first Pinterest reference (theme kept): page tilts into view, stickers drift + follow the mouse + draggable, sections rise on scroll (#6)
-- [x] Rubik's-cube loader (~5.8 s, plays once): pieces fly in and combine → a thick wavy ribbon (trim-path style, text riding on it) sweeps left→right behind then in front of the cube → the hit spins the cube while its layers snap-twist → it lands solved with **Figma in front** and stops. Each face is one big die-cut tool sticker (Figma, Claude, GitHub, React, TypeScript, Cursor). Used as the 2D preloader and on the lab's enter screen
-- [ ] ChatGPT sticker on the back face (needs the logo fetched — waiting for your OK)
+- [x] Rubik's-cube loader (~5.8 s, plays once): pieces fly in and combine → a thick wavy ribbon (trim-path style, text riding on it) sweeps left→right behind then in front of the cube → the hit spins the cube while its layers snap-twist → it lands solved with **Figma in front** and stops. Each face is one big die-cut design sticker in the bold outline style you sent — SLEEP·DESIGN·REPEAT, smiley GET THINGS DONE, BUILD DIFFERENT badge, ★ VIBE CODING ★ blob, SHIP IT! browser window, retro LOADING… computer. Used as the 2D preloader and on the lab's enter screen
 - [x] Contact form → opens email app (direct sending in Phase 5) (#4)
 - [ ] Analytics (#4)
 - [ ] **Deploy to Vercel → live URL**

@@ -1,52 +1,92 @@
 import { useMemo } from 'react'
-import { siClaude, siCursor, siGithub, siReact, siTypescript } from 'simple-icons'
-
 /**
- * CSS-3D Rubik's "picture cube": each face is ONE big die-cut logo sticker,
+ * CSS-3D Rubik's "picture cube": each face is ONE big die-cut sticker,
  * sliced across the 9 tiles like a photo cube, so the layer twists scramble
- * the logos and the tumble reveals them. Pieces fly in and combine first.
+ * the stickers and the spin reveals them. Pieces fly in and combine first.
+ * Sticker style: bold shapes, thick navy outlines, white die-cut border.
  */
 
-/** Official Figma mark (38×57), five coloured shapes. */
-const FIGMA = [
-  { d: 'M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z', fill: '#1ABCFE' },
-  { d: 'M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z', fill: '#0ACF83' },
-  { d: 'M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z', fill: '#FF7262' },
-  { d: 'M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z', fill: '#F24E1E' },
-  { d: 'M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z', fill: '#A259FF' },
-]
+const NAVY = '#0b1220'
+const CYAN = '#22d3ee'
+const BLUE = '#2b8cff'
+const PAPER = '#e6f0ff'
+const FONT = `font-family="Inter, 'Arial Black', Helvetica, Arial, sans-serif" font-weight="900"`
+/** die-cut text: white border behind the letters */
+const CUT = `stroke="#fff" stroke-width="6" stroke-linejoin="round" paint-order="stroke"`
+/** thin navy outline behind white letters */
+const INK = `stroke="${NAVY}" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke"`
 
-type Shape = { d: string; fill: string }
+const spark = (x: number, y: number, r: number, fill = CYAN) =>
+  `<path d="M${x} ${y - r} Q${x} ${y} ${x + r} ${y} Q${x} ${y} ${x} ${y + r} Q${x} ${y} ${x - r} ${y} Q${x} ${y} ${x} ${y - r}Z" fill="${fill}" stroke="#fff" stroke-width="2" paint-order="stroke"/>`
 
-/** Centre + scale a set of paths into the 100×100 sticker canvas with a white die-cut outline. */
-function dieCut(paths: Shape[], vw: number, vh: number, size: number): string {
-  const s = size / Math.max(vw, vh)
-  const tx = (100 - vw * s) / 2
-  const ty = (100 - vh * s) / 2
-  const outline = paths
-    .map((p) => `<path d="${p.d}" fill="#fff" stroke="#fff" stroke-width="${(7 / s).toFixed(2)}" stroke-linejoin="round"/>`)
-    .join('')
-  const color = paths.map((p) => `<path d="${p.d}" fill="${p.fill}"/>`).join('')
-  return `<g transform="translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s.toFixed(4)})">${outline}${color}</g>`
-}
+/** 1 · SLEEP / DESIGN / REPEAT — stacked heavy type */
+const sleepDesignRepeat =
+  `<g ${FONT} font-size="21" text-anchor="middle" fill="${NAVY}" ${CUT}>` +
+  `<text x="50" y="36" textLength="72" lengthAdjust="spacingAndGlyphs">SLEEP</text>` +
+  `<text x="50" y="60" textLength="78" lengthAdjust="spacingAndGlyphs">DESIGN</text>` +
+  `<text x="50" y="84" textLength="78" lengthAdjust="spacingAndGlyphs">REPEAT</text></g>` +
+  spark(88, 14, 7)
 
-/** Claude: a rounded white sticker with the starburst and wordmark, like the reference. */
-function claudeSticker(): string {
-  return (
-    `<rect x="14" y="14" width="72" height="72" rx="16" fill="#fff"/>` +
-    `<g transform="translate(35.5 21) scale(1.2)"><path d="${siClaude.path}" fill="#D97757"/></g>` +
-    `<text x="50" y="77" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="15.5" fill="#1a1a1a">Claude</text>`
-  )
-}
+/** 2 · smiley blob — GET THINGS DONE */
+const getThingsDone =
+  `<circle cx="50" cy="38" r="31" fill="#fff"/>` +
+  `<circle cx="50" cy="38" r="27" fill="${CYAN}" stroke="${NAVY}" stroke-width="3"/>` +
+  `<ellipse cx="41" cy="28" rx="7" ry="3" fill="#fff" opacity="0.7"/>` +
+  `<rect x="38" y="30" width="6" height="12" rx="3" fill="${NAVY}"/><rect x="56" y="30" width="6" height="12" rx="3" fill="${NAVY}"/>` +
+  `<path d="M37 48 Q50 60 63 48" fill="none" stroke="${NAVY}" stroke-width="3.5" stroke-linecap="round"/>` +
+  `<g ${FONT} text-anchor="middle" fill="#fff" ${INK}>` +
+  `<text x="50" y="80" font-size="14" textLength="76" lengthAdjust="spacingAndGlyphs">GET THINGS</text>` +
+  `<text x="50" y="95" font-size="15" textLength="40" lengthAdjust="spacingAndGlyphs">DONE</text></g>`
+
+/** 3 · BUILD DIFFERENT — label badge */
+const buildDifferent =
+  `<rect x="7" y="22" width="86" height="56" rx="11" fill="#fff"/>` +
+  `<rect x="11" y="26" width="78" height="48" rx="8" fill="#fff" stroke="${NAVY}" stroke-width="3"/>` +
+  `<g ${FONT} text-anchor="middle" fill="${NAVY}">` +
+  `<text x="50" y="47" font-size="16" textLength="52" lengthAdjust="spacingAndGlyphs">BUILD</text>` +
+  `<text x="50" y="62" font-size="13" textLength="66" lengthAdjust="spacingAndGlyphs">DIFFERENT</text></g>` +
+  `<rect x="13" y="65" width="74" height="7" fill="${CYAN}"/>` +
+  `<text x="50" y="70.5" ${FONT} font-size="4.6" fill="${NAVY}" text-anchor="middle" letter-spacing="0.4" textLength="68" lengthAdjust="spacingAndGlyphs">KB STUDIO · KB STUDIO · KB STUDIO</text>`
+
+/** 4 · ★ VIBE CODING ★ — wavy blob badge */
+const BLOB = 'M12 50 C 12 34, 28 25, 50 27 C 72 25, 88 34, 88 50 C 88 66, 72 75, 50 73 C 28 75, 12 66, 12 50 Z'
+const vibeCoding =
+  `<path d="${BLOB}" fill="#fff" stroke="#fff" stroke-width="9" stroke-linejoin="round"/>` +
+  `<path d="${BLOB}" fill="${CYAN}" stroke="${NAVY}" stroke-width="3"/>` +
+  `<text x="50" y="55" ${FONT} font-size="13" text-anchor="middle" fill="#fff" ${INK} textLength="64" lengthAdjust="spacingAndGlyphs">★ VIBE CODING ★</text>` +
+  spark(16, 22, 6) + spark(86, 78, 5)
+
+/** 5 · SHIP IT! — browser window */
+const shipIt =
+  `<rect x="11" y="19" width="78" height="62" rx="9" fill="#fff"/>` +
+  `<rect x="15" y="23" width="70" height="54" rx="6" fill="${NAVY}"/>` +
+  `<path d="M15 29 a6 6 0 0 1 6 -6 h58 a6 6 0 0 1 6 6 v9 h-70 z" fill="${CYAN}"/>` +
+  `<circle cx="23" cy="30.5" r="2.2" fill="${NAVY}"/><circle cx="30" cy="30.5" r="2.2" fill="${NAVY}"/><circle cx="37" cy="30.5" r="2.2" fill="${NAVY}"/>` +
+  `<text x="50" y="63" ${FONT} font-size="18" text-anchor="middle" fill="#fff" textLength="50" lengthAdjust="spacingAndGlyphs">SHIP IT!</text>` +
+  `<rect x="30" y="68" width="40" height="3" rx="1.5" fill="${CYAN}"/>`
+
+/** 6 · LOADING… — retro computer */
+const loading =
+  `<rect x="18" y="9" width="64" height="52" rx="8" fill="#fff"/><rect x="11" y="55" width="78" height="17" rx="5" fill="#fff"/>` +
+  `<rect x="22" y="13" width="56" height="44" rx="5" fill="${PAPER}" stroke="${NAVY}" stroke-width="3"/>` +
+  `<rect x="28" y="18" width="44" height="31" rx="3" fill="${BLUE}" stroke="${NAVY}" stroke-width="2.5"/>` +
+  `<rect x="41" y="26" width="4" height="7" fill="#fff"/><rect x="55" y="26" width="4" height="7" fill="#fff"/>` +
+  `<path d="M40 40 Q50 47 60 40" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/>` +
+  `<rect x="15" y="58" width="70" height="11" rx="3" fill="${PAPER}" stroke="${NAVY}" stroke-width="3"/>` +
+  `<rect x="61" y="61.5" width="16" height="4" rx="1" fill="${NAVY}"/><circle cx="22" cy="63.5" r="1.8" fill="${CYAN}"/>` +
+  `<text x="50" y="84" font-family="'Courier New', Menlo, monospace" font-weight="900" font-size="11.5" text-anchor="middle" fill="#fff" ${INK} letter-spacing="1.2">LOADING...</text>` +
+  `<rect x="20" y="88" width="60" height="8" fill="#fff" stroke="${NAVY}" stroke-width="2"/>` +
+  [0, 1, 2, 3].map((i) => `<rect x="${22.5 + i * 11.5}" y="90" width="9" height="4" fill="${CYAN}"/>`).join('') +
+  spark(14, 16, 6, NAVY)
 
 /** Face → base colour (theme) + sticker artwork. */
 const FACES = {
-  front: { base: '#0b1220', art: dieCut(FIGMA, 38, 57, 64) },
-  right: { base: '#f5b14a', art: claudeSticker() },
-  back: { base: '#22d3ee', art: dieCut([{ d: siCursor.path, fill: '#0b0b0b' }], 24, 24, 58) }, // TODO: ChatGPT once its logo is approved
-  left: { base: '#2b8cff', art: dieCut([{ d: siGithub.path, fill: '#181717' }], 24, 24, 60) },
-  top: { base: '#0f1a30', art: dieCut([{ d: siReact.path, fill: '#61DAFB' }], 24, 24, 62) },
-  bottom: { base: '#0f766e', art: dieCut([{ d: siTypescript.path, fill: '#3178C6' }], 24, 24, 60) },
+  front: { base: '#0b1220', art: sleepDesignRepeat },
+  right: { base: '#0f766e', art: getThingsDone },
+  back: { base: '#1e3a8a', art: buildDifferent },
+  left: { base: '#111827', art: vibeCoding },
+  top: { base: '#f5b14a', art: shipIt },
+  bottom: { base: '#1e293b', art: loading },
 } as const
 
 type FaceName = keyof typeof FACES
