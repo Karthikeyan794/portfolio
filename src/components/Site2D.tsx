@@ -12,7 +12,7 @@ import Work from './Work'
 
 type Props = { onEnterLab?: () => void }
 
-const MIN_LOADER_MS = 4300
+const MIN_LOADER_MS = 5800
 
 /** The scrolling page — phones, fallback, and anyone who prefers it. */
 export default function Site2D({ onEnterLab }: Props) {

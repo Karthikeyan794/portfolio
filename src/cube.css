@@ -5,15 +5,15 @@
   perspective: 900px;
   perspective-origin: 50% 50%;
   /* the ribbon's impact */
-  animation: rubik-hit 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.75s both;
+  animation: rubik-hit 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 2.55s both;
 }
 .rubik__body {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  /* rests until the ribbon hits, then tumbles forever */
-  animation: rubik-tumble 11s cubic-bezier(0.45, 0, 0.55, 1) 1.8s infinite;
-  transform: rotateX(-28deg) rotateY(-35deg);
+  /* rests until the ribbon hits, spins once, lands with Figma in front and stops */
+  transform: rotateX(-24deg) rotateY(-30deg);
+  animation: rubik-spin 2.6s cubic-bezier(0.3, 0.05, 0.2, 1) 2.6s both;
 }
 @keyframes rubik-hit {
   0% { transform: scale(1) translateX(0); }
@@ -28,11 +28,11 @@
   width: 0;
   height: 0;
   transform-style: preserve-3d;
-  /* each layer snaps 90° four times per loop, staggered — see keyframes below */
-  animation-duration: 6.4s;
-  animation-delay: 2.4s;
-  animation-iteration-count: infinite;
-  animation-timing-function: cubic-bezier(0.68, -0.25, 0.27, 1.25);
+  /* while the cube spins each layer snap-twists a few times and adds up to a full turn → solved */
+  animation-duration: 2.4s;
+  animation-delay: 2.7s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.68, -0.2, 0.27, 1.2);
 }
 .rubik__layer--0 { animation-name: rubik-twist-top; }
 .rubik__layer--1 { animation-name: rubik-twist-mid; }
@@ -74,45 +74,34 @@
 .face--top { transform: rotateX(90deg) translateZ(var(--h)); }
 .face--bottom { transform: rotateX(-90deg) translateZ(var(--h)); }
 
-/* whole-cube tumble: ends where it starts (mod 360) so the loop is seamless */
-@keyframes rubik-tumble {
-  0% { transform: rotateX(-28deg) rotateY(-35deg) rotateZ(0deg); }
-  30% { transform: rotateX(18deg) rotateY(80deg) rotateZ(8deg); }
-  60% { transform: rotateX(-48deg) rotateY(200deg) rotateZ(-10deg); }
-  100% { transform: rotateX(-28deg) rotateY(325deg) rotateZ(0deg); }
+/* one full turn with some wobble, ending exactly on the resting pose (−390° ≡ −30°) */
+@keyframes rubik-spin {
+  0% { transform: rotateX(-24deg) rotateY(-30deg) rotateZ(0deg); }
+  35% { transform: rotateX(16deg) rotateY(-150deg) rotateZ(7deg); }
+  70% { transform: rotateX(-46deg) rotateY(-280deg) rotateZ(-7deg); }
+  100% { transform: rotateX(-24deg) rotateY(-390deg) rotateZ(0deg); }
 }
 
-/* 8 slots of 0.8s (12.5% each). A twist takes one slot; holds are flat. */
 @keyframes rubik-twist-top {
   0% { transform: rotateY(0deg); }
-  12.5% { transform: rotateY(90deg); }
-  25% { transform: rotateY(90deg); }
-  37.5% { transform: rotateY(180deg); }
-  50% { transform: rotateY(180deg); }
-  62.5% { transform: rotateY(270deg); }
-  75% { transform: rotateY(270deg); }
-  87.5% { transform: rotateY(360deg); }
+  21% { transform: rotateY(90deg); }
+  42% { transform: rotateY(90deg); }
+  63% { transform: rotateY(180deg); }
+  79% { transform: rotateY(180deg); }
   100% { transform: rotateY(360deg); }
 }
 @keyframes rubik-twist-mid {
-  0%, 12.5% { transform: rotateY(0deg); }
-  25% { transform: rotateY(-90deg); }
-  37.5% { transform: rotateY(-90deg); }
-  50% { transform: rotateY(-180deg); }
-  62.5% { transform: rotateY(-180deg); }
-  75% { transform: rotateY(-270deg); }
-  87.5% { transform: rotateY(-270deg); }
+  0%, 12% { transform: rotateY(0deg); }
+  33% { transform: rotateY(-90deg); }
+  50% { transform: rotateY(-90deg); }
+  71% { transform: rotateY(-180deg); }
+  83% { transform: rotateY(-180deg); }
   100% { transform: rotateY(-360deg); }
 }
 @keyframes rubik-twist-bot {
-  0%, 6.25% { transform: rotateY(0deg); }
-  18.75% { transform: rotateY(90deg); }
-  31.25% { transform: rotateY(90deg); }
-  43.75% { transform: rotateY(180deg); }
-  56.25% { transform: rotateY(180deg); }
-  68.75% { transform: rotateY(270deg); }
-  81.25% { transform: rotateY(270deg); }
-  93.75% { transform: rotateY(360deg); }
+  0%, 30% { transform: rotateY(0deg); }
+  55% { transform: rotateY(180deg); }
+  70% { transform: rotateY(180deg); }
   100% { transform: rotateY(360deg); }
 }
 
@@ -140,52 +129,44 @@
 /* enter screen (lab) uses the cube in place of a bar */
 .enter__cube { margin: 6px 0 10px; filter: drop-shadow(0 18px 30px rgba(34, 211, 238, 0.25)); }
 
-/* ── ribbon that sweeps through the cube ────────────────── */
+/* ── ribbon: an S-curve through the cube ───────────────── */
 .stage { position: relative; display: grid; place-items: center; }
-.ribbon-wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 0;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-/* left half renders behind the cube, right half in front → it "wraps" the cube */
-.ribbon-half {
-  position: absolute;
-  top: -110px;
-  height: 220px;
-  width: 50%;
-  overflow: hidden;
-}
-.ribbon-half--behind { left: 0; z-index: 0; }
-.ribbon-half--front { left: 50%; z-index: 2; }
 .ribbon {
   position: absolute;
   top: 50%;
-  left: -60vw; /* ribbon centre = cube centre */
-  width: 220vw;
-  padding: 12px 0;
-  background: #22d3ee;
-  color: #04121a;
+  left: 50%;
+  width: max(100vw, 900px);
+  height: auto;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+  pointer-events: none;
+}
+/* left half behind the cube, right half in front → it wraps the cube */
+.ribbon--behind { z-index: 0; clip-path: inset(-20% 50% -20% 0); }
+.ribbon--front { z-index: 2; clip-path: inset(-20% 0 -20% 50%); }
+.ribbon__band {
+  fill: none;
+  stroke: #22d3ee;
+  stroke-width: 64;
+  stroke-linecap: round;
+  stroke-dasharray: 700 1000;
+  stroke-dashoffset: 700; /* band sits just before the path start */
+  filter: drop-shadow(0 12px 22px rgba(34, 211, 238, 0.35));
+  animation: ribbon-slide 3.8s cubic-bezier(0.55, 0.05, 0.35, 1) 1.2s both;
+}
+@keyframes ribbon-slide {
+  from { stroke-dashoffset: 700; }
+  to { stroke-dashoffset: -1000; } /* band has fully left past the path end */
+}
+.ribbon__text {
   font-family: var(--hud);
   font-weight: 700;
-  font-size: 22px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  box-shadow: 0 14px 40px -12px rgba(34, 211, 238, 0.6);
-  transform: translate(-160vw, -50%) rotate(-7deg);
-  animation: ribbon-sweep 2.2s cubic-bezier(0.6, 0, 0.4, 1) 1.2s both;
-}
-.ribbon-half--front .ribbon { left: -110vw; }
-@keyframes ribbon-sweep {
-  from { transform: translate(-160vw, -50%) rotate(-7deg); }
-  to { transform: translate(160vw, -50%) rotate(-7deg); }
+  font-size: 25px;
+  letter-spacing: 0.1em;
+  fill: #04121a;
 }
 @media (prefers-reduced-motion: reduce) {
   .ribbon { display: none; }
   .rubik { animation: none; }
+  .rubik__body { animation: none; }
 }
