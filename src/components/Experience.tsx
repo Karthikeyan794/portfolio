@@ -3,7 +3,7 @@ import Section from './Section'
 
 export default function Experience() {
   return (
-    <Section id="experience" eyebrow="03 — Experience" title="Where I've worked">
+    <Section id="experience" eyebrow="04 — Experience" title="Where I've worked">
       <div className="timeline">
         {experience.map((role) => (
           <article className="role" key={role.company + role.period}>

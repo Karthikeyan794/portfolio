@@ -12,7 +12,7 @@ export function useTheme() {
     } catch {
       /* private mode / blocked storage */
     }
-    return 'system'
+    return 'dark' // the lab is dark by default; the toggle still works
   })
 
   useEffect(() => {
