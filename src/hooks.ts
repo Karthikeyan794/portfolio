@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 type Theme = 'light' | 'dark' | 'system'
-const KEY = 'portfolio:theme:v2' // v2: old sessions stored 'dark' before the light redesign
+const KEY = 'portfolio:theme'
 
 /** Persisted light/dark/system preference, applied as data-theme on <html>. */
 export function useTheme() {
@@ -12,7 +12,7 @@ export function useTheme() {
     } catch {
       /* private mode / blocked storage */
     }
-    return 'light' // the 2D page is light; the lab has its own dark styling
+    return 'dark' // the lab is dark by default; the toggle still works
   })
 
   useEffect(() => {

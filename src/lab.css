@@ -231,22 +231,3 @@
 .bot__chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .bot__form { display: flex; gap: 8px; }
 .bot__form input { flex: 1; background: rgba(6, 12, 24, 0.8); }
-
-/* shared 2D classes re-skinned inside the dark lab panel */
-.panel .form { background: rgba(255, 255, 255, 0.04); border-color: rgba(34, 211, 238, 0.25); box-shadow: none; }
-.panel .field { color: #9fd8e6; }
-.panel .field input,
-.panel .field textarea,
-.panel .bot__form input { background: rgba(6, 12, 24, 0.85); color: #e6f0ff; border-color: rgba(34, 211, 238, 0.3); }
-.panel .form__note { color: #6f9fb0; }
-.panel .btn--primary { background: #22d3ee; color: #04121a; box-shadow: 0 0 20px rgba(34, 211, 238, 0.35); }
-.panel .btn--primary:hover { background: #67e8f9; }
-.panel .chip { background: rgba(11, 18, 32, 0.7); border-color: rgba(120, 190, 255, 0.2); color: #b7c6dd; box-shadow: none; }
-.panel .chip--btn:hover { border-color: #22d3ee; color: #e0fbff; }
-.panel .tag { background: rgba(34, 211, 238, 0.12); color: #67e8f9; }
-.panel .mailto { color: #22d3ee; border-bottom-color: rgba(34, 211, 238, 0.35); }
-.panel .role__title { color: #67e8f9; }
-.panel .role__points li { color: #b7c6dd; }
-.panel .role__points li::before { background: #22d3ee; }
-.panel .skills__group h3 { color: #6f9fb0; }
-.panel .card__year { color: #6f9fb0; }

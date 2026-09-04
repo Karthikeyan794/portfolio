@@ -1,64 +1,73 @@
-import { motion } from 'motion/react'
 import { useRef } from 'react'
 import { profile, socials } from '../data'
-import Floaters from './Floaters'
-
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { type: 'spring' as const, stiffness: 90, damping: 18, delay },
-})
+import Stickers from './Stickers'
 
 export default function Hero() {
-  const initials = profile.name.split(' ').map((w) => w[0]).join('').slice(0, 2)
-  const panelRef = useRef<HTMLDivElement>(null)
+  const firstName = profile.name.split(' ')[0]
+  const initials = profile.name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+  const boundsRef = useRef<HTMLDivElement>(null)
 
   return (
-    <section className="hero wrap" id="top">
-      <div className="hero__panel" ref={panelRef}>
-        <Floaters boundsRef={panelRef} />
+    <section className="hero" id="top">
+      <div className="wrap hero__grid">
+        <div className="hero__text">
+          {profile.available && (
+            <span className="pill">
+              <span className="pill__blip" aria-hidden="true" />
+              {profile.availableNote}
+            </span>
+          )}
 
-        <div className="hero__content">
-          <motion.span className="pill" {...rise(0.15)}>
-            <span className="pill__avatar" aria-hidden="true">{initials}</span>
-            {profile.name} · {profile.location.split(',')[0]}
-            {profile.available && (
-              <>
-                <span className="pill__blip" aria-hidden="true" />
-                {profile.availableNote}
-              </>
-            )}
-          </motion.span>
+          <h1>
+            {firstName}. <span>{profile.role}.</span>
+          </h1>
 
-          <motion.h1 {...rise(0.25)}>
-            The frontend engineer <span>who designs.</span>
-          </motion.h1>
+          <p className="hero__sub">{profile.tagline}</p>
 
-          <motion.p className="hero__sub" {...rise(0.35)}>
-            {profile.tagline}
-          </motion.p>
+          <div className="hero__meta">
+            <span>{profile.location}</span>
+            <span aria-hidden="true">·</span>
+            <span>{new Date().getFullYear()}</span>
+          </div>
 
-          <motion.div className="cta-row" {...rise(0.45)}>
+          <div className="cta-row">
             <a className="btn btn--primary" href={`mailto:${profile.email}`}>
               Get in touch
             </a>
-            <a className="btn btn--white" href="#work">
-              See projects
-            </a>
             {profile.resumeUrl && (
-              <a className="btn btn--white" href={profile.resumeUrl}>
+              <a className="btn btn--ghost" href={profile.resumeUrl}>
                 Résumé
               </a>
             )}
-          </motion.div>
-
-          <motion.div className="hero__meta" {...rise(0.55)}>
             {socials.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noreferrer">
-                {s.label} ↗
+              <a key={s.label} className="btn btn--ghost" href={s.href} target="_blank" rel="noreferrer">
+                {s.label}
               </a>
             ))}
-          </motion.div>
+          </div>
+        </div>
+
+        <div className="hero__visual" ref={boundsRef}>
+          <figure className="polaroid">
+            <div className="polaroid__img">
+              {profile.photo ? (
+                <img src={profile.photo} alt={profile.name} />
+              ) : (
+                <span aria-hidden="true">{initials}</span>
+              )}
+            </div>
+            <figcaption className="polaroid__caption">
+              <span>
+                {firstName} · {profile.location.split(',')[0]}
+              </span>
+              {!profile.photo && <small>your photo here</small>}
+            </figcaption>
+          </figure>
+          <Stickers boundsRef={boundsRef} />
         </div>
       </div>
     </section>

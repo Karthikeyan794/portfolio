@@ -32,7 +32,6 @@ export type Project = {
   blurb: string
   year: string
   tags: string[]
-  emoji: string // shown on the card's icon puck
   href?: string
   featured?: boolean
 }
@@ -44,7 +43,6 @@ export const projects: Project[] = [
       'A shared component library and token set — accessible primitives, light/dark theming, and documentation that keeps product teams building from the same vocabulary.',
     year: '2025',
     tags: ['React', 'TypeScript', 'Tokens', 'a11y'],
-    emoji: '🧩',
     featured: true,
   },
   {
@@ -53,7 +51,6 @@ export const projects: Project[] = [
       'A web + mobile monorepo sharing one core package — credit accounting, per-team usage views and an approval flow, all driven by the same typed client.',
     year: '2025',
     tags: ['Monorepo', 'React', 'Vite'],
-    emoji: '📱',
     featured: true,
   },
   {
@@ -62,7 +59,6 @@ export const projects: Project[] = [
       'An LLM-backed helper that reads support history and drafts grounded replies, with the retrieval and evaluation loop that keeps its answers honest.',
     year: '2024',
     tags: ['LLM', 'Node', 'RAG'],
-    emoji: '🤖',
   },
   {
     title: 'Web Forms',
@@ -70,7 +66,6 @@ export const projects: Project[] = [
       'A schema-driven form renderer — conditional logic, validation and layout described as data instead of hand-written screens.',
     year: '2024',
     tags: ['React', 'JSON Schema'],
-    emoji: '📝',
   },
 ]
 
@@ -120,18 +115,16 @@ export const sections = [
 
 export const sectionIds = sections.map((s) => s.id)
 
-// ── Floating objects around the hero (drag them, they drift) ──
-// x/y are % positions inside the hero panel. depth = how much they move with the mouse.
-export type Floater = { label: string; emoji: string; x: number; y: number; rotate: number; depth: number; big?: boolean; hideOnMobile?: boolean }
+// ── Stickers on the hero (drag them around) ───────────────
+// x/y are % offsets inside the hero visual column. rotate in degrees.
+export type Sticker = { label: string; emoji: string; x: number; y: number; rotate: number; tone: 'cream' | 'mint' | 'sky' | 'peach' | 'lilac'; depth: number }
 
-export const floaters: Floater[] = [
-  { label: 'Designer', emoji: '🎨', x: 8, y: 18, rotate: -8, depth: 1.2 },
-  { label: 'Vibe coder', emoji: '⚡', x: 78, y: 14, rotate: 7, depth: 0.8 },
-  { label: '', emoji: '💻', x: 12, y: 62, rotate: 6, depth: 1.6, big: true },
-  { label: '', emoji: '🏆', x: 82, y: 58, rotate: -6, depth: 1.4, big: true, hideOnMobile: true },
-  { label: 'Open to work', emoji: '👋', x: 66, y: 82, rotate: -4, depth: 1.0 },
-  { label: 'Chennai', emoji: '☕', x: 20, y: 86, rotate: 5, depth: 0.7, hideOnMobile: true },
-  { label: '', emoji: '⚛️', x: 50, y: 6, rotate: 0, depth: 0.5, big: true, hideOnMobile: true },
+export const stickers: Sticker[] = [
+  { label: 'Designer', emoji: '✏️', x: 2, y: 6, rotate: -8, tone: 'peach', depth: 1.2 },
+  { label: 'Vibe coder', emoji: '⚡', x: 60, y: 2, rotate: 7, tone: 'mint', depth: 0.8 },
+  { label: 'Open to work', emoji: '👋', x: 56, y: 80, rotate: -5, tone: 'sky', depth: 1.0 },
+  { label: 'Chennai', emoji: '☕', x: 0, y: 72, rotate: 9, tone: 'cream', depth: 1.5 },
+  { label: '3D room soon', emoji: '🏠', x: 26, y: 90, rotate: -3, tone: 'lilac', depth: 0.6 },
 ]
 
 // ── Scrolling strip under the hero ───────────────────────

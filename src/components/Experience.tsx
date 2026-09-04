@@ -6,7 +6,7 @@ export default function Experience() {
     <Section id="experience" eyebrow="04 — Experience" title="Where I've worked">
       <div className="timeline">
         {experience.map((role) => (
-          <article className="gcard role" key={role.company + role.period}>
+          <article className="role" key={role.company + role.period}>
             <div className="role__period">{role.period}</div>
             <div>
               <h3 className="role__company">{role.company}</h3>

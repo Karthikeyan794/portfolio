@@ -25,7 +25,7 @@ export default function Nav({ onEnterLab }: Props) {
 
   return (
     <header className="nav" data-stuck={stuck}>
-      <nav className="nav__inner" aria-label="Primary">
+      <nav className="wrap nav__inner" aria-label="Primary">
         <a href="#top" className="nav__mark">
           <span className="nav__dot" aria-hidden="true" />
           {profile.name}
