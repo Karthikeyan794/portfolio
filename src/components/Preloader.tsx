@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { profile } from '../data'
-import CubeLoader from './CubeLoader'
+import CubeIntro from './CubeIntro'
 
 /** Full-screen loader for the 2D page — the Rubik's cube twists until the page is ready. */
 export default function Preloader() {
@@ -12,7 +12,7 @@ export default function Preloader() {
       aria-live="polite"
     >
       <div className="preloader__card">
-        <CubeLoader size={36} />
+        <CubeIntro size={36} />
         <div className="preloader__name">
           <b>{profile.name}</b> · vibing with code &amp; design
         </div>

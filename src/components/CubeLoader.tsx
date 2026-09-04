@@ -1,38 +1,80 @@
 import { useMemo } from 'react'
-import { siClaude, siCursor, siFigma, siGithub, siReact, siTypescript } from 'simple-icons'
+import { siClaude, siCursor, siGithub, siReact, siTypescript } from 'simple-icons'
 
 /**
- * CSS-3D Rubik's cube: the pieces fly in and combine, then the whole cube
- * tumbles while its three horizontal layers snap-twist 90° in turn (see
- * cube.css). Only outward faces get stickers — the tools I work with.
+ * CSS-3D Rubik's "picture cube": each face is ONE big die-cut logo sticker,
+ * sliced across the 9 tiles like a photo cube, so the layer twists scramble
+ * the logos and the tumble reveals them. Pieces fly in and combine first.
  */
 
-/**
- * Each face of the cube is one tool — like each face of a real Rubik's cube
- * is one colour — so the twists mix the logos. base = sticker colour, fg = logo colour.
- */
+/** Official Figma mark (38×57), five coloured shapes. */
+const FIGMA = [
+  { d: 'M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z', fill: '#1ABCFE' },
+  { d: 'M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z', fill: '#0ACF83' },
+  { d: 'M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z', fill: '#FF7262' },
+  { d: 'M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z', fill: '#F24E1E' },
+  { d: 'M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z', fill: '#A259FF' },
+]
+
+type Shape = { d: string; fill: string }
+
+/** Centre + scale a set of paths into the 100×100 sticker canvas with a white die-cut outline. */
+function dieCut(paths: Shape[], vw: number, vh: number, size: number): string {
+  const s = size / Math.max(vw, vh)
+  const tx = (100 - vw * s) / 2
+  const ty = (100 - vh * s) / 2
+  const outline = paths
+    .map((p) => `<path d="${p.d}" fill="#fff" stroke="#fff" stroke-width="${(7 / s).toFixed(2)}" stroke-linejoin="round"/>`)
+    .join('')
+  const color = paths.map((p) => `<path d="${p.d}" fill="${p.fill}"/>`).join('')
+  return `<g transform="translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s.toFixed(4)})">${outline}${color}</g>`
+}
+
+/** Claude: a rounded white sticker with the starburst and wordmark, like the reference. */
+function claudeSticker(): string {
+  return (
+    `<rect x="14" y="14" width="72" height="72" rx="16" fill="#fff"/>` +
+    `<g transform="translate(35.5 21) scale(1.2)"><path d="${siClaude.path}" fill="#D97757"/></g>` +
+    `<text x="50" y="77" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="15.5" fill="#1a1a1a">Claude</text>`
+  )
+}
+
+/** Face → base colour (theme) + sticker artwork. */
 const FACES = {
-  front: { icon: siFigma, base: '#ffffff', fg: '#F24E1E' },
-  right: { icon: siClaude, base: '#D97757', fg: '#ffffff' },
-  back: { icon: siCursor, base: '#0b0b0b', fg: '#ffffff' }, // TODO: ChatGPT once its logo is approved for download
-  left: { icon: siGithub, base: '#ffffff', fg: '#181717' },
-  top: { icon: siReact, base: '#20232a', fg: '#61DAFB' },
-  bottom: { icon: siTypescript, base: '#3178C6', fg: '#ffffff' },
+  front: { base: '#0b1220', art: dieCut(FIGMA, 38, 57, 64) },
+  right: { base: '#f5b14a', art: claudeSticker() },
+  back: { base: '#22d3ee', art: dieCut([{ d: siCursor.path, fill: '#0b0b0b' }], 24, 24, 58) }, // TODO: ChatGPT once its logo is approved
+  left: { base: '#2b8cff', art: dieCut([{ d: siGithub.path, fill: '#181717' }], 24, 24, 60) },
+  top: { base: '#0f1a30', art: dieCut([{ d: siReact.path, fill: '#61DAFB' }], 24, 24, 62) },
+  bottom: { base: '#0f766e', art: dieCut([{ d: siTypescript.path, fill: '#3178C6' }], 24, 24, 60) },
 } as const
 
 type FaceName = keyof typeof FACES
 
 const stickerCache = new Map<string, string>()
 
-/** A tool logo as an SVG data URI (simple-icons paths are 24×24). */
 function sticker(name: FaceName): string {
   const cached = stickerCache.get(name)
   if (cached) return cached
-  const { icon, fg } = FACES[name]
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="${icon.path}" fill="${fg}"/></svg>`
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${FACES[name].art}</svg>`
   const uri = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
   stickerCache.set(name, uri)
   return uri
+}
+
+/**
+ * Which 1/9 slice of the face picture a tile shows. Derived from how each
+ * face is rotated in cube.css: local +x/+y of the face mapped to world axes.
+ */
+function slice(name: FaceName, x: number, y: number, z: number): [number, number] {
+  switch (name) {
+    case 'front': return [x, y]
+    case 'back': return [2 - x, y]
+    case 'right': return [z, y]
+    case 'left': return [2 - z, y]
+    case 'top': return [x, z]
+    case 'bottom': return [x, 2 - z]
+  }
 }
 
 /** Deterministic scatter offsets so the pieces fly in from the same places every time. */
@@ -47,7 +89,7 @@ function scatter(i: number) {
 type Props = { size?: number }
 
 export default function CubeLoader({ size = 34 }: Props) {
-  const gap = Math.round(size * 0.09)
+  const gap = Math.round(size * 0.07)
   const step = size + gap
 
   const cubelets = useMemo(() => {
@@ -56,16 +98,17 @@ export default function CubeLoader({ size = 34 }: Props) {
     return out
   }, [])
 
-  const faceStyle = (name: FaceName, outward: boolean) =>
-    outward
-      ? {
-          backgroundColor: FACES[name].base,
-          backgroundImage: sticker(name),
-          backgroundSize: '58% 58%',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }
-      : { backgroundColor: '#0b1220' }
+  const faceStyle = (name: FaceName, outward: boolean, c: { x: number; y: number; z: number }) => {
+    if (!outward) return { backgroundColor: '#0b1220' }
+    const [col, row] = slice(name, c.x, c.y, c.z)
+    return {
+      backgroundColor: FACES[name].base,
+      backgroundImage: sticker(name),
+      backgroundSize: '300% 300%',
+      backgroundPosition: `${col * 50}% ${row * 50}%`,
+      backgroundRepeat: 'no-repeat',
+    }
+  }
 
   return (
     <div
@@ -100,12 +143,12 @@ export default function CubeLoader({ size = 34 }: Props) {
                       } as React.CSSProperties
                     }
                   >
-                    <i className="face face--front" style={faceStyle('front', c.z === 2)} />
-                    <i className="face face--back" style={faceStyle('back', c.z === 0)} />
-                    <i className="face face--right" style={faceStyle('right', c.x === 2)} />
-                    <i className="face face--left" style={faceStyle('left', c.x === 0)} />
-                    <i className="face face--top" style={faceStyle('top', c.y === 0)} />
-                    <i className="face face--bottom" style={faceStyle('bottom', c.y === 2)} />
+                    <i className="face face--front" style={faceStyle('front', c.z === 2, c)} />
+                    <i className="face face--back" style={faceStyle('back', c.z === 0, c)} />
+                    <i className="face face--right" style={faceStyle('right', c.x === 2, c)} />
+                    <i className="face face--left" style={faceStyle('left', c.x === 0, c)} />
+                    <i className="face face--top" style={faceStyle('top', c.y === 0, c)} />
+                    <i className="face face--bottom" style={faceStyle('bottom', c.y === 2, c)} />
                   </div>
                 )
               })}

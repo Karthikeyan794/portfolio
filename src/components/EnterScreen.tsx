@@ -1,6 +1,6 @@
 import { useProgress } from '@react-three/drei'
 import { profile } from '../data'
-import CubeLoader from './CubeLoader'
+import CubeIntro from './CubeIntro'
 
 type Props = { onEnter: () => void; onSwitch2D: () => void }
 
@@ -15,7 +15,7 @@ export default function EnterScreen({ onEnter, onSwitch2D }: Props) {
         <h1 className="enter__title">{profile.name.split(' ')[0]}'s Lab</h1>
         <p className="enter__sub">{profile.role} · {profile.location}</p>
         <div className="enter__cube">
-          <CubeLoader size={30} />
+          <CubeIntro size={30} />
         </div>
         <button className="enter__btn" onClick={onEnter} disabled={!ready}>
           {ready ? 'Enter the lab' : `Loading ${Math.round(progress)}%`}
