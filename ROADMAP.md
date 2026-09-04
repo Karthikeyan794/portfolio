@@ -42,10 +42,33 @@
 - **Phones** struggle with 3D → we keep a normal 2D version as a fallback. Recruiters often open links on phones.
 - Your real awards/photos = JPGs placed on the 3D frames as textures.
 
-**Reference portfolios (open these)**
-- https://henryheffernan.com — 3D desk, you click into the computer screen. Closest to your idea.
-- https://jesse-zhou.com — 3D room (ramen shop), click objects → info panels.
+**Reference portfolios (open these — all checked live on 2026-09-04)**
+
+*Rooms / desks — closest to your idea*
+- https://henryheffernan.com — 3D desk, click into the computer screen. **#1 match.**
+- https://jesse-zhou.com — 3D ramen-shop room, click objects → info panels.
+- https://taha-shajarian.ir — stylized room, walk a character, click books / canvas / lights / cat.
+- https://shahbaj-sheikh.vercel.app — 3D room, smooth camera moves, works on mobile too.
+- https://jreyes-mc-portfolio.com — Minecraft-style 3D house, scroll to move.
+- https://worawork.vercel.app — cozy Zelda-style house + garden.
+
+*Worlds / islands — bigger scope, for inspiration*
 - https://bruno-simon.com — drive a car around a 3D world. The famous one.
+- https://jayransijn.com — explorable world with mini-activities (bike, drive).
+- https://jordan-breton.com — floating sky island (FWA Site of the Day).
+- https://weisdevice.xyz — small island with a robot and control panels.
+- https://ameen-abdullah.dev — sakura-tree island (Awwwards winner).
+- https://sebastien-lempens.com — scroll tour through 3D Paris.
+- https://bilal.show — scroll-driven music-box world.
+- https://samsy.ninja — cyberpunk city, WebGPU, very heavy. Pro level.
+
+*Browse more*
+- https://www.awwwards.com/websites/3d/ · https://www.awwwards.com/websites/three-js/
+
+*Free code to learn from (room portfolios on GitHub)*
+- https://github.com/AT010303/Room_Portfolio — room portfolio source.
+- https://github.com/kt946/threejs-react-portfolio-tutorial-jsm — from the JavaScript Mastery YouTube "3D portfolio" tutorial.
+- YouTube: search **"Andrew Woan three.js room portfolio"** — the classic free room-portfolio tutorial (based on bokoko33's room).
 
 **Learning / assets**
 - R3F docs: https://r3f.docs.pmnd.rs · Three.js examples: https://threejs.org/examples
