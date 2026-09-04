@@ -1,23 +1,24 @@
+import { motion } from 'motion/react'
 import { profile, socials } from '../data'
-import { useReveal } from '../hooks'
 import ContactForm from './ContactForm'
 
 export default function Contact() {
-  const ref = useReveal<HTMLDivElement>()
-
   return (
     <section className="section" id="contact">
-      <div className="wrap reveal" ref={ref}>
+      <motion.div
+        className="wrap"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 18 }}
+      >
         <div className="contact">
           <div className="contact__left">
             <div>
               <span className="eyebrow">05 — Contact</span>
               <h2>Let's build something.</h2>
             </div>
-            <p>
-              The fastest way to reach me is email — I read everything and reply to anything
-              that isn't a template.
-            </p>
+            <p>The fastest way to reach me is email — I read everything and reply to anything that isn't a template.</p>
             <a className="mailto" href={`mailto:${profile.email}`}>
               {profile.email}
             </a>
@@ -38,7 +39,7 @@ export default function Contact() {
             ))}
           </div>
         </footer>
-      </div>
+      </motion.div>
     </section>
   )
 }

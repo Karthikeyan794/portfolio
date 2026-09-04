@@ -214,7 +214,7 @@
 
 ### Phase 2 · 2D site (mobile + fallback)
 - [x] Hero, About, Projects, Awards, Experience, Contact (placeholder text)
-- [x] Stickers + animations (#6) — draggable stickers, marquee
+- [x] Restyled after your Pinterest reference: light sky-blue hero, glass cards, floating draggable objects with mouse parallax, page tilts into view, sections rise on scroll (#6)
 - [x] Contact form → opens email app (direct sending in Phase 5) (#4)
 - [ ] Analytics (#4)
 - [ ] **Deploy to Vercel → live URL**
