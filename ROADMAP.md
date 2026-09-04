@@ -212,20 +212,21 @@
 - [ ] Photos for the room walls
 - [ ] Social links (GitHub, LinkedIn)
 
-### Phase 2 · 2D site (mobile + fallback) — ships first
-- [ ] Hero, About, Projects, Experience, Contact
-- [ ] Stickers + animations (#6)
-- [ ] Contact form → email to you (#4)
+### Phase 2 · 2D site (mobile + fallback)
+- [x] Hero, About, Projects, Awards, Experience, Contact (placeholder text)
+- [x] Stickers + animations (#6) — draggable stickers, marquee
+- [x] Contact form → opens email app (direct sending in Phase 5) (#4)
 - [ ] Analytics (#4)
 - [ ] **Deploy to Vercel → live URL**
 
-### Phase 3 · 3D room (#1)
-- [ ] Pick room model (free asset / code-built)
-- [ ] Desk view + laptop → Projects
-- [ ] Wall view + frames → Awards, photos
-- [ ] Corner view → Contact, Resume
-- [ ] Loading screen, Draco compression, phone fallback
-- [ ] "Enter room" screen (also unlocks sound)
+### Phase 3 · 3D room (#1) — first version live locally
+- [x] Room built in code + free Kenney Furniture Kit models (CC0), recoloured to the lab palette
+- [x] Desk view + laptop → Projects · tablet → Contact · paper → Résumé · hologram → About
+- [x] Wall view + frames → Awards & photos (placeholder images)
+- [x] Corner view → AI core → Lab assistant
+- [x] Loading + "Enter the lab" screen (will also unlock sound), phone fallback = 2D page
+- [ ] Real photos on the wall frames, real project screenshots on screens
+- [ ] Polish pass: more props, better hologram, idle camera drift, sound
 - [ ] Walk mode: WASD + mouse, joystick on phone (#10)
 - [ ] Physics walls (Rapier) + "Press E" prompts near objects (#10)
 - [ ] Iron Man look: hologram panels, bloom glow (#10)
@@ -235,7 +236,7 @@
 - [ ] Write "facts about me" text
 - [ ] Groq/Gemini key → Vercel env var
 - [ ] `api/chat.ts` function
-- [ ] Chat UI in the room (corner view)
+- [x] Chat UI in the room (corner view) — keyword bot for now, answers from `src/data.ts`
 - [ ] "Leave your email" flow
 - [ ] Welcome voice MP3 + captions + mute (#11)
 - [ ] Bot replies read aloud with browser voice (#11)
@@ -253,8 +254,10 @@
 
 ---
 
-## 4. Why this order?
-2D first → you have a **live, shareable link in days**, works on phones. 3D + AI stack on top. If 3D takes long, the site is still useful for job applications.
+## 4. Order (updated)
+We went 3D-first after seeing the 2D draft. The 2D page stays as the **phone version** and fallback — same content, same `src/data.ts`.
+
+**Credits:** 3D furniture from the [Kenney Furniture Kit](https://kenney.nl/assets/furniture-kit) (CC0). Licence copy in `public/models/`.
 
 ## 5. Ideas parking lot (add anything)
 - _empty — write new ideas here, we research before building_

@@ -27,7 +27,8 @@ export default function Contact() {
 
         <footer className="footer">
           <span>
-            © {new Date().getFullYear()} {profile.name}
+            © {new Date().getFullYear()} {profile.name} · 3D furniture by{' '}
+            <a href="https://kenney.nl" target="_blank" rel="noreferrer">Kenney</a> (CC0)
           </span>
           <div className="footer__links">
             {socials.map((s) => (

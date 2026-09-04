@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal portfolio — React 18 + Vite + TypeScript, no UI framework, ~zero runtime deps.
+Personal portfolio — a 3D "Iron Man lab" built with React 19, Vite, TypeScript and React Three Fiber, with a 2D page for phones and as a fallback.
 
 ```bash
 npm install
@@ -30,3 +30,7 @@ See the notes in the repo conversation or pick one:
 | Vercel / Netlify / Cloudflare Pages | Connect the Git repo → build `npm run build`, output `dist` |
 | GitHub Pages | Set `base: '/<repo-name>/'` in `vite.config.ts`, deploy `dist/` via Actions |
 | S3 + CloudFront | `npm run build` then sync `dist/` to the bucket |
+
+## Credits
+
+- 3D furniture: [Kenney Furniture Kit](https://kenney.nl/assets/furniture-kit) — CC0. Models live in `public/models/` and are re-coloured at runtime in `src/three/Model.tsx`.

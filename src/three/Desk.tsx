@@ -1,97 +1,84 @@
 import { Float, Text } from '@react-three/drei'
 import Hotspot from './Hotspot'
-import { CYAN, HoloPanel, METAL, METAL_DARK, Strip } from './primitives'
+import { Model } from './Model'
+import * as THREE from 'three'
+import { CYAN, HoloPanel } from './primitives'
 import type { PanelId } from './views'
 
 type Props = { onSelect: (id: PanelId) => void }
 
-function Laptop() {
+const TOP = 0.76 // desk height (model 0.38 × scale 2)
+
+// the laptop's "metal" material is its screen — make it glow
+const LAPTOP_SCREEN = {
+  metal: new THREE.MeshStandardMaterial({ color: '#0b3a46', emissive: CYAN, emissiveIntensity: 1.1, toneMapped: false }),
+}
+
+/** Glowing screen overlay for a monitor: sits just in front of the panel. */
+function Screen({ w, h, label, sub }: { w: number; h: number; label: string; sub?: string }) {
   return (
-    <group rotation={[0, 0.22, 0]}>
-      {/* base */}
-      <mesh position={[0, 0.01, 0]} castShadow>
-        <boxGeometry args={[0.52, 0.02, 0.36]} />
-        <meshStandardMaterial color={METAL_DARK} metalness={0.7} roughness={0.3} />
+    <group>
+      <mesh>
+        <planeGeometry args={[w, h]} />
+        <meshStandardMaterial color="#061a24" emissive={CYAN} emissiveIntensity={0.55} toneMapped={false} />
       </mesh>
-      {/* keyboard glow */}
-      <mesh position={[0, 0.021, 0.03]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.42, 0.2]} />
-        <meshStandardMaterial color="#0b1220" emissive={CYAN} emissiveIntensity={0.35} />
-      </mesh>
-      {/* screen, hinged at the back edge and tilted back */}
-      <group position={[0, 0.02, -0.17]} rotation={[-0.32, 0, 0]}>
-        <mesh position={[0, 0.17, 0]} castShadow>
-          <boxGeometry args={[0.52, 0.34, 0.015]} />
-          <meshStandardMaterial color={METAL_DARK} metalness={0.7} roughness={0.3} />
-        </mesh>
-        <mesh position={[0, 0.17, 0.009]}>
-          <planeGeometry args={[0.48, 0.3]} />
-          <meshStandardMaterial color={CYAN} emissive={CYAN} emissiveIntensity={1.25} toneMapped={false} />
-        </mesh>
-        <Text position={[0, 0.19, 0.012]} fontSize={0.05} color="#04121a" anchorX="center" anchorY="middle" letterSpacing={0.2}>
-          PROJECTS
+      <Text position={[0, h * 0.12, 0.002]} fontSize={h * 0.2} color="#e0fbff" anchorX="center" anchorY="middle" letterSpacing={0.18}>
+        {label}
+      </Text>
+      {sub && (
+        <Text position={[0, -h * 0.18, 0.002]} fontSize={h * 0.09} color="#67e8f9" anchorX="center" anchorY="middle" letterSpacing={0.12}>
+          {sub}
         </Text>
-        <Text position={[0, 0.12, 0.012]} fontSize={0.022} color="#0e3b46" anchorX="center" anchorY="middle" letterSpacing={0.1}>
-          click to open
-        </Text>
-      </group>
+      )}
+      {/* scanlines */}
+      {[0.3, 0.36, 0.42].map((f) => (
+        <mesh key={f} position={[0, -h * f, 0.001]}>
+          <planeGeometry args={[w * 0.8, 0.004]} />
+          <meshBasicMaterial color={CYAN} transparent opacity={0.35} />
+        </mesh>
+      ))}
     </group>
   )
 }
 
-/** Desk, chair and every clickable object on the desk. */
+/** The workstation: two desks, monitors, laptop, chair, speakers and the hotspots on them. */
 export default function Desk({ onSelect }: Props) {
   return (
     <group position={[0, 0, -1.6]}>
-      {/* desk top + glowing front edge */}
-      <mesh position={[0, 0.75, 0]} castShadow receiveShadow>
-        <boxGeometry args={[2.4, 0.06, 0.9]} />
-        <meshStandardMaterial color={METAL} metalness={0.6} roughness={0.35} />
-      </mesh>
-      <Strip position={[0, 0.72, 0.451]} size={[2.4, 0.01, 0.01]} intensity={1.3} />
+      <Model name="rugRectangle" position={[0, 0.004, 0.35]} scale={2.2} />
 
-      {/* legs */}
-      {(
-        [
-          [-1.1, 0.36, -0.36],
-          [1.1, 0.36, -0.36],
-          [-1.1, 0.36, 0.36],
-          [1.1, 0.36, 0.36],
-        ] as [number, number, number][]
-      ).map((p) => (
-        <mesh key={p.join()} position={p}>
-          <boxGeometry args={[0.06, 0.72, 0.06]} />
-          <meshStandardMaterial color={METAL_DARK} metalness={0.7} roughness={0.3} />
-        </mesh>
-      ))}
+      {/* two desks side by side = one long bench */}
+      <Model name="desk" position={[-0.73, 0, 0]} />
+      <Model name="desk" position={[0.73, 0, 0]} />
 
-      {/* chair */}
-      <group position={[0, 0, 0.95]}>
-        <mesh position={[0, 0.5, 0]} castShadow>
-          <boxGeometry args={[0.55, 0.06, 0.55]} />
-          <meshStandardMaterial color="#111827" roughness={0.6} />
-        </mesh>
-        <mesh position={[0, 0.85, 0.26]} castShadow>
-          <boxGeometry args={[0.55, 0.7, 0.06]} />
-          <meshStandardMaterial color="#111827" roughness={0.6} />
-        </mesh>
-        <mesh position={[0, 0.25, 0]}>
-          <cylinderGeometry args={[0.035, 0.035, 0.5, 12]} />
-          <meshStandardMaterial color="#1f2937" metalness={0.8} roughness={0.3} />
-        </mesh>
-        <mesh position={[0, 0.02, 0]}>
-          <cylinderGeometry args={[0.3, 0.3, 0.03, 24]} />
-          <meshStandardMaterial color="#1f2937" metalness={0.8} roughness={0.3} />
-        </mesh>
+      {/* chair facing the desk */}
+      <Model name="chairDesk" position={[0.1, 0, 0.75]} rotation={[0, Math.PI, 0]} />
+
+      {/* dual monitors with glowing screens */}
+      <group position={[-0.32, TOP, -0.3]} rotation={[0, 0.18, 0]}>
+        <Model name="computerScreen" scale={1.5} />
+        <group position={[0, 0.255, 0.078]}>
+          <Screen w={0.5} h={0.3} label="SYSTEM" sub="ONLINE" />
+        </group>
       </group>
+      <group position={[0.32, TOP, -0.3]} rotation={[0, -0.18, 0]}>
+        <Model name="computerScreen" scale={1.5} />
+        <group position={[0, 0.255, 0.078]}>
+          <Screen w={0.5} h={0.3} label="LAB v1.0" sub="KARTHIKEYAN B" />
+        </group>
+      </group>
+      <Model name="computerKeyboard" position={[0, TOP, 0.12]} scale={1.5} />
+      <Model name="computerMouse" position={[0.36, TOP, 0.12]} scale={1.5} />
 
       {/* laptop → Projects */}
-      <Hotspot id="projects" label="Projects" position={[-0.38, 0.78, 0.05]} labelOffset={[0, 0.5, 0]} onSelect={onSelect}>
-        <Laptop />
+      <Hotspot id="projects" label="Projects" position={[-1.1, TOP, 0.05]} labelOffset={[0, 0.5, 0]} onSelect={onSelect}>
+        <group rotation={[0, 0.42, 0]}>
+          <Model name="laptop" scale={0.7} overrides={LAPTOP_SCREEN} />
+        </group>
       </Hotspot>
 
       {/* tablet → Contact */}
-      <Hotspot id="contact" label="Contact" position={[0.72, 0.785, 0.12]} labelOffset={[0, 0.3, 0]} onSelect={onSelect}>
+      <Hotspot id="contact" label="Contact" position={[1.0, TOP + 0.005, 0.15]} labelOffset={[0, 0.3, 0]} onSelect={onSelect}>
         <mesh rotation={[-Math.PI / 2, 0, 0.3]}>
           <boxGeometry args={[0.28, 0.2, 0.012]} />
           <meshStandardMaterial color="#0b1220" metalness={0.5} roughness={0.4} />
@@ -103,7 +90,7 @@ export default function Desk({ onSelect }: Props) {
       </Hotspot>
 
       {/* paper → Résumé */}
-      <Hotspot id="resume" label="Résumé" position={[0.3, 0.782, 0.28]} labelOffset={[0, 0.3, 0]} onSelect={onSelect}>
+      <Hotspot id="resume" label="Résumé" position={[0.72, TOP + 0.002, 0.3]} labelOffset={[0, 0.3, 0]} onSelect={onSelect}>
         <mesh rotation={[-Math.PI / 2, 0, -0.2]}>
           <planeGeometry args={[0.21, 0.297]} />
           <meshStandardMaterial color="#dbe7ff" roughness={0.9} />
@@ -116,15 +103,22 @@ export default function Desk({ onSelect }: Props) {
         ))}
       </Hotspot>
 
-      {/* floating hologram above the desk → About */}
-      <Hotspot id="about" label="About me" position={[0, 1.6, -0.3]} labelOffset={[0, 0.55, 0]} onSelect={onSelect}>
+      {/* small plant + table lamp on the right desk */}
+      <Model name="plantSmall1" position={[1.3, TOP, -0.25]} scale={1.4} />
+      <Model name="lampSquareTable" position={[-1.35, TOP, -0.3]} scale={1.6} />
+
+      {/* floating hologram → About */}
+      <Hotspot id="about" label="About me" position={[0, 1.75, -0.45]} labelOffset={[0, 0.55, 0]} onSelect={onSelect}>
         <Float speed={1.6} rotationIntensity={0.06} floatIntensity={0.3} floatingRange={[-0.03, 0.03]}>
-          <HoloPanel width={1.4} height={0.8} title="KARTHIKEYAN B" subtitle="FRONTEND ENGINEER" />
+          <HoloPanel width={1.5} height={0.8} title="KARTHIKEYAN B" subtitle="FRONTEND ENGINEER" />
         </Float>
       </Hotspot>
 
-      {/* desk lamp light */}
-      <pointLight position={[0, 1.3, 0.2]} intensity={3} distance={3} color="#bfe3ff" />
+      {/* floor speakers flanking the bench */}
+      <Model name="speaker" position={[-1.85, 0, -0.1]} />
+      <Model name="speaker" position={[1.85, 0, -0.1]} />
+
+      <pointLight position={[0, 1.4, 0.3]} intensity={3} distance={3.5} color="#bfe3ff" />
     </group>
   )
 }

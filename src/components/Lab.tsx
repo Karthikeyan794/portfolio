@@ -1,12 +1,19 @@
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useMemo, useState } from 'react'
 import { profile } from '../data'
+import { preloadModels } from '../three/Model'
 import Scene from '../three/Scene'
 import { PANEL_VIEW, VIEWS, VIEW_ORDER, type PanelId, type ViewId } from '../three/views'
 import EnterScreen from './EnterScreen'
 import Panel from './Panel'
 
 type Props = { onSwitch2D: () => void }
+
+preloadModels([
+  'desk', 'chairDesk', 'laptop', 'computerScreen', 'computerKeyboard', 'computerMouse', 'bookcaseOpen', 'books',
+  'lampRoundFloor', 'lampSquareTable', 'plantSmall1', 'pottedPlant', 'speaker', 'cardboardBoxClosed', 'cardboardBoxOpen',
+  'sideTable', 'trashcan', 'rugRectangle', 'cabinetTelevision', 'televisionModern',
+])
 
 /** The 3D experience: canvas + HUD + slide-over panel + enter screen. */
 export default function Lab({ onSwitch2D }: Props) {
