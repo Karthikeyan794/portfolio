@@ -1,49 +1,38 @@
 import { useMemo } from 'react'
+import { siClaude, siCursor, siFigma, siGithub, siReact, siTypescript } from 'simple-icons'
 
 /**
- * CSS-3D Rubik's cube: the whole cube tumbles while its three horizontal
- * layers snap-twist 90° in turn (see cube.css for the timing). 27 cubelets,
- * only outward faces get stickers; stickers carry a small pixel glyph.
+ * CSS-3D Rubik's cube: the pieces fly in and combine, then the whole cube
+ * tumbles while its three horizontal layers snap-twist 90° in turn (see
+ * cube.css). Only outward faces get stickers — the tools I work with.
  */
 
-const FACE_COLORS = {
-  front: ['#22d3ee', '#06202a'], // cyan
-  back: ['#2b8cff', '#0a1d3f'], // blue
-  right: ['#e6f0ff', '#1b2a45'], // white
-  left: ['#f5b14a', '#3a2405'], // gold
-  top: ['#0f1a30', '#22d3ee'], // navy with cyan pixels
-  bottom: ['#a5f3fc', '#0b1220'],
+/**
+ * Each face of the cube is one tool — like each face of a real Rubik's cube
+ * is one colour — so the twists mix the logos. base = sticker colour, fg = logo colour.
+ */
+const FACES = {
+  front: { icon: siFigma, base: '#ffffff', fg: '#F24E1E' },
+  right: { icon: siClaude, base: '#D97757', fg: '#ffffff' },
+  back: { icon: siCursor, base: '#0b0b0b', fg: '#ffffff' }, // TODO: ChatGPT once its logo is approved for download
+  left: { icon: siGithub, base: '#ffffff', fg: '#181717' },
+  top: { icon: siReact, base: '#20232a', fg: '#61DAFB' },
+  bottom: { icon: siTypescript, base: '#3178C6', fg: '#ffffff' },
 } as const
 
-type FaceName = keyof typeof FACE_COLORS
+type FaceName = keyof typeof FACES
 
-/** 5×5 pixel glyphs — half code, half design. */
-const GLYPHS = [
-  ['..#..', '.#...', '#....', '.#...', '..#..'], // <
-  ['..#..', '...#.', '....#', '...#.', '..#..'], // >
-  ['....#', '...#.', '..#..', '.#...', '#....'], // /
-  ['.##..', '.#...', '##...', '.#...', '.##..'], // {
-  ['#....', '##...', '###..', '####.', '#.#..'], // cursor
-  ['....#', '...##', '..##.', '.##..', '#....'], // pen stroke
-  ['.###.', '#...#', '#...#', '.###.', '..#..'], // colour swatch / pin
-  ['#.#.#', '.....', '#.#.#', '.....', '#.#.#'], // dot grid
-  ['.#.#.', '#####', '#####', '.###.', '..#..'], // heart
-  ['#####', '#...#', '#.#.#', '#...#', '#####'], // frame
-  ['..#..', '..#..', '#####', '..#..', '..#..'], // plus
-  ['##...', '##...', '...##', '...##', '#####'], // layers
-]
+const stickerCache = new Map<string, string>()
 
-/** One glyph as an SVG data URI, picked deterministically. */
-function glyph(seed: number, fg: string): string {
-  const bitmap = GLYPHS[Math.abs(seed) % GLYPHS.length]
-  let rects = ''
-  bitmap.forEach((row, y) => {
-    ;[...row].forEach((cell, x) => {
-      if (cell === '#') rects += `<rect x="${x * 20}" y="${y * 20}" width="20" height="20" fill="${fg}"/>`
-    })
-  })
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" shape-rendering="crispEdges">${rects}</svg>`
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
+/** A tool logo as an SVG data URI (simple-icons paths are 24×24). */
+function sticker(name: FaceName): string {
+  const cached = stickerCache.get(name)
+  if (cached) return cached
+  const { icon, fg } = FACES[name]
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="${icon.path}" fill="${fg}"/></svg>`
+  const uri = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
+  stickerCache.set(name, uri)
+  return uri
 }
 
 /** Deterministic scatter offsets so the pieces fly in from the same places every time. */
@@ -67,12 +56,16 @@ export default function CubeLoader({ size = 34 }: Props) {
     return out
   }, [])
 
-  const faceStyle = (name: FaceName, outward: boolean, seed: number) => {
-    const [bg, fg] = FACE_COLORS[name]
-    return outward
-      ? { backgroundColor: bg, backgroundImage: glyph(seed, fg), backgroundSize: '70% 70%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }
+  const faceStyle = (name: FaceName, outward: boolean) =>
+    outward
+      ? {
+          backgroundColor: FACES[name].base,
+          backgroundImage: sticker(name),
+          backgroundSize: '58% 58%',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }
       : { backgroundColor: '#0b1220' }
-  }
 
   return (
     <div
@@ -86,7 +79,7 @@ export default function CubeLoader({ size = 34 }: Props) {
           <div className={`rubik__layer rubik__layer--${layer}`} key={layer}>
             {cubelets
               .filter((c) => c.y === layer)
-              .map((c, i) => {
+              .map((c) => {
                 const seed = c.x * 9 + c.y * 3 + c.z + 1
                 const sc = scatter(seed)
                 return (
@@ -107,12 +100,12 @@ export default function CubeLoader({ size = 34 }: Props) {
                       } as React.CSSProperties
                     }
                   >
-                    <i className="face face--front" style={faceStyle('front', c.z === 2, seed + i)} />
-                    <i className="face face--back" style={faceStyle('back', c.z === 0, seed + 7)} />
-                    <i className="face face--right" style={faceStyle('right', c.x === 2, seed + 13)} />
-                    <i className="face face--left" style={faceStyle('left', c.x === 0, seed + 19)} />
-                    <i className="face face--top" style={faceStyle('top', c.y === 0, seed + 23)} />
-                    <i className="face face--bottom" style={faceStyle('bottom', c.y === 2, seed + 29)} />
+                    <i className="face face--front" style={faceStyle('front', c.z === 2)} />
+                    <i className="face face--back" style={faceStyle('back', c.z === 0)} />
+                    <i className="face face--right" style={faceStyle('right', c.x === 2)} />
+                    <i className="face face--left" style={faceStyle('left', c.x === 0)} />
+                    <i className="face face--top" style={faceStyle('top', c.y === 0)} />
+                    <i className="face face--bottom" style={faceStyle('bottom', c.y === 2)} />
                   </div>
                 )
               })}
