@@ -114,15 +114,26 @@ export default function Intro() {
         )}
         {!useImage && ready !== false && (
           <div className="intro__zoom" data-zoom={intro.zoom}>
+            {/* the still sits under the clip so there is no empty moment while it loads */}
+            {intro.poster && <img className="intro__poster" src={intro.poster} alt="" style={{ objectPosition: intro.imageFocus }} />}
             <video
               className="intro__video"
               src={intro.video}
+              poster={intro.poster || undefined}
               autoPlay
               muted
               loop={intro.loop}
               playsInline
               preload="auto"
-              onCanPlay={() => setReady(true)}
+              onCanPlay={(e) => {
+                setReady(true)
+                e.currentTarget.play().catch(() => {})
+              }}
+              onPause={(e) => {
+                // browsers pause background media when a tab is hidden — pick it back up
+                const v = e.currentTarget
+                if (!v.ended && document.visibilityState === 'visible') v.play().catch(() => {})
+              }}
               onError={() => setReady(false)}
             />
           </div>

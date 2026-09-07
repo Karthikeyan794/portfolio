@@ -144,14 +144,16 @@ export const awards: Award[] = [
 ]
 
 // ── Opening intro (image hero) ────────────────────────────
-// Save your background as public/intro.jpg (landscape, ~1920 px wide, JPG under 1 MB is ideal).
-// Set image to '' to use the video at public/intro.mp4 instead. Missing file → drawn sunset scene.
+// Background: the clip at public/intro.mp4 (1920×1080, 10 s, loops) with public/intro.jpg shown
+// underneath while it loads. Set image to '/intro.jpg' to use the still picture (with CSS cloud/mist
+// motion) instead of the clip. Missing files → drawn sunset scene.
 export const intro = {
-  image: '/intro.jpg',
+  image: '', // '' = use the video
+  poster: '/intro.jpg', // still shown under the video while it loads
   imageFocus: '60% 50%', // which part of the picture stays in view when cropped (person is right of centre)
   video: '/intro.mp4',
-  zoom: false, // CSS push-in for the video (the current clip already zooms)
-  loop: false,
+  zoom: false, // CSS push-in for the video (leave off — the clip has its own motion)
+  loop: true,
   headline: ['I Design And Build', 'For The Web.'],
   punch: 'Karthikeyan.', // the serif word that ends the headline
   paragraph:

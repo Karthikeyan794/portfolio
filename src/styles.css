@@ -767,6 +767,7 @@ a { color: inherit; text-decoration: none; }
 .intro__zoom { position: absolute; inset: 0; }
 .intro__zoom[data-zoom='true'] { animation: intro-zoom 9s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
 @keyframes intro-zoom { from { transform: scale(1); } to { transform: scale(1.22); } }
+.intro__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .intro__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
 .intro__media[data-ready='true'] .intro__video { opacity: 1; }
 
@@ -883,8 +884,9 @@ a { color: inherit; text-decoration: none; }
 @keyframes intro-scroll { 0%, 100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(12px); opacity: 0.2; } }
 
 /* drawn sunset scene — while the picture loads and when there is none */
-.scene { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
+.scene { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; pointer-events: none; }
 .scene[data-fallback='true'] { opacity: 1; }
+.intro__zoom ~ .scene[data-fallback='true'] { opacity: 0; } /* video mode: the poster covers the wait */
 .scene::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #24473f 0%, #4f7c69 38%, #d8c98f 58%, #f0d9a3 70%, #6a9a72 80%, #1e3a34 100%); }
 .scene__sun { position: absolute; left: 58%; top: 46%; width: 22vmin; height: 22vmin; margin: -11vmin 0 0 -11vmin; border-radius: 50%; background: radial-gradient(circle, #fff7d6 0%, #f6dc8f 45%, rgba(246, 220, 143, 0) 72%); filter: blur(2px); }
 .scene__hills { position: absolute; left: -2%; width: 104%; height: 34%; }
