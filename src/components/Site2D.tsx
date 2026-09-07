@@ -4,7 +4,7 @@ import About from './About'
 import Awards from './Awards'
 import Contact from './Contact'
 import Experience from './Experience'
-import Hero from './Hero'
+import Intro, { INTRO_NAV_DELAY } from './Intro'
 import Marquee from './Marquee'
 import Nav from './Nav'
 import Preloader from './Preloader'
@@ -50,9 +50,9 @@ export default function Site2D({ onEnterLab }: Props) {
             onAnimationComplete={() => setSettled(true)}
             style={settled ? { transform: 'none' } : undefined}
           >
-            <Nav onEnterLab={onEnterLab} />
+            <Nav onEnterLab={onEnterLab} delay={INTRO_NAV_DELAY} />
             <main>
-              <Hero />
+              <Intro />
               <Marquee />
               <About />
               <Work />

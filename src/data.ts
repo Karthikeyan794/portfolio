@@ -142,3 +142,16 @@ export const awards: Award[] = [
   { title: 'Front-End Developer Certificate', issuer: 'Meta · Coursera', year: '2023', kind: 'certificate' },
   { title: 'Rising Star', issuer: 'Engineering team', year: '2023', note: 'Fastest ramp-up on the product team.', kind: 'award' },
 ]
+
+// ── Opening intro (video hero) ────────────────────────────
+// Put your own clip at public/intro.mp4 (a few seconds, looped, no sound needed).
+// If the file is missing the intro falls back to a drawn sunset scene in the theme colours.
+export const intro = {
+  video: '/intro.mp4',
+  poster: '', // optional still, e.g. '/intro.jpg'
+  // where the camera zooms towards (percent of the frame) — aim at the person
+  focus: { x: 62, y: 42 },
+  lines: ["Hi, I'm Karthikeyan.", 'I design and build for the web.', 'Welcome to my portfolio — take a look around.'],
+  // what the voice says (defaults to the lines above)
+  voice: "Hi, I'm Karthikeyan. I design and build for the web. Welcome to my portfolio — take a look around.",
+}

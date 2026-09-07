@@ -1,11 +1,12 @@
+import { motion } from 'motion/react'
 import { useState } from 'react'
 import { profile, sectionIds, sections } from '../data'
 import { useActiveSection, useScrolled, useTheme } from '../hooks'
 import { MoonIcon, SunIcon } from './Icons'
 
-type Props = { onEnterLab?: () => void }
+type Props = { onEnterLab?: () => void; delay?: number }
 
-export default function Nav({ onEnterLab }: Props) {
+export default function Nav({ onEnterLab, delay = 0 }: Props) {
   const active = useActiveSection(sectionIds)
   const stuck = useScrolled()
   const { resolved, toggle } = useTheme()
@@ -24,7 +25,13 @@ export default function Nav({ onEnterLab }: Props) {
   ))
 
   return (
-    <header className="nav" data-stuck={stuck}>
+    <motion.header
+      className="nav"
+      data-stuck={stuck}
+      initial={{ y: -90, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay, type: 'spring', stiffness: 90, damping: 18 }}
+    >
       <nav className="wrap nav__inner" aria-label="Primary">
         <a href="#top" className="nav__mark">
           <span className="nav__dot" aria-hidden="true" />
@@ -62,6 +69,6 @@ export default function Nav({ onEnterLab }: Props) {
           {links}
         </div>
       )}
-    </header>
+    </motion.header>
   )
 }

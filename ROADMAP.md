@@ -263,7 +263,10 @@
 - [x] Sticker Rubik's-cube intro loader
 - [x] Roboto + Playfair Display wired in
 - [x] Apply your colour theme (tokens in `src/styles.css`; cube loader recoloured too)
-- [ ] Hero redesign with your photo + resume button
+- [x] **Opening intro** (your Pinterest reference): full-screen clip slowly zooms on the person → intro lines appear one by one → "Play with voice" reads them (browser voice for now; browsers need a click before sound) → nav tabs slide in from the top. No clip yet → drawn sunset scene in theme colours
+- [ ] **Your intro clip** → `public/intro.mp4` (5–10 s, landscape, no sound). Options: generate one (Veo / Runway / Pika / Kling — the reference was AI-made), film yourself, or a free stock clip (Pexels). We can't reuse the Pinterest video itself (someone else's work)
+- [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
+- [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
 - [ ] Mini projects grid from Behance/Figma (cover, title, one line, link)
 - [ ] About + skills + experience with real content
