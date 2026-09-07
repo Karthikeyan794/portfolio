@@ -202,6 +202,42 @@
 
 ---
 
+
+### 2D design references (checked live 7 Sep 2026)
+
+*Clean & typographic — strong type, calm colour, one accent*
+- https://brittanychiang.com — dark navy + one mint accent; the classic dev portfolio
+- https://rauno.me — near-black, tiny type, obsessive detail
+- https://emilkowal.ski — white, big type, animation craft
+- https://paco.me — minimal, warm greys
+- https://minhpham.design — designer; bold colour blocks, huge headings
+
+*Personality & play — illustration, humour, colour*
+- https://www.seanhalpin.xyz — friendly illustration, pastel, soft cards
+- https://cassie.codes — purple/pink, playful SVG animation
+- https://www.lynnandtonic.com — quirky, changes look every year
+- https://robbowen.digital — dev with jokes and motion
+- https://www.joshwcomeau.com — playful details, great blog design
+- https://jhey.dev — creative dev, CSS tricks everywhere
+
+*Motion-rich — Awwwards style, smooth page transitions*
+- https://dennissnellenberg.com — dark/cream, magnetic buttons, silky scroll
+- https://aristidebenoist.com — big type, scroll-driven reveals
+- https://jacekjeznach.com — dev; bold gradients and motion
+- https://bepatrickdavid.com — designer; editorial layout
+- https://abhishekjha.me — designer; large case-study images
+- https://p5aholic.me — creative dev; particles and type
+
+*Designer + coder split (like you)*
+- https://www.adhamdannaway.com — famous half-designer/half-coder hero
+- https://mattfarley.ca — designer/dev with three-role intro
+- https://www.craftz.dog — indie dev, warm palette, voxel scene
+
+*Browse hundreds more*
+- https://www.bestfolios.com — designer portfolios (Behance/Dribbble crowd) — closest to your world
+- https://godly.website — the most polished sites on the web
+- https://www.awwwards.com/websites/portfolio/ · https://www.curated.design · https://www.lapa.ninja
+
 ---
 
 ## 3. Checklist — what's done
