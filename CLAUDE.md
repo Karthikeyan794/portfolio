@@ -13,8 +13,13 @@
 - Commit identity is set per-repo (personal GitHub no-reply). Don't change it.
 - After finishing a task: typecheck (`npm run typecheck`), commit, push. Vercel auto-deploys.
 
+## Direction (7 Sep 2026)
+- **2D site only for now.** The 3D lab (`src/three`, `src/components/Lab.tsx`) is parked and hidden via `LAB_ENABLED` in `src/App.tsx` — don't spend time on it unless asked.
+- Fonts: **Roboto** body, **Playfair Display** for display headings. Colours come from the user — apply as tokens in `src/styles.css`.
+- Main project = **Support Desk** case study (with demo videos). Mini projects = Behance/Figma design work.
+
 ## Stack
-React 18 · Vite 5 · TypeScript · plain CSS (tokens in `src/styles.css`). Add libraries only when a ROADMAP item needs them.
+React 19 · Vite 5 · TypeScript · plain CSS (tokens in `src/styles.css`) · motion (animations) · React Three Fiber (parked 3D). Add libraries only when a ROADMAP item needs them.
 
 ## Commands
 - `npm run dev` — local preview at http://localhost:5173

@@ -5,6 +5,15 @@
 
 ---
 
+## 0. Direction (updated 7 Sep 2026)
+
+- **2D site only for now.** The 3D lab is parked (code kept, hidden) — we come back to it later.
+- **Design:** you send the colour theme → I apply it everywhere (tokens in `src/styles.css`).
+- **Fonts:** **Roboto** for everything; **Playfair Display** for styled headings/accents (more display fonts later if wanted).
+- **Mini projects:** your Behance / Figma design work — links + one cover image each.
+- **Main project — Support Desk:** full case study page with demo videos.
+- **Loader:** the sticker Rubik's cube stays as the site intro.
+
 ## 1. Quick answer to every requirement
 
 | # | You want | Possible? | How (short) | Cost |
@@ -205,22 +214,36 @@
 - [x] `CLAUDE.md` (short answers rule) + `/add-project` skill
 
 ### Phase 1 · Content (you give, Claude places)
+- [ ] **Colour theme** — 3–5 colours (background, text, primary, accent) as hex codes or a screenshot
 - [ ] Your real bio (3–4 lines), role, location
-- [ ] Projects list (name, 1–2 lines, link, screenshot)
+- [ ] **Resume PDF**
+- [ ] **Behance / Figma links** for the mini projects (+ 1 cover image each, PNG/JPG)
+- [ ] **Support Desk** (main project): what it is, your role, tools, 4–6 screenshots, demo video(s) as MP4 or YouTube/Loom link
 - [ ] Awards (photos + one line each)
-- [ ] Resume PDF
-- [ ] Photos for the room walls
-- [ ] Social links (GitHub, LinkedIn)
+- [ ] Profile photo
+- [ ] Social links (GitHub, LinkedIn, Behance)
 
-### Phase 2 · 2D site (mobile + fallback)
+### Phase 2 · 2D site — the focus now
+- [x] Sticker Rubik's-cube intro loader
+- [x] Roboto + Playfair Display wired in
+- [ ] Apply your colour theme
+- [ ] Hero redesign with your photo + resume button
+- [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
+- [ ] Mini projects grid from Behance/Figma (cover, title, one line, link)
+- [ ] About + skills + experience with real content
+- [ ] Contact form → email to you (#4)
+- [ ] Mobile pass
+- [ ] Deploy to Vercel → live URL
+
+### Done so far (2D)
 - [x] Hero, About, Projects, Awards, Experience, Contact (placeholder text)
-- [x] Motion from your first Pinterest reference (theme kept): page tilts into view, stickers drift + follow the mouse + draggable, sections rise on scroll (#6)
-- [x] Rubik's-cube loader (~5.8 s, plays once): pieces fly in and combine → a thick wavy ribbon (trim-path style, text riding on it) sweeps left→right behind then in front of the cube → the hit spins the cube while its layers snap-twist → it lands solved with **Figma in front** and stops. Each face is one big die-cut design sticker in the bold outline style you sent — SLEEP·DESIGN·REPEAT, smiley GET THINGS DONE, BUILD DIFFERENT badge, ★ VIBE CODING ★ blob, SHIP IT! browser window, retro LOADING… computer. Used as the 2D preloader and on the lab's enter screen
+- [x] Motion from your first Pinterest reference: page tilts into view, stickers drift + follow the mouse + draggable, sections rise on scroll (#6)
+- [x] Rubik's-cube loader (~5.8 s, plays once): pieces fly in and combine → a thick wavy ribbon with text sweeps behind then in front of the cube → the hit spins the cube while its layers twist → lands solved and stops. Each face is one big die-cut design sticker — SLEEP·DESIGN·REPEAT, smiley GET THINGS DONE, BUILD DIFFERENT, ★ VIBE CODING ★, SHIP IT!, retro LOADING… computer
 - [x] Contact form → opens email app (direct sending in Phase 5) (#4)
 - [ ] Analytics (#4)
 - [ ] **Deploy to Vercel → live URL**
 
-### Phase 3 · 3D room (#1) — first version live locally
+### Phase 3 · 3D room (#1) — PARKED (first version exists, hidden for now)
 - [x] Room built in code + free Kenney Furniture Kit models (CC0), recoloured to the lab palette
 - [x] Desk view + laptop → Projects · tablet → Contact · paper → Résumé · hologram → About
 - [x] Wall view + frames → Awards & photos (placeholder images)

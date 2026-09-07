@@ -10,7 +10,7 @@ const NAVY = '#0b1220'
 const CYAN = '#22d3ee'
 const BLUE = '#2b8cff'
 const PAPER = '#e6f0ff'
-const FONT = `font-family="Inter, 'Arial Black', Helvetica, Arial, sans-serif" font-weight="900"`
+const FONT = `font-family="Roboto, 'Arial Black', Helvetica, Arial, sans-serif" font-weight="900"`
 /** die-cut text: white border behind the letters */
 const CUT = `stroke="#fff" stroke-width="6" stroke-linejoin="round" paint-order="stroke"`
 /** thin navy outline behind white letters */
