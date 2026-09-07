@@ -263,8 +263,8 @@
 - [x] Sticker Rubik's-cube intro loader
 - [x] Roboto + Playfair Display wired in
 - [x] Apply your colour theme (tokens in `src/styles.css`; cube loader recoloured too)
-- [x] **Opening intro** (your Pinterest reference): full-screen clip slowly zooms on the person → intro lines appear one by one → "Play with voice" reads them (browser voice for now; browsers need a click before sound) → nav tabs slide in from the top. No clip yet → drawn sunset scene in theme colours
-- [ ] **Your intro clip** → `public/intro.mp4` (5–10 s, landscape, no sound). Options: generate one (Veo / Runway / Pika / Kling — the reference was AI-made), film yourself, or a free stock clip (Pexels). We can't reuse the Pinterest video itself (someone else's work)
+- [x] **Opening hero** in the "UGH" reference layout: picture full-screen with slow life in it (clouds drifting, mist over the valley, breeze in the grass, gentle Ken Burns) → headline bottom-left with the serif punch word *Karthikeyan.* → copy → email → "Say Hello." pill → tool wordmarks bottom-right → hairline frame → nav slides in (transparent over the picture, solid cream after you scroll). "Play intro voice" reads the intro (browser voice; browsers need a click before sound)
+- [ ] **Your background picture** → save it as `public/intro.jpg` (the mountain scene you sent; ~1920 px wide JPG). Until then the drawn sunset scene shows. Your clip is at `public/intro.mp4` — set `intro.image = ''` in `src/data.ts` to use it instead
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)

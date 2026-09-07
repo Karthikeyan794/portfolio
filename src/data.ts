@@ -143,15 +143,27 @@ export const awards: Award[] = [
   { title: 'Rising Star', issuer: 'Engineering team', year: '2023', note: 'Fastest ramp-up on the product team.', kind: 'award' },
 ]
 
-// ── Opening intro (video hero) ────────────────────────────
-// Put your own clip at public/intro.mp4 (a few seconds, looped, no sound needed).
-// If the file is missing the intro falls back to a drawn sunset scene in the theme colours.
+// ── Opening intro (image hero) ────────────────────────────
+// Save your background as public/intro.jpg (landscape, ~1920 px wide, JPG under 1 MB is ideal).
+// Set image to '' to use the video at public/intro.mp4 instead. Missing file → drawn sunset scene.
 export const intro = {
+  image: '/intro.jpg',
+  imageFocus: '60% 50%', // which part of the picture stays in view when cropped (person is right of centre)
   video: '/intro.mp4',
-  poster: '', // optional still, e.g. '/intro.jpg'
-  // where the camera zooms towards (percent of the frame) — aim at the person
-  focus: { x: 62, y: 42 },
-  lines: ["Hi, I'm Karthikeyan.", 'I design and build for the web.', 'Welcome to my portfolio — take a look around.'],
-  // what the voice says (defaults to the lines above)
-  voice: "Hi, I'm Karthikeyan. I design and build for the web. Welcome to my portfolio — take a look around.",
+  zoom: false, // CSS push-in for the video (the current clip already zooms)
+  loop: false,
+  headline: ['I Design And Build', 'For The Web.'],
+  punch: 'Karthikeyan.', // the serif word that ends the headline
+  paragraph:
+    'Frontend Engineer From Chennai. I Turn Fuzzy Ideas Into Interfaces That Hold Up Under Real Users — Design Systems, Data-Heavy Screens, And The Tools Teams Actually Use.',
+  placeholder: 'Your email here…',
+  cta: ['Say', 'Hello.'], // second word is set in the serif
+  toolsLabel: 'Working With',
+  tools: [
+    { name: 'Figma', style: 'serif' },
+    { name: 'React', style: 'sans' },
+    { name: 'TypeScript', style: 'heavy' },
+    { name: 'Vite', style: 'wide' },
+  ] as { name: string; style: 'serif' | 'sans' | 'heavy' | 'wide' }[],
+  voice: "Hi, I'm Karthikeyan. I design and build for the web. Welcome — take a look around.",
 }

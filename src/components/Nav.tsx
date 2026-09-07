@@ -8,7 +8,8 @@ type Props = { onEnterLab?: () => void; delay?: number }
 
 export default function Nav({ onEnterLab, delay = 0 }: Props) {
   const active = useActiveSection(sectionIds)
-  const stuck = useScrolled()
+  // the nav sits over the intro picture; it turns solid once you scroll past it
+  const stuck = useScrolled(Math.round(window.innerHeight * 0.72))
   const { resolved, toggle } = useTheme()
   const [open, setOpen] = useState(false)
 
