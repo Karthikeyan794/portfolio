@@ -250,7 +250,7 @@
 - [x] `CLAUDE.md` (short answers rule) + `/add-project` skill
 
 ### Phase 1 · Content (you give, Claude places)
-- [ ] **Colour theme** — 3–5 colours (background, text, primary, accent) as hex codes or a screenshot
+- [x] **Colour theme** — deep forest green `#1e3a34` primary · cream `#f4f1e8` page · lime `#a6e85b` accent · ink `#14261f` (from your reference card)
 - [ ] Your real bio (3–4 lines), role, location
 - [ ] **Resume PDF**
 - [ ] **Behance / Figma links** for the mini projects (+ 1 cover image each, PNG/JPG)
@@ -262,7 +262,7 @@
 ### Phase 2 · 2D site — the focus now
 - [x] Sticker Rubik's-cube intro loader
 - [x] Roboto + Playfair Display wired in
-- [ ] Apply your colour theme
+- [x] Apply your colour theme (tokens in `src/styles.css`; cube loader recoloured too)
 - [ ] Hero redesign with your photo + resume button
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
 - [ ] Mini projects grid from Behance/Figma (cover, title, one line, link)

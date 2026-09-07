@@ -124,10 +124,10 @@
 }
 .preloader__card { display: grid; gap: 26px; justify-items: center; }
 .preloader__name { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-.preloader__name b { color: var(--accent); font-weight: 500; }
+.preloader__name b { color: var(--accent-ink); font-weight: 500; }
 
 /* enter screen (lab) uses the cube in place of a bar */
-.enter__cube { margin: 6px 0 10px; filter: drop-shadow(0 18px 30px rgba(34, 211, 238, 0.25)); }
+.enter__cube { margin: 6px 0 10px; filter: drop-shadow(0 18px 30px rgba(166, 232, 91, 0.25)); }
 
 /* ── ribbon: an S-curve through the cube ───────────────── */
 .stage { position: relative; display: grid; place-items: center; }
@@ -146,12 +146,12 @@
 .ribbon--front { z-index: 2; clip-path: inset(-20% 0 -20% 50%); }
 .ribbon__band {
   fill: none;
-  stroke: #22d3ee;
+  stroke: #a6e85b;
   stroke-width: 64;
   stroke-linecap: round;
   stroke-dasharray: 700 1000;
   stroke-dashoffset: 700; /* band sits just before the path start */
-  filter: drop-shadow(0 12px 22px rgba(34, 211, 238, 0.35));
+  filter: drop-shadow(0 12px 22px rgba(30, 58, 52, 0.25));
   animation: ribbon-slide 3.8s cubic-bezier(0.55, 0.05, 0.35, 1) 1.2s both;
 }
 @keyframes ribbon-slide {
@@ -163,7 +163,7 @@
   font-weight: 700;
   font-size: 25px;
   letter-spacing: 0.1em;
-  fill: #04121a;
+  fill: #14261f;
 }
 @media (prefers-reduced-motion: reduce) {
   .ribbon { display: none; }

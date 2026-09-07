@@ -14,7 +14,7 @@ function initialsOf(title: string) {
 
 function Card({ project, index }: { project: Project; index: number }) {
   const Wrapper = project.href ? 'a' : 'div'
-  const hue = (index * 57 + 160) % 360
+  const hue = 150 + index * 14 // greens, slightly different per card
 
   return (
     <Wrapper

@@ -6,10 +6,10 @@ import { useMemo } from 'react'
  * Sticker style: bold shapes, thick navy outlines, white die-cut border.
  */
 
-const NAVY = '#0b1220'
-const CYAN = '#22d3ee'
-const BLUE = '#2b8cff'
-const PAPER = '#e6f0ff'
+const NAVY = '#14261f' // ink
+const CYAN = '#a6e85b' // lime accent
+const BLUE = '#2f6b5e' // mid green
+const PAPER = '#f4f1e8' // cream
 const FONT = `font-family="Roboto, 'Arial Black', Helvetica, Arial, sans-serif" font-weight="900"`
 /** die-cut text: white border behind the letters */
 const CUT = `stroke="#fff" stroke-width="6" stroke-linejoin="round" paint-order="stroke"`
@@ -81,12 +81,12 @@ const loading =
 
 /** Face → base colour (theme) + sticker artwork. */
 const FACES = {
-  front: { base: '#0b1220', art: sleepDesignRepeat },
-  right: { base: '#0f766e', art: getThingsDone },
-  back: { base: '#1e3a8a', art: buildDifferent },
-  left: { base: '#111827', art: vibeCoding },
-  top: { base: '#f5b14a', art: shipIt },
-  bottom: { base: '#1e293b', art: loading },
+  front: { base: '#1e3a34', art: sleepDesignRepeat },
+  right: { base: '#2f6b5e', art: getThingsDone },
+  back: { base: '#14261f', art: buildDifferent },
+  left: { base: '#a6e85b', art: vibeCoding },
+  top: { base: '#f4f1e8', art: shipIt },
+  bottom: { base: '#355f55', art: loading },
 } as const
 
 type FaceName = keyof typeof FACES
@@ -139,7 +139,7 @@ export default function CubeLoader({ size = 34 }: Props) {
   }, [])
 
   const faceStyle = (name: FaceName, outward: boolean, c: { x: number; y: number; z: number }) => {
-    if (!outward) return { backgroundColor: '#0b1220' }
+    if (!outward) return { backgroundColor: '#14261f' }
     const [col, row] = slice(name, c.x, c.y, c.z)
     return {
       backgroundColor: FACES[name].base,
