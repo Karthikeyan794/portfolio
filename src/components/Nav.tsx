@@ -58,7 +58,6 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
             initial={{ opacity: 0, scale: 0.6, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: delay + 0.45, type: 'spring', stiffness: 240, damping: 15 }}
-            whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
           >
             Contact Me
