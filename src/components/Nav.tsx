@@ -34,9 +34,9 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
       transition={{ delay, type: 'spring', stiffness: 90, damping: 18 }}
     >
       <nav className="wrap nav__inner" aria-label="Primary">
-        <a href="#top" className="nav__mark">
+        {/* just the mark — no name text */}
+        <a href="#top" className="nav__mark" aria-label={`${profile.name} — back to top`}>
           <span className="nav__dot" aria-hidden="true" />
-          {profile.name}
         </a>
 
         <div className="nav__links">{links}</div>
