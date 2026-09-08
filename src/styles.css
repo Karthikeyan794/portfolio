@@ -107,7 +107,8 @@ a { color: inherit; text-decoration: none; }
 .nav[data-stuck='true'] { border-bottom-color: var(--line); }
 
 .nav__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* mark | centred links | contact */
   align-items: center;
   gap: 20px;
   height: 62px;
@@ -129,16 +130,15 @@ a { color: inherit; text-decoration: none; }
 }
 
 .nav__links {
-  margin-left: auto;
   display: flex;
+  justify-content: center;
   gap: 4px;
 }
-.nav__actions { display: flex; align-items: center; gap: 8px; }
+.nav__actions { display: flex; align-items: center; justify-content: end; gap: 8px; }
 .nav__burger { display: none; }
-@media (max-width: 620px) {
+@media (max-width: 720px) {
+  .nav__inner { grid-template-columns: auto 1fr; }
   .nav__links { display: none; }
-  .nav__actions { margin-left: auto; }
-  .nav__burger { display: inline-grid; }
 }
 .nav__menu {
   position: absolute;
