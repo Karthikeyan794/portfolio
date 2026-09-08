@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { sectionIds, sections } from '../data'
+import { navCta, sectionIds, sections } from '../data'
 import { useActiveSection, useScrolled } from '../hooks'
 
 type Props = { onEnterLab?: () => void; delay?: number }
@@ -58,7 +58,11 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
             transition={{ delay: delay + 0.45, type: 'spring', stiffness: 240, damping: 15 }}
             whileTap={{ scale: 0.97 }}
           >
-            Contact Me
+            {/* two stacked labels; hover slides the second one up into view */}
+            <span className="nav__cta-label">
+              <span>{navCta.label}</span>
+              <span aria-hidden="true">{navCta.hover}</span>
+            </span>
             <motion.span
               className="nav__cta-icon"
               initial={{ rotate: -120, scale: 0.4, opacity: 0 }}
