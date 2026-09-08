@@ -51,12 +51,26 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
               Enter 3D lab
             </button>
           )}
-          <a href="#contact" className="nav__cta">
+          {/* pops in once the nav has landed; the arrow badge spins in a beat later */}
+          <motion.a
+            href="#contact"
+            className="nav__cta"
+            initial={{ opacity: 0, scale: 0.6, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: delay + 0.45, type: 'spring', stiffness: 240, damping: 15 }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+          >
             Contact Me
-            <span className="nav__cta-icon">
+            <motion.span
+              className="nav__cta-icon"
+              initial={{ rotate: -120, scale: 0.4, opacity: 0 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              transition={{ delay: delay + 0.7, type: 'spring', stiffness: 220, damping: 14 }}
+            >
               <ArrowIcon />
-            </span>
-          </a>
+            </motion.span>
+          </motion.a>
         </div>
       </nav>
     </motion.header>
