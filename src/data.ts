@@ -117,7 +117,7 @@ export const sections = [
 export const sectionIds = sections.map((s) => s.id)
 
 /** The nav button: resting label and the one that slides in on hover. */
-export const navCta = { label: 'Contact Me', hover: "Let's Talk" }
+export const navCta = { label: 'Contact Me', hover: "Let's Talk." }
 
 // ── Stickers on the hero (drag them around) ───────────────
 // x/y are % offsets inside the hero visual column. rotate in degrees.
