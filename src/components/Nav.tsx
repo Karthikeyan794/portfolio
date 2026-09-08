@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { profile, sectionIds, sections } from '../data'
+import { sectionIds, sections } from '../data'
 import { useActiveSection, useScrolled } from '../hooks'
 
 type Props = { onEnterLab?: () => void; delay?: number }
@@ -37,10 +37,8 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
       transition={{ delay, type: 'spring', stiffness: 90, damping: 18 }}
     >
       <nav className="wrap nav__inner" aria-label="Primary">
-        {/* just the mark — no name text */}
-        <a href="#top" className="nav__mark" aria-label={`${profile.name} — back to top`}>
-          <span className="nav__dot" aria-hidden="true" />
-        </a>
+        {/* empty first column keeps the links centred */}
+        <span aria-hidden="true" />
 
         {/* Contact has its own button on the right, so it leaves the link row */}
         <div className="nav__links">{sections.filter((s) => s.id !== 'contact').map(link)}</div>
