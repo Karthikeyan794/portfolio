@@ -112,6 +112,9 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 20px;
   height: 62px;
+  /* full width: the mark and the contact pill sit on the hero's frame lines (3.5% in) */
+  max-width: none;
+  padding-inline: 3.5%;
 }
 
 .nav__mark {
