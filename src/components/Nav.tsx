@@ -1,5 +1,4 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
 import { profile, sectionIds, sections } from '../data'
 import { useActiveSection, useScrolled } from '../hooks'
 
@@ -17,7 +16,6 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
   const active = useActiveSection(sectionIds)
   // the nav sits over the intro picture; it turns solid once you scroll past it
   const stuck = useScrolled(Math.round(window.innerHeight * 0.72))
-  const [open, setOpen] = useState(false)
 
   const link = (s: (typeof sections)[number]) => (
     <a
@@ -25,7 +23,6 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
       href={`#${s.id}`}
       className="nav__link"
       aria-current={active === s.id ? 'true' : undefined}
-      onClick={() => setOpen(false)}
     >
       {s.label}
     </a>
@@ -60,22 +57,8 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
               <ArrowIcon />
             </span>
           </a>
-          <button
-            className="iconbtn nav__burger"
-            aria-expanded={open}
-            aria-controls="nav-menu"
-            aria-label="Menu"
-            onClick={() => setOpen((o) => !o)}
-          >
-            {open ? '✕' : '☰'}
-          </button>
         </div>
       </nav>
-      {open && (
-        <div id="nav-menu" className="nav__menu">
-          {sections.map(link)}
-        </div>
-      )}
     </motion.header>
   )
 }
