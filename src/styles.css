@@ -136,6 +136,11 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   justify-content: center;
   gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(10, 20, 17, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
 }
 .nav__actions { display: flex; align-items: center; justify-content: end; gap: 8px; }
 .nav__burger { display: none; }
@@ -159,14 +164,14 @@ a { color: inherit; text-decoration: none; }
 
 .nav__link {
   position: relative;
-  padding: 7px 11px;
+  padding: 7px 14px;
   border-radius: 999px;
   font-size: 14px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.8);
   transition: color 0.18s ease, background 0.18s ease;
 }
-.nav__link:hover { color: var(--text); background: var(--bg-sunk); }
-.nav__link[aria-current='true'] { color: var(--accent-ink); background: var(--accent-soft); }
+.nav__link:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.nav__link[aria-current='true'] { color: #14261f; background: #fff; }
 
 .iconbtn {
   display: inline-grid;
@@ -903,9 +908,6 @@ a { color: inherit; text-decoration: none; }
 .nav[data-stuck='false'] { background: transparent; border-bottom-color: transparent; backdrop-filter: none; }
 .nav[data-stuck='false'] .nav__mark { color: #fff; }
 .nav[data-stuck='false'] .nav__dot { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25); }
-.nav[data-stuck='false'] .nav__link { color: rgba(255, 255, 255, 0.78); }
-.nav[data-stuck='false'] .nav__link:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
-.nav[data-stuck='false'] .nav__link[aria-current='true'] { color: #fff; background: rgba(255, 255, 255, 0.14); }
 .nav[data-stuck='false'] .iconbtn { background: transparent; color: rgba(255, 255, 255, 0.85); border-color: rgba(255, 255, 255, 0.3); }
 .nav[data-stuck='false'] .nav__menu { background: rgba(10, 20, 17, 0.9); }
 
