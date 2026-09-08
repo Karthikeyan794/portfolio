@@ -106,6 +106,7 @@ export const skills: { group: string; items: string[] }[] = [
 ]
 
 export const sections = [
+  { id: 'top', label: 'Home' }, // the opening screen
   { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
   { id: 'awards', label: 'Awards' },
