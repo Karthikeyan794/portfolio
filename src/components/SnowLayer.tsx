@@ -1,12 +1,16 @@
 import { useEffect, useRef } from 'react'
 
 type Flake = { x: number; y: number; size: number; speed: number; sway: number; phase: number; rot: number; spin: number; alpha: number }
+type Shard = { x: number; y: number; vx: number; vy: number; size: number; rot: number; spin: number; life: number; ttl: number }
+type Ring = { x: number; y: number; life: number; ttl: number; max: number }
 
 /**
  * Smooth snowfall over the landing screen: a canvas of sprite flakes falling
  * at depth-based speeds with a gentle sway and slow spin. Time-based so it is
  * smooth at any frame rate; sleeps while the hero is off-screen or the tab is
- * hidden; skipped entirely for reduced-motion users.
+ * hidden; skipped entirely for reduced-motion users. Click a flake and it
+ * bursts into shards with a small ice ring (buttons underneath still work —
+ * the layer never takes pointer events, it only listens to the page's clicks).
  */
 export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { sprite?: string; density?: number }) {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -20,6 +24,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
     const img = new Image()
     img.src = sprite
     let flakes: Flake[] = []
+    let shards: Shard[] = []
+    let rings: Ring[] = []
     let w = 0
     let h = 0
     let dpr = 1
@@ -56,6 +62,45 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
       flakes = Array.from({ length: count }, () => make(false))
     }
 
+    const burst = (f: Flake) => {
+      const n = 10 + Math.round(f.size / 3)
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2
+        const v = 90 + Math.random() * 190 + f.size * 3
+        shards.push({
+          x: f.x,
+          y: f.y,
+          vx: Math.cos(a) * v,
+          vy: Math.sin(a) * v - 40,
+          size: 2 + Math.random() * Math.max(3, f.size * 0.28),
+          rot: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 12,
+          life: 0,
+          ttl: 0.55 + Math.random() * 0.5,
+        })
+      }
+      rings.push({ x: f.x, y: f.y, life: 0, ttl: 0.5, max: 22 + f.size * 1.4 })
+      Object.assign(f, make(true))
+    }
+
+    const onPointer = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect()
+      const px = e.clientX - r.left
+      const py = e.clientY - r.top
+      if (px < 0 || py < 0 || px > r.width || py > r.height) return
+      let hit: Flake | null = null
+      let best = Infinity
+      for (const f of flakes) {
+        const d = Math.hypot(f.x - px, f.y - py)
+        const reach = Math.max(16, f.size * 0.75)
+        if (d < reach && d < best) {
+          best = d
+          hit = f
+        }
+      }
+      if (hit) burst(hit)
+    }
+
     const frame = (t: number) => {
       raf = requestAnimationFrame(frame)
       if (!visible || hidden) {
@@ -81,6 +126,36 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
         ctx.drawImage(img, -f.size / 2, -f.size / 2, f.size, f.size)
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       }
+      // shards: fly out, fall, spin, fade
+      for (const p of shards) {
+        p.life += dt
+        p.vy += 320 * dt
+        p.vx *= 1 - 1.6 * dt
+        p.x += p.vx * dt
+        p.y += p.vy * dt
+        p.rot += p.spin * dt
+        const k = 1 - p.life / p.ttl
+        if (k <= 0) continue
+        ctx.globalAlpha = Math.min(1, k * 1.4)
+        ctx.translate(p.x, p.y)
+        ctx.rotate(p.rot)
+        if (img.complete) ctx.drawImage(img, -p.size / 2, -p.size / 2, p.size, p.size)
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      }
+      shards = shards.filter((p) => p.life < p.ttl)
+      // ice rings
+      for (const g of rings) {
+        g.life += dt
+        const k = g.life / g.ttl
+        if (k >= 1) continue
+        ctx.globalAlpha = (1 - k) * 0.7
+        ctx.strokeStyle = '#eaf6ff'
+        ctx.lineWidth = 2 * (1 - k) + 0.5
+        ctx.beginPath()
+        ctx.arc(g.x, g.y, 4 + g.max * (1 - Math.pow(1 - k, 2)), 0, Math.PI * 2)
+        ctx.stroke()
+      }
+      rings = rings.filter((g) => g.life < g.ttl)
       ctx.globalAlpha = 1
     }
 
@@ -89,6 +164,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
     const onVis = () => { hidden = document.visibilityState === 'hidden' }
     document.addEventListener('visibilitychange', onVis)
     window.addEventListener('resize', resize)
+    window.addEventListener('pointerdown', onPointer)
     resize()
     raf = requestAnimationFrame((t) => { last = t; frame(t) })
 
@@ -97,6 +173,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
       window.removeEventListener('resize', resize)
+      window.removeEventListener('pointerdown', onPointer)
     }
   }, [sprite, density])
 
