@@ -19,18 +19,26 @@ export default function SoundToggle() {
     }
   })
 
-  // first gesture anywhere starts the ambience (unless muted earlier)
+  // first gesture anywhere starts the ambience (unless muted earlier);
+  // if a start attempt fails, the next gesture tries again
   useEffect(() => {
     if (state !== 'waiting') return
-    const arm = () => {
-      void ambience.start().then(() => setState('on'))
-    }
-    window.addEventListener('pointerdown', arm, { once: true })
-    window.addEventListener('keydown', arm, { once: true })
-    return () => {
+    const off = () => {
       window.removeEventListener('pointerdown', arm)
       window.removeEventListener('keydown', arm)
     }
+    async function arm() {
+      try {
+        await ambience.start()
+        off()
+        setState('on')
+      } catch {
+        /* blocked this time — stay armed for the next gesture */
+      }
+    }
+    window.addEventListener('pointerdown', arm)
+    window.addEventListener('keydown', arm)
+    return off
   }, [state])
 
   // quieter once the hero has scrolled away; pause while the tab is hidden

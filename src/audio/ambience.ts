@@ -10,10 +10,20 @@ export class Ambience {
   private master: GainNode | null = null
   private timers: number[] = []
   private target = 0.28
+  private starting: Promise<void> | null = null
   running = false
 
-  async start() {
-    if (this.running) return
+  start() {
+    if (this.running) return Promise.resolve()
+    if (!this.starting) {
+      this.starting = this.boot().finally(() => {
+        this.starting = null
+      })
+    }
+    return this.starting
+  }
+
+  private async boot() {
     const ctx = new AudioContext()
     this.ctx = ctx
     const master = ctx.createGain()
