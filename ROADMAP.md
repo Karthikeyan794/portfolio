@@ -267,6 +267,7 @@
 - [x] **Background clip** in place — `public/intro.mp4` (your "clouds drifting over mountain lake", 1920×1080, 10 s, 7.4 MB, loops) with `public/intro.jpg` underneath while it loads. Set `intro.image = '/intro.jpg'` in `src/data.ts` to go back to the still + CSS motion
 - [x] **Nature sound** on the landing page — wind, distant birds, rustling leaves, synthesised in the browser (no audio file). Starts on the visitor's first click/tap/key (browser rule), speaker toggle in the nav, remembers "off", ducks when you scroll past the hero, pauses in hidden tabs
 - [x] **Snowfall** over the landing screen — smooth canvas flakes (drawn icy crystal sprite at `public/snowflake.svg`; drop your own PNG there to swap), depth-based speed, sway, spin; sleeps off-screen and in hidden tabs; off for reduced-motion users
+- [x] **Dark theme** — sun/moon toggle in the nav; the hero crossfades to your night clip (`public/intro-dark.mp4`, fetched only when first needed), page colours fade to the dark green set
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)

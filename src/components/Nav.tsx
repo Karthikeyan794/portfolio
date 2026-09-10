@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { navCta, sectionIds, sections } from '../data'
 import { useActiveSection, useScrolled } from '../hooks'
 import SoundToggle from './SoundToggle'
+import ThemeToggle from './ThemeToggle'
 
 type Props = { onEnterLab?: () => void; delay?: number }
 
@@ -41,6 +42,7 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
         {/* left slot: nature-sound toggle */}
         <div className="nav__left">
           <SoundToggle />
+          <ThemeToggle />
         </div>
 
         {/* Contact has its own button on the right, so it leaves the link row */}

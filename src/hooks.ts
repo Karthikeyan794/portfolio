@@ -1,51 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 
-type Theme = 'light' | 'dark' | 'system'
-const KEY = 'portfolio:theme:v3' // v3: green/cream theme, light by default
-
-/** Persisted light/dark/system preference, applied as data-theme on <html>. */
-export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      const stored = localStorage.getItem(KEY)
-      if (stored === 'light' || stored === 'dark') return stored
-    } catch {
-      /* private mode / blocked storage */
-    }
-    return 'light' // cream page by default; the toggle still works
-  })
-
-  useEffect(() => {
-    const root = document.documentElement
-    if (theme === 'system') root.removeAttribute('data-theme')
-    else root.setAttribute('data-theme', theme)
-    try {
-      if (theme === 'system') localStorage.removeItem(KEY)
-      else localStorage.setItem(KEY, theme)
-    } catch {
-      /* ignore */
-    }
-  }, [theme])
-
-  const [systemDark, setSystemDark] = useState(
-    () => window.matchMedia('(prefers-color-scheme: dark)').matches,
-  )
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = (e: MediaQueryListEvent) => setSystemDark(e.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-
-  const resolved = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme
-
-  return {
-    theme,
-    resolved,
-    toggle: () => setTheme(resolved === 'dark' ? 'light' : 'dark'),
-  }
-}
-
 /** Which section is currently in view, for nav highlighting. */
 export function useActiveSection(ids: readonly string[]) {
   const [active, setActive] = useState(ids[0] ?? '')

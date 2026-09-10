@@ -156,6 +156,7 @@ export const intro = {
   poster: '/intro.jpg', // still shown under the video while it loads
   imageFocus: '60% 50%', // which part of the picture stays in view when cropped (person is right of centre)
   video: '/intro.mp4',
+  videoDark: '/intro-dark.mp4', // night version, crossfaded in when the theme is dark
   zoom: false, // CSS push-in for the video (leave off — the clip has its own motion)
   loop: true,
   headline: ['I Design And Build', 'For The Web.'],

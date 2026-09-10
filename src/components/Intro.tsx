@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { intro, profile } from '../data'
+import { useTheme } from '../theme'
 import SnowLayer from './SnowLayer'
 
 /**
@@ -64,6 +65,24 @@ function Scene({ show }: { show: boolean }) {
 
 export default function Intro() {
   const [ready, setReady] = useState<boolean | null>(null) // null = loading, false = missing
+  const theme = useTheme()
+  const dark = theme === 'dark'
+  // the night clip is only fetched the first time dark is chosen, then kept warm
+  const [darkWanted, setDarkWanted] = useState(dark)
+  const [darkReady, setDarkReady] = useState(false)
+  const lightRef = useRef<HTMLVideoElement>(null)
+  const darkRef = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    if (dark) setDarkWanted(true)
+  }, [dark])
+  // keep only the visible clip decoding; pause the other after the crossfade
+  useEffect(() => {
+    const show = dark ? darkRef.current : lightRef.current
+    const hide = dark ? lightRef.current : darkRef.current
+    show?.play().catch(() => {})
+    const t = window.setTimeout(() => hide?.pause(), 1700)
+    return () => window.clearTimeout(t)
+  }, [dark, darkReady])
   const [speaking, setSpeaking] = useState(false)
   const [spoken, setSpoken] = useState(false)
 
@@ -118,7 +137,9 @@ export default function Intro() {
             {/* the still sits under the clip so there is no empty moment while it loads */}
             {intro.poster && <img className="intro__poster" src={intro.poster} alt="" style={{ objectPosition: intro.imageFocus }} />}
             <video
+              ref={lightRef}
               className="intro__video"
+              data-active={!dark}
               src={intro.video}
               poster={intro.poster || undefined}
               autoPlay
@@ -128,15 +149,36 @@ export default function Intro() {
               preload="auto"
               onCanPlay={(e) => {
                 setReady(true)
-                e.currentTarget.play().catch(() => {})
+                if (!dark) e.currentTarget.play().catch(() => {})
               }}
               onPause={(e) => {
                 // browsers pause background media when a tab is hidden — pick it back up
                 const v = e.currentTarget
-                if (!v.ended && document.visibilityState === 'visible') v.play().catch(() => {})
+                if (!dark && !v.ended && document.visibilityState === 'visible') v.play().catch(() => {})
               }}
               onError={() => setReady(false)}
             />
+            {darkWanted && intro.videoDark && (
+              <video
+                ref={darkRef}
+                className="intro__video intro__video--dark"
+                data-active={dark && darkReady}
+                src={intro.videoDark}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                onCanPlay={(e) => {
+                  setDarkReady(true)
+                  if (dark) e.currentTarget.play().catch(() => {})
+                }}
+                onPause={(e) => {
+                  const v = e.currentTarget
+                  if (dark && !v.ended && document.visibilityState === 'visible') v.play().catch(() => {})
+                }}
+              />
+            )}
           </div>
         )}
         <Scene show={ready !== true} />
