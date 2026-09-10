@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="ice" gradientUnits="userSpaceOnUse" x1="50" y1="4" x2="50" y2="50">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#8ec5ff"/>
+    </linearGradient>
+    <g id="arm" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- soft glow -->
+      <g stroke="#ffffff" stroke-opacity="0.35" stroke-width="6">
+        <line x1="50" y1="50" x2="50" y2="6"/>
+      </g>
+      <g stroke="url(#ice)" stroke-width="3">
+        <line x1="50" y1="50" x2="50" y2="6"/>
+        <path d="M50 17 L41 10 M50 17 L59 10"/>
+        <path d="M50 28 L39 20 M50 28 L61 20"/>
+        <path d="M50 39 L43 33 M50 39 L57 33"/>
+        <path d="M50 6 L46 11 M50 6 L54 11" stroke-width="2.2"/>
+      </g>
+    </g>
+  </defs>
+  <use href="#arm"/>
+  <use href="#arm" transform="rotate(60 50 50)"/>
+  <use href="#arm" transform="rotate(120 50 50)"/>
+  <use href="#arm" transform="rotate(180 50 50)"/>
+  <use href="#arm" transform="rotate(240 50 50)"/>
+  <use href="#arm" transform="rotate(300 50 50)"/>
+  <circle cx="50" cy="50" r="4.2" fill="#eaf6ff" stroke="#8ec5ff" stroke-width="1.2"/>
+</svg>

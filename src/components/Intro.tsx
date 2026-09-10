@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { intro, profile } from '../data'
+import SnowLayer from './SnowLayer'
 
 /**
  * Opening hero: the picture (or clip) fills the screen with slow life in it —
@@ -141,6 +142,7 @@ export default function Intro() {
         <Scene show={ready !== true} />
       </div>
       <div className="intro__shade" aria-hidden="true" />
+      <SnowLayer />
       <div className="intro__frame" aria-hidden="true">
         <i /><i /><i /><i />
       </div>
