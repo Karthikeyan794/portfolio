@@ -1,5 +1,6 @@
 import { MotionConfig } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ambience } from './audio/ambience'
 import Lab from './components/Lab'
 import Site2D from './components/Site2D'
 
@@ -23,6 +24,9 @@ function prefers2D() {
 export default function App() {
   const [mode, setMode] = useState<'3d' | '2d'>(() => (prefers2D() ? '2d' : '3d'))
   const canLab = LAB_ENABLED && webglOk()
+
+  // nature sound starts on the first tap anywhere — armed before the loader even finishes
+  useEffect(() => ambience.armOnGesture(), [])
 
   return (
     <MotionConfig reducedMotion="user">

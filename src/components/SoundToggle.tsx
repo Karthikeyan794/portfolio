@@ -1,47 +1,23 @@
 import { useEffect, useState } from 'react'
 import { ambience } from '../audio/ambience'
 
-const KEY = 'portfolio:sound' // 'off' when the visitor muted it
-
 type State = 'waiting' | 'on' | 'off'
 
+function current(): State {
+  return ambience.running ? 'on' : ambience.muted ? 'off' : 'waiting'
+}
+
 /**
- * Nature ambience for the landing page. Browsers only allow sound after a
- * user gesture, so we arm the first click / tap / key anywhere on the page;
- * until then the button shows a hint. Ducks when you scroll past the hero.
+ * Nature-sound toggle for the nav. The ambience itself is armed at app level
+ * (first click / tap / key anywhere starts it); this button reflects its state,
+ * lets the visitor switch it off (remembered) or back on, ducks it below the
+ * hero and pauses it while the tab is hidden.
  */
 export default function SoundToggle() {
-  const [state, setState] = useState<State>(() => {
-    try {
-      return localStorage.getItem(KEY) === 'off' ? 'off' : 'waiting'
-    } catch {
-      return 'waiting'
-    }
-  })
+  const [state, setState] = useState<State>(current)
 
-  // first gesture anywhere starts the ambience (unless muted earlier);
-  // if a start attempt fails, the next gesture tries again
-  useEffect(() => {
-    if (state !== 'waiting') return
-    const off = () => {
-      window.removeEventListener('pointerdown', arm)
-      window.removeEventListener('keydown', arm)
-    }
-    async function arm() {
-      try {
-        await ambience.start()
-        off()
-        setState('on')
-      } catch {
-        /* blocked this time — stay armed for the next gesture */
-      }
-    }
-    window.addEventListener('pointerdown', arm)
-    window.addEventListener('keydown', arm)
-    return off
-  }, [state])
+  useEffect(() => ambience.subscribe(() => setState(current())), [])
 
-  // quieter once the hero has scrolled away; pause while the tab is hidden
   useEffect(() => {
     const onScroll = () => ambience.setLevel(window.scrollY > window.innerHeight * 0.7 ? 0.3 : 1)
     const onVis = () => (document.visibilityState === 'hidden' ? ambience.suspend() : ambience.resume())
@@ -56,12 +32,11 @@ export default function SoundToggle() {
   function toggle(e: React.MouseEvent) {
     e.stopPropagation()
     if (state === 'on') {
+      ambience.muted = true
       void ambience.stop()
-      setState('off')
-      try { localStorage.setItem(KEY, 'off') } catch { /* ignore */ }
     } else {
-      void ambience.start().then(() => setState('on'))
-      try { localStorage.removeItem(KEY) } catch { /* ignore */ }
+      ambience.muted = false
+      void ambience.start()
     }
   }
 
