@@ -265,6 +265,7 @@
 - [x] Apply your colour theme (tokens in `src/styles.css`; cube loader recoloured too)
 - [x] **Opening hero** in the "UGH" reference layout: picture full-screen with slow life in it (clouds drifting, mist over the valley, breeze in the grass, gentle Ken Burns) → headline bottom-left with the serif punch word *Karthikeyan.* → copy → email → "Say Hello." pill → tool wordmarks bottom-right → hairline frame → nav slides in (transparent over the picture, solid cream after you scroll). "Play intro voice" reads the intro (browser voice; browsers need a click before sound)
 - [x] **Background clip** in place — `public/intro.mp4` (your "clouds drifting over mountain lake", 1920×1080, 10 s, 7.4 MB, loops) with `public/intro.jpg` underneath while it loads. Set `intro.image = '/intro.jpg'` in `src/data.ts` to go back to the still + CSS motion
+- [x] **Nature sound** on the landing page — wind, distant birds, rustling leaves, synthesised in the browser (no audio file). Starts on the visitor's first click/tap/key (browser rule), speaker toggle in the nav, remembers "off", ducks when you scroll past the hero, pauses in hidden tabs
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)

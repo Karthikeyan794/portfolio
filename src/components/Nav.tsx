@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { navCta, sectionIds, sections } from '../data'
 import { useActiveSection, useScrolled } from '../hooks'
+import SoundToggle from './SoundToggle'
 
 type Props = { onEnterLab?: () => void; delay?: number }
 
@@ -37,8 +38,10 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
       transition={{ delay, type: 'spring', stiffness: 90, damping: 18 }}
     >
       <nav className="wrap nav__inner" aria-label="Primary">
-        {/* empty first column keeps the links centred */}
-        <span aria-hidden="true" />
+        {/* left slot: nature-sound toggle */}
+        <div className="nav__left">
+          <SoundToggle />
+        </div>
 
         {/* Contact has its own button on the right, so it leaves the link row */}
         <div className="nav__links">{sections.filter((s) => s.id !== 'contact').map(link)}</div>
