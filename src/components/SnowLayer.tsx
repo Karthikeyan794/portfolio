@@ -1,18 +1,49 @@
 import { useEffect, useRef } from 'react'
 
 type Flake = { x: number; y: number; size: number; speed: number; sway: number; phase: number; rot: number; spin: number; alpha: number }
-type Shard = { x: number; y: number; vx: number; vy: number; size: number; rot: number; spin: number; life: number; ttl: number }
-type Ring = { x: number; y: number; life: number; ttl: number; max: number }
+type Shard = {
+  kind: 'crystal' | 'dust' | 'flake'
+  x: number; y: number; vx: number; vy: number
+  size: number; rot: number; spin: number
+  life: number; ttl: number
+  tint: string
+}
+type Flash = { x: number; y: number; life: number; ttl: number; max: number; rot: number }
+
+const ICE = ['#eaf6ff', '#cfe8ff', '#9ec9ff', '#6fb0ff', '#ffffff']
+
+/** an elongated crystal shard: kite shape with a lighter facet down the middle */
+function drawCrystal(ctx: CanvasRenderingContext2D, size: number, tint: string) {
+  const L = size
+  const W = size * 0.34
+  ctx.beginPath()
+  ctx.moveTo(0, -L)
+  ctx.lineTo(W, -L * 0.2)
+  ctx.lineTo(0, L * 0.55)
+  ctx.lineTo(-W, -L * 0.2)
+  ctx.closePath()
+  ctx.fillStyle = tint
+  ctx.fill()
+  ctx.beginPath()
+  ctx.moveTo(0, -L * 0.9)
+  ctx.lineTo(W * 0.35, -L * 0.2)
+  ctx.lineTo(0, L * 0.4)
+  ctx.closePath()
+  ctx.fillStyle = 'rgba(255,255,255,0.65)'
+  ctx.fill()
+}
 
 /**
  * Smooth snowfall over the landing screen: a canvas of sprite flakes falling
  * at depth-based speeds with a gentle sway and slow spin. Time-based so it is
  * smooth at any frame rate; sleeps while the hero is off-screen or the tab is
  * hidden; skipped entirely for reduced-motion users. Click a flake and it
- * bursts into shards with a small ice ring (buttons underneath still work —
- * the layer never takes pointer events, it only listens to the page's clicks).
+ * shatters like ice: a bright flash, crystal shards flying out with drag and
+ * gravity, and a dusting of fine sparkle (buttons underneath still work — the
+ * layer never takes pointer events, it only listens to the page's clicks).
+ * If public/burst.png exists it is drawn as an expanding flash behind the shards.
  */
-export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { sprite?: string; density?: number }) {
+export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/burst.png', density = 1 }: { sprite?: string; burstSprite?: string; density?: number }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -23,9 +54,14 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
 
     const img = new Image()
     img.src = sprite
+    // optional burst artwork — silently unused when the file is missing
+    const burstImg = new Image()
+    let burstOk = false
+    burstImg.onload = () => { burstOk = burstImg.naturalWidth > 0 }
+    burstImg.src = burstSprite
     let flakes: Flake[] = []
     let shards: Shard[] = []
-    let rings: Ring[] = []
+    let flashes: Flash[] = []
     let w = 0
     let h = 0
     let dpr = 1
@@ -63,23 +99,30 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
     }
 
     const burst = (f: Flake) => {
-      const n = 10 + Math.round(f.size / 3)
-      for (let i = 0; i < n; i++) {
-        const a = Math.random() * Math.PI * 2
-        const v = 90 + Math.random() * 190 + f.size * 3
-        shards.push({
-          x: f.x,
-          y: f.y,
-          vx: Math.cos(a) * v,
-          vy: Math.sin(a) * v - 40,
-          size: 2 + Math.random() * Math.max(3, f.size * 0.28),
-          rot: Math.random() * Math.PI * 2,
-          spin: (Math.random() - 0.5) * 12,
-          life: 0,
-          ttl: 0.55 + Math.random() * 0.5,
-        })
+      const power = 0.7 + f.size / 30 // bigger flake → bigger blast
+      const push = (kind: Shard['kind'], n: number, speed: number, size: () => number, ttl: () => number) => {
+        for (let i = 0; i < n; i++) {
+          const a = Math.random() * Math.PI * 2
+          const v = speed * (0.45 + Math.random()) * power
+          shards.push({
+            kind,
+            x: f.x,
+            y: f.y,
+            vx: Math.cos(a) * v,
+            vy: Math.sin(a) * v - 30 * power,
+            size: size(),
+            rot: a + Math.PI / 2, // crystals point away from the centre
+            spin: (Math.random() - 0.5) * 6,
+            life: 0,
+            ttl: ttl(),
+            tint: ICE[Math.floor(Math.random() * ICE.length)],
+          })
+        }
       }
-      rings.push({ x: f.x, y: f.y, life: 0, ttl: 0.5, max: 22 + f.size * 1.4 })
+      push('crystal', 9 + Math.round(power * 6), 210, () => 4 + Math.random() * 9 * power, () => 0.75 + Math.random() * 0.5)
+      push('flake', 3 + Math.round(power * 2), 150, () => 4 + Math.random() * 6, () => 0.6 + Math.random() * 0.4)
+      push('dust', 26 + Math.round(power * 14), 260, () => 0.8 + Math.random() * 1.8, () => 0.35 + Math.random() * 0.45)
+      flashes.push({ x: f.x, y: f.y, life: 0, ttl: 0.6, max: 40 + f.size * 2.2, rot: Math.random() * Math.PI * 2 })
       Object.assign(f, make(true))
     }
 
@@ -126,36 +169,58 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
         ctx.drawImage(img, -f.size / 2, -f.size / 2, f.size, f.size)
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       }
-      // shards: fly out, fall, spin, fade
+      // flash: a soft radial glow (or the burst artwork) that blooms and fades
+      for (const g of flashes) {
+        g.life += dt
+        const k = g.life / g.ttl
+        if (k >= 1) continue
+        const ease = 1 - Math.pow(1 - k, 3)
+        const r = 6 + g.max * ease
+        ctx.globalAlpha = (1 - k) * 0.9
+        if (burstOk) {
+          ctx.translate(g.x, g.y)
+          ctx.rotate(g.rot)
+          const sz = r * 2.4
+          ctx.drawImage(burstImg, -sz / 2, -sz / 2, sz, sz)
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+        } else {
+          const grad = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, r)
+          grad.addColorStop(0, 'rgba(255,255,255,0.9)')
+          grad.addColorStop(0.35, 'rgba(190,225,255,0.5)')
+          grad.addColorStop(1, 'rgba(120,180,255,0)')
+          ctx.fillStyle = grad
+          ctx.beginPath()
+          ctx.arc(g.x, g.y, r, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+      flashes = flashes.filter((g) => g.life < g.ttl)
+      // shards: fly out with drag, fall, spin, fade — eased so it feels like ice, not confetti
       for (const p of shards) {
         p.life += dt
-        p.vy += 320 * dt
-        p.vx *= 1 - 1.6 * dt
+        p.vy += (p.kind === 'dust' ? 140 : 300) * dt
+        const drag = p.kind === 'dust' ? 2.6 : 1.9
+        p.vx *= 1 - drag * dt
+        p.vy *= 1 - drag * 0.35 * dt
         p.x += p.vx * dt
         p.y += p.vy * dt
         p.rot += p.spin * dt
         const k = 1 - p.life / p.ttl
         if (k <= 0) continue
-        ctx.globalAlpha = Math.min(1, k * 1.4)
+        ctx.globalAlpha = Math.min(1, k * k * 1.6)
         ctx.translate(p.x, p.y)
         ctx.rotate(p.rot)
-        if (img.complete) ctx.drawImage(img, -p.size / 2, -p.size / 2, p.size, p.size)
+        if (p.kind === 'crystal') drawCrystal(ctx, p.size, p.tint)
+        else if (p.kind === 'flake') { if (img.complete) ctx.drawImage(img, -p.size / 2, -p.size / 2, p.size, p.size) }
+        else {
+          ctx.fillStyle = p.tint
+          ctx.beginPath()
+          ctx.arc(0, 0, p.size, 0, Math.PI * 2)
+          ctx.fill()
+        }
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       }
       shards = shards.filter((p) => p.life < p.ttl)
-      // ice rings
-      for (const g of rings) {
-        g.life += dt
-        const k = g.life / g.ttl
-        if (k >= 1) continue
-        ctx.globalAlpha = (1 - k) * 0.7
-        ctx.strokeStyle = '#eaf6ff'
-        ctx.lineWidth = 2 * (1 - k) + 0.5
-        ctx.beginPath()
-        ctx.arc(g.x, g.y, 4 + g.max * (1 - Math.pow(1 - k, 2)), 0, Math.PI * 2)
-        ctx.stroke()
-      }
-      rings = rings.filter((g) => g.life < g.ttl)
       ctx.globalAlpha = 1
     }
 
@@ -175,7 +240,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', density = 1 }: { 
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointerdown', onPointer)
     }
-  }, [sprite, density])
+  }, [sprite, burstSprite, density])
 
   return <canvas ref={ref} className="snow" aria-hidden="true" />
 }
