@@ -158,11 +158,11 @@ export class Ambience {
     lfoGain.gain.value = 120
     lfo.connect(lfoGain).connect(lp1.frequency)
     const g = ctx.createGain()
-    g.gain.value = 0.22
+    g.gain.value = 0.08 // just a hint of air
     const lfo2 = ctx.createOscillator()
     lfo2.frequency.value = 0.035
     const lfo2Gain = ctx.createGain()
-    lfo2Gain.gain.value = 0.07
+    lfo2Gain.gain.value = 0.03
     lfo2.connect(lfo2Gain).connect(g.gain)
     src.connect(lp1).connect(lp2).connect(g).connect(out)
     src.start()
@@ -246,22 +246,26 @@ export class Ambience {
       osc.frequency.exponentialRampToValueAtTime(base * (1.15 + Math.random() * 0.2), at + len * 0.6)
       osc.frequency.exponentialRampToValueAtTime(base * 0.97, at + len)
       g.gain.setValueAtTime(0, at)
-      g.gain.linearRampToValueAtTime(0.014, at + 0.03)
+      g.gain.linearRampToValueAtTime(0.034, at + 0.03)
       g.gain.exponentialRampToValueAtTime(0.0004, at + len)
       osc.connect(g).connect(p).connect(out)
       osc.start(at)
       osc.stop(at + len + 0.02)
     }
+    const song = (t: number, base: number, pan: number) => {
+      const notes = 2 + Math.floor(Math.random() * 4)
+      for (let i = 0; i < notes; i++) chirp(t + i * (0.13 + Math.random() * 0.09), base * (1 + (Math.random() - 0.5) * 0.12), pan)
+    }
     const tick = () => {
       if (!this.running && this.ctx !== ctx) return
       const t = ctx.currentTime + 0.05
-      const notes = 2 + Math.floor(Math.random() * 3)
-      const base = 1800 + Math.random() * 1200
       const pan = Math.random() * 1.6 - 0.8
-      for (let i = 0; i < notes; i++) chirp(t + i * (0.14 + Math.random() * 0.08), base * (1 + (Math.random() - 0.5) * 0.1), pan)
-      this.timers.push(window.setTimeout(tick, 7000 + Math.random() * 12000))
+      song(t, 1800 + Math.random() * 1400, pan)
+      // sometimes a second bird answers from the other side
+      if (Math.random() < 0.45) song(t + 0.7 + Math.random() * 0.6, 2400 + Math.random() * 1200, -pan)
+      this.timers.push(window.setTimeout(tick, 2500 + Math.random() * 4000))
     }
-    this.timers.push(window.setTimeout(tick, 5000))
+    this.timers.push(window.setTimeout(tick, 1800))
   }
 }
 
