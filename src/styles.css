@@ -90,6 +90,8 @@ a { color: inherit; text-decoration: none; }
   margin-inline: auto;
   padding-inline: clamp(20px, 5vw, 40px);
 }
+/* the bento wants the screen — a far wider track than the reading column */
+.wrap--wide { max-width: min(1720px, 95vw); }
 
 .eyebrow {
   font-family: var(--mono);
@@ -1445,4 +1447,102 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .box__hit::after { display: none; }
   .box__cta { opacity: 1; max-height: 24px; transform: none; }
+}
+
+/* ── hover: the hot box takes room, its siblings give it up ──────────
+   The tracks themselves resize, so this is a real expansion rather than a
+   scale — neighbours genuinely shrink. Columns/rows carry a transition so
+   the whole rectangle eases between states while keeping its outer size. */
+.bento {
+  transition: grid-template-columns 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+    grid-template-rows 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ── 7-box block, layout L ──
+   'a a b b b c' / 'd d e f f g'  → cols: a,d | b,e,f | c,g   rows: top | bottom */
+.bento--7.bento--l[data-hot='a'],
+.bento--7.bento--l[data-hot='d'] { grid-template-columns: 1.45fr 1.45fr 0.82fr 0.82fr 0.82fr 0.64fr; }
+.bento--7.bento--l[data-hot='b'],
+.bento--7.bento--l[data-hot='e'],
+.bento--7.bento--l[data-hot='f'] { grid-template-columns: 0.78fr 0.78fr 1.3fr 1.3fr 1.3fr 0.54fr; }
+.bento--7.bento--l[data-hot='c'],
+.bento--7.bento--l[data-hot='g'] { grid-template-columns: 0.82fr 0.82fr 0.9fr 0.9fr 0.9fr 1.66fr; }
+.bento--7.bento--l[data-hot='a'],
+.bento--7.bento--l[data-hot='b'],
+.bento--7.bento--l[data-hot='c'] { grid-template-rows: 1.3fr 1.3fr 0.7fr 0.7fr; }
+.bento--7.bento--l[data-hot='d'],
+.bento--7.bento--l[data-hot='e'],
+.bento--7.bento--l[data-hot='f'],
+.bento--7.bento--l[data-hot='g'] { grid-template-rows: 0.7fr 0.7fr 1.3fr 1.3fr; }
+
+/* ── 7-box block, layout R ──
+   'a b b c c c' / 'a d d d e e' / 'f f f g g e' */
+.bento--7.bento--r[data-hot='a'],
+.bento--7.bento--r[data-hot='f'] { grid-template-columns: 1.7fr 0.9fr 0.9fr 0.83fr 0.83fr 0.84fr; }
+.bento--7.bento--r[data-hot='b'],
+.bento--7.bento--r[data-hot='d'],
+.bento--7.bento--r[data-hot='g'] { grid-template-columns: 0.72fr 1.35fr 1.35fr 0.86fr 0.86fr 0.86fr; }
+.bento--7.bento--r[data-hot='c'],
+.bento--7.bento--r[data-hot='e'] { grid-template-columns: 0.72fr 0.74fr 0.74fr 1.26fr 1.26fr 1.28fr; }
+.bento--7.bento--r[data-hot='b'],
+.bento--7.bento--r[data-hot='c'] { grid-template-rows: 1.34fr 1.34fr 0.66fr 0.66fr; }
+.bento--7.bento--r[data-hot='d'],
+.bento--7.bento--r[data-hot='e'] { grid-template-rows: 0.8fr 0.8fr 1.2fr 1.2fr; }
+.bento--7.bento--r[data-hot='f'],
+.bento--7.bento--r[data-hot='g'] { grid-template-rows: 0.7fr 0.7fr 0.9fr 1.7fr; }
+
+/* ── 8-box block, layout L ──
+   'a a a b b c' / 'd d e e f g' / 'd d e e h g' */
+.bento--8.bento--l[data-hot='a'],
+.bento--8.bento--l[data-hot='d'] { grid-template-columns: 1.32fr 1.32fr 1.32fr 0.72fr 0.72fr 0.6fr; }
+.bento--8.bento--l[data-hot='b'],
+.bento--8.bento--l[data-hot='e'],
+.bento--8.bento--l[data-hot='f'],
+.bento--8.bento--l[data-hot='h'] { grid-template-columns: 0.78fr 0.78fr 0.78fr 1.4fr 1.4fr 0.86fr; }
+.bento--8.bento--l[data-hot='c'],
+.bento--8.bento--l[data-hot='g'] { grid-template-columns: 0.84fr 0.84fr 0.84fr 0.84fr 0.84fr 1.8fr; }
+.bento--8.bento--l[data-hot='a'],
+.bento--8.bento--l[data-hot='b'],
+.bento--8.bento--l[data-hot='c'] { grid-template-rows: 1.34fr 1.34fr 0.66fr 0.66fr; }
+.bento--8.bento--l[data-hot='d'],
+.bento--8.bento--l[data-hot='e'],
+.bento--8.bento--l[data-hot='f'],
+.bento--8.bento--l[data-hot='g'],
+.bento--8.bento--l[data-hot='h'] { grid-template-rows: 0.7fr 0.7fr 1.3fr 1.3fr; }
+
+/* ── 8-box block, layout R ──
+   'a a b b b c' / 'a a d d d c' / 'e e f f g g' / 'e e f f h h' */
+.bento--8.bento--r[data-hot='a'],
+.bento--8.bento--r[data-hot='e'] { grid-template-columns: 1.5fr 1.5fr 0.8fr 0.8fr 0.8fr 0.6fr; }
+.bento--8.bento--r[data-hot='b'],
+.bento--8.bento--r[data-hot='d'],
+.bento--8.bento--r[data-hot='f'] { grid-template-columns: 0.78fr 0.78fr 1.26fr 1.26fr 1.26fr 0.66fr; }
+.bento--8.bento--r[data-hot='c'],
+.bento--8.bento--r[data-hot='g'],
+.bento--8.bento--r[data-hot='h'] { grid-template-columns: 0.8fr 0.8fr 0.88fr 0.88fr 0.88fr 1.76fr; }
+.bento--8.bento--r[data-hot='a'],
+.bento--8.bento--r[data-hot='b'],
+.bento--8.bento--r[data-hot='c'],
+.bento--8.bento--r[data-hot='d'] { grid-template-rows: 1.3fr 1.3fr 0.7fr 0.7fr; }
+.bento--8.bento--r[data-hot='e'],
+.bento--8.bento--r[data-hot='f'],
+.bento--8.bento--r[data-hot='g'],
+.bento--8.bento--r[data-hot='h'] { grid-template-rows: 0.7fr 0.7fr 1.3fr 1.3fr; }
+
+/* the boxes that aren't hot step back a little so the hot one reads first */
+.bento[data-hot] .box { transition: opacity 0.45s ease; }
+.bento[data-hot] .box:not(:hover):not(:focus-within) { opacity: 0.72; }
+
+/* tracks only animate where there's room for it */
+@media (max-width: 900px) {
+  .bento[data-hot] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: auto !important; }
+  .bento[data-hot] .box:not(:hover) { opacity: 1; }
+}
+@media (max-width: 560px) {
+  .bento[data-hot] { grid-template-columns: 1fr !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bento { transition: none; }
+  .bento[data-hot] { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(120px, 1fr)); }
+  .bento[data-hot] .box:not(:hover) { opacity: 1; }
 }

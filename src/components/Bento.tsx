@@ -1,22 +1,38 @@
 import { motion } from 'motion/react'
+import { useState } from 'react'
 import { groups, projects, type Project } from '../data'
 import { openProject } from '../router'
 
 /**
  * Two bento blocks, one per group, each its own rectangle subdivided by named
  * grid areas into interlocking boxes. A labelled rule separates the blocks.
+ *
  * Reveal follows the reference reel: boxes scale up from 0.9 and fade in a
  * beat apart, so the rectangle assembles rather than appearing at once.
+ *
+ * Hover: the block records which slot is hot, so the hovered box grows while
+ * its siblings give up a little room (see .bento[data-hot] in styles.css).
  */
 const SLOTS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const
 
-function Box({ project, slot, index }: { project: Project; slot: string; index: number }) {
+type BoxProps = {
+  project: Project
+  slot: string
+  index: number
+  onHot: (slot: string | null) => void
+}
+
+function Box({ project, slot, index, onHot }: BoxProps) {
   const hasCase = Boolean(project.detail)
   const Hit = hasCase ? motion.button : motion.a
 
   return (
     <motion.article
       className={`box box--${slot}`}
+      onPointerEnter={() => onHot(slot)}
+      onPointerLeave={() => onHot(null)}
+      onFocus={() => onHot(slot)}
+      onBlur={() => onHot(null)}
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, amount: 0.15 }}
@@ -52,6 +68,39 @@ function Box({ project, slot, index }: { project: Project; slot: string; index: 
   )
 }
 
+/** One group's rectangle; tracks which box is hovered so the others can react. */
+function Block({ group, items, index }: { group: (typeof groups)[number]; items: Project[]; index: number }) {
+  const [hot, setHot] = useState<string | null>(null)
+
+  return (
+    <div className="blockwrap">
+      <motion.div
+        className="blockrule"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 0.6 }}
+      >
+        <span className="blockrule__no">{String(index + 1).padStart(2, '0')}</span>
+        <span className="blockrule__label">{group.label}</span>
+        <span className="blockrule__line" aria-hidden="true" />
+        <span className="blockrule__note">{group.note}</span>
+        <span className="blockrule__count">{items.length}</span>
+      </motion.div>
+
+      <div
+        className={`bento bento--${items.length} bento--${index % 2 === 0 ? 'l' : 'r'}`}
+        data-hot={hot ?? undefined}
+        onPointerLeave={() => setHot(null)}
+      >
+        {items.map((p, i) => (
+          <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} onHot={setHot} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Bento() {
   return (
     <section className="section work" id="work">
@@ -72,32 +121,14 @@ export default function Bento() {
       </motion.div>
 
       <div className="wrap wrap--wide bentos">
-        {groups.map((group, gi) => {
-          const items = projects.filter((p) => p.group === group.id).slice(0, SLOTS.length)
-          return (
-            <div className="blockwrap" key={group.id}>
-              <motion.div
-                className="blockrule"
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.6 }}
-              >
-                <span className="blockrule__no">{String(gi + 1).padStart(2, '0')}</span>
-                <span className="blockrule__label">{group.label}</span>
-                <span className="blockrule__line" aria-hidden="true" />
-                <span className="blockrule__note">{group.note}</span>
-                <span className="blockrule__count">{items.length}</span>
-              </motion.div>
-
-              <div className={`bento bento--${items.length} bento--${gi % 2 === 0 ? 'l' : 'r'}`}>
-                {items.map((p, i) => (
-                  <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} />
-                ))}
-              </div>
-            </div>
-          )
-        })}
+        {groups.map((group, gi) => (
+          <Block
+            key={group.id}
+            group={group}
+            index={gi}
+            items={projects.filter((p) => p.group === group.id).slice(0, SLOTS.length)}
+          />
+        ))}
       </div>
     </section>
   )
