@@ -2,7 +2,9 @@ import { MotionConfig } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { ambience } from './audio/ambience'
 import Lab from './components/Lab'
+import ProjectPage from './components/ProjectPage'
 import Site2D from './components/Site2D'
+import { useRoute } from './router'
 
 function webglOk() {
   try {
@@ -28,9 +30,13 @@ export default function App() {
   // nature sound starts on the first tap anywhere — armed before the loader even finishes
   useEffect(() => ambience.armOnGesture(), [])
 
+  const projectSlug = useRoute()
+
   return (
     <MotionConfig reducedMotion="user">
-      {mode === '3d' ? (
+      {projectSlug ? (
+        <ProjectPage slug={projectSlug} />
+      ) : mode === '3d' ? (
         <Lab onSwitch2D={() => setMode('2d')} />
       ) : (
         <Site2D onEnterLab={canLab ? () => setMode('3d') : undefined} />

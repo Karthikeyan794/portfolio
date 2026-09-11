@@ -8,7 +8,7 @@ import Intro, { INTRO_NAV_DELAY } from './Intro'
 import Marquee from './Marquee'
 import Nav from './Nav'
 import Preloader from './Preloader'
-import Work from './Work'
+import Bento from './Bento'
 
 type Props = { onEnterLab?: () => void }
 
@@ -62,7 +62,7 @@ export default function Site2D({ onEnterLab }: Props) {
               <Intro />
               <Marquee />
               <About />
-              <Work />
+              <Bento />
               <Awards />
               <Experience />
               <Contact />

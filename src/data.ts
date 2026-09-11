@@ -28,145 +28,299 @@ export const about = [
   'Most of my time goes into three things — component libraries that stay consistent without slowing anyone down, data-heavy screens that stay responsive at scale, and the unglamorous internal tooling that quietly saves a team hours a week.',
 ]
 
+export type Slice = {
+  /** 'full' = wide row · 'half' = two per row */
+  span?: 'full' | 'half'
+  heading?: string
+  body?: string
+  image?: string
+  caption?: string
+  /** an embedded video: an mp4 in /public or a YouTube/Loom embed URL */
+  video?: string
+}
+
 export type Project = {
+  slug: string
   title: string
+  /** one line under the title in the grid */
+  tagline: string
   blurb: string
   year: string
+  role?: string
   tags: string[]
   emoji: string // fallback when there is no cover image
-  cover?: string // /work/*.jpg — downloaded from Behance so the site doesn't hotlink
-  href?: string
-  featured?: boolean
-  /** 'work' = real/client · 'practice' = course or self-set exercise. Edit these freely. */
+  cover?: string
+  href?: string // external link (Behance) — used when there is no case study
+  /** a live demo people can try */
+  demo?: { label: string; href: string }
+  /** how big the tile is in the bento grid */
+  size?: 'hero' | 'wide' | 'tall' | 'small'
+  /** the tile's tint — kept pale so the primary green stays special */
+  tone?: 'cream' | 'sage' | 'mist' | 'blush' | 'sand' | 'lime'
+  /** 'work' = real/client · 'practice' = course or self-set exercise */
   kind?: 'work' | 'practice'
+  /** when present the tile opens a case-study page instead of an external link */
+  detail?: {
+    intro: string
+    facts: { label: string; value: string }[]
+    slices: Slice[]
+  }
 }
 
 /**
- * Pulled from behance.net/karthikbabu13 (12 projects, newest first).
- * Blurbs are first drafts — rewrite any of them in your own words.
+ * Main project work first (case studies with demos), then the design work
+ * pulled from behance.net/karthikbabu13. Blurbs are first drafts — rewrite freely.
  */
 export const projects: Project[] = [
   {
-    title: 'Skill Mate — AI mock interview',
+    slug: 'support-desk',
+    title: 'Support Desk',
+    tagline: 'The helpdesk our support team lives in',
     blurb:
-      'An AI-powered mock-interview product: practice sessions, question flow and feedback screens designed so a nervous candidate always knows what happens next.',
+      'A support console built around the ticket queue — triage, assignment, SLA pressure and reply history in one screen, so an agent never loses the thread of a conversation.',
+    year: '2025',
+    role: 'Design + Frontend',
+    tags: ['Product', 'React', 'Design system'],
+    emoji: '🎧',
+    cover: '/bento/support-desk.jpg',
+    size: 'hero',
+    tone: 'sage',
+    kind: 'work',
+    demo: { label: 'Try the demo', href: '' }, // ← paste the demo URL when it is ready
+    detail: {
+      intro:
+        'Support Desk is the tool our support team uses every day. The brief was simple to say and hard to build: let an agent see everything about a ticket without leaving the screen they are on.',
+      facts: [
+        { label: 'Role', value: 'Design + Frontend' },
+        { label: 'Year', value: '2025' },
+        { label: 'Stack', value: 'React · TypeScript' },
+        { label: 'Status', value: 'In production' },
+      ],
+      slices: [
+        {
+          span: 'full',
+          heading: 'The problem',
+          body: 'Agents were juggling several tabs to answer one ticket — the conversation in one, the customer record in another, the SLA clock somewhere else. Context got lost and replies got slower.',
+          image: '/bento/support-flow.jpg',
+          caption: 'Mapping the support workflow before touching any UI.',
+        },
+        {
+          span: 'half',
+          heading: 'Triage first',
+          body: 'The queue leads with what forces a decision: age, priority and who owns it. Everything else waits until it is asked for.',
+        },
+        {
+          span: 'half',
+          heading: 'One screen, whole story',
+          body: 'Conversation, customer history and internal notes sit side by side, so the reply box is never more than a glance away from the context it needs.',
+        },
+        { span: 'full', heading: 'Walkthrough', body: 'A short run through the flow end to end.', video: '' },
+      ],
+    },
+  },
+  {
+    slug: 'atom',
+    title: 'Atom',
+    tagline: 'Small AI apps, built and shipped fast',
+    blurb:
+      'A platform for small AI-powered apps — request one, watch it get built, then run it. I designed the catalogue, the request and approval flow, and the credit accounting behind it.',
+    year: '2025',
+    role: 'Design + Frontend',
+    tags: ['AI', 'Platform', 'Dashboard'],
+    emoji: '⚛️',
+    cover: '/bento/atom.jpg',
+    size: 'wide',
+    tone: 'mist',
+    kind: 'work',
+    demo: { label: 'Try the demo', href: '' },
+    detail: {
+      intro:
+        'Atom turns "I wish we had a tool for this" into a working app. My part was the surface people actually touch: browsing what exists, asking for something new, and understanding what it costs.',
+      facts: [
+        { label: 'Role', value: 'Design + Frontend' },
+        { label: 'Year', value: '2025' },
+        { label: 'Stack', value: 'React · TypeScript' },
+        { label: 'Status', value: 'In production' },
+      ],
+      slices: [
+        {
+          span: 'full',
+          heading: 'A catalogue you can scan',
+          body: 'Dozens of small apps, each with its own purpose. The cards lead with what the app does for you, not what it is called internally.',
+          image: '/bento/smart-findings.jpg',
+        },
+        { span: 'half', heading: 'Ask, approve, build', body: 'A request flow that stays honest about where your app is: asked for, approved, being built, ready.' },
+        { span: 'half', heading: 'Credits that make sense', body: 'Usage shown per team and per app, so the bill is never a surprise at the end of the month.' },
+        { span: 'full', heading: 'Walkthrough', body: '', video: '' },
+      ],
+    },
+  },
+  {
+    slug: 'skill-mate',
+    title: 'Skill Mate',
+    tagline: 'AI-powered mock interviews',
+    blurb:
+      'Practice sessions, question flow and feedback screens designed so a nervous candidate always knows what happens next.',
     year: '2025',
     tags: ['Product design', 'AI', 'UI/UX'],
     emoji: '🎤',
     cover: '/work/skill-mate.jpg',
     href: 'https://www.behance.net/gallery/230495131/Skill-Mate-AI-Powered-mock-interview',
-    featured: true,
+    size: 'tall',
+    tone: 'blush',
   },
   {
-    title: 'Car Dashboard — dark & light',
-    blurb:
-      'An in-car dashboard in both dark and light modes — speed, media, navigation and climate kept glanceable at driving speed.',
+    slug: 'car-dashboard',
+    title: 'Car Dashboard',
+    tagline: 'Dark & light, built for a glance',
+    blurb: 'An in-car dashboard in both modes — speed, media, navigation and climate kept glanceable at driving speed.',
     year: '2025',
     tags: ['Dashboard', 'Dark mode', 'UI'],
     emoji: '🚗',
     cover: '/work/car-dashboard.jpg',
     href: 'https://www.behance.net/gallery/230978875/Car-Dashboard-Dark-Light-mode',
-    featured: true,
+    size: 'wide',
+    tone: 'cream',
   },
   {
-    title: '7 Days Redesign Challenge',
-    blurb: 'Seven days, seven redesigns — a self-set sprint to practise moving fast from critique to a cleaner screen.',
-    year: '2025',
-    tags: ['Redesign', 'Challenge'],
-    emoji: '📅',
-    cover: '/work/redesign-challenge.jpg',
-    href: 'https://www.behance.net/gallery/230895267/7-Days_Redesign-Challenge',
-    kind: 'practice',
-  },
-  {
-    title: 'Form Design',
-    blurb: 'A long form broken into steps that feel short — clear labels, forgiving validation and obvious progress.',
-    year: '2025',
-    tags: ['Forms', 'UX'],
-    emoji: '📝',
-    cover: '/work/form-design.jpg',
-    href: 'https://www.behance.net/gallery/217305465/Form-Design-%28Task%29',
-    kind: 'practice',
-  },
-  {
-    title: 'Nellai Karupatti Coffee Dashboard',
-    blurb: 'An admin dashboard for a coffee brand — orders, stock and sales in one screen with the numbers that matter first.',
-    year: '2025',
-    tags: ['Dashboard', 'Data UI'],
-    emoji: '☕',
-    cover: '/work/coffee-dashboard.jpg',
-    href: 'https://www.behance.net/gallery/217302653/Nellai-Karupatti-Coffee-Dashboard',
-  },
-  {
-    title: 'POS School Management Dashboard',
-    blurb: 'A school management and point-of-sale dashboard — fees, attendance and records for staff who are always in a hurry.',
-    year: '2024',
-    tags: ['Dashboard', 'POS', 'UI/UX'],
-    emoji: '🏫',
-    cover: '/work/pos-school.jpg',
-    href: 'https://www.behance.net/gallery/214624079/POS-school-management-Dashboard',
-  },
-  {
-    title: 'TNPSC Website Redesign',
-    blurb:
-      'A case study redesigning a government exam portal: the information aspirants actually need, found in fewer taps and readable on a cheap phone.',
+    slug: 'tnpsc',
+    title: 'TNPSC Redesign',
+    tagline: 'A government exam portal, made usable',
+    blurb: 'A case study: the information aspirants actually need, found in fewer taps and readable on a cheap phone.',
     year: '2024',
     tags: ['Case study', 'Web', 'Accessibility'],
     emoji: '🏛️',
     cover: '/work/tnpsc.jpg',
     href: 'https://www.behance.net/gallery/214619697/TNPSC-website-Redesign-case-study',
-    featured: true,
+    size: 'small',
+    tone: 'sand',
   },
   {
-    title: 'Google Maps — event feature',
-    blurb: 'A concept feature adding nearby events to Maps, designed to sit inside the existing patterns rather than fight them.',
+    slug: 'pos-school',
+    title: 'POS School Dashboard',
+    tagline: 'Fees, attendance, records',
+    blurb: 'A school management and point-of-sale dashboard for staff who are always in a hurry.',
     year: '2024',
-    tags: ['Feature design', 'Concept'],
-    emoji: '🗺️',
-    cover: '/work/google-map.jpg',
-    href: 'https://www.behance.net/gallery/215585615/Google-map-%28Event-feature%29',
+    tags: ['Dashboard', 'POS'],
+    emoji: '🏫',
+    cover: '/work/pos-school.jpg',
+    href: 'https://www.behance.net/gallery/214624079/POS-school-management-Dashboard',
+    size: 'small',
+    tone: 'sage',
+  },
+  {
+    slug: 'coffee-dashboard',
+    title: 'Nellai Karupatti Coffee',
+    tagline: 'Orders, stock and sales in one screen',
+    blurb: 'An admin dashboard for a coffee brand, with the numbers that matter first.',
+    year: '2025',
+    tags: ['Dashboard', 'Data UI'],
+    emoji: '☕',
+    cover: '/work/coffee-dashboard.jpg',
+    href: 'https://www.behance.net/gallery/217302653/Nellai-Karupatti-Coffee-Dashboard',
+    size: 'small',
+    tone: 'sand',
+  },
+  {
+    slug: 'redesign-challenge',
+    title: '7 Days Redesign',
+    tagline: 'Seven days, seven redesigns',
+    blurb: 'A self-set sprint to practise moving fast from critique to a cleaner screen.',
+    year: '2025',
+    tags: ['Redesign', 'Challenge'],
+    emoji: '📅',
+    cover: '/work/redesign-challenge.jpg',
+    href: 'https://www.behance.net/gallery/230895267/7-Days_Redesign-Challenge',
+    size: 'small',
+    tone: 'mist',
     kind: 'practice',
   },
   {
-    title: 'Enhancing a phone-call flow',
-    blurb: 'A rethink of the calling experience — fewer mis-taps mid-call and a clearer path back out of it.',
-    year: '2024',
-    tags: ['User flow', 'Mobile'],
-    emoji: '📞',
-    cover: '/work/phone-call-flow.jpg',
-    href: 'https://www.behance.net/gallery/215587351/Enhancing-User-flow-%28Phone-call%29',
-    kind: 'practice',
-  },
-  {
-    title: 'Smartwatch Design',
-    blurb: 'Watch-face and app screens built for a glance — big targets, one idea per screen, legible in sunlight.',
-    year: '2024',
-    tags: ['Wearable', 'UI'],
-    emoji: '⌚',
-    cover: '/work/smartwatch.jpg',
-    href: 'https://www.behance.net/gallery/215590509/Smartwatch-Design',
-    kind: 'practice',
-  },
-  {
-    title: 'Neomorphism Design',
-    blurb: 'A soft-UI exploration — pushing the neomorphic style as far as it goes while keeping contrast usable.',
-    year: '2024',
-    tags: ['Visual design', 'Exploration'],
-    emoji: '🫧',
-    cover: '/work/neomorphism.jpg',
-    href: 'https://www.behance.net/gallery/215586815/Neomorphism-Design',
-    kind: 'practice',
-  },
-  {
-    title: 'Logofolio — Clickly',
-    blurb: 'Logo and identity marks, including the Clickly brand — construction, spacing and how each mark holds up small.',
+    slug: 'logofolio',
+    title: 'Logofolio',
+    tagline: 'Marks, including Clickly',
+    blurb: 'Logo and identity work — construction, spacing and how each mark holds up small.',
     year: '2024',
     tags: ['Branding', 'Logo'],
     emoji: '✦',
     cover: '/work/logofolio-clickly.jpg',
     href: 'https://www.behance.net/gallery/215584601/Logofolio-%28Clickly%29',
+    size: 'small',
+    tone: 'cream',
+  },
+  {
+    slug: 'form-design',
+    title: 'Form Design',
+    tagline: 'A long form that feels short',
+    blurb: 'Clear labels, forgiving validation and obvious progress.',
+    year: '2025',
+    tags: ['Forms', 'UX'],
+    emoji: '📝',
+    cover: '/work/form-design.jpg',
+    href: 'https://www.behance.net/gallery/217305465/Form-Design-%28Task%29',
+    size: 'small',
+    tone: 'blush',
+    kind: 'practice',
+  },
+  {
+    slug: 'smartwatch',
+    title: 'Smartwatch',
+    tagline: 'One idea per screen',
+    blurb: 'Watch faces and app screens built for a glance — big targets, legible in sunlight.',
+    year: '2024',
+    tags: ['Wearable', 'UI'],
+    emoji: '⌚',
+    cover: '/work/smartwatch.jpg',
+    href: 'https://www.behance.net/gallery/215590509/Smartwatch-Design',
+    size: 'small',
+    tone: 'sage',
+    kind: 'practice',
+  },
+  {
+    slug: 'google-map',
+    title: 'Maps — event feature',
+    tagline: 'A concept that fits the patterns',
+    blurb: 'Nearby events added to Maps, designed to sit inside the existing patterns rather than fight them.',
+    year: '2024',
+    tags: ['Feature design', 'Concept'],
+    emoji: '🗺️',
+    cover: '/work/google-map.jpg',
+    href: 'https://www.behance.net/gallery/215585615/Google-map-%28Event-feature%29',
+    size: 'small',
+    tone: 'mist',
+    kind: 'practice',
+  },
+  {
+    slug: 'phone-call-flow',
+    title: 'Phone-call flow',
+    tagline: 'Fewer mis-taps mid-call',
+    blurb: 'A rethink of the calling experience and a clearer path back out of it.',
+    year: '2024',
+    tags: ['User flow', 'Mobile'],
+    emoji: '📞',
+    cover: '/work/phone-call-flow.jpg',
+    href: 'https://www.behance.net/gallery/215587351/Enhancing-User-flow-%28Phone-call%29',
+    size: 'small',
+    tone: 'sand',
+    kind: 'practice',
+  },
+  {
+    slug: 'neomorphism',
+    title: 'Neomorphism',
+    tagline: 'Soft UI, pushed as far as it goes',
+    blurb: 'A visual exploration that keeps contrast usable while chasing the style.',
+    year: '2024',
+    tags: ['Visual design', 'Exploration'],
+    emoji: '🫧',
+    cover: '/work/neomorphism.jpg',
+    href: 'https://www.behance.net/gallery/215586815/Neomorphism-Design',
+    size: 'small',
+    tone: 'cream',
+    kind: 'practice',
   },
 ]
+
+export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug)
 
 export type Role = {
   company: string

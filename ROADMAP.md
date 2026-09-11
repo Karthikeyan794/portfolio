@@ -254,7 +254,8 @@
 - [ ] Your real bio (3–4 lines), role, location
 - [ ] **Resume PDF**
 - [x] **Behance projects** — all 12 pulled from behance.net/karthikbabu13 via its RSS feed; covers downloaded to `public/work/` (2.4 MB total, no hotlinking). Blurbs are my first drafts — rewrite in your own words in `src/data.ts`
-- [ ] **Support Desk** (main project): what it is, your role, tools, 4–6 screenshots, demo video(s) as MP4 or YouTube/Loom link
+- [ ] **Support Desk + Atom**: demo URLs (`demo.href` in `src/data.ts`), walkthrough videos (`video` on the Walkthrough slice — MP4 in `public/` or a YouTube/Loom link), and 4–6 real screenshots to replace the placeholder banners
+- [ ] **Your own banner images** → `public/bento/*.jpg` (placeholders are currently borrowed from the labs-client repo — replace before publishing)
 - [ ] Awards (photos + one line each)
 - [ ] Profile photo
 - [ ] Social links (GitHub, LinkedIn, Behance)
@@ -271,6 +272,8 @@
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
+- [x] **Bento work grid** — light tinted tiles in mixed sizes, banner image per project, each tile drifts at its own rate as you scroll (parallax) and springs in on reveal. Green is now used only on primary things (Case-study badge, buttons), not on every card
+- [x] **Case-study pages** at `#/project/<slug>` — banner parallaxing under the title, facts bar, intro, then content slices (text · image · video) that reveal on scroll, a scroll-progress bar, and a "Try the demo" button in the sticky header. Esc or "All work" goes back
 - [x] Mini projects grid from Behance (cover, title, one line, link, Practice badge)
 - [ ] Confirm which projects are course/practice vs real work (`kind: 'practice'` in `src/data.ts`)
 - [ ] About + skills + experience with real content
