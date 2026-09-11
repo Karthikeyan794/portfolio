@@ -1,6 +1,6 @@
 import { animate, motion, useInView } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { about, facets, manifesto, principles, skills, stats } from '../data'
+import { facets, manifesto, skills, stats } from '../data'
 
 /** Counts from 0 to `value` the first time it scrolls into view. */
 function Stat({ value, suffix, label, delay }: { value: number; suffix?: string; label: string; delay: number }) {
@@ -60,11 +60,7 @@ function Facets() {
         >
           <img className="facet__img" src={f.image} alt="" loading="lazy" decoding="async" />
           <span className="facet__veil" aria-hidden="true" />
-
-          {/* the spine label, shown only while collapsed */}
           <span className="facet__spine">{f.label}</span>
-
-          {/* the story, shown only while open */}
           <span className="facet__story">
             <span className="facet__label">{f.label}</span>
             <span className="facet__title">{f.title}</span>
@@ -76,6 +72,7 @@ function Facets() {
   )
 }
 
+/** Kept deliberately spare: one statement, the strip, the numbers, the tools. */
 export default function About() {
   return (
     <section className="section about" id="about">
@@ -91,82 +88,32 @@ export default function About() {
           <p className="about__manifesto">{manifesto}</p>
         </motion.div>
 
-        {/* the strip: narrow slats that open one at a time */}
         <Facets />
 
-        <div className="about__grid">
-          <motion.aside
-            className="about__side"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ type: 'spring', stiffness: 62, damping: 18 }}
-          >
-            <div className="stats">
-              {stats.map((s, i) => (
-                <Stat key={s.label} {...s} delay={i * 0.08} />
-              ))}
-            </div>
-          </motion.aside>
-
-          <div className="about__main">
-            <motion.div
-              className="prose"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7 }}
-            >
-              {about.map((p) => (
-                <p key={p.slice(0, 24)}>{p}</p>
-              ))}
-            </motion.div>
-
-            <div className="principles">
-              <span className="about__label">How I work</span>
-              {principles.map((p, i) => (
-                <motion.article
-                  className="principle"
-                  key={p.title}
-                  initial={{ opacity: 0, y: 26 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.6, delay: i * 0.08 }}
-                >
-                  <span className="principle__no">{String(i + 1).padStart(2, '0')}</span>
-                  <div>
-                    <h3>{p.title}</h3>
-                    <p>{p.body}</p>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-
-            <motion.div
-              className="toolkit"
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="about__label">Toolkit</span>
-              <div className="toolkit__groups">
-                {skills.map((g) => (
-                  <div className="toolkit__group" key={g.group}>
-                    <h4>{g.group}</h4>
-                    <div className="chips">
-                      {g.items.map((item) => (
-                        <span className="chip" key={item}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+        <motion.div
+          className="about__foot"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.7 }}
+        >
+          <div className="stats">
+            {stats.map((s, i) => (
+              <Stat key={s.label} {...s} delay={i * 0.08} />
+            ))}
           </div>
-        </div>
+
+          <div className="toolkit">
+            <span className="about__label">Toolkit</span>
+            <div className="chips">
+              {skills.flatMap((g) => g.items).map((item) => (
+                <span className="chip" key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )

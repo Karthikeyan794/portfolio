@@ -35,22 +35,6 @@ export const stats: { value: number; suffix?: string; label: string }[] = [
   { value: 12, suffix: '', label: 'Design explorations' },
 ]
 
-/** How I work — three things, each with a one-liner. */
-export const principles: { title: string; body: string }[] = [
-  {
-    title: 'Start from the hard screen',
-    body: 'The dense one with real data in it. If the messiest view holds up, the marketing page will look after itself.',
-  },
-  {
-    title: 'Design it, then build it',
-    body: 'I hand off to myself. That means fewer arguments about what is possible and fewer pixels lost in translation.',
-  },
-  {
-    title: 'Ship, watch, fix',
-    body: 'Opinions are cheap before release. I would rather put it in front of someone and change what actually annoys them.',
-  },
-]
-
 /**
  * The expanding strip in About. Each slat is one facet of me: collapsed it
  * shows just the image and a vertical label, hovered it opens and tells its
@@ -60,31 +44,31 @@ export const facets: { label: string; title: string; body: string; image: string
   {
     label: 'Now',
     title: 'Frontend Engineer at Facilio',
-    body: 'I build the product UI facility teams open every morning — Support Desk and Atom, both in production, both designed and shipped by me.',
+    body: 'I build the product UI facility teams open every morning — Support Desk and Atom, both in production.',
     image: '/bento/support-desk.jpg',
   },
   {
     label: 'Design',
     title: 'I design before I build',
-    body: 'Figma first, then code. Handing off to myself means fewer arguments about what is possible and nothing lost in translation.',
+    body: 'Figma first, then code. Handing off to myself means nothing gets lost in translation.',
     image: '/bento/fm-assistant.jpg',
   },
   {
     label: 'Systems',
     title: 'Design systems, not screens',
-    body: 'Tokens, primitives and documentation that let several squads build from the same vocabulary without slowing anyone down.',
+    body: 'Tokens and primitives that let several squads build from the same vocabulary.',
     image: '/bento/smart-findings.jpg',
   },
   {
     label: 'Data UI',
     title: 'At home in dense screens',
-    body: 'Queues, dashboards, tables under real load. The messy views are the interesting ones — get those right and the rest follows.',
+    body: 'Queues, dashboards and tables under real load. The messy views are the interesting ones.',
     image: '/bento/documents.jpg',
   },
   {
     label: 'Craft',
     title: 'I still draw',
-    body: 'Sketchbook work, logos, illustration. None of it is for a brief — it is where the eye gets trained.',
+    body: 'Sketchbook work, logos, illustration. It is where the eye gets trained.',
     image: '/bento/art.jpg',
   },
 ]

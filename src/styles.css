@@ -1787,53 +1787,9 @@ a { color: inherit; text-decoration: none; }
 }
 .about__head { max-width: none; }
 
-.about__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
-  gap: clamp(28px, 5vw, 72px);
-  align-items: start;
-}
-@media (max-width: 900px) { .about__grid { grid-template-columns: 1fr; } }
 
-.about__side { position: sticky; top: 96px; display: grid; gap: 16px; }
-@media (max-width: 900px) { .about__side { position: static; } }
 
 /* the portrait, with a frosted "currently" caption */
-.portrait {
-  position: relative;
-  margin: 0;
-  border-radius: 22px;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  border: 1px solid var(--line);
-  background: var(--bg-sunk);
-}
-.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 45%; }
-.portrait__cap {
-  position: absolute;
-  inset: auto 12px 12px 12px;
-  display: grid;
-  gap: 3px;
-  padding: 14px 16px;
-  border-radius: 15px;
-  color: #fff;
-  background: rgba(10, 16, 14, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(18px) saturate(1.2);
-}
-.portrait__now {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
-}
-.portrait__now i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(166, 232, 91, 0.22); }
-.portrait__cap strong { font-size: 15.5px; font-weight: 600; }
-.portrait__focus { font-size: 13px; color: rgba(255, 255, 255, 0.74); }
 
 /* the counting stats */
 .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -1848,7 +1804,6 @@ a { color: inherit; text-decoration: none; }
 .stat__value { font-family: var(--display); font-weight: 700; font-size: clamp(24px, 2.4vw, 32px); letter-spacing: -0.02em; line-height: 1; }
 .stat__label { font-size: 11.5px; color: var(--muted); line-height: 1.35; }
 
-.about__main { display: grid; gap: clamp(34px, 5vh, 60px); }
 .about__label {
   display: block;
   font-family: var(--mono);
@@ -1859,29 +1814,7 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 16px;
 }
 
-/* the three principles */
-.principles { display: grid; gap: 2px; }
-.principle {
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr);
-  gap: 14px;
-  padding: 20px 18px;
-  border-radius: 16px;
-  transition: background 0.3s ease;
-}
-.principle:hover { background: var(--bg-elev); }
-.principle__no { font-family: var(--mono); font-size: 11.5px; color: var(--accent-ink); padding-top: 4px; }
-.principle h3 { font-family: var(--display); font-weight: 700; font-size: clamp(17px, 1.7vw, 21px); letter-spacing: -0.015em; margin-bottom: 5px; }
-.principle p { color: var(--text-mid); font-size: 15px; max-width: 56ch; }
-@media (max-width: 520px) { .principle { grid-template-columns: 1fr; gap: 6px; } }
 
-.toolkit__groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
-.toolkit__group h4 {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text);
-  margin-bottom: 9px;
-}
 
 /* ═══════════════════════════════════════════════════════════
    Experience — a timeline whose rail draws as you scroll
@@ -2094,3 +2027,13 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .facet, .facet__img, .facet__story, .facet__spine { transition: none; }
 }
+
+/* About's closing row: the numbers beside the tools */
+.about__foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(26px, 5vw, 64px);
+  align-items: start;
+}
+@media (max-width: 820px) { .about__foot { grid-template-columns: 1fr; gap: 28px; } }
+.about__foot .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
