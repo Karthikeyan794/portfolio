@@ -274,7 +274,7 @@
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
-- [x] **Bento work grid** — light tinted tiles in mixed sizes, banner image per project, each tile drifts at its own rate as you scroll (parallax) and springs in on reveal. Green is now used only on primary things (Case-study badge, buttons), not on every card
+- [x] **True bento work grid** — each block is one fixed rectangle subdivided by named grid areas into interlocking boxes of different sizes (tall left, wide centre, slim right, mirrored in the next block). Art fills each box, label sits over it, boxes scale-and-fade in with a stagger; hover zooms the art, lifts the label, reveals the CTA and sweeps a sheen — matching the reference reel
 - [x] **Case-study pages** at `#/project/<slug>` — banner parallaxing under the title, facts bar, intro, then content slices (text · image · video) that reveal on scroll, a scroll-progress bar, and a "Try the demo" button in the sticky header. Esc or "All work" goes back
 - [x] Mini projects grid from Behance (cover, title, one line, link, Practice badge)
 - [ ] Confirm which projects are course/practice vs real work (`kind: 'practice'` in `src/data.ts`)
