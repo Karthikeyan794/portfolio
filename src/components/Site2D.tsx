@@ -13,6 +13,8 @@ import Work from './Work'
 type Props = { onEnterLab?: () => void }
 
 const MIN_LOADER_MS = 5800
+const FONT_WAIT_MS = 2500 // never let slow web fonts hold the loader hostage
+const HARD_CAP_MS = MIN_LOADER_MS + 3000 // absolute worst case: the page always appears
 
 /** The scrolling page — phones, fallback, and anyone who prefers it. */
 export default function Site2D({ onEnterLab }: Props) {
@@ -24,15 +26,20 @@ export default function Site2D({ onEnterLab }: Props) {
   useEffect(() => {
     const start = performance.now()
     let cancelled = false
-    const fonts = 'fonts' in document ? document.fonts.ready : Promise.resolve()
-    fonts.then(() => {
+    const done = () => {
+      if (!cancelled) setLoading(false)
+    }
+    // fonts.ready can hang for a long time when a font host is slow or blocked — race it
+    const fonts = 'fonts' in document ? document.fonts.ready.then(() => undefined) : Promise.resolve()
+    const fontsOrTimeout = Promise.race([fonts, new Promise<void>((r) => window.setTimeout(r, FONT_WAIT_MS))])
+    fontsOrTimeout.then(() => {
       const wait = Math.max(0, MIN_LOADER_MS - (performance.now() - start))
-      window.setTimeout(() => {
-        if (!cancelled) setLoading(false)
-      }, wait)
+      window.setTimeout(done, wait)
     })
+    const cap = window.setTimeout(done, HARD_CAP_MS)
     return () => {
       cancelled = true
+      window.clearTimeout(cap)
     }
   }, [])
 
