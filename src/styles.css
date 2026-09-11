@@ -5,8 +5,8 @@
   --bg-sunk: #e2e5e8;
   --line: rgba(26, 32, 36, 0.12);
   --line-strong: rgba(26, 32, 36, 0.24);
-  --grid-line: rgba(26, 32, 36, 0.07);
-  --grid-line-hot: rgba(26, 32, 36, 0.16);
+  --grid-line: rgba(26, 32, 36, 0.045);
+  --grid-line-hot: rgba(26, 32, 36, 0.1);
   --text: #14181b;
   --text-mid: #444c52;
   --muted: #71797f;
@@ -33,8 +33,8 @@
   --bg-sunk: #101214;
   --line: rgba(255, 255, 255, 0.1);
   --line-strong: rgba(255, 255, 255, 0.2);
-  --grid-line: rgba(255, 255, 255, 0.05);
-  --grid-line-hot: rgba(255, 255, 255, 0.13);
+  --grid-line: rgba(255, 255, 255, 0.03);
+  --grid-line-hot: rgba(255, 255, 255, 0.075);
   --text: #f2f3f4;
   --text-mid: #b9bec2;
   --muted: #848b90;
@@ -1161,33 +1161,79 @@ a { color: inherit; text-decoration: none; }
 .case__intro { font-size: clamp(17px, 2vw, 22px); line-height: 1.55; color: var(--text-mid); max-width: 62ch; }
 .case__intro::first-line { color: var(--text); }
 
-.slices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 32px); }
-@media (max-width: 760px) { .slices { grid-template-columns: 1fr; } }
-.slice { display: grid; gap: 12px; align-content: start; }
-.slice--full { grid-column: 1 / -1; }
-.slice__h { font-family: var(--display); font-size: clamp(21px, 2.4vw, 28px); font-weight: 700; letter-spacing: -0.02em; }
-.slice__p { color: var(--text-mid); font-size: 16px; max-width: 62ch; }
-.slice__figure { margin: 6px 0 0; }
-.slice__figure img { width: 100%; border-radius: 18px; border: 1px solid var(--line); display: block; }
-.slice__figure figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
-.slice__video { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #0d1512; }
-.slice__video iframe,
-.slice__video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.slice__placeholder {
+/* ── case-study rows: words on the left, screens on the right ───── */
+.rows { display: grid; gap: clamp(46px, 7vh, 96px); }
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+@media (max-width: 860px) { .row { grid-template-columns: 1fr; gap: 20px; } }
+
+.row__text { position: sticky; top: 92px; display: grid; gap: 12px; align-content: start; }
+@media (max-width: 860px) { .row__text { position: static; } }
+.row__no { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.12em; color: var(--muted); }
+.row__h {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(22px, 2.6vw, 34px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.row__p { color: var(--text-mid); font-size: 16px; line-height: 1.6; max-width: 46ch; }
+
+.row__media { display: grid; gap: 14px; }
+.frame {
+  position: relative;
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-sunk);
+}
+.frame--shot img { display: block; width: 100%; height: auto; }
+/* the note slides up over the image when you point at it */
+.frame--shot figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 22px 20px 16px;
+  font-size: 13.5px;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(6, 8, 10, 0) 0%, rgba(6, 8, 10, 0.82) 55%, rgba(6, 8, 10, 0.94) 100%);
+  transform: translateY(101%);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+}
+.frame--shot:hover figcaption,
+.frame--shot:focus-within figcaption { transform: none; opacity: 1; }
+.frame--video { aspect-ratio: 16 / 9; background: #0b0d0f; }
+.frame--video iframe,
+.frame--video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.frame--empty {
   display: grid;
   gap: 6px;
   place-content: center;
   text-align: center;
-  aspect-ratio: 16 / 7;
-  border: 1px dashed var(--line-strong);
-  border-radius: 18px;
-  background: var(--bg-sunk);
+  aspect-ratio: 16 / 9;
+  border-style: dashed;
+  border-color: var(--line-strong);
   color: var(--muted);
   font-size: 14px;
   padding: 20px;
 }
-.slice__placeholder strong { color: var(--text); font-weight: 600; }
-.slice__placeholder code { font-family: var(--mono); font-size: 12.5px; }
+.frame--empty strong { color: var(--text); font-weight: 600; }
+.frame--empty code { font-family: var(--mono); font-size: 12.5px; }
+
+.case__nav-right { display: flex; align-items: center; gap: 8px; }
+.case__link {
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-mid);
+  border: 1px solid var(--line);
+}
+.case__link:hover { color: var(--text); border-color: var(--line-strong); }
 
 .case__end {
   display: grid;
@@ -1212,7 +1258,7 @@ a { color: inherit; text-decoration: none; }
   background-image:
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 56px 56px;
+  background-size: 34px 34px;
 }
 /* a second, brighter copy revealed in a soft circle around the pointer */
 .gridbg::after {
@@ -1222,7 +1268,7 @@ a { color: inherit; text-decoration: none; }
   background-image:
     linear-gradient(to right, var(--grid-line-hot) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line-hot) 1px, transparent 1px);
-  background-size: 56px 56px;
+  background-size: 34px 34px;
   -webkit-mask-image: radial-gradient(circle at var(--mx, -999px) var(--my, -999px), #000 0, rgba(0, 0, 0, 0.55) 120px, transparent 230px);
   mask-image: radial-gradient(circle at var(--mx, -999px) var(--my, -999px), #000 0, rgba(0, 0, 0, 0.55) 120px, transparent 230px);
   transition: opacity 0.4s ease;
@@ -1272,7 +1318,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.015em;
   white-space: nowrap;
 }
-.blockrule__line { flex: 1; height: 1px; background: var(--line-strong); transform: translateY(-4px); }
+.blockrule__line { flex: 1; }
 .blockrule__note { font-size: 13px; color: var(--muted); white-space: nowrap; }
 .blockrule__count {
   font-family: var(--mono);
@@ -1289,45 +1335,45 @@ a { color: inherit; text-decoration: none; }
   gap: 16px;
   /* a real rectangle, sized by ratio so a 1-col/2-row box lands near square
      instead of a tall sliver (6 cols wide : 4 rows tall at ~2.7 : 1) */
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(4, minmax(0, 1fr));
-  /* 5 cols x 4 rows at ~2.35:1 → every box is either a landscape rectangle
-     (2 cols) or a near-square (1 col). No tall slivers. */
-  aspect-ratio: 2.35 / 1;
+  /* 4 cols x 4 rows with mixed spans, so sizes are deliberately unequal:
+     big 2x2 blocks, wide 2x1 strips, 1x2 portraits and 1x1 squares. */
+  aspect-ratio: 1.9 / 1;
   height: auto;
-  min-height: 430px;
+  min-height: 520px;
   overflow: visible;
 }
-@media (max-width: 1200px) { .bento { aspect-ratio: 1.9 / 1; } }
-/* 7 boxes — three landscape rectangles + four near-squares */
+@media (max-width: 1200px) { .bento { aspect-ratio: 1.35 / 1; } }
+/* 7 boxes — a big 2x2, a wide strip, two squares, a big 2x2, two portraits */
 .bento--7.bento--l {
   grid-template-areas:
-    'a a b b c'
-    'a a b b c'
-    'd d e f g'
-    'd d e f g';
+    'a a b b'
+    'a a c d'
+    'e e f g'
+    'e e f g';
 }
 .bento--7.bento--r {
   grid-template-areas:
-    'a b c c d'
-    'a b c c d'
-    'e e f f g'
-    'e e f f g';
+    'a b b c'
+    'd b b c'
+    'd e e f'
+    'g g e e';
 }
-/* 8 boxes — two landscape rectangles + six near-squares */
+/* 8 boxes — same idea, one more small */
 .bento--8.bento--l {
   grid-template-areas:
-    'a a b b c'
-    'a a b b c'
-    'd e f g h'
-    'd e f g h';
+    'a a b c'
+    'a a b c'
+    'd e e f'
+    'g g h f';
 }
 .bento--8.bento--r {
   grid-template-areas:
-    'a b c d d'
-    'a b c d d'
-    'e e f f g'
-    'h h f f g';
+    'a b c c'
+    'a d c c'
+    'e e f g'
+    'e e h g';
 }
 .box--a { grid-area: a; }
 .box--b { grid-area: b; }
@@ -1344,6 +1390,7 @@ a { color: inherit; text-decoration: none; }
     min-height: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: auto;
+    gap: 12px;
     grid-template-areas:
       'a a'
       'b c'
@@ -1462,26 +1509,17 @@ a { color: inherit; text-decoration: none; }
    The tracks themselves resize, so this is a real expansion rather than a
    scale — neighbours genuinely shrink. Columns/rows carry a transition so
    the whole rectangle eases between states while keeping its outer size. */
-/* Boxes grow with transforms, not grid tracks: animating fr units relayouts
-   the whole block every frame (that was the jank). Transforms composite on
-   the GPU, so the same "one grows, the rest give way" reads perfectly smooth. */
-.box {
-  transform-origin: center;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
-  will-change: transform;
-}
-.bento[data-hot] .box { transform: scale(0.965); opacity: 0.62; }
-.bento[data-hot] .box:hover,
-.bento[data-hot] .box:focus-within { transform: scale(1.045); opacity: 1; z-index: 3; }
+/* The hover grow/shrink lives on .box__lift and is driven by motion (see
+   Bento.tsx) — CSS must not set a transform here, or it fights the inline
+   one motion writes for the reveal. Transforms composite, so it stays smooth. */
+.box__lift { height: 100%; will-change: transform; }
+.bento .box:hover { z-index: 3; }
 /* grow away from the block's edges so the hot box never clips outside */
 .box--a, .box--d, .box--f { transform-origin: left center; }
 .box--c, .box--g, .box--h { transform-origin: right center; }
+.box--b, .box--e { transform-origin: center; }
 
 /* touch screens have no hover — never leave a box shrunk */
-@media (hover: none), (max-width: 900px) {
-  .bento[data-hot] .box { transform: none; opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .box { transition: opacity 0.3s ease; }
-  .bento[data-hot] .box { transform: none; }
+@media (hover: none) {
+  .box__lift { transform: none !important; opacity: 1 !important; }
 }

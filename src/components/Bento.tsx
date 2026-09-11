@@ -19,12 +19,13 @@ type BoxProps = {
   project: Project
   slot: string
   index: number
+  hot: string | null
   onHot: (slot: string | null) => void
 }
 
-function Box({ project, slot, index, onHot }: BoxProps) {
-  const hasCase = Boolean(project.detail)
-  const Hit = hasCase ? motion.button : motion.a
+function Box({ project, slot, index, hot, onHot }: BoxProps) {
+  const isHot = hot === slot
+  const isDim = hot !== null && !isHot
 
   return (
     <motion.article
@@ -38,11 +39,18 @@ function Box({ project, slot, index, onHot }: BoxProps) {
       viewport={{ once: true, amount: 0.15 }}
       transition={{ delay: index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Hit
+      {/* separate transform layer: the reveal animates the article, this
+          animates the hover, so the two never overwrite each other */}
+      <motion.div
+        className="box__lift"
+        animate={{ scale: isHot ? 1.07 : isDim ? 0.93 : 1, opacity: isDim ? 0.55 : 1 }}
+        transition={{ type: 'spring', stiffness: 220, damping: 26, mass: 0.6 }}
+      >
+      {/* every project opens inside the site — nothing jumps out to Behance */}
+      <motion.button
+        type="button"
         className="box__hit"
-        {...(hasCase
-          ? { type: 'button' as const, onClick: () => openProject(project.slug) }
-          : { href: project.href, target: '_blank', rel: 'noreferrer' })}
+        onClick={() => openProject(project.slug)}
         aria-label={`${project.title} — ${project.tagline}`}
       >
         {project.cover && <img className="box__img" src={project.cover} alt="" loading="lazy" decoding="async" />}
@@ -57,13 +65,14 @@ function Box({ project, slot, index, onHot }: BoxProps) {
           <span className="box__title">{project.title}</span>
           <span className="box__tagline">{project.tagline}</span>
           <span className="box__cta">
-            {hasCase ? 'Read case study' : 'View on Behance'}
+            {project.detail ? 'Read case study' : 'Open project'}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
               <path d="M7 17 17 7M9 7h8v8" />
             </svg>
           </span>
         </span>
-      </Hit>
+      </motion.button>
+      </motion.div>
     </motion.article>
   )
 }
@@ -94,7 +103,7 @@ function Block({ group, items, index }: { group: (typeof groups)[number]; items:
         onPointerLeave={() => setHot(null)}
       >
         {items.map((p, i) => (
-          <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} onHot={setHot} />
+          <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} hot={hot} onHot={setHot} />
         ))}
       </div>
     </div>

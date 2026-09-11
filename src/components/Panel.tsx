@@ -24,8 +24,8 @@ function Body({ id }: { id: PanelId }) {
                   </span>
                 ))}
               </div>
-              {p.href && (
-                <a className="pcard__link" href={p.href} target="_blank" rel="noreferrer">
+              {p.behance && (
+                <a className="pcard__link" href={p.behance} target="_blank" rel="noreferrer">
                   Open project ↗
                 </a>
               )}

@@ -1,52 +1,87 @@
 import { motion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useEffect, useRef } from 'react'
-import { projectBySlug, profile, type Slice } from '../data'
+import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 
 function isEmbed(src: string) {
   return /^https?:\/\//.test(src)
 }
 
-function SliceBlock({ slice, index }: { slice: Slice; index: number }) {
+/**
+ * Every project has a page, even the ones without a hand-written case study —
+ * this fills in a sensible one from the fields we already have.
+ */
+function detailFor(p: Project) {
+  if (p.detail) return p.detail
+  return {
+    intro: p.blurb,
+    facts: [
+      { label: 'Type', value: p.tags[0] ?? 'Design' },
+      { label: 'Year', value: p.year },
+      { label: 'Focus', value: p.tags.slice(1, 3).join(' · ') || '—' },
+      { label: 'Kind', value: p.kind === 'practice' ? 'Self-set study' : 'Project work' },
+    ],
+    slices: [
+      {
+        heading: 'The screens',
+        body: 'Add the screens for this project — drop images in public/work/ and list them here. Each one can carry its own note, which appears when you point at it.',
+        image: p.cover,
+        caption: `${p.title} — replace with the real screens.`,
+      },
+      { heading: 'Walkthrough', body: '', video: '' },
+    ] as Slice[],
+  }
+}
+
+/** One media block on the right with its explanation on the left. */
+function Row({ slice, index }: { slice: Slice; index: number }) {
+  const hasMedia = Boolean(slice.image || slice.video)
   return (
     <motion.section
-      className={`slice slice--${slice.span ?? 'full'}`}
+      className="row"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ type: 'spring', stiffness: 64, damping: 18, delay: (index % 2) * 0.08 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ type: 'spring', stiffness: 66, damping: 18 }}
     >
-      {slice.heading && <h2 className="slice__h">{slice.heading}</h2>}
-      {slice.body && <p className="slice__p">{slice.body}</p>}
+      {/* left: the words */}
+      <div className="row__text">
+        <span className="row__no">{String(index + 1).padStart(2, '0')}</span>
+        {slice.heading && <h2 className="row__h">{slice.heading}</h2>}
+        {slice.body && <p className="row__p">{slice.body}</p>}
+      </div>
 
-      {slice.image && (
-        <figure className="slice__figure">
-          <img src={slice.image} alt="" loading="lazy" decoding="async" />
-          {slice.caption && <figcaption>{slice.caption}</figcaption>}
-        </figure>
-      )}
-
-      {slice.video ? (
-        <div className="slice__video">
-          {isEmbed(slice.video) ? (
-            <iframe
-              src={slice.video}
-              title={slice.heading ?? 'Demo video'}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
-            <video src={slice.video} controls playsInline preload="metadata" />
-          )}
-        </div>
-      ) : (
-        slice.heading === 'Walkthrough' && (
-          <div className="slice__placeholder">
-            <strong>Demo video goes here.</strong>
-            <span>Drop an MP4 in <code>public/</code> or paste a YouTube / Loom link into this project's <code>video</code> field.</span>
+      {/* right: the screens or the video */}
+      <div className="row__media">
+        {slice.video ? (
+          <div className="frame frame--video">
+            {isEmbed(slice.video) ? (
+              <iframe
+                src={slice.video}
+                title={slice.heading ?? 'Demo video'}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <video src={slice.video} controls playsInline preload="metadata" />
+            )}
           </div>
-        )
-      )}
+        ) : slice.image ? (
+          /* point at the image and its note slides up over it */
+          <figure className="frame frame--shot">
+            <img src={slice.image} alt={slice.caption ?? slice.heading ?? ''} loading="lazy" decoding="async" />
+            {slice.caption && <figcaption>{slice.caption}</figcaption>}
+          </figure>
+        ) : (
+          <div className="frame frame--empty">
+            <strong>Demo video goes here.</strong>
+            <span>
+              Drop an MP4 in <code>public/</code> or paste a YouTube / Loom link into this slice's <code>video</code> field.
+            </span>
+          </div>
+        )}
+        {!hasMedia && null}
+      </div>
     </motion.section>
   )
 }
@@ -59,10 +94,9 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroScale = useTransform(heroProgress, [0, 1], [1, 1.12])
-  const heroY = useTransform(heroProgress, [0, 1], ['0%', '18%'])
-  const heroFade = useTransform(heroProgress, [0, 0.8], [1, 0.25])
+  const heroY = useTransform(heroProgress, [0, 1], ['0%', '16%'])
+  const heroFade = useTransform(heroProgress, [0, 0.85], [1, 0.3])
 
-  // open at the top, and let Esc take you back
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
     const onKey = (e: KeyboardEvent) => {
@@ -72,10 +106,10 @@ export default function ProjectPage({ slug }: { slug: string }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [slug])
 
-  if (!project || !project.detail) {
+  if (!project) {
     return (
       <main className="case case--missing">
-        <p>That project doesn't have a case study yet.</p>
+        <p>No project with that name.</p>
         <button className="btn btn--primary" onClick={closeProject}>
           Back to work
         </button>
@@ -83,7 +117,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
     )
   }
 
-  const { detail } = project
+  const detail = detailFor(project)
 
   return (
     <main className="case">
@@ -96,20 +130,27 @@ export default function ProjectPage({ slug }: { slug: string }) {
           </svg>
           All work
         </button>
-        {project.demo?.href && (
-          <a className="case__demo" href={project.demo.href} target="_blank" rel="noreferrer">
-            {project.demo.label}
-          </a>
-        )}
+        <div className="case__nav-right">
+          {project.behance && (
+            <a className="case__link" href={project.behance} target="_blank" rel="noreferrer">
+              Behance ↗
+            </a>
+          )}
+          {project.demo?.href && (
+            <a className="case__demo" href={project.demo.href} target="_blank" rel="noreferrer">
+              {project.demo.label}
+            </a>
+          )}
+        </div>
       </header>
 
-      {/* banner: the thumbnail up top, parallaxing under the title */}
+      {/* the thumbnail, up top */}
       <div className="case__hero" ref={heroRef}>
         {project.cover && (
           <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
         )}
         <div className="case__hero-shade" aria-hidden="true" />
-        <div className="wrap case__hero-text">
+        <div className="wrap wrap--wide case__hero-text">
           <motion.span className="eyebrow case__eyebrow" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}>
             {project.tags.join(' · ')}
           </motion.span>
@@ -122,7 +163,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </div>
       </div>
 
-      <div className="wrap case__body">
+      <div className="wrap wrap--wide case__body">
         <motion.div className="case__facts" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
           {detail.facts.map((f) => (
             <div key={f.label}>
@@ -136,9 +177,9 @@ export default function ProjectPage({ slug }: { slug: string }) {
           {detail.intro}
         </motion.p>
 
-        <div className="slices">
+        <div className="rows">
           {detail.slices.map((s, i) => (
-            <SliceBlock key={(s.heading ?? '') + i} slice={s} index={i} />
+            <Row key={(s.heading ?? '') + i} slice={s} index={i} />
           ))}
         </div>
 
