@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-type Flake = { x: number; y: number; size: number; speed: number; sway: number; phase: number; rot: number; spin: number; alpha: number }
+type Flake = { x: number; y: number; size: number; speed: number; sway: number; phase: number; rot: number; spin: number; alpha: number; scale: number }
 type Shard = {
   kind: 'crystal' | 'dust' | 'flake'
   x: number; y: number; vx: number; vy: number
@@ -83,6 +83,36 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
         rot: Math.random() * Math.PI * 2,
         spin: (Math.random() - 0.5) * 0.5,
         alpha: 0.35 + depth * 0.55,
+        scale: 1,
+      }
+    }
+
+    // hover: the flake under the pointer swells a little and the cursor becomes a hand
+    let hovered: Flake | null = null
+    const host = canvas.parentElement as HTMLElement | null
+    const nearestFlake = (px: number, py: number) => {
+      let hit: Flake | null = null
+      let best = Infinity
+      for (const f of flakes) {
+        if (f.y < -f.size) continue
+        const d = Math.hypot(f.x - px, f.y - py)
+        const reach = Math.max(42, f.size * 1.6)
+        if (d < reach && d < best) {
+          best = d
+          hit = f
+        }
+      }
+      return hit
+    }
+    const onMove = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect()
+      const px = e.clientX - r.left
+      const py = e.clientY - r.top
+      const inside = px >= 0 && py >= 0 && px <= r.width && py <= r.height
+      const next = inside ? nearestFlake(px, py) : null
+      if (next !== hovered) {
+        hovered = next
+        if (host) host.style.cursor = hovered ? 'pointer' : ''
       }
     }
 
@@ -132,19 +162,12 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       const py = e.clientY - r.top
       if (px < 0 || py < 0 || px > r.width || py > r.height) return
       // generous hit-test: nearest flake within reach (moving targets are hard to click exactly)
-      let hit: Flake | null = null
-      let best = Infinity
-      for (const f of flakes) {
-        if (f.y < -f.size) continue // not on screen yet
-        const d = Math.hypot(f.x - px, f.y - py)
-        const reach = Math.max(42, f.size * 1.6)
-        if (d < reach && d < best) {
-          best = d
-          hit = f
-        }
-      }
-      if (hit) burst(hit)
-      else sparkle(px, py) // missed — still give a little feedback
+      const hit = nearestFlake(px, py)
+      if (hit) {
+        if (hovered === hit) hovered = null
+        burst(hit)
+        if (host) host.style.cursor = ''
+      } else sparkle(px, py) // missed — still give a little feedback
     }
 
     /** a tiny puff for clicks that don't land on a flake */
@@ -175,11 +198,15 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
         if (f.y > h + f.size) Object.assign(f, make(true))
         if (f.x < -f.size) f.x = w + f.size
         if (f.x > w + f.size) f.x = -f.size
+        // ease towards the hover size (1.4×) or back to normal
+        const targetScale = f === hovered ? 1.4 : 1
+        f.scale += (targetScale - f.scale) * Math.min(1, dt * 9)
         if (!img.complete) continue
-        ctx.globalAlpha = f.alpha
+        const sz = f.size * f.scale
+        ctx.globalAlpha = f === hovered ? Math.min(1, f.alpha + 0.3) : f.alpha
         ctx.translate(f.x, f.y)
         ctx.rotate(f.rot)
-        ctx.drawImage(img, -f.size / 2, -f.size / 2, f.size, f.size)
+        ctx.drawImage(img, -sz / 2, -sz / 2, sz, sz)
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       }
       // flash: a soft radial glow (or the burst artwork) that blooms and fades
@@ -243,6 +270,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
     document.addEventListener('visibilitychange', onVis)
     window.addEventListener('resize', resize)
     window.addEventListener('pointerdown', onPointer)
+    window.addEventListener('pointermove', onMove, { passive: true })
     resize()
     if (import.meta.env.DEV) {
       // dev-only probe for testing the hit-test without a real mouse
@@ -251,6 +279,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
         shards: () => shards.length,
         flashes: () => flashes.length,
         rect: () => canvas.getBoundingClientRect(),
+        hovered: () => (hovered ? { x: hovered.x, y: hovered.y, scale: hovered.scale } : null),
+        cursor: () => host?.style.cursor ?? '',
       }
     }
     raf = requestAnimationFrame((t) => { last = t; frame(t) })
@@ -261,6 +291,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       document.removeEventListener('visibilitychange', onVis)
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointerdown', onPointer)
+      window.removeEventListener('pointermove', onMove)
+      if (host) host.style.cursor = ''
     }
   }, [sprite, burstSprite, density])
 
