@@ -1334,10 +1334,17 @@ a { color: inherit; text-decoration: none; }
   gap: 16px;
   /* a real rectangle, sized by ratio so a 1-col/2-row box lands near square
      instead of a tall sliver (6 cols wide : 4 rows tall at ~2.7 : 1) */
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(4, minmax(0, 1fr));
+  /* Written as a plain flex list, NOT repeat()/minmax(). CSS can only
+     interpolate two track lists when the track types match, so mixing
+     minmax(0,1fr) here with plain fr values in the [data-hot] rules made the
+     browser snap instead of slide — smooth when moving card to card, but a
+     jump entering from rest or leaving back to it. The boxes already carry
+     min-width/min-height: 0, so plain 1fr is safe. */
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   /* 4 cols x 4 rows with mixed spans, so sizes are deliberately unequal:
      big 2x2 blocks, wide 2x1 strips, 1x2 portraits and 1x1 squares. */
+  will-change: grid-template-columns, grid-template-rows;
   aspect-ratio: 1.9 / 1;
   height: auto;
   min-height: 520px;
