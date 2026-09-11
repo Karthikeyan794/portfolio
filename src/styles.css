@@ -1434,9 +1434,10 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* its own compositing layer, so resizing the box re-rasters cheaply */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
-.box__hit:hover .box__img { transform: scale(1.06); }
 .box__veil {
   position: absolute;
   inset: 0;
@@ -1457,6 +1458,7 @@ a { color: inherit; text-decoration: none; }
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .box__hit:hover .box__label { transform: translateY(-3px); }
+.box__label { will-change: transform; }
 .box__kicker { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; color: rgba(255, 255, 255, 0.72); }
 .box__tag {
   padding: 2px 7px;
@@ -1512,7 +1514,18 @@ a { color: inherit; text-decoration: none; }
    is done by the block's tracks (see the [data-hot] rules at the end). */
 .box__lift { height: 100%; }
 .bento .box:hover { z-index: 3; }
-.box { min-width: 0; min-height: 0; }
+/* `contain` stops a track resize from re-running layout inside every box —
+   the single biggest cost when the grid animates. */
+.box {
+  min-width: 0;
+  min-height: 0;
+  contain: layout paint;
+}
+/* the dim, in CSS rather than 15 JS springs fighting the relayout */
+.bento[data-hot] .box { opacity: 0.5; }
+.bento[data-hot] .box:hover,
+.bento[data-hot] .box:focus-within { opacity: 1; }
+.box { transition: opacity 0.3s ease; }
 
 /* touch screens have no hover — never leave a box dimmed */
 @media (hover: none) {
@@ -1653,11 +1666,9 @@ a { color: inherit; text-decoration: none; }
 
 /* one property pair, eased once — keeps the relayout cheap enough to stay smooth */
 .bento {
-  transition: grid-template-columns 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: grid-template-columns 0.62s cubic-bezier(0.33, 1, 0.68, 1),
+    grid-template-rows 0.62s cubic-bezier(0.33, 1, 0.68, 1);
 }
-/* the boxes that aren't hot step back so the hot one reads first */
-.box__lift { transition: opacity 0.4s ease; }
 @media (max-width: 900px) {
   .bento[data-hot] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: auto !important; }
 }

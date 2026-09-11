@@ -19,14 +19,10 @@ type BoxProps = {
   project: Project
   slot: string
   index: number
-  hot: string | null
   onHot: (slot: string | null) => void
 }
 
-function Box({ project, slot, index, hot, onHot }: BoxProps) {
-  const isHot = hot === slot
-  const isDim = hot !== null && !isHot
-
+function Box({ project, slot, index, onHot }: BoxProps) {
   return (
     <motion.article
       className={`box box--${slot}`}
@@ -39,14 +35,10 @@ function Box({ project, slot, index, hot, onHot }: BoxProps) {
       viewport={{ once: true, amount: 0.15 }}
       transition={{ delay: index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* The box no longer scales — the block's grid tracks resize instead, so
-          the hot box grows inside the rectangle and its neighbours give up the
-          room. This layer only handles the dimming of the boxes you're not on. */}
-      <motion.div
-        className="box__lift"
-        animate={{ opacity: isDim ? 0.5 : 1 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
-      >
+      {/* The block's grid tracks do the growing (see [data-hot] in styles.css);
+          the dim of the other boxes is plain CSS, so no JS animation competes
+          with the relayout. */}
+      <div className="box__lift">
       {/* every project opens inside the site — nothing jumps out to Behance */}
       <motion.button
         type="button"
@@ -73,7 +65,7 @@ function Box({ project, slot, index, hot, onHot }: BoxProps) {
           </span>
         </span>
       </motion.button>
-      </motion.div>
+      </div>
     </motion.article>
   )
 }
@@ -104,7 +96,7 @@ function Block({ group, items, index }: { group: (typeof groups)[number]; items:
         onPointerLeave={() => setHot(null)}
       >
         {items.map((p, i) => (
-          <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} hot={hot} onHot={setHot} />
+          <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} onHot={setHot} />
         ))}
       </div>
     </div>
