@@ -1434,9 +1434,16 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* its own compositing layer, so resizing the box re-rasters cheaply */
-  transform: translateZ(0);
+  /* its own compositing layer, so the zoom and the box resize stay cheap */
+  transform: translateZ(0) scale(1);
   backface-visibility: hidden;
+  transition: transform 0.62s cubic-bezier(0.33, 1, 0.68, 1), filter 0.5s ease;
+}
+/* the hovered card only: a whisper of zoom and light */
+.box__hit:hover .box__img,
+.box__hit:focus-visible .box__img {
+  transform: translateZ(0) scale(1.03);
+  filter: brightness(1.08) saturate(1.04);
 }
 .box__veil {
   position: absolute;
@@ -1444,7 +1451,7 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, rgba(6, 8, 10, 0.1) 0%, rgba(6, 8, 10, 0.04) 34%, rgba(6, 8, 10, 0.62) 72%, rgba(6, 8, 10, 0.9) 100%);
   transition: opacity 0.35s ease;
 }
-.box__hit:hover .box__veil { opacity: 0.92; }
+.box__hit:hover .box__veil { opacity: 0.88; }
 
 .box__label {
   position: absolute;
@@ -1455,10 +1462,13 @@ a { color: inherit; text-decoration: none; }
   padding: 16px 18px;
   color: #fff;
   text-shadow: 0 1px 10px rgba(6, 8, 10, 0.55);
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: translateZ(0);
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
 }
-.box__hit:hover .box__label { transform: translateY(-3px); }
-.box__label { will-change: transform; }
+.box__hit:hover .box__label { transform: translateZ(0) translateY(-4px); }
+/* the tagline eases in with the label rather than sitting flat */
+.box__tagline { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.33, 1, 0.68, 1); }
+.box__hit:hover .box__tagline { transform: translateY(-1px); }
 .box__kicker { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; color: rgba(255, 255, 255, 0.72); }
 .box__tag {
   padding: 2px 7px;
@@ -1484,7 +1494,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
   max-height: 0;
   transform: translateY(6px);
-  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), max-height 0.35s ease;
+  transition: opacity 0.4s ease 0.05s, transform 0.5s cubic-bezier(0.33, 1, 0.68, 1) 0.05s, max-height 0.45s ease;
 }
 .box__hit:hover .box__cta { opacity: 1; max-height: 24px; transform: none; }
 
@@ -1522,10 +1532,10 @@ a { color: inherit; text-decoration: none; }
   contain: layout paint;
 }
 /* the dim, in CSS rather than 15 JS springs fighting the relayout */
-.bento[data-hot] .box { opacity: 0.5; }
+.bento[data-hot] .box { opacity: 0.78; }
 .bento[data-hot] .box:hover,
 .bento[data-hot] .box:focus-within { opacity: 1; }
-.box { transition: opacity 0.3s ease; }
+.box { transition: opacity 0.45s cubic-bezier(0.33, 1, 0.68, 1); }
 
 /* touch screens have no hover — never leave a box dimmed */
 @media (hover: none) {
@@ -1675,4 +1685,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 560px) {
   .bento[data-hot] { grid-template-columns: 1fr !important; }
 }
-@media (prefers-reduced-motion: reduce) { .bento { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .bento { transition: none; }
+  .box__img, .box__label, .box__tagline { transition: none; }
+  .box__hit:hover .box__img { transform: translateZ(0); filter: none; }
+  .box__hit:hover .box__label { transform: translateZ(0); }
+}
