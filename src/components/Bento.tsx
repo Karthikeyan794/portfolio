@@ -39,12 +39,13 @@ function Box({ project, slot, index, hot, onHot }: BoxProps) {
       viewport={{ once: true, amount: 0.15 }}
       transition={{ delay: index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* separate transform layer: the reveal animates the article, this
-          animates the hover, so the two never overwrite each other */}
+      {/* The box no longer scales — the block's grid tracks resize instead, so
+          the hot box grows inside the rectangle and its neighbours give up the
+          room. This layer only handles the dimming of the boxes you're not on. */}
       <motion.div
         className="box__lift"
-        animate={{ scale: isHot ? 1.07 : isDim ? 0.93 : 1, opacity: isDim ? 0.55 : 1 }}
-        transition={{ type: 'spring', stiffness: 220, damping: 26, mass: 0.6 }}
+        animate={{ opacity: isDim ? 0.5 : 1 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
       >
       {/* every project opens inside the site — nothing jumps out to Behance */}
       <motion.button
@@ -120,13 +121,8 @@ export default function Bento() {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ type: 'spring', stiffness: 70, damping: 18 }}
       >
-        <div>
-          <span className="eyebrow">02 — Work</span>
-          <h2>Selected work</h2>
-        </div>
-        <p className="section__desc">
-          Product work with case studies first, then the craft. Click any box to open it.
-        </p>
+        <span className="eyebrow">02 — Work</span>
+        <h2>Selected work</h2>
       </motion.div>
 
       <div className="wrap wrap--wide bentos">

@@ -320,7 +320,7 @@ a { color: inherit; text-decoration: none; }
 .btn--ghost:hover { background: var(--bg-sunk); }
 
 /* ── sections ───────────────────────────────────────────── */
-.section { padding: clamp(56px, 10vh, 96px) 0; border-top: 1px solid var(--line); }
+.section { padding: clamp(56px, 10vh, 96px) 0;  }
 
 .section__head {
   display: flex;
@@ -479,7 +479,6 @@ a { color: inherit; text-decoration: none; }
 
 .footer {
   padding: 34px 0 46px;
-  border-top: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
   gap: 12px 20px;
@@ -1356,9 +1355,9 @@ a { color: inherit; text-decoration: none; }
 .bento--7.bento--r {
   grid-template-areas:
     'a b b c'
-    'd b b c'
-    'd e e f'
-    'g g e e';
+    'a d d c'
+    'e e f f'
+    'g g f f';
 }
 /* 8 boxes — same idea, one more small */
 .bento--8.bento--l {
@@ -1509,17 +1508,160 @@ a { color: inherit; text-decoration: none; }
    The tracks themselves resize, so this is a real expansion rather than a
    scale — neighbours genuinely shrink. Columns/rows carry a transition so
    the whole rectangle eases between states while keeping its outer size. */
-/* The hover grow/shrink lives on .box__lift and is driven by motion (see
-   Bento.tsx) — CSS must not set a transform here, or it fights the inline
-   one motion writes for the reveal. Transforms composite, so it stays smooth. */
-.box__lift { height: 100%; will-change: transform; }
+/* .box__lift only carries the dim of the boxes you're not on — the growing
+   is done by the block's tracks (see the [data-hot] rules at the end). */
+.box__lift { height: 100%; }
 .bento .box:hover { z-index: 3; }
-/* grow away from the block's edges so the hot box never clips outside */
-.box--a, .box--d, .box--f { transform-origin: left center; }
-.box--c, .box--g, .box--h { transform-origin: right center; }
-.box--b, .box--e { transform-origin: center; }
+.box { min-width: 0; min-height: 0; }
 
-/* touch screens have no hover — never leave a box shrunk */
+/* touch screens have no hover — never leave a box dimmed */
 @media (hover: none) {
-  .box__lift { transform: none !important; opacity: 1 !important; }
+  .box__lift { opacity: 1 !important; }
 }
+
+/* ── hover: the hot box takes room from its neighbours, inside the block ──
+   Tracks resize rather than the box scaling, so nothing ever grows past
+   the rectangle's edges and the neighbours genuinely shrink. */
+
+/* 7.bento--l */
+.bento--7.bento--l[data-hot='a'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--7.bento--l[data-hot='b'] {
+  grid-template-columns: 0.790fr 0.790fr 1.260fr 1.260fr;
+  grid-template-rows: 1.420fr 0.860fr 0.860fr 0.860fr;
+}
+.bento--7.bento--l[data-hot='c'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 0.860fr 1.420fr 0.860fr 0.860fr;
+}
+.bento--7.bento--l[data-hot='d'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 0.860fr 1.420fr 0.860fr 0.860fr;
+}
+.bento--7.bento--l[data-hot='e'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+.bento--7.bento--l[data-hot='f'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+.bento--7.bento--l[data-hot='g'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+
+/* 7.bento--r */
+.bento--7.bento--r[data-hot='a'] {
+  grid-template-columns: 1.420fr 0.860fr 0.860fr 0.860fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--7.bento--r[data-hot='b'] {
+  grid-template-columns: 0.790fr 1.260fr 1.260fr 0.790fr;
+  grid-template-rows: 1.420fr 0.860fr 0.860fr 0.860fr;
+}
+.bento--7.bento--r[data-hot='c'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--7.bento--r[data-hot='d'] {
+  grid-template-columns: 0.790fr 1.260fr 1.260fr 0.790fr;
+  grid-template-rows: 0.860fr 1.420fr 0.860fr 0.860fr;
+}
+.bento--7.bento--r[data-hot='e'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 0.860fr 0.860fr 1.420fr 0.860fr;
+}
+.bento--7.bento--r[data-hot='f'] {
+  grid-template-columns: 0.790fr 0.790fr 1.260fr 1.260fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+.bento--7.bento--r[data-hot='g'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 0.860fr 0.860fr 0.860fr 1.420fr;
+}
+
+/* 8.bento--l */
+.bento--8.bento--l[data-hot='a'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--8.bento--l[data-hot='b'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--8.bento--l[data-hot='c'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--8.bento--l[data-hot='d'] {
+  grid-template-columns: 1.420fr 0.860fr 0.860fr 0.860fr;
+  grid-template-rows: 0.860fr 0.860fr 1.420fr 0.860fr;
+}
+.bento--8.bento--l[data-hot='e'] {
+  grid-template-columns: 0.790fr 1.260fr 1.260fr 0.790fr;
+  grid-template-rows: 0.860fr 0.860fr 1.420fr 0.860fr;
+}
+.bento--8.bento--l[data-hot='f'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+.bento--8.bento--l[data-hot='g'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 0.860fr 0.860fr 0.860fr 1.420fr;
+}
+.bento--8.bento--l[data-hot='h'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 0.860fr 0.860fr 0.860fr 1.420fr;
+}
+
+/* 8.bento--r */
+.bento--8.bento--r[data-hot='a'] {
+  grid-template-columns: 1.420fr 0.860fr 0.860fr 0.860fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--8.bento--r[data-hot='b'] {
+  grid-template-columns: 0.860fr 1.420fr 0.860fr 0.860fr;
+  grid-template-rows: 1.420fr 0.860fr 0.860fr 0.860fr;
+}
+.bento--8.bento--r[data-hot='c'] {
+  grid-template-columns: 0.790fr 0.790fr 1.260fr 1.260fr;
+  grid-template-rows: 1.260fr 1.260fr 0.790fr 0.790fr;
+}
+.bento--8.bento--r[data-hot='d'] {
+  grid-template-columns: 0.860fr 1.420fr 0.860fr 0.860fr;
+  grid-template-rows: 0.860fr 1.420fr 0.860fr 0.860fr;
+}
+.bento--8.bento--r[data-hot='e'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+.bento--8.bento--r[data-hot='f'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 0.860fr 0.860fr 1.420fr 0.860fr;
+}
+.bento--8.bento--r[data-hot='g'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 0.790fr 0.790fr 1.260fr 1.260fr;
+}
+.bento--8.bento--r[data-hot='h'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 0.860fr 0.860fr 0.860fr 1.420fr;
+}
+
+/* one property pair, eased once — keeps the relayout cheap enough to stay smooth */
+.bento {
+  transition: grid-template-columns 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* the boxes that aren't hot step back so the hot one reads first */
+.box__lift { transition: opacity 0.4s ease; }
+@media (max-width: 900px) {
+  .bento[data-hot] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: auto !important; }
+}
+@media (max-width: 560px) {
+  .bento[data-hot] { grid-template-columns: 1fr !important; }
+}
+@media (prefers-reduced-motion: reduce) { .bento { transition: none; } }

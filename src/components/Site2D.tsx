@@ -13,13 +13,17 @@ import Bento from './Bento'
 
 type Props = { onEnterLab?: () => void }
 
+/** The intro loader belongs to the first visit only — coming back from a
+ *  project page must not replay it. Module scope survives remounts. */
+let introPlayed = false
+
 const MIN_LOADER_MS = 5800
 const FONT_WAIT_MS = 2500 // never let slow web fonts hold the loader hostage
 const HARD_CAP_MS = MIN_LOADER_MS + 3000 // absolute worst case: the page always appears
 
 /** The scrolling page — phones, fallback, and anyone who prefers it. */
 export default function Site2D({ onEnterLab }: Props) {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!introPlayed)
   // perspective is only needed during the intro; dropping it afterwards keeps
   // sticky/backdrop-filter compositing cheap and avoids a 3D rendering context
   const [settled, setSettled] = useState(false)
@@ -28,8 +32,10 @@ export default function Site2D({ onEnterLab }: Props) {
     const start = performance.now()
     let cancelled = false
     const done = () => {
+      introPlayed = true
       if (!cancelled) setLoading(false)
     }
+    if (introPlayed) return
     // fonts.ready can hang for a long time when a font host is slow or blocked — race it
     const fonts = 'fonts' in document ? document.fonts.ready.then(() => undefined) : Promise.resolve()
     const fontsOrTimeout = Promise.race([fonts, new Promise<void>((r) => window.setTimeout(r, FONT_WAIT_MS))])
