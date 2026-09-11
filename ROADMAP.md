@@ -274,10 +274,11 @@
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
-- [x] **True bento work grid** — each block is one fixed rectangle subdivided by named grid areas into interlocking boxes of different sizes (tall left, wide centre, slim right, mirrored in the next block). Art fills each box, label sits over it, boxes scale-and-fade in with a stagger; hover zooms the art, lifts the label, reveals the CTA and sweeps a sheen — matching the reference reel
+- [x] **Two bento blocks, split by category** — *Product & UI/UX* (7 boxes) and *Craft & explorations* (8 boxes, including the new **Drawings & Art** project), each its own rectangle with a labelled rule separating them, on a much wider track (up to 1680 px) so the grid uses the screen. Each block is — each block is one fixed rectangle subdivided by named grid areas into interlocking boxes of different sizes (tall left, wide centre, slim right, mirrored in the next block). Art fills each box, label sits over it, boxes scale-and-fade in with a stagger; hover zooms the art, lifts the label, reveals the CTA and sweeps a sheen — matching the reference reel
 - [x] **Case-study pages** at `#/project/<slug>` — banner parallaxing under the title, facts bar, intro, then content slices (text · image · video) that reveal on scroll, a scroll-progress bar, and a "Try the demo" button in the sticky header. Esc or "All work" goes back
 - [x] Mini projects grid from Behance (cover, title, one line, link, Practice badge)
 - [ ] Confirm which projects are course/practice vs real work (`kind: 'practice'` in `src/data.ts`)
+- [ ] **Your drawings** → drop files in `public/art/` and list them in the `drawings` project's slices in `src/data.ts` (placeholder art is in place)
 - [ ] About + skills + experience with real content
 - [ ] Contact form → email to you (#4)
 - [ ] Mobile pass

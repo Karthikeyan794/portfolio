@@ -59,6 +59,8 @@ export type Project = {
   tone?: 'cream' | 'sage' | 'mist' | 'blush' | 'sand' | 'lime'
   /** 'work' = real/client · 'practice' = course or self-set exercise */
   kind?: 'work' | 'practice'
+  /** which bento block this belongs to */
+  group: 'product' | 'craft'
   /** when present the tile opens a case-study page instead of an external link */
   detail?: {
     intro: string
@@ -77,6 +79,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'support-desk',
+    group: 'product',
     title: 'Support Desk',
     tagline: 'The helpdesk our support team lives in',
     blurb:
@@ -123,6 +126,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'atom',
+    group: 'product',
     title: 'Atom',
     tagline: 'Small AI apps, built and shipped fast',
     blurb:
@@ -160,6 +164,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'skill-mate',
+    group: 'product',
     title: 'Skill Mate',
     tagline: 'AI-powered mock interviews',
     blurb:
@@ -174,6 +179,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'car-dashboard',
+    group: 'product',
     title: 'Car Dashboard',
     tagline: 'Dark & light, built for a glance',
     blurb: 'An in-car dashboard in both modes — speed, media, navigation and climate kept glanceable at driving speed.',
@@ -187,6 +193,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'tnpsc',
+    group: 'product',
     title: 'TNPSC Redesign',
     tagline: 'A government exam portal, made usable',
     blurb: 'A case study: the information aspirants actually need, found in fewer taps and readable on a cheap phone.',
@@ -200,6 +207,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'pos-school',
+    group: 'product',
     title: 'POS School Dashboard',
     tagline: 'Fees, attendance, records',
     blurb: 'A school management and point-of-sale dashboard for staff who are always in a hurry.',
@@ -213,6 +221,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'coffee-dashboard',
+    group: 'product',
     title: 'Nellai Karupatti Coffee',
     tagline: 'Orders, stock and sales in one screen',
     blurb: 'An admin dashboard for a coffee brand, with the numbers that matter first.',
@@ -226,6 +235,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'redesign-challenge',
+    group: 'craft',
     title: '7 Days Redesign',
     tagline: 'Seven days, seven redesigns',
     blurb: 'A self-set sprint to practise moving fast from critique to a cleaner screen.',
@@ -240,6 +250,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'logofolio',
+    group: 'craft',
     title: 'Logofolio',
     tagline: 'Marks, including Clickly',
     blurb: 'Logo and identity work — construction, spacing and how each mark holds up small.',
@@ -252,7 +263,41 @@ export const projects: Project[] = [
     tone: 'cream',
   },
   {
+    slug: 'drawings',
+    group: 'craft',
+    title: 'Drawings & Art',
+    tagline: 'Sketchbook, studies and illustration',
+    blurb:
+      'Work made by hand and for its own sake — sketches, studies and finished illustration. The place the design instinct actually comes from.',
+    year: '2024 — 2026',
+    tags: ['Illustration', 'Sketchbook', 'Art'],
+    emoji: '🎨',
+    cover: '/bento/art.jpg',
+    size: 'hero',
+    tone: 'sand',
+    detail: {
+      intro:
+        'I draw. Not for a brief and not for a client — it is where the eye gets trained. This is a growing set of sketches, studies and finished pieces.',
+      facts: [
+        { label: 'Medium', value: 'Pencil · Digital' },
+        { label: 'Years', value: '2024 — 2026' },
+        { label: 'Pieces', value: 'Growing' },
+        { label: 'For', value: 'Myself' },
+      ],
+      slices: [
+        {
+          span: 'full',
+          heading: 'Gallery',
+          body: 'Drop your drawings into public/art/ and list them here — one slice per piece, or a few per row.',
+          image: '/bento/art.jpg',
+          caption: 'Placeholder — replace with your own work.',
+        },
+      ],
+    },
+  },
+  {
     slug: 'form-design',
+    group: 'craft',
     title: 'Form Design',
     tagline: 'A long form that feels short',
     blurb: 'Clear labels, forgiving validation and obvious progress.',
@@ -267,6 +312,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'smartwatch',
+    group: 'craft',
     title: 'Smartwatch',
     tagline: 'One idea per screen',
     blurb: 'Watch faces and app screens built for a glance — big targets, legible in sunlight.',
@@ -281,6 +327,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'google-map',
+    group: 'craft',
     title: 'Maps — event feature',
     tagline: 'A concept that fits the patterns',
     blurb: 'Nearby events added to Maps, designed to sit inside the existing patterns rather than fight them.',
@@ -295,6 +342,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'phone-call-flow',
+    group: 'craft',
     title: 'Phone-call flow',
     tagline: 'Fewer mis-taps mid-call',
     blurb: 'A rethink of the calling experience and a clearer path back out of it.',
@@ -309,6 +357,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'neomorphism',
+    group: 'craft',
     title: 'Neomorphism',
     tagline: 'Soft UI, pushed as far as it goes',
     blurb: 'A visual exploration that keeps contrast usable while chasing the style.',
@@ -321,6 +370,12 @@ export const projects: Project[] = [
     tone: 'cream',
     kind: 'practice',
   },
+]
+
+/** The two bento blocks, in order. */
+export const groups = [
+  { id: 'product' as const, label: 'Product & UI/UX', note: 'Shipped tools and interface work, with case studies.' },
+  { id: 'craft' as const, label: 'Craft & explorations', note: 'Drawings, branding, motion and self-set studies.' },
 ]
 
 export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug)

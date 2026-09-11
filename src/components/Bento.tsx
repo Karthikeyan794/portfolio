@@ -1,18 +1,14 @@
 import { motion } from 'motion/react'
-import { projects, type Project } from '../data'
+import { groups, projects, type Project } from '../data'
 import { openProject } from '../router'
-import Section from './Section'
 
 /**
- * A true bento: one rectangle subdivided into interlocking boxes of different
- * sizes. Seven projects per block, placed by named grid areas (see styles.css),
- * so the block reads as a single object rather than a row of cards.
- *
- * Reveal follows the reference reel: each box scales up from 0.9 and fades in,
- * staggered a beat apart, the whole block landing in well under a second.
+ * Two bento blocks, one per group, each its own rectangle subdivided by named
+ * grid areas into interlocking boxes. A labelled rule separates the blocks.
+ * Reveal follows the reference reel: boxes scale up from 0.9 and fade in a
+ * beat apart, so the rectangle assembles rather than appearing at once.
  */
-const SLOTS = ['a', 'b', 'c', 'd', 'e', 'f', 'g'] as const
-const PER_BLOCK = SLOTS.length
+const SLOTS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const
 
 function Box({ project, slot, index }: { project: Project; slot: string; index: number }) {
   const hasCase = Boolean(project.detail)
@@ -57,26 +53,52 @@ function Box({ project, slot, index }: { project: Project; slot: string; index: 
 }
 
 export default function Bento() {
-  const blocks: Project[][] = []
-  for (let i = 0; i < projects.length; i += PER_BLOCK) blocks.push(projects.slice(i, i + PER_BLOCK))
-
   return (
-    <Section
-      id="work"
-      eyebrow="02 — Work"
-      title="Selected work"
-      desc="Product work with case studies first, then design explorations. Click any box to open it."
-      meta={`${projects.length} projects`}
-    >
-      <div className="bentos">
-        {blocks.map((block, b) => (
-          <div className={`bento bento--${b % 2 === 0 ? 'l' : 'r'}`} key={b}>
-            {block.map((p, i) => (
-              <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} />
-            ))}
-          </div>
-        ))}
+    <section className="section work" id="work">
+      <motion.div
+        className="wrap wrap--wide work__head"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 18 }}
+      >
+        <div>
+          <span className="eyebrow">02 — Work</span>
+          <h2>Selected work</h2>
+        </div>
+        <p className="section__desc">
+          Product work with case studies first, then the craft. Click any box to open it.
+        </p>
+      </motion.div>
+
+      <div className="wrap wrap--wide bentos">
+        {groups.map((group, gi) => {
+          const items = projects.filter((p) => p.group === group.id).slice(0, SLOTS.length)
+          return (
+            <div className="blockwrap" key={group.id}>
+              <motion.div
+                className="blockrule"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.6 }}
+              >
+                <span className="blockrule__no">{String(gi + 1).padStart(2, '0')}</span>
+                <span className="blockrule__label">{group.label}</span>
+                <span className="blockrule__line" aria-hidden="true" />
+                <span className="blockrule__note">{group.note}</span>
+                <span className="blockrule__count">{items.length}</span>
+              </motion.div>
+
+              <div className={`bento bento--${items.length} bento--${gi % 2 === 0 ? 'l' : 'r'}`}>
+                {items.map((p, i) => (
+                  <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} />
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </div>
-    </Section>
+    </section>
   )
 }
