@@ -250,12 +250,14 @@
 - [x] `CLAUDE.md` (short answers rule) + `/add-project` skill
 
 ### Phase 1 · Content (you give, Claude places)
-- [x] **Colour theme** — deep forest green `#1e3a34` primary · cream `#f4f1e8` page · lime `#a6e85b` accent · ink `#14261f` (from your reference card)
+- [x] **Colour theme** — grey canvas `#eceef0` (light) / near-black `#0a0b0c` (dark) · deep forest green `#1e3a34` primary, used only on primary things · lime `#a6e85b` accent
 - [ ] Your real bio (3–4 lines), role, location
 - [ ] **Resume PDF**
 - [x] **Behance projects** — all 12 pulled from behance.net/karthikbabu13 via its RSS feed; covers downloaded to `public/work/` (2.4 MB total, no hotlinking). Blurbs are my first drafts — rewrite in your own words in `src/data.ts`
 - [ ] **Support Desk + Atom**: demo URLs (`demo.href` in `src/data.ts`), walkthrough videos (`video` on the Walkthrough slice — MP4 in `public/` or a YouTube/Loom link), and 4–6 real screenshots to replace the placeholder banners
-- [ ] **Your own banner images** → `public/bento/*.jpg` (placeholders are currently borrowed from the labs-client repo — replace before publishing)
+- [x] **One thumbnail set** — every project now uses a `/bento/*.jpg` image from the labs-client repo so the grid reads as one theme (Behance covers retired). Swap any file for your own generated art later, same path
+- [x] **Graph-paper canvas** — faint grid over the grey/black background whose lines brighten in a soft circle that follows the cursor
+- [ ] **Your own banner images** → `public/bento/*.jpg` (placeholders are borrowed from the labs-client repo — replace before publishing)
 - [ ] Awards (photos + one line each)
 - [ ] Profile photo
 - [ ] Social links (GitHub, LinkedIn, Behance)

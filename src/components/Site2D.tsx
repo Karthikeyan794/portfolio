@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import About from './About'
 import Awards from './Awards'
 import Contact from './Contact'
+import GridBg from './GridBg'
 import Experience from './Experience'
 import Intro, { INTRO_NAV_DELAY } from './Intro'
 import Marquee from './Marquee'
@@ -45,6 +46,7 @@ export default function Site2D({ onEnterLab }: Props) {
 
   return (
     <>
+      <GridBg />
       <AnimatePresence>{loading && <Preloader key="preloader" />}</AnimatePresence>
 
       {!loading && (

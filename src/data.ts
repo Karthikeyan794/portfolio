@@ -69,7 +69,10 @@ export type Project = {
 
 /**
  * Main project work first (case studies with demos), then the design work
- * pulled from behance.net/karthikbabu13. Blurbs are first drafts — rewrite freely.
+ * from behance.net/karthikbabu13. Blurbs are first drafts — rewrite freely.
+ *
+ * Covers all come from /bento/ so the grid reads as one set; swap any of them
+ * for your own generated art later (same path, same filename).
  */
 export const projects: Project[] = [
   {
@@ -164,7 +167,7 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Product design', 'AI', 'UI/UX'],
     emoji: '🎤',
-    cover: '/work/skill-mate.jpg',
+    cover: '/bento/fm-assistant.jpg',
     href: 'https://www.behance.net/gallery/230495131/Skill-Mate-AI-Powered-mock-interview',
     size: 'tall',
     tone: 'blush',
@@ -177,7 +180,7 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Dashboard', 'Dark mode', 'UI'],
     emoji: '🚗',
-    cover: '/work/car-dashboard.jpg',
+    cover: '/bento/dispatcher.jpg',
     href: 'https://www.behance.net/gallery/230978875/Car-Dashboard-Dark-Light-mode',
     size: 'wide',
     tone: 'cream',
@@ -190,7 +193,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Case study', 'Web', 'Accessibility'],
     emoji: '🏛️',
-    cover: '/work/tnpsc.jpg',
+    cover: '/bento/city.jpg',
     href: 'https://www.behance.net/gallery/214619697/TNPSC-website-Redesign-case-study',
     size: 'small',
     tone: 'sand',
@@ -203,7 +206,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Dashboard', 'POS'],
     emoji: '🏫',
-    cover: '/work/pos-school.jpg',
+    cover: '/bento/documents.jpg',
     href: 'https://www.behance.net/gallery/214624079/POS-school-management-Dashboard',
     size: 'small',
     tone: 'sage',
@@ -216,7 +219,7 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Dashboard', 'Data UI'],
     emoji: '☕',
-    cover: '/work/coffee-dashboard.jpg',
+    cover: '/bento/burst-gold.jpg',
     href: 'https://www.behance.net/gallery/217302653/Nellai-Karupatti-Coffee-Dashboard',
     size: 'small',
     tone: 'sand',
@@ -229,7 +232,7 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Redesign', 'Challenge'],
     emoji: '📅',
-    cover: '/work/redesign-challenge.jpg',
+    cover: '/bento/burst-purple.jpg',
     href: 'https://www.behance.net/gallery/230895267/7-Days_Redesign-Challenge',
     size: 'small',
     tone: 'mist',
@@ -243,7 +246,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Branding', 'Logo'],
     emoji: '✦',
-    cover: '/work/logofolio-clickly.jpg',
+    cover: '/bento/burst-rose.jpg',
     href: 'https://www.behance.net/gallery/215584601/Logofolio-%28Clickly%29',
     size: 'small',
     tone: 'cream',
@@ -256,7 +259,7 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Forms', 'UX'],
     emoji: '📝',
-    cover: '/work/form-design.jpg',
+    cover: '/bento/invoice.jpg',
     href: 'https://www.behance.net/gallery/217305465/Form-Design-%28Task%29',
     size: 'small',
     tone: 'blush',
@@ -270,7 +273,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Wearable', 'UI'],
     emoji: '⌚',
-    cover: '/work/smartwatch.jpg',
+    cover: '/bento/burst-teal.jpg',
     href: 'https://www.behance.net/gallery/215590509/Smartwatch-Design',
     size: 'small',
     tone: 'sage',
@@ -284,7 +287,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Feature design', 'Concept'],
     emoji: '🗺️',
-    cover: '/work/google-map.jpg',
+    cover: '/bento/maintenance.jpg',
     href: 'https://www.behance.net/gallery/215585615/Google-map-%28Event-feature%29',
     size: 'small',
     tone: 'mist',
@@ -298,7 +301,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['User flow', 'Mobile'],
     emoji: '📞',
-    cover: '/work/phone-call-flow.jpg',
+    cover: '/bento/contact.jpg',
     href: 'https://www.behance.net/gallery/215587351/Enhancing-User-flow-%28Phone-call%29',
     size: 'small',
     tone: 'sand',
@@ -312,7 +315,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Visual design', 'Exploration'],
     emoji: '🫧',
-    cover: '/work/neomorphism.jpg',
+    cover: '/bento/burst-blue.jpg',
     href: 'https://www.behance.net/gallery/215586815/Neomorphism-Design',
     size: 'small',
     tone: 'cream',
