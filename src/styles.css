@@ -7,6 +7,10 @@
   --line-strong: rgba(26, 32, 36, 0.24);
   --grid-line: rgba(26, 32, 36, 0.045);
   --grid-line-hot: rgba(26, 32, 36, 0.1);
+  /* card border glow — deeper and more saturated so it reads on light grey */
+  --glow-1: #8fd94f;
+  --glow-2: #2f9e7a;
+  --glow-3: #1e3a34;
   --text: #14181b;
   --text-mid: #444c52;
   --muted: #71797f;
@@ -35,6 +39,10 @@
   --line-strong: rgba(255, 255, 255, 0.2);
   --grid-line: rgba(255, 255, 255, 0.03);
   --grid-line-hot: rgba(255, 255, 255, 0.075);
+  /* on near-black the glow can be pale and bright */
+  --glow-1: #e4ffb0;
+  --glow-2: #a6e85b;
+  --glow-3: #3f8f7a;
   --text: #f2f3f4;
   --text-mid: #b9bec2;
   --muted: #848b90;
@@ -1699,10 +1707,11 @@ a { color: inherit; text-decoration: none; }
   .box__hit:hover .box__label { transform: translateZ(0); }
 }
 
-/* ── border glow that follows the cursor, on the opposite side ────────
-   --gx/--gy are the mirrored pointer position, written by Bento.tsx. The ring
-   is a gradient rectangle masked down to just the border, so the colour rides
-   the edge instead of filling the card. */
+/* ── border glow that follows the cursor ─────────────────────────────
+   --gx/--gy are the pointer position, written by Bento.tsx. The ring is a
+   gradient rectangle masked down to just the border, so the colour rides the
+   edge instead of filling the card; a wide spread lights the two edges
+   nearest the cursor at once. */
 .box__glow {
   position: absolute;
   inset: 0;
@@ -1712,14 +1721,16 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.45s ease;
-  /* the theme gradient: lime core easing into the deep green */
+  /* three stops, set per theme (--glow-1..3) so the ring reads on both the
+     light grey canvas and the near-black one */
   background:
     radial-gradient(
-      46% 62% at var(--gx, 50%) var(--gy, 50%),
-      #d4ff8a 0%,
-      var(--accent) 26%,
-      color-mix(in srgb, var(--accent) 45%, var(--primary)) 52%,
-      transparent 78%
+      70% 95% at var(--gx, 50%) var(--gy, 50%),
+      var(--glow-1) 0%,
+      var(--glow-2) 26%,
+      var(--glow-3) 52%,
+      color-mix(in srgb, var(--glow-3) 60%, transparent) 70%,
+      transparent 88%
     );
   /* keep only the 1.5px ring: paint the whole box, then punch out the middle */
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -1738,8 +1749,9 @@ a { color: inherit; text-decoration: none; }
   border-radius: inherit;
   background: inherit;
   filter: blur(11px);
-  opacity: 0.85;
+  opacity: 0.6;
 }
+:root[data-theme='dark'] .box__glow::after { opacity: 0.85; }
 
 /* the card's own hairline steps back while the glow is on */
 .box__hit { transition: box-shadow 0.4s ease; }

@@ -27,9 +27,9 @@ function Box({ project, slot, index, onHot }: BoxProps) {
   const raf = useRef(0)
 
   /**
-   * Track the cursor and put the border glow on the OPPOSITE side of the card
-   * — move to the right edge and it lights up on the left. rAF-throttled and
-   * written straight to CSS variables, so React never re-renders for this.
+   * Track the cursor and light the border where it is, so the two edges
+   * nearest the pointer glow. rAF-throttled and written straight to CSS
+   * variables, so React never re-renders while the cursor moves.
    */
   function onMove(e: React.PointerEvent<HTMLButtonElement>) {
     const el = hitRef.current
@@ -40,8 +40,8 @@ function Box({ project, slot, index, onHot }: BoxProps) {
     if (raf.current) return
     raf.current = requestAnimationFrame(() => {
       raf.current = 0
-      el.style.setProperty('--gx', `${(100 - x).toFixed(1)}%`)
-      el.style.setProperty('--gy', `${(100 - y).toFixed(1)}%`)
+      el.style.setProperty('--gx', `${x.toFixed(1)}%`)
+      el.style.setProperty('--gy', `${y.toFixed(1)}%`)
     })
   }
 
