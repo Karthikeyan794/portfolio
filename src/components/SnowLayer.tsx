@@ -131,17 +131,30 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       const px = e.clientX - r.left
       const py = e.clientY - r.top
       if (px < 0 || py < 0 || px > r.width || py > r.height) return
+      // generous hit-test: nearest flake within reach (moving targets are hard to click exactly)
       let hit: Flake | null = null
       let best = Infinity
       for (const f of flakes) {
+        if (f.y < -f.size) continue // not on screen yet
         const d = Math.hypot(f.x - px, f.y - py)
-        const reach = Math.max(16, f.size * 0.75)
+        const reach = Math.max(42, f.size * 1.6)
         if (d < reach && d < best) {
           best = d
           hit = f
         }
       }
       if (hit) burst(hit)
+      else sparkle(px, py) // missed — still give a little feedback
+    }
+
+    /** a tiny puff for clicks that don't land on a flake */
+    const sparkle = (x: number, y: number) => {
+      for (let i = 0; i < 10; i++) {
+        const a = Math.random() * Math.PI * 2
+        const v = 40 + Math.random() * 70
+        shards.push({ kind: 'dust', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 20, size: 0.8 + Math.random() * 1.4, rot: 0, spin: 0, life: 0, ttl: 0.3 + Math.random() * 0.25, tint: ICE[Math.floor(Math.random() * ICE.length)] })
+      }
+      flashes.push({ x, y, life: 0, ttl: 0.35, max: 14, rot: 0 })
     }
 
     const frame = (t: number) => {
@@ -231,6 +244,15 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
     window.addEventListener('resize', resize)
     window.addEventListener('pointerdown', onPointer)
     resize()
+    if (import.meta.env.DEV) {
+      // dev-only probe for testing the hit-test without a real mouse
+      ;(window as unknown as { __snow?: unknown }).__snow = {
+        flakes: () => flakes,
+        shards: () => shards.length,
+        flashes: () => flashes.length,
+        rect: () => canvas.getBoundingClientRect(),
+      }
+    }
     raf = requestAnimationFrame((t) => { last = t; frame(t) })
 
     return () => {
