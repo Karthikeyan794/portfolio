@@ -23,6 +23,42 @@ export const socials: { label: string; href: string }[] = [
   { label: 'X', href: 'https://x.com/' },
 ]
 
+/** Big type at the top of About — keep it to two sentences. */
+export const manifesto =
+  'I care about the part of a product people actually touch. Not the launch screenshot — the screen someone opens for the two-hundredth time, tired, in a hurry, and needs to work.'
+
+/** Counts up when the section scrolls in. Edit the numbers as they change. */
+export const stats: { value: number; suffix?: string; label: string }[] = [
+  { value: 4, suffix: '+', label: 'Years designing & building' },
+  { value: 15, suffix: '', label: 'Projects shipped' },
+  { value: 2, suffix: '', label: 'Products in production' },
+  { value: 12, suffix: '', label: 'Design explorations' },
+]
+
+/** How I work — three things, each with a one-liner. */
+export const principles: { title: string; body: string }[] = [
+  {
+    title: 'Start from the hard screen',
+    body: 'The dense one with real data in it. If the messiest view holds up, the marketing page will look after itself.',
+  },
+  {
+    title: 'Design it, then build it',
+    body: 'I hand off to myself. That means fewer arguments about what is possible and fewer pixels lost in translation.',
+  },
+  {
+    title: 'Ship, watch, fix',
+    body: 'Opinions are cheap before release. I would rather put it in front of someone and change what actually annoys them.',
+  },
+]
+
+/** The "currently" line in the portrait caption. */
+export const currently = {
+  role: 'Frontend Engineer',
+  at: 'Facilio',
+  focus: 'Support Desk & Atom',
+  portrait: '/intro.jpg', // swap for a photo of you when you have one
+}
+
 export const about = [
   'I work on the web side of building software: turning fuzzy product requirements into interfaces that hold up under real data, real users and years of iteration.',
   'Most of my time goes into three things — component libraries that stay consistent without slowing anyone down, data-heavy screens that stay responsive at scale, and the unglamorous internal tooling that quietly saves a team hours a week.',
@@ -385,7 +421,13 @@ export type Role = {
   company: string
   title: string
   period: string
+  /** shown on the rail — a short state, e.g. 'Now' or the year */
+  marker: string
+  place?: string
   points: string[]
+  /** the tools that mattered in this role */
+  stack?: string[]
+  image?: string
 }
 
 export const experience: Role[] = [
@@ -393,20 +435,29 @@ export const experience: Role[] = [
     company: 'Facilio',
     title: 'Frontend Engineer',
     period: '2022 — Present',
+    marker: 'Now',
+    place: 'Chennai, India',
     points: [
       'Build and maintain product UI across web clients used daily by facility teams.',
       'Own shared component and design-system work that several product squads build on.',
-      'Ship internal tools that shorten support and onboarding loops.',
+      'Designed and shipped Support Desk and Atom, both in production.',
     ],
+    stack: ['React', 'TypeScript', 'Design systems'],
+    image: '/bento/support-desk.jpg',
   },
   {
-    company: 'Earlier',
-    title: 'Web Developer',
+    company: 'Freelance & self-directed',
+    title: 'Designer / Web Developer',
     period: '2020 — 2022',
+    marker: '2020',
+    place: 'Remote',
     points: [
       'Built client-facing sites and dashboards end to end.',
       'Moved legacy pages onto a component-driven frontend.',
+      'Took on branding and logo work alongside the build.',
     ],
+    stack: ['Figma', 'JavaScript', 'CSS'],
+    image: '/bento/welcome.jpg',
   },
 ]
 
