@@ -105,10 +105,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       return hit
     }
     const onMove = (e: PointerEvent) => {
-      const r = canvas.getBoundingClientRect()
-      const px = e.clientX - r.left
-      const py = e.clientY - r.top
-      const inside = px >= 0 && py >= 0 && px <= r.width && py <= r.height
+      const { px, py } = toCanvas(e.clientX, e.clientY)
+      const inside = px >= 0 && py >= 0 && px <= w && py <= h
       const next = inside ? nearestFlake(px, py) : null
       if (next !== hovered) {
         hovered = next
@@ -116,16 +114,42 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       }
     }
 
-    const resize = () => {
-      const r = canvas.getBoundingClientRect()
-      w = r.width
-      h = r.height
+    /**
+     * Size the drawing surface from the canvas's layout box — NOT getBoundingClientRect,
+     * which shrinks while an ancestor is mid-scale (the page's tilt-in) and left the
+     * canvas stretched, so flakes were drawn away from where clicks were tested.
+     * Existing flakes are rescaled so the field stays continuous.
+     */
+    const sync = (reset = false) => {
+      const cw = canvas.clientWidth
+      const ch = canvas.clientHeight
+      if (!cw || !ch) return
+      if (!reset && cw === w && ch === h && flakes.length) return
+      const sx = w ? cw / w : 1
+      const sy = h ? ch / h : 1
+      w = cw
+      h = ch
       dpr = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = Math.round(w * dpr)
       canvas.height = Math.round(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const count = Math.round(Math.min(90, Math.max(35, w / 16)) * density)
-      flakes = Array.from({ length: count }, () => make(false))
+      if (reset || !flakes.length) {
+        const count = Math.round(Math.min(90, Math.max(35, w / 16)) * density)
+        flakes = Array.from({ length: count }, () => make(false))
+      } else {
+        for (const f of flakes) {
+          f.x *= sx
+          f.y *= sy
+        }
+      }
+    }
+    /** client → canvas coordinates, correct even while an ancestor transform is animating */
+    const toCanvas = (clientX: number, clientY: number) => {
+      const r = canvas.getBoundingClientRect()
+      return {
+        px: (clientX - r.left) * (w / (r.width || w)),
+        py: (clientY - r.top) * (h / (r.height || h)),
+      }
     }
 
     const burst = (f: Flake) => {
@@ -157,10 +181,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
     }
 
     const onPointer = (e: PointerEvent) => {
-      const r = canvas.getBoundingClientRect()
-      const px = e.clientX - r.left
-      const py = e.clientY - r.top
-      if (px < 0 || py < 0 || px > r.width || py > r.height) return
+      const { px, py } = toCanvas(e.clientX, e.clientY)
+      if (px < 0 || py < 0 || px > w || py > h) return
       // generous hit-test: nearest flake within reach (moving targets are hard to click exactly)
       const hit = nearestFlake(px, py)
       if (hit) {
@@ -268,10 +290,12 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
     io.observe(canvas)
     const onVis = () => { hidden = document.visibilityState === 'hidden' }
     document.addEventListener('visibilitychange', onVis)
-    window.addEventListener('resize', resize)
+    const ro = new ResizeObserver(() => sync())
+    ro.observe(canvas)
+    window.addEventListener('resize', () => sync())
     window.addEventListener('pointerdown', onPointer)
     window.addEventListener('pointermove', onMove, { passive: true })
-    resize()
+    sync(true)
     if (import.meta.env.DEV) {
       // dev-only probe for testing the hit-test without a real mouse
       ;(window as unknown as { __snow?: unknown }).__snow = {
@@ -279,6 +303,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
         shards: () => shards.length,
         flashes: () => flashes.length,
         rect: () => canvas.getBoundingClientRect(),
+        size: () => ({ w, h, cssW: canvas.clientWidth, cssH: canvas.clientHeight }),
+        toCanvas,
         hovered: () => (hovered ? { x: hovered.x, y: hovered.y, scale: hovered.scale } : null),
         cursor: () => host?.style.cursor ?? '',
       }
@@ -289,7 +315,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       cancelAnimationFrame(raf)
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
-      window.removeEventListener('resize', resize)
+      ro.disconnect()
       window.removeEventListener('pointerdown', onPointer)
       window.removeEventListener('pointermove', onMove)
       if (host) host.style.cursor = ''
