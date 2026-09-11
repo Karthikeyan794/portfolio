@@ -292,7 +292,8 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
     document.addEventListener('visibilitychange', onVis)
     const ro = new ResizeObserver(() => sync())
     ro.observe(canvas)
-    window.addEventListener('resize', () => sync())
+    const onResize = () => sync()
+    window.addEventListener('resize', onResize)
     window.addEventListener('pointerdown', onPointer)
     window.addEventListener('pointermove', onMove, { passive: true })
     sync(true)
@@ -316,6 +317,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
       ro.disconnect()
+      window.removeEventListener('resize', onResize)
       window.removeEventListener('pointerdown', onPointer)
       window.removeEventListener('pointermove', onMove)
       if (host) host.style.cursor = ''
