@@ -1,6 +1,6 @@
 import { animate, motion, useInView } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { about, currently, manifesto, principles, skills, stats } from '../data'
+import { about, facets, manifesto, principles, skills, stats } from '../data'
 
 /** Counts from 0 to `value` the first time it scrolls into view. */
 function Stat({ value, suffix, label, delay }: { value: number; suffix?: string; label: string; delay: number }) {
@@ -30,6 +30,52 @@ function Stat({ value, suffix, label, delay }: { value: number; suffix?: string;
   )
 }
 
+/**
+ * Slats side by side in a fixed-width strip. The open one takes most of the
+ * room and shows its story; the rest collapse to a spine with a vertical
+ * label. Pointer or keyboard both drive it, and one is always open so the
+ * strip never looks empty.
+ */
+function Facets() {
+  const [open, setOpen] = useState(0)
+
+  return (
+    <motion.div
+      className="facets"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ type: 'spring', stiffness: 62, damping: 18 }}
+    >
+      {facets.map((f, i) => (
+        <button
+          type="button"
+          className="facet"
+          key={f.label}
+          data-open={i === open}
+          aria-expanded={i === open}
+          onPointerEnter={() => setOpen(i)}
+          onFocus={() => setOpen(i)}
+          onClick={() => setOpen(i)}
+        >
+          <img className="facet__img" src={f.image} alt="" loading="lazy" decoding="async" />
+          <span className="facet__veil" aria-hidden="true" />
+
+          {/* the spine label, shown only while collapsed */}
+          <span className="facet__spine">{f.label}</span>
+
+          {/* the story, shown only while open */}
+          <span className="facet__story">
+            <span className="facet__label">{f.label}</span>
+            <span className="facet__title">{f.title}</span>
+            <span className="facet__body">{f.body}</span>
+          </span>
+        </button>
+      ))}
+    </motion.div>
+  )
+}
+
 export default function About() {
   return (
     <section className="section about" id="about">
@@ -45,8 +91,10 @@ export default function About() {
           <p className="about__manifesto">{manifesto}</p>
         </motion.div>
 
+        {/* the strip: narrow slats that open one at a time */}
+        <Facets />
+
         <div className="about__grid">
-          {/* left: the portrait, sticky, with a frosted caption and the stats */}
           <motion.aside
             className="about__side"
             initial={{ opacity: 0, y: 40 }}
@@ -54,20 +102,6 @@ export default function About() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ type: 'spring', stiffness: 62, damping: 18 }}
           >
-            <figure className="portrait">
-              <img src={currently.portrait} alt="" loading="lazy" decoding="async" />
-              <figcaption className="portrait__cap">
-                <span className="portrait__now">
-                  <i aria-hidden="true" />
-                  Currently
-                </span>
-                <strong>
-                  {currently.role} · {currently.at}
-                </strong>
-                <span className="portrait__focus">Working on {currently.focus}</span>
-              </figcaption>
-            </figure>
-
             <div className="stats">
               {stats.map((s, i) => (
                 <Stat key={s.label} {...s} delay={i * 0.08} />
@@ -75,7 +109,6 @@ export default function About() {
             </div>
           </motion.aside>
 
-          {/* right: the prose, the three principles, then the toolkit */}
           <div className="about__main">
             <motion.div
               className="prose"

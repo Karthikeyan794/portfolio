@@ -51,6 +51,44 @@ export const principles: { title: string; body: string }[] = [
   },
 ]
 
+/**
+ * The expanding strip in About. Each slat is one facet of me: collapsed it
+ * shows just the image and a vertical label, hovered it opens and tells its
+ * bit of the story. Swap `image` for your own photos when you have them.
+ */
+export const facets: { label: string; title: string; body: string; image: string }[] = [
+  {
+    label: 'Now',
+    title: 'Frontend Engineer at Facilio',
+    body: 'I build the product UI facility teams open every morning — Support Desk and Atom, both in production, both designed and shipped by me.',
+    image: '/bento/support-desk.jpg',
+  },
+  {
+    label: 'Design',
+    title: 'I design before I build',
+    body: 'Figma first, then code. Handing off to myself means fewer arguments about what is possible and nothing lost in translation.',
+    image: '/bento/fm-assistant.jpg',
+  },
+  {
+    label: 'Systems',
+    title: 'Design systems, not screens',
+    body: 'Tokens, primitives and documentation that let several squads build from the same vocabulary without slowing anyone down.',
+    image: '/bento/smart-findings.jpg',
+  },
+  {
+    label: 'Data UI',
+    title: 'At home in dense screens',
+    body: 'Queues, dashboards, tables under real load. The messy views are the interesting ones — get those right and the rest follows.',
+    image: '/bento/documents.jpg',
+  },
+  {
+    label: 'Craft',
+    title: 'I still draw',
+    body: 'Sketchbook work, logos, illustration. None of it is for a brief — it is where the eye gets trained.',
+    image: '/bento/art.jpg',
+  },
+]
+
 /** The "currently" line in the portrait caption. */
 export const currently = {
   role: 'Frontend Engineer',

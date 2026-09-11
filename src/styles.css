@@ -1979,3 +1979,118 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .timeline__drawn { transform: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   About — the expanding slat strip
+   One slat open at a time; the rest collapse to a labelled spine.
+   Widths come from flex-grow inside a fixed-height strip, so the
+   open slat takes room from its neighbours and the strip never
+   changes size.
+   ═══════════════════════════════════════════════════════════ */
+.facets {
+  display: flex;
+  gap: 10px;
+  height: clamp(340px, 42vw, 520px);
+  margin-bottom: clamp(36px, 6vh, 68px);
+}
+
+.facet {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg-sunk);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  contain: layout paint;
+  transition: flex-grow 0.62s cubic-bezier(0.33, 1, 0.68, 1), border-color 0.4s ease;
+}
+.facet[data-open='true'] { flex-grow: 4.6; border-color: var(--line-strong); }
+
+.facet__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0);
+  filter: grayscale(0.45) brightness(0.82);
+  transition: filter 0.6s ease;
+}
+.facet[data-open='true'] .facet__img { filter: grayscale(0) brightness(1); }
+
+.facet__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 9, 8, 0.15) 0%, rgba(6, 9, 8, 0.1) 40%, rgba(6, 9, 8, 0.78) 100%);
+}
+
+/* collapsed: a vertical label running up the spine */
+.facet__spine {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.facet[data-open='true'] .facet__spine { opacity: 0; }
+
+/* open: the story, fading up from the bottom */
+.facet__story {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 24px 26px;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.4s ease 0.12s, transform 0.55s cubic-bezier(0.33, 1, 0.68, 1) 0.12s;
+}
+.facet[data-open='true'] .facet__story { opacity: 1; transform: none; }
+.facet__label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.facet__title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(19px, 1.9vw, 26px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.facet__body {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 46ch;
+}
+
+/* narrow screens: stack them, each one a short banner */
+@media (max-width: 760px) {
+  .facets { flex-direction: column; height: auto; gap: 10px; }
+  .facet { flex: none; height: 132px; transition: height 0.55s cubic-bezier(0.33, 1, 0.68, 1); }
+  .facet[data-open='true'] { height: 290px; }
+  .facet__spine { writing-mode: horizontal-tb; transform: none; left: 24px; bottom: 20px; }
+  .facet__story { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .facet, .facet__img, .facet__story, .facet__spine { transition: none; }
+}
