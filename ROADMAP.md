@@ -253,7 +253,7 @@
 - [x] **Colour theme** — deep forest green `#1e3a34` primary · cream `#f4f1e8` page · lime `#a6e85b` accent · ink `#14261f` (from your reference card)
 - [ ] Your real bio (3–4 lines), role, location
 - [ ] **Resume PDF**
-- [ ] **Behance / Figma links** for the mini projects (+ 1 cover image each, PNG/JPG)
+- [x] **Behance projects** — all 12 pulled from behance.net/karthikbabu13 via its RSS feed; covers downloaded to `public/work/` (2.4 MB total, no hotlinking). Blurbs are my first drafts — rewrite in your own words in `src/data.ts`
 - [ ] **Support Desk** (main project): what it is, your role, tools, 4–6 screenshots, demo video(s) as MP4 or YouTube/Loom link
 - [ ] Awards (photos + one line each)
 - [ ] Profile photo
@@ -271,7 +271,8 @@
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)
 - [ ] **Support Desk case study page** (problem → process → screens → demo videos → result)
-- [ ] Mini projects grid from Behance/Figma (cover, title, one line, link)
+- [x] Mini projects grid from Behance (cover, title, one line, link, Practice badge)
+- [ ] Confirm which projects are course/practice vs real work (`kind: 'practice'` in `src/data.ts`)
 - [ ] About + skills + experience with real content
 - [ ] Contact form → email to you (#4)
 - [ ] Mobile pass

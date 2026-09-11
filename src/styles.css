@@ -1035,3 +1035,42 @@ a { color: inherit; text-decoration: none; }
 .theme__disc { display: grid; place-items: center; transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .theme__disc[data-dark='true'] { transform: rotate(-30deg); }
 .nav__left { gap: 8px; }
+
+/* ── project cover ──────────────────────────────────────── */
+.shot {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-sunk);
+  display: grid;
+  place-items: center;
+}
+.card--featured .shot { aspect-ratio: 16 / 7; }
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.card:hover .shot img { transform: scale(1.04); }
+.shot__emoji { font-size: 44px; }
+.shot__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(20, 38, 31, 0.75);
+  color: #eaf6ff;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+}
+.card__top { padding-inline: 10px; }
+.card__blurb { padding-inline: 10px; }
+.card__tags { padding-inline: 10px; align-items: center; }
+.card__year--end { margin-left: auto; }

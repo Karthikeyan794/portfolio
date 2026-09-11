@@ -1,36 +1,28 @@
-import type { CSSProperties } from 'react'
+import { motion } from 'motion/react'
 import { projects, type Project } from '../data'
 import { ArrowUpRight } from './Icons'
 import Section from './Section'
 
-function initialsOf(title: string) {
-  return title
-    .split(/\s+/)
-    .map((w) => w[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
-}
-
 function Card({ project, index }: { project: Project; index: number }) {
-  const Wrapper = project.href ? 'a' : 'div'
-  const hue = 150 + index * 14 // greens, slightly different per card
-
+  const Wrapper = project.href ? motion.a : motion.div
   return (
     <Wrapper
-      className={`card${project.featured ? ' card--featured' : ''}`}
+      className={`gcard card${project.featured ? ' card--featured' : ''}`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ type: 'spring', stiffness: 80, damping: 18, delay: (index % 3) * 0.08 }}
       {...(project.href ? { href: project.href, target: '_blank', rel: 'noreferrer' } : {})}
     >
-      {/* placeholder screenshot: a tiny browser window with the project's initials */}
-      <div className="thumb" aria-hidden="true">
-        <div className="thumb__bar">
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="thumb__body" style={{ '--hue': hue } as CSSProperties}>
-          <span>{initialsOf(project.title)}</span>
-        </div>
+      <div className="shot">
+        {project.cover ? (
+          <img src={project.cover} alt={project.title} loading="lazy" decoding="async" />
+        ) : (
+          <span className="shot__emoji" aria-hidden="true">
+            {project.emoji}
+          </span>
+        )}
+        {project.kind === 'practice' && <span className="shot__badge">Practice</span>}
       </div>
 
       <div className="card__top">
@@ -44,6 +36,7 @@ function Card({ project, index }: { project: Project; index: number }) {
             {t}
           </span>
         ))}
+        <span className="card__year card__year--end">{project.year}</span>
       </div>
     </Wrapper>
   )
@@ -51,7 +44,18 @@ function Card({ project, index }: { project: Project; index: number }) {
 
 export default function Work() {
   return (
-    <Section id="work" eyebrow="02 — Work" title="Selected projects" meta={`${projects.length} projects`}>
+    <Section
+      id="work"
+      eyebrow="02 — Work"
+      title="Design work"
+      desc={
+        <>
+          Product and interface design — dashboards, flows and case studies. Each card opens the full project on{' '}
+          <strong>Behance</strong>.
+        </>
+      }
+      meta={`${projects.length} projects`}
+    >
       <div className="cards">
         {projects.map((p, i) => (
           <Card key={p.title} project={p} index={i} />

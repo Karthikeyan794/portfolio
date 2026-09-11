@@ -17,7 +17,8 @@ export const profile = {
 }
 
 export const socials: { label: string; href: string }[] = [
-  { label: 'GitHub', href: 'https://github.com/' },
+  { label: 'Behance', href: 'https://www.behance.net/karthikbabu13' },
+  { label: 'GitHub', href: 'https://github.com/Karthikeyan794' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
   { label: 'X', href: 'https://x.com/' },
 ]
@@ -32,40 +33,138 @@ export type Project = {
   blurb: string
   year: string
   tags: string[]
+  emoji: string // fallback when there is no cover image
+  cover?: string // /work/*.jpg — downloaded from Behance so the site doesn't hotlink
   href?: string
   featured?: boolean
+  /** 'work' = real/client · 'practice' = course or self-set exercise. Edit these freely. */
+  kind?: 'work' | 'practice'
 }
 
+/**
+ * Pulled from behance.net/karthikbabu13 (12 projects, newest first).
+ * Blurbs are first drafts — rewrite any of them in your own words.
+ */
 export const projects: Project[] = [
   {
-    title: 'Design System',
+    title: 'Skill Mate — AI mock interview',
     blurb:
-      'A shared component library and token set — accessible primitives, light/dark theming, and documentation that keeps product teams building from the same vocabulary.',
+      'An AI-powered mock-interview product: practice sessions, question flow and feedback screens designed so a nervous candidate always knows what happens next.',
     year: '2025',
-    tags: ['React', 'TypeScript', 'Tokens', 'a11y'],
+    tags: ['Product design', 'AI', 'UI/UX'],
+    emoji: '🎤',
+    cover: '/work/skill-mate.jpg',
+    href: 'https://www.behance.net/gallery/230495131/Skill-Mate-AI-Powered-mock-interview',
     featured: true,
   },
   {
-    title: 'Labs Client',
+    title: 'Car Dashboard — dark & light',
     blurb:
-      'A web + mobile monorepo sharing one core package — credit accounting, per-team usage views and an approval flow, all driven by the same typed client.',
+      'An in-car dashboard in both dark and light modes — speed, media, navigation and climate kept glanceable at driving speed.',
     year: '2025',
-    tags: ['Monorepo', 'React', 'Vite'],
+    tags: ['Dashboard', 'Dark mode', 'UI'],
+    emoji: '🚗',
+    cover: '/work/car-dashboard.jpg',
+    href: 'https://www.behance.net/gallery/230978875/Car-Dashboard-Dark-Light-mode',
     featured: true,
   },
   {
-    title: 'Support Assistant',
-    blurb:
-      'An LLM-backed helper that reads support history and drafts grounded replies, with the retrieval and evaluation loop that keeps its answers honest.',
-    year: '2024',
-    tags: ['LLM', 'Node', 'RAG'],
+    title: '7 Days Redesign Challenge',
+    blurb: 'Seven days, seven redesigns — a self-set sprint to practise moving fast from critique to a cleaner screen.',
+    year: '2025',
+    tags: ['Redesign', 'Challenge'],
+    emoji: '📅',
+    cover: '/work/redesign-challenge.jpg',
+    href: 'https://www.behance.net/gallery/230895267/7-Days_Redesign-Challenge',
+    kind: 'practice',
   },
   {
-    title: 'Web Forms',
-    blurb:
-      'A schema-driven form renderer — conditional logic, validation and layout described as data instead of hand-written screens.',
+    title: 'Form Design',
+    blurb: 'A long form broken into steps that feel short — clear labels, forgiving validation and obvious progress.',
+    year: '2025',
+    tags: ['Forms', 'UX'],
+    emoji: '📝',
+    cover: '/work/form-design.jpg',
+    href: 'https://www.behance.net/gallery/217305465/Form-Design-%28Task%29',
+    kind: 'practice',
+  },
+  {
+    title: 'Nellai Karupatti Coffee Dashboard',
+    blurb: 'An admin dashboard for a coffee brand — orders, stock and sales in one screen with the numbers that matter first.',
+    year: '2025',
+    tags: ['Dashboard', 'Data UI'],
+    emoji: '☕',
+    cover: '/work/coffee-dashboard.jpg',
+    href: 'https://www.behance.net/gallery/217302653/Nellai-Karupatti-Coffee-Dashboard',
+  },
+  {
+    title: 'POS School Management Dashboard',
+    blurb: 'A school management and point-of-sale dashboard — fees, attendance and records for staff who are always in a hurry.',
     year: '2024',
-    tags: ['React', 'JSON Schema'],
+    tags: ['Dashboard', 'POS', 'UI/UX'],
+    emoji: '🏫',
+    cover: '/work/pos-school.jpg',
+    href: 'https://www.behance.net/gallery/214624079/POS-school-management-Dashboard',
+  },
+  {
+    title: 'TNPSC Website Redesign',
+    blurb:
+      'A case study redesigning a government exam portal: the information aspirants actually need, found in fewer taps and readable on a cheap phone.',
+    year: '2024',
+    tags: ['Case study', 'Web', 'Accessibility'],
+    emoji: '🏛️',
+    cover: '/work/tnpsc.jpg',
+    href: 'https://www.behance.net/gallery/214619697/TNPSC-website-Redesign-case-study',
+    featured: true,
+  },
+  {
+    title: 'Google Maps — event feature',
+    blurb: 'A concept feature adding nearby events to Maps, designed to sit inside the existing patterns rather than fight them.',
+    year: '2024',
+    tags: ['Feature design', 'Concept'],
+    emoji: '🗺️',
+    cover: '/work/google-map.jpg',
+    href: 'https://www.behance.net/gallery/215585615/Google-map-%28Event-feature%29',
+    kind: 'practice',
+  },
+  {
+    title: 'Enhancing a phone-call flow',
+    blurb: 'A rethink of the calling experience — fewer mis-taps mid-call and a clearer path back out of it.',
+    year: '2024',
+    tags: ['User flow', 'Mobile'],
+    emoji: '📞',
+    cover: '/work/phone-call-flow.jpg',
+    href: 'https://www.behance.net/gallery/215587351/Enhancing-User-flow-%28Phone-call%29',
+    kind: 'practice',
+  },
+  {
+    title: 'Smartwatch Design',
+    blurb: 'Watch-face and app screens built for a glance — big targets, one idea per screen, legible in sunlight.',
+    year: '2024',
+    tags: ['Wearable', 'UI'],
+    emoji: '⌚',
+    cover: '/work/smartwatch.jpg',
+    href: 'https://www.behance.net/gallery/215590509/Smartwatch-Design',
+    kind: 'practice',
+  },
+  {
+    title: 'Neomorphism Design',
+    blurb: 'A soft-UI exploration — pushing the neomorphic style as far as it goes while keeping contrast usable.',
+    year: '2024',
+    tags: ['Visual design', 'Exploration'],
+    emoji: '🫧',
+    cover: '/work/neomorphism.jpg',
+    href: 'https://www.behance.net/gallery/215586815/Neomorphism-Design',
+    kind: 'practice',
+  },
+  {
+    title: 'Logofolio — Clickly',
+    blurb: 'Logo and identity marks, including the Clickly brand — construction, spacing and how each mark holds up small.',
+    year: '2024',
+    tags: ['Branding', 'Logo'],
+    emoji: '✦',
+    cover: '/work/logofolio-clickly.jpg',
+    href: 'https://www.behance.net/gallery/215584601/Logofolio-%28Clickly%29',
   },
 ]
 
