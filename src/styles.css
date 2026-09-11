@@ -1698,3 +1698,53 @@ a { color: inherit; text-decoration: none; }
   .box__hit:hover .box__img { transform: translateZ(0); filter: none; }
   .box__hit:hover .box__label { transform: translateZ(0); }
 }
+
+/* ── border glow that follows the cursor, on the opposite side ────────
+   --gx/--gy are the mirrored pointer position, written by Bento.tsx. The ring
+   is a gradient rectangle masked down to just the border, so the colour rides
+   the edge instead of filling the card. */
+.box__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  /* the theme gradient: lime core easing into the deep green */
+  background:
+    radial-gradient(
+      46% 62% at var(--gx, 50%) var(--gy, 50%),
+      #d4ff8a 0%,
+      var(--accent) 26%,
+      color-mix(in srgb, var(--accent) 45%, var(--primary)) 52%,
+      transparent 78%
+    );
+  /* keep only the 1.5px ring: paint the whole box, then punch out the middle */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.box__hit:hover .box__glow,
+.box__hit:focus-visible .box__glow { opacity: 1; }
+
+/* a soft bloom just outside the ring, same gradient, so the edge reads lit */
+.box__glow::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(11px);
+  opacity: 0.85;
+}
+
+/* the card's own hairline steps back while the glow is on */
+.box__hit { transition: box-shadow 0.4s ease; }
+.box__hit:hover { box-shadow: inset 0 0 0 1px transparent, 0 22px 46px -28px rgba(0, 0, 0, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .box__glow { transition: none; }
+}

@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { groups, projects, type Project } from '../data'
 import { openProject } from '../router'
 
@@ -23,6 +23,30 @@ type BoxProps = {
 }
 
 function Box({ project, slot, index, onHot }: BoxProps) {
+  const hitRef = useRef<HTMLButtonElement>(null)
+  const raf = useRef(0)
+
+  /**
+   * Track the cursor and put the border glow on the OPPOSITE side of the card
+   * — move to the right edge and it lights up on the left. rAF-throttled and
+   * written straight to CSS variables, so React never re-renders for this.
+   */
+  function onMove(e: React.PointerEvent<HTMLButtonElement>) {
+    const el = hitRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width) * 100
+    const y = ((e.clientY - r.top) / r.height) * 100
+    if (raf.current) return
+    raf.current = requestAnimationFrame(() => {
+      raf.current = 0
+      el.style.setProperty('--gx', `${(100 - x).toFixed(1)}%`)
+      el.style.setProperty('--gy', `${(100 - y).toFixed(1)}%`)
+    })
+  }
+
+  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+
   return (
     <motion.article
       className={`box box--${slot}`}
@@ -41,11 +65,14 @@ function Box({ project, slot, index, onHot }: BoxProps) {
       <div className="box__lift">
       {/* every project opens inside the site — nothing jumps out to Behance */}
       <motion.button
+        ref={hitRef}
         type="button"
         className="box__hit"
         onClick={() => openProject(project.slug)}
+        onPointerMove={onMove}
         aria-label={`${project.title} — ${project.tagline}`}
       >
+        <span className="box__glow" aria-hidden="true" />
         {project.cover && <img className="box__img" src={project.cover} alt="" loading="lazy" decoding="async" />}
         <span className="box__veil" aria-hidden="true" />
 
