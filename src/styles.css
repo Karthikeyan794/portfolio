@@ -1134,14 +1134,24 @@ a { color: inherit; text-decoration: none; }
 .case__demo { border-color: transparent; background: var(--primary); color: var(--on-primary); }
 .case__demo:hover { background: var(--primary-hover); }
 
-.case__hero { position: relative; height: min(62vh, 560px); overflow: hidden; display: grid; align-items: end; }
+.case__hero { position: relative; min-height: min(78vh, 680px); overflow: hidden; display: grid; align-items: end; }
 .case__hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .case__hero-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 20, 17, 0.25) 0%, rgba(10, 20, 17, 0.1) 40%, rgba(10, 20, 17, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(8, 12, 11, 0.4) 0%, rgba(8, 12, 11, 0.12) 34%, rgba(8, 12, 11, 0.72) 74%, rgba(8, 12, 11, 0.94) 100%);
 }
-.case__hero-text { position: relative; z-index: 2; padding-bottom: clamp(28px, 5vh, 52px); display: grid; gap: 12px; color: #fff; }
+/* the lower band of the image is blurred so the title and facts sit on calm
+   ground without hiding the picture */
+.case__hero-blur {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(22px) saturate(1.05);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 26%, transparent 62%);
+  mask-image: linear-gradient(to top, #000 0%, #000 26%, transparent 62%);
+  pointer-events: none;
+}
+.case__hero-text { position: relative; z-index: 2; padding-bottom: clamp(30px, 5vh, 56px); display: grid; gap: 14px; color: #fff; }
 .case__eyebrow { color: #cfe6a8; }
 .case__hero-text h1 {
   font-family: var(--display);
@@ -1150,23 +1160,53 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.04;
   letter-spacing: -0.025em;
 }
-.case__tagline { font-size: clamp(15px, 1.8vw, 19px); color: rgba(255, 255, 255, 0.88); max-width: 46ch; }
+.case__tagline { font-size: clamp(15px, 1.8vw, 20px); color: rgba(255, 255, 255, 0.88); max-width: 48ch; }
 
-.case__body { display: grid; gap: clamp(28px, 5vh, 52px); padding-top: clamp(28px, 5vh, 48px); }
+.case__body { display: grid; gap: clamp(44px, 7vh, 88px); padding-top: clamp(44px, 7vh, 80px); }
 .case__facts {
+  margin: 10px 0 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 18px;
-  padding: 22px 24px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--bg-elev);
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 4px;
+  max-width: 780px;
+  padding: 4px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 20px 44px -28px rgba(0, 0, 0, 0.6);
 }
-.case__facts > div { display: grid; gap: 4px; }
-.case__fact-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.case__fact-value { font-size: 15.5px; font-weight: 500; }
-.case__intro { font-size: clamp(17px, 2vw, 22px); line-height: 1.55; color: var(--text-mid); max-width: 62ch; }
-.case__intro::first-line { color: var(--text); }
+.case__facts > div { display: grid; gap: 3px; padding: 13px 16px; border-radius: 12px; }
+.case__facts > div + div { box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.12); }
+.case__facts dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+.case__facts dd { margin: 0; font-size: 15px; font-weight: 500; color: #fff; }
+@media (max-width: 560px) {
+  .case__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case__facts > div + div { box-shadow: none; }
+}
+.case__lead { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: clamp(16px, 3vw, 40px); align-items: start; }
+@media (max-width: 700px) { .case__lead { grid-template-columns: 1fr; gap: 10px; } }
+.case__lead-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 9px;
+}
+.case__intro {
+  font-size: clamp(18px, 2.1vw, 25px);
+  line-height: 1.5;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  max-width: 54ch;
+}
 
 /* ── case-study rows: words on the left, screens on the right ───── */
 .rows { display: grid; gap: clamp(46px, 7vh, 96px); }

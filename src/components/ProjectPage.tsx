@@ -149,6 +149,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
         {project.cover && (
           <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
         )}
+        <div className="case__hero-blur" aria-hidden="true" />
         <div className="case__hero-shade" aria-hidden="true" />
         <div className="wrap wrap--wide case__hero-text">
           <motion.span className="eyebrow case__eyebrow" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}>
@@ -160,22 +161,29 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <motion.p className="case__tagline" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7 }}>
             {project.tagline}
           </motion.p>
+
+          {/* the facts sit on the banner as a frosted strip */}
+          <motion.dl
+            className="case__facts"
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.42, type: 'spring', stiffness: 70, damping: 18 }}
+          >
+            {detail.facts.map((f) => (
+              <div key={f.label}>
+                <dt>{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))}
+          </motion.dl>
         </div>
       </div>
 
       <div className="wrap wrap--wide case__body">
-        <motion.div className="case__facts" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-          {detail.facts.map((f) => (
-            <div key={f.label}>
-              <span className="case__fact-label">{f.label}</span>
-              <span className="case__fact-value">{f.value}</span>
-            </div>
-          ))}
+        <motion.div className="case__lead" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7 }}>
+          <span className="case__lead-label">Overview</span>
+          <p className="case__intro">{detail.intro}</p>
         </motion.div>
-
-        <motion.p className="case__intro" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7 }}>
-          {detail.intro}
-        </motion.p>
 
         <div className="rows">
           {detail.slices.map((s, i) => (
