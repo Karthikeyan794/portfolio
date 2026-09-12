@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
 import type { Tool } from '../data'
-import { aboutLinks, awards, currently, education, intro_about, photoSets, place, places, playlist, roleList, stackCards } from '../data'
+import { aboutLinks, awards, awardsCard, currently, education, intro_about, place, places, playlist, roleList, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -81,7 +81,9 @@ function AwardsCard() {
   return (
     <div className="pcard pcard--awards" style={{ gridArea: 'w' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
-      <span className="pcard__label">Recognition</span>
+      <img className="awards__bg" src={awardsCard.image} alt="" loading="lazy" decoding="async" />
+      <span className="awards__veil" aria-hidden="true" />
+      <span className="pcard__label pcard__label--over">Recognition</span>
       <div className="atags">
         {awards.map((a, i) => (
           <span className="atag" key={`${a.title}-${i}`}>
@@ -165,7 +167,7 @@ function LinksCard() {
       <span className="pcard__label">Elsewhere</span>
       <div className="plinks">
         {aboutLinks.map((l) => (
-          <a key={l.label} href={l.href} target="_blank" rel="noreferrer" style={{ ['--brand' as string]: l.brand }}>
+          <a key={l.label} href={l.href} target="_blank" rel="noreferrer" title={l.handle} style={{ ['--brand' as string]: l.brand }}>
             <span className="plinks__mark" aria-hidden="true">
               {l.mark ? (
                 <svg viewBox="0 0 24 24">
@@ -244,11 +246,12 @@ function MusicCard() {
                   ['--r' as string]: `${(i - mid) * 8}deg`,
                   ['--d' as string]: `${i * 55}ms`,
                   ['--art' as string]: t.art,
+                  ...(t.cover ? { ['--cover' as string]: `url(${t.cover})` } : {}),
                   zIndex: playlist.tracks.length - Math.abs(i - mid),
                 }}
               >
                 <span className="cover__art" />
-                <span className="cover__name">{t.title}</span>
+                {!t.cover && <span className="cover__name">{t.title}</span>}
               </button>
             )
           })}
@@ -313,47 +316,6 @@ function MusicCard() {
           }}
         />
       )}
-    </div>
-  )
-}
-
-/** Recent pictures — the chips swap the shot. */
-function PhotosCard() {
-  const glow = useGlow<HTMLDivElement>()
-  const [set, setSet] = useState(0)
-
-  return (
-    <div className="pcard pcard--photos" style={{ gridArea: 'c' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
-      <Glow />
-      {photoSets.map((ps, i) => (
-        <img
-          key={ps.label}
-          className="photos__img"
-          src={ps.src}
-          alt=""
-          data-on={i === set}
-          loading="lazy"
-          decoding="async"
-        />
-      ))}
-      <span className="photos__veil" aria-hidden="true" />
-      <span className="pcard__label pcard__label--over">Recent photos</span>
-
-      <div className="pchips">
-        {photoSets.map((ps, i) => (
-          <button
-            type="button"
-            className="pchip"
-            key={ps.label}
-            data-on={i === set}
-            onPointerEnter={() => setSet(i)}
-            onFocus={() => setSet(i)}
-            onClick={() => setSet(i)}
-          >
-            {ps.label}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }
@@ -443,7 +405,6 @@ export default function About() {
           </a>
 
           <MusicCard />
-          <PhotosCard />
           <StackCard />
           <AwardsCard />
           <PlaceCard />

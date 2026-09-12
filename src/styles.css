@@ -1904,7 +1904,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 980px) {
   .about__grid { grid-template-columns: 1fr; }
   /* full width now, so the fixed height would stretch every card */
-  .collage { height: auto; grid-template-rows: repeat(13, minmax(80px, auto)); }
+  .collage { height: auto; grid-template-rows: repeat(11, minmax(80px, auto)); }
 }
 
 .about__col { display: grid; gap: 14px; align-content: start; }
@@ -2023,7 +2023,7 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   /* one rectangle, interlocking boxes — the same idea as the work bento */
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   will-change: grid-template-columns, grid-template-rows;
   transition: grid-template-columns 0.62s cubic-bezier(0.33, 1, 0.68, 1),
     grid-template-rows 0.62s cubic-bezier(0.33, 1, 0.68, 1);
@@ -2035,22 +2035,19 @@ a { color: inherit; text-decoration: none; }
     's s y y'
     's s y y'
     's s y y'
-    's s c c'
-    'l l c c'
-    'l l c c'
-    'l l c c'
-    'w w n n'
-    'w w n n'
-    'w w n n';
-  /* 13 rows at about 71px — the cards were sized for far more content
-     than any of them actually hold */
-  height: 1040px;
+    's s w w'
+    'l l w w'
+    'l l w w'
+    'l l w w'
+    'n n n n';
+  /* 11 rows at about 69px */
+  height: 855px;
 }
 @media (max-width: 560px) {
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 'y' 's' 'c' 'l' 'w' 'n';
+    grid-template-areas: 'p' 'd' 'y' 's' 'l' 'w' 'n';
     aspect-ratio: auto;
     height: auto;
     min-height: 0;
@@ -2059,9 +2056,8 @@ a { color: inherit; text-decoration: none; }
   /* one card per row — nothing to expand into */
   .collage:has(.pcard:hover) { grid-template-columns: 1fr; grid-template-rows: auto; }
   .pcard--portrait { min-height: 320px; }
-  .pcard--shot, .pcard--stack, .pcard--place, .pcard--vinyl { min-height: 220px; }
+  .pcard--shot, .pcard--stack, .pcard--place, .pcard--music, .pcard--awards { min-height: 220px; }
   .pcard--links { min-height: 0; }
-  .pcard--photos { min-height: 380px; }
 }
 
 .pcard {
@@ -2183,34 +2179,8 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-elev);
 }
 
-/* ── the photo card ────────────────────────────────────────── */
-.pcard--photos { position: relative; }
-.photos__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.05);
-  transition: opacity 0.55s ease, transform 0.9s cubic-bezier(0.33, 1, 0.68, 1);
-}
-.photos__img[data-on='true'] { opacity: 1; transform: scale(1); }
-.photos__veil {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(6, 8, 10, 0.5) 0%, rgba(6, 8, 10, 0.05) 26%, rgba(6, 8, 10, 0.08) 52%, rgba(6, 8, 10, 0.82) 100%);
-}
-.pcard--photos .pchip { padding: 6px 11px; font-size: 11.5px; }
-.pchips {
-  position: absolute;
-  inset: auto 10px 12px 10px;
-  z-index: 3;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-}
+/* ── chips (the Current / Born switch) ────────────────────── */
+.pchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .pchip {
   padding: 7px 13px;
   border: 0;
@@ -2218,23 +2188,30 @@ a { color: inherit; text-decoration: none; }
   font: inherit;
   font-size: 12px;
   line-height: 1;
-  color: #fff;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.13);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(12px) saturate(1.2);
+  color: var(--text);
+  background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
   transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
-.pchip:hover { background: rgba(255, 255, 255, 0.24); }
-.pchip[data-on='true'] { background: #fff; color: #14181b; box-shadow: none; }
+.pchip:hover { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.pchip[data-on='true'] { background: var(--primary); color: var(--on-primary); box-shadow: none; }
 
 /* ── the profile links under the About text ────────────────── */
-.pcard--links { display: grid; gap: 8px; padding: 12px; grid-template-rows: auto 1fr; }
+.pcard--links {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+}
+.pcard--links .pcard__label { white-space: nowrap; }
 /* three across inside the tile, one per row once it gets narrow */
 .plinks {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-content: center;
-  gap: 6px;
+  gap: 8px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2246,8 +2223,8 @@ a { color: inherit; text-decoration: none; }
   grid-template-rows: auto auto;
   align-items: center;
   align-content: center;
-  gap: 1px 10px;
-  padding: 9px 12px;
+  gap: 0 8px;
+  padding: 8px 10px;
   border-radius: 12px;
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
@@ -2257,9 +2234,10 @@ a { color: inherit; text-decoration: none; }
 }
 .plinks a:hover { box-shadow: inset 0 0 0 1px var(--line-strong); transform: translateY(-2px); }
 
-.plinks__label { grid-column: 2; grid-row: 1; font-size: 13.5px; font-weight: 600; }
-.plinks__handle { grid-column: 2; grid-row: 2; font-family: var(--mono); font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.plinks__go { grid-column: 3; grid-row: 1 / -1; opacity: 0.35; transition: transform 0.3s ease, opacity 0.3s ease; }
+.plinks__label { grid-column: 2; grid-row: 1; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* the handle is the tooltip now — the strip is one row tall */
+.plinks__handle { display: none; }
+.plinks__go { display: none; }
 .plinks a:hover .plinks__go { opacity: 1; transform: translate(2px, -2px); }
 
 /* the logo tile — it takes the brand colour on hover */
@@ -2268,15 +2246,15 @@ a { color: inherit; text-decoration: none; }
   grid-row: 1 / -1;
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
   background: var(--bg-elev);
   box-shadow: inset 0 0 0 1px var(--line);
   color: var(--text);
   transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
-.plinks__mark svg { width: 15px; height: 15px; fill: currentColor; }
+.plinks__mark svg { width: 13px; height: 13px; fill: currentColor; }
 .plinks__mark b { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.03em; }
 .plinks a:hover .plinks__mark {
   background: var(--brand);
@@ -2289,16 +2267,6 @@ a { color: inherit; text-decoration: none; }
   .vinyl, .photos__img { transition: none; }
 }
 
-/* the Current / Born switch on the place card */
-.pchips--flow { position: static; inset: auto; justify-content: flex-start; }
-.pchip--ink {
-  color: var(--text);
-  background: var(--bg-sunk);
-  box-shadow: inset 0 0 0 1px var(--line);
-  backdrop-filter: none;
-}
-.pchip--ink:hover { background: var(--bg-sunk); box-shadow: inset 0 0 0 1px var(--line-strong); }
-.pchip--ink[data-on='true'] { background: var(--primary); color: var(--on-primary); box-shadow: none; }
 .place__meta a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line-strong); }
 .place__meta a:hover { border-bottom-color: currentColor; }
 
@@ -2402,7 +2370,8 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   border-radius: 10px;
-  background: var(--art);
+  /* a real cover if the track has one, the drawn gradient otherwise */
+  background: var(--cover, none) center / cover no-repeat, var(--art);
   box-shadow: 0 16px 26px -14px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(255, 255, 255, 0.16);
 }
 .cover__name {
@@ -2500,35 +2469,31 @@ a { color: inherit; text-decoration: none; }
    refuses to interpolate — the grid snaps instead of sliding. */
 .collage:has(.pcard--portrait:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr;
 }
 .collage:has(.pcard--shot:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 1.2fr 1.2fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr;
+  grid-template-rows: 1.2fr 1.2fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr;
 }
 .collage:has(.pcard--music:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
+  grid-template-rows: 0.8857fr 0.8857fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
+  grid-template-rows: 0.8857fr 0.8857fr 0.8857fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr;
 }
-.collage:has(.pcard--photos:hover) {
+.collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr;
+  grid-template-rows: 0.8857fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8857fr;
 }
 .collage:has(.pcard--place:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr;
-}
-.collage:has(.pcard--awards:hover) {
-  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
+  grid-template-rows: 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 1.2fr 1.2fr 1.2fr 0.925fr;
 }
 .collage:has(.pcard--links:hover) {
-  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -2651,3 +2616,22 @@ a { color: inherit; text-decoration: none; }
 }
 .fact--edu .role__org { grid-row: 2; font-family: var(--mono); font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
 .fact--edu .role__title { grid-row: 3; flex: none; font-size: 12.5px; }
+
+/* the Recognition card sits on a picture now */
+.pcard--awards { position: relative; }
+.awards__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.awards__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 8, 10, 0.58) 0%, rgba(6, 8, 10, 0.3) 34%, rgba(6, 8, 10, 0.86) 100%);
+}
+.pcard--awards .pcard__label, .pcard--awards .atags { position: relative; z-index: 2; }
+.pcard--awards .atags { align-content: end; }
+.pcard--awards .atag {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  color: #fff;
+}
+.pcard--awards .atag i { color: rgba(255, 255, 255, 0.66); }

@@ -83,15 +83,11 @@ export const stackCards: { no: string; label: string; tools: Tool[] }[] = [
 ]
 
 /**
- * The photo card. Chips switch the picture.
- * TODO: these point at your own Behance covers so the card renders — swap in
- * real photos under /public/photos and rename the chips to match.
+ * The Recognition card's backdrop.
+ * TODO: one of your own Behance covers standing in — swap it for a photo of
+ * the trophies when you have them.
  */
-export const photoSets = [
-  { label: 'Interfaces', src: '/work/coffee-dashboard.jpg' },
-  { label: 'Logos', src: '/work/logofolio-clickly.jpg' },
-  { label: 'Studies', src: '/work/neomorphism.jpg' },
-]
+export const awardsCard = { image: '/work/redesign-challenge.jpg' }
 
 /**
  * What's on while I build.
@@ -103,7 +99,7 @@ export const photoSets = [
  *
  * `art` is a drawn gradient rather than real cover art, for the same reason.
  */
-export type Track = { title: string; artist: string; src: string; art: string }
+export type Track = { title: string; artist: string; src: string; art: string; cover?: string }
 export const playlist = {
   title: 'On repeat while building',
   href: 'https://open.spotify.com/',
