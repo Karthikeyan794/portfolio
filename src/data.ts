@@ -57,16 +57,16 @@ export type Tool = { name: string; mark?: string; mono?: string }
  * 1000px wide JPEGs — the originals are 1670px PNGs and live in
  * /assets-src/toolkit, out of the build.
  */
-/** `shift` nudges that row's crop up by N px, for artwork that sits low. */
+/** `shift` moves that row's crop: positive lifts the picture, negative drops it. */
 export const stackCards: { no: string; label: string; image: string; shift?: number; tools: Tool[] }[] = [
   // TODO: Maze and Notion are my guess at your research tools — the resume
   // lists the skills (usability testing, personas) but not what you use.
-  { no: '01', label: 'Research', image: '/toolkit/research.jpg', shift: 20, tools: [{ name: 'Maze', mark: 'maze' }, { name: 'Notion', mark: 'notion' }] },
+  { no: '01', label: 'Research', image: '/toolkit/research.jpg', shift: -20, tools: [{ name: 'Maze', mark: 'maze' }, { name: 'Notion', mark: 'notion' }] },
   {
     no: '02',
     label: 'Design',
     image: '/toolkit/design.jpg',
-    shift: 20,
+    shift: -20,
     tools: [
       { name: 'Figma', mark: 'figma' },
       { name: 'Dora', mono: 'Do' },
