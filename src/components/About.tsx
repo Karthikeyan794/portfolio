@@ -23,9 +23,27 @@ function Stat({ value, suffix, label, delay }: { value: number; suffix?: string;
     <div className="stat" ref={ref}>
       <span className="stat__value">
         {n}
-        {suffix}
+        {suffix && <i>{suffix}</i>}
       </span>
       <span className="stat__label">{label}</span>
+    </div>
+  )
+}
+
+/** The toolkit as a slow ticker — reads as one line rather than a wall of chips. */
+function Ticker() {
+  const items = skills.flatMap((g) => g.items)
+  const loop = [...items, ...items]
+  return (
+    <div className="ticker" aria-label="Toolkit">
+      <div className="ticker__track">
+        {loop.map((item, i) => (
+          <span className="ticker__item" key={`${item}-${i}`} aria-hidden={i >= items.length}>
+            {item}
+            <i className="ticker__dot" aria-hidden="true" />
+          </span>
+        ))}
+      </div>
     </div>
   )
 }
@@ -102,17 +120,7 @@ export default function About() {
               <Stat key={s.label} {...s} delay={i * 0.08} />
             ))}
           </div>
-
-          <div className="toolkit">
-            <span className="about__label">Toolkit</span>
-            <div className="chips">
-              {skills.flatMap((g) => g.items).map((item) => (
-                <span className="chip" key={item}>
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
+          <Ticker />
         </motion.div>
       </div>
     </section>
