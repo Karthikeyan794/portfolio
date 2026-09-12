@@ -1953,23 +1953,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── the resume facts: experience · education · recognition ── */
-.about__facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 clamp(24px, 4vw, 60px);
-  align-items: start;
-  margin-top: clamp(40px, 6vw, 78px);
-}
-/* narrow columns, so each entry stacks: name and year on top, detail under */
+/* one narrow column, so each entry stacks: name on top, detail under */
 .fact { min-width: 0; }
-.about__facts .roles { margin: 8px 0 0; }
-.about__facts .role { row-gap: 3px; }
-.about__facts .role__slash { display: none; }
-.about__facts .role__title { flex: 1 0 100%; }
-.about__facts .role__years { margin-left: auto; }
-@media (max-width: 860px) {
-  .about__facts { grid-template-columns: 1fr; gap: 0; }
-}
+.fact .roles { margin: 8px 0 0; }
+.fact .role { row-gap: 3px; }
+.fact .role__slash { display: none; }
+/* name and year share the top line; the detail wraps under both */
+.fact .role__years { order: 1; margin-left: auto; }
+.fact .role__title { order: 2; flex: 1 0 100%; }
 
 /* ── the collage ────────────────────────────────────────── */
 .collage {
@@ -1977,8 +1968,8 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   /* one rectangle, interlocking boxes — the same idea as the work bento */
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(9, minmax(0, 1fr));
-  /* p portrait · d drawings · y playlist · s stack · c photos · l place */
+  grid-template-rows: repeat(12, minmax(0, 1fr));
+  /* p portrait · d drawings · y playlist · s stack · c photos · l place · n links */
   grid-template-areas:
     'p p d d'
     'p p d d'
@@ -1988,20 +1979,24 @@ a { color: inherit; text-decoration: none; }
     's s c c'
     's s c c'
     'l l c c'
-    'l l c c';
-  aspect-ratio: 0.58 / 1;
-  min-height: 840px;
+    'l l c c'
+    'l l c c'
+    'n n n n'
+    'n n n n';
+  aspect-ratio: 0.44 / 1;
+  min-height: 1095px;
 }
 @media (max-width: 560px) {
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 'y' 's' 'c' 'l';
+    grid-template-areas: 'p' 'd' 'y' 's' 'c' 'l' 'n';
     aspect-ratio: auto;
     min-height: 0;
   }
   .pcard--portrait { min-height: 320px; }
   .pcard--shot, .pcard--stack, .pcard--place, .pcard--vinyl { min-height: 220px; }
+  .pcard--links { min-height: 0; }
   .pcard--photos { min-height: 380px; }
 }
 
@@ -2148,6 +2143,7 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   background: linear-gradient(180deg, rgba(6, 8, 10, 0.5) 0%, rgba(6, 8, 10, 0.05) 26%, rgba(6, 8, 10, 0.08) 52%, rgba(6, 8, 10, 0.82) 100%);
 }
+.pcard--photos .pchip { padding: 6px 11px; font-size: 11.5px; }
 .pchips {
   position: absolute;
   inset: auto 10px 12px 10px;
@@ -2175,19 +2171,36 @@ a { color: inherit; text-decoration: none; }
 .pchip[data-on='true'] { background: #fff; color: #14181b; box-shadow: none; }
 
 /* ── the profile links under the About text ────────────────── */
-.plinks { display: grid; margin-top: 8px; list-style: none; padding: 0; border-top: 1px solid var(--line); }
-.plinks li { border-bottom: 1px solid var(--line); }
+.pcard--links { display: grid; gap: 10px; padding: 14px; grid-template-rows: auto 1fr; }
+/* three across inside the tile, one per row once it gets narrow */
+.plinks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 .plinks a {
-  display: flex;
+  /* name and arrow on top, handle under — side by side was clipping them */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 11px;
-  padding: 12px 2px;
+  align-content: center;
+  gap: 3px 8px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
   color: var(--text);
   text-decoration: none;
+  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
-.plinks__label { font-size: 14.5px; font-weight: 500; }
-.plinks__handle { margin-right: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.plinks a svg { opacity: 0.4; transition: transform 0.3s ease, opacity 0.3s ease; }
+.plinks a:hover { box-shadow: inset 0 0 0 1px var(--line-strong); transform: translateY(-2px); }
+@media (max-width: 560px) { .plinks { grid-template-columns: 1fr; } }
+.plinks__label { grid-column: 1; font-size: 14px; font-weight: 500; }
+.plinks__handle { grid-column: 1 / -1; font-family: var(--mono); font-size: 10.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plinks a svg { grid-column: 2; grid-row: 1; opacity: 0.4; transition: transform 0.3s ease, opacity 0.3s ease; }
 .plinks a:hover svg { opacity: 1; transform: translate(2px, -2px); }
 .plinks a:hover .plinks__handle { color: var(--text-mid); }
 
@@ -2195,22 +2208,41 @@ a { color: inherit; text-decoration: none; }
   .vinyl, .photos__img { transition: none; }
 }
 
+/* the Current / Born switch on the place card */
+.pchips--flow { position: static; inset: auto; justify-content: flex-start; }
+.pchip--ink {
+  color: var(--text);
+  background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
+  backdrop-filter: none;
+}
+.pchip--ink:hover { background: var(--bg-sunk); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.pchip--ink[data-on='true'] { background: var(--primary); color: var(--on-primary); box-shadow: none; }
+.place__meta a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+.place__meta a:hover { border-bottom-color: currentColor; }
+
 /* the place card */
-.pcard--place { display: grid; gap: 10px; padding: 14px; grid-template-rows: auto 1fr auto; }
+.pcard--place { display: grid; gap: 9px; padding: 14px; grid-template-rows: auto 1fr auto auto; }
 .place {
   position: relative;
   min-height: 0;
   border-radius: 12px;
   background:
-    radial-gradient(circle at 50% 52%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 62%),
+    radial-gradient(circle at 52% 50%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 68%),
     linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 100% 18px,
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 18px 100%,
     var(--bg-sunk);
 }
+.place__dot {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transition: left 0.65s cubic-bezier(0.33, 1, 0.68, 1), top 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+}
 .place__pin {
   position: absolute;
-  left: 50%;
-  top: 52%;
+  left: 0;
+  top: 0;
   width: 9px;
   height: 9px;
   margin: -4.5px 0 0 -4.5px;
@@ -2220,8 +2252,8 @@ a { color: inherit; text-decoration: none; }
 }
 .place__ring {
   position: absolute;
-  left: 50%;
-  top: 52%;
+  left: 0;
+  top: 0;
   width: 9px;
   height: 9px;
   margin: -4.5px 0 0 -4.5px;

@@ -80,13 +80,33 @@ export const aboutLinks = [
   { label: 'Behance', handle: 'karthikbabu13', href: 'https://www.behance.net/karthikbabu13' },
 ]
 
-/** The location card. */
-export const place = {
-  city: 'Chennai',
-  country: 'India',
-  coords: '13.0827° N, 80.2707° E',
-  tzLabel: 'IST',
-}
+/**
+ * The location card — two pins, current and born.
+ * `pin` is where the dot sits on the drawn map, as a percentage.
+ */
+export const places = [
+  {
+    key: 'current',
+    label: 'Current',
+    city: 'Chennai',
+    country: 'India',
+    coords: '13.0827° N, 80.2707° E',
+    pin: { x: 58, y: 44 },
+    href: '',
+  },
+  {
+    key: 'born',
+    label: 'Born',
+    city: 'Villupuram',
+    country: 'India',
+    coords: '11.9401° N, 79.4861° E',
+    pin: { x: 45, y: 62 },
+    href: 'https://maps.app.goo.gl/HnRycLDBaYb8xMud8',
+  },
+]
+
+/** Both places share a timezone. */
+export const place = { tzLabel: 'IST' }
 
 /** The "currently" line in the portrait caption. */
 export const currently = {
@@ -540,13 +560,11 @@ export const marquee = [
 // ── Awards & certificates (PLACEHOLDERS — replace with real ones) ──
 export type Award = { title: string; issuer: string; year: string; note?: string; kind: 'award' | 'certificate' | 'hackathon' }
 
-// ⚠️ PLACEHOLDERS — I made these up. Replace them with your real awards and
-// certificates, or empty the array and the About list hides itself.
+// TODO: add the years — the two Vibeathons need them to read apart.
 export const awards: Award[] = [
-  { title: 'Best Frontend Project', issuer: 'Company Hackathon', year: '2025', note: 'Built a live dashboard in 24 hours with a team of three.', kind: 'hackathon' },
-  { title: 'Design Excellence Award', issuer: 'Internal design review', year: '2024', note: 'For the shared component library adopted across squads.', kind: 'award' },
-  { title: 'Front-End Developer Certificate', issuer: 'Meta · Coursera', year: '2023', kind: 'certificate' },
-  { title: 'Rising Star', issuer: 'Engineering team', year: '2023', note: 'Fastest ramp-up on the product team.', kind: 'award' },
+  { title: 'Vibeathon', issuer: 'Zoho', year: '', kind: 'hackathon' },
+  { title: 'Vibeathon', issuer: 'Zoho', year: '', kind: 'hackathon' },
+  { title: 'Inktober', issuer: 'Zoho', year: '', kind: 'award' },
 ]
 
 // ── Opening intro (image hero) ────────────────────────────

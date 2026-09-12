@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { aboutLinks, awards, currently, education, intro_about, photoSets, place, playlist, roleList, stackCards } from '../data'
+import { aboutLinks, awards, currently, education, intro_about, photoSets, place, places, playlist, roleList, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -64,22 +64,76 @@ function PlaceCard() {
     timeZone: 'Asia/Kolkata',
   }).format(new Date())
 
+  const [which, setWhich] = useState(0)
+  const here = places[which]
+
   return (
     <div className="pcard pcard--place" style={{ gridArea: 'l' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
       <span className="pcard__label">Based in</span>
+
+      {/* the dot slides between the two pins rather than cutting */}
       <div className="place" aria-hidden="true">
-        <span className="place__pin" />
-        <span className="place__ring" />
+        <span className="place__dot" style={{ left: `${here.pin.x}%`, top: `${here.pin.y}%` }}>
+          <span className="place__pin" />
+          <span className="place__ring" />
+        </span>
       </div>
+
+      <div className="pchips pchips--flow">
+        {places.map((pl, i) => (
+          <button
+            type="button"
+            className="pchip pchip--ink"
+            key={pl.key}
+            data-on={i === which}
+            onPointerEnter={() => setWhich(i)}
+            onFocus={() => setWhich(i)}
+            onClick={() => setWhich(i)}
+          >
+            {pl.label}
+          </button>
+        ))}
+      </div>
+
       <div className="place__meta">
         <strong>
-          {place.city}, {place.country}
+          {here.href ? (
+            <a href={here.href} target="_blank" rel="noreferrer">
+              {here.city}, {here.country}
+            </a>
+          ) : (
+            <>
+              {here.city}, {here.country}
+            </>
+          )}
         </strong>
-        <span>{place.coords}</span>
+        <span>{here.coords}</span>
         <span className="place__time">
           {time} {place.tzLabel}
         </span>
+      </div>
+    </div>
+  )
+}
+
+/** Where else to find me — a full-width tile at the foot of the collage. */
+function LinksCard() {
+  const glow = useGlow<HTMLDivElement>()
+  return (
+    <div className="pcard pcard--links" style={{ gridArea: 'n' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
+      <Glow />
+      <span className="pcard__label">Elsewhere</span>
+      <div className="plinks">
+        {aboutLinks.map((l) => (
+          <a key={l.label} href={l.href} target="_blank" rel="noreferrer">
+            <span className="plinks__label">{l.label}</span>
+            <span className="plinks__handle">{l.handle}</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+              <path d="M7 17 17 7M9 7h8v8" />
+            </svg>
+          </a>
+        ))}
       </div>
     </div>
   )
@@ -178,20 +232,51 @@ export default function About() {
             ))}
           </div>
 
-          {/* where else to find me */}
-          <ul className="plinks">
-            {aboutLinks.map((l) => (
-              <li key={l.label}>
-                <a href={l.href} target="_blank" rel="noreferrer">
-                  <span className="plinks__label">{l.label}</span>
-                  <span className="plinks__handle">{l.handle}</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-                    <path d="M7 17 17 7M9 7h8v8" />
-                  </svg>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="fact">
+            <h3 className="about__sub">Experience</h3>
+            <ul className="roles">
+              {roleList.map((r) => (
+                <li className="role" key={r.org}>
+                  <span className="role__org">{r.org}</span>
+                  <span className="role__slash">/</span>
+                  <span className="role__title">{r.role}</span>
+                  <span className="role__years">{r.years}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="fact">
+            <h3 className="about__sub">Education</h3>
+            <ul className="roles">
+              {education.map((e) => (
+                <li className="role" key={e.school}>
+                  <span className="role__org">{e.school}</span>
+                  <span className="role__slash">/</span>
+                  <span className="role__title">{e.course}</span>
+                  <span className="role__years">{e.years}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* hides itself while the awards list is empty */}
+          {awards.length > 0 && (
+            <div className="fact">
+              <h3 className="about__sub">Recognition</h3>
+              <ul className="roles">
+                {awards.map((a) => (
+                  <li className="role" key={a.title}>
+                    <span className="role__org">{a.title}</span>
+                    <span className="role__slash">/</span>
+                    <span className="role__title">{a.issuer}</span>
+                    <span className="role__years">{a.year}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
         </motion.div>
 
         {/* right: the collage */}
@@ -228,62 +313,10 @@ export default function About() {
           <PhotosCard />
           <StackCard />
           <PlaceCard />
+          <LinksCard />
         </motion.div>
       </div>
 
-      {/* the resume facts, in three columns under the collage */}
-      <motion.div
-        className="wrap wrap--wide about__facts"
-        initial={{ opacity: 0, y: 26 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ type: 'spring', stiffness: 64, damping: 19 }}
-      >
-          <div className="fact">
-          <h3 className="about__sub">Experience</h3>
-          <ul className="roles">
-            {roleList.map((r) => (
-              <li className="role" key={r.org}>
-                <span className="role__org">{r.org}</span>
-                <span className="role__slash">/</span>
-                <span className="role__title">{r.role}</span>
-                <span className="role__years">{r.years}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="fact">
-          <h3 className="about__sub">Education</h3>
-          <ul className="roles">
-            {education.map((e) => (
-              <li className="role" key={e.school}>
-                <span className="role__org">{e.school}</span>
-                <span className="role__slash">/</span>
-                <span className="role__title">{e.course}</span>
-                <span className="role__years">{e.years}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* hides itself while the awards list is empty */}
-        {awards.length > 0 && (
-          <div className="fact">
-            <h3 className="about__sub">Recognition</h3>
-            <ul className="roles">
-              {awards.map((a) => (
-                <li className="role" key={a.title}>
-                  <span className="role__org">{a.title}</span>
-                  <span className="role__slash">/</span>
-                  <span className="role__title">{a.issuer}</span>
-                  <span className="role__years">{a.year}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </motion.div>
     </section>
   )
 }
