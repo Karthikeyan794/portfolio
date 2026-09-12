@@ -63,6 +63,7 @@ function StackCard() {
         {stackCards.map((c) => (
           <div className="trow" key={c.no}>
             <span className="trow__name">{c.label}</span>
+            <span className="trow__count">{c.tools.length}</span>
             <span className="trow__apps">
               {c.tools.map((t) => (
                 <ToolChip key={t.name} tool={t} />
