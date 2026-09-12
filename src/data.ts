@@ -52,17 +52,24 @@ export const education: { school: string; course: string; years: string }[] = [
  * `mono` instead. Drop an SVG in /public/logos and point `mark` at it later.
  */
 export type Tool = { name: string; mark?: string; mono?: string }
-export const stackCards: { no: string; label: string; tools: Tool[] }[] = [
-  { no: '01', label: 'research', tools: [{ name: 'Miro', mark: 'miro' }, { name: 'Balsamiq', mono: 'Bq' }] },
-  { no: '02', label: 'design', tools: [{ name: 'Figma', mark: 'figma' }, { name: 'Dora', mono: 'Do' }] },
+/**
+ * `image` shows behind a row while it's open.
+ * TODO: all five point at the same landscape as a stand-in — a quiet
+ * picture reads far better behind the name and tags than the Behance
+ * covers did, since those carry their own titles. Drop proper artwork in
+ * /public/toolkit and give each row its own.
+ */
+export const stackCards: { no: string; label: string; image: string; tools: Tool[] }[] = [
+  { no: '01', label: 'research', image: '/intro.jpg', tools: [{ name: 'Miro', mark: 'miro' }, { name: 'Balsamiq', mono: 'Bq' }] },
+  { no: '02', label: 'design', image: '/intro.jpg', tools: [{ name: 'Figma', mark: 'figma' }, { name: 'Dora', mono: 'Do' }] },
   {
     no: '03',
-    label: 'graphic',
+    label: 'graphic', image: '/intro.jpg',
     tools: [{ name: 'Photoshop', mono: 'Ps' }, { name: 'Illustrator', mono: 'Ai' }, { name: 'Canva', mono: 'Cv' }],
   },
   {
     no: '04',
-    label: 'code',
+    label: 'code', image: '/intro.jpg',
     tools: [
       { name: 'React', mark: 'react' },
       { name: 'JavaScript', mark: 'javascript' },
@@ -72,7 +79,7 @@ export const stackCards: { no: string; label: string; tools: Tool[] }[] = [
   },
   {
     no: '05',
-    label: 'ai',
+    label: 'ai', image: '/intro.jpg',
     tools: [
       { name: 'Claude', mark: 'claude' },
       { name: 'Cursor', mark: 'cursor' },

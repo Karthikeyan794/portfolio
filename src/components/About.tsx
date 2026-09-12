@@ -58,13 +58,27 @@ function ToolChip({ tool }: { tool: Tool }) {
  */
 function StackCard() {
   const glow = useGlow<HTMLDivElement>()
+  // the first row is open to begin with; pointing at or clicking another opens it
+  const [open, setOpen] = useState(0)
+
   return (
     <div className="pcard pcard--stack" style={{ gridArea: 's' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
       <span className="pcard__label">Toolkit</span>
       <div className="tools">
-        {stackCards.map((c) => (
-          <div className="trow" key={c.no}>
+        {stackCards.map((c, i) => (
+          <button
+            type="button"
+            className="trow"
+            key={c.no}
+            data-open={i === open}
+            aria-expanded={i === open}
+            onPointerEnter={() => setOpen(i)}
+            onFocus={() => setOpen(i)}
+            onClick={() => setOpen(i)}
+          >
+            <img className="trow__bg" src={c.image} alt="" loading="lazy" decoding="async" />
+            <span className="trow__veil" aria-hidden="true" />
             <span className="trow__name">{c.label}</span>
             <span className="trow__count">{c.tools.length}</span>
             <span className="trow__apps">
@@ -72,7 +86,7 @@ function StackCard() {
                 <ToolChip key={t.name} tool={t} />
               ))}
             </span>
-          </div>
+          </button>
         ))}
       </div>
     </div>

@@ -2428,11 +2428,15 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 0 10px;
   padding: 0 13px;
+  border: 0;
   border-radius: 12px;
   overflow: hidden;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
-  cursor: default;
+  cursor: pointer;
   transition:
     flex-grow 0.52s cubic-bezier(0.33, 1, 0.68, 1),
     background 0.4s ease,
@@ -2440,15 +2444,28 @@ a { color: inherit; text-decoration: none; }
     color 0.4s ease;
 }
 /* the others give way to whichever one is open */
-.tools:hover .trow { flex-grow: 0.8; }
-.tools .trow:hover {
-  flex-grow: 2.1;
-  background: var(--primary);
-  color: var(--on-primary);
+.tools .trow { flex-grow: 0.8; }
+.tools .trow[data-open='true'] {
+  flex-grow: 2.3;
+  color: #fff;
   box-shadow: none;
 }
 
+.trow__bg, .trow__veil {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.trow__bg { width: 100%; height: 100%; object-fit: cover; }
+.trow__veil {
+  background: linear-gradient(180deg, rgba(6, 10, 9, 0.42) 0%, rgba(6, 10, 9, 0.62) 100%);
+}
+.trow[data-open='true'] .trow__bg, .trow[data-open='true'] .trow__veil { opacity: 1; }
+
 .trow__name {
+  position: relative;
   grid-column: 1;
   grid-row: 1;
   font-family: var(--display);
@@ -2462,6 +2479,7 @@ a { color: inherit; text-decoration: none; }
 
 /* the count marks a closed row; it steps aside when the row opens */
 .trow__count {
+  position: relative;
   grid-column: 2;
   grid-row: 1;
   font-family: var(--mono);
@@ -2469,11 +2487,12 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
   transition: opacity 0.3s ease, transform 0.4s ease;
 }
-.trow:hover .trow__count { opacity: 0; transform: translateX(8px); }
+.trow[data-open='true'] .trow__count { opacity: 0; transform: translateX(8px); }
 
 /* The tools float in as pills — mark on a disc, then the name — rising
    and settling one after the next, the way the cards do in the reference. */
 .trow__apps {
+  position: relative;
   grid-column: 1 / -1;
   grid-row: 2;
   display: flex;
@@ -2488,7 +2507,7 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
   transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1), padding-top 0.5s ease, opacity 0.3s ease;
 }
-.trow:hover .trow__apps { max-height: 84px; padding-top: 9px; opacity: 1; pointer-events: auto; }
+.trow[data-open='true'] .trow__apps { max-height: 84px; padding-top: 9px; opacity: 1; }
 
 .tchip {
   display: inline-flex;
@@ -2500,23 +2519,21 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-    0 10px 18px -10px rgba(0, 0, 0, 0.65);
+  color: #14181b;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 18px -10px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px) saturate(1.3);
   -webkit-backdrop-filter: blur(10px) saturate(1.3);
   opacity: 0;
   transform: translateY(14px) scale(0.94);
   transition: opacity 0.34s ease, transform 0.52s cubic-bezier(0.34, 1.32, 0.64, 1);
 }
-.trow:hover .tchip { opacity: 1; transform: translateY(0) scale(1); }
+.trow[data-open='true'] .tchip { opacity: 1; transform: translateY(0) scale(1); }
 /* each one a beat behind the last */
-.trow:hover .tchip:nth-child(1) { transition-delay: 60ms; }
-.trow:hover .tchip:nth-child(2) { transition-delay: 120ms; }
-.trow:hover .tchip:nth-child(3) { transition-delay: 180ms; }
-.trow:hover .tchip:nth-child(4) { transition-delay: 240ms; }
+.trow[data-open='true'] .tchip:nth-child(1) { transition-delay: 60ms; }
+.trow[data-open='true'] .tchip:nth-child(2) { transition-delay: 120ms; }
+.trow[data-open='true'] .tchip:nth-child(3) { transition-delay: 180ms; }
+.trow[data-open='true'] .tchip:nth-child(4) { transition-delay: 240ms; }
 
 .tchip__mark {
   display: grid;
@@ -2524,8 +2541,8 @@ a { color: inherit; text-decoration: none; }
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #fff;
-  color: #14181b;
+  background: #14181b;
+  color: #fff;
 }
 .tchip__mark svg { width: 12px; height: 12px; fill: currentColor; }
 .tchip__mark b { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: -0.04em; }
