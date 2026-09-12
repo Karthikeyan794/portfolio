@@ -2718,3 +2718,10 @@ a { color: inherit; text-decoration: none; }
 .pcard--links .plinks__mark { width: 34px; height: 34px; border-radius: 10px; }
 .pcard--links .plinks__mark svg { width: 16px; height: 16px; }
 .pcard--links .plinks__mark b { font-size: 13px; }
+
+/* The foot row steps down too. All three share the same three rows, so
+   they'd otherwise be identical heights; these hang them from a common
+   baseline at different heights instead, which is what makes the row read
+   as a bento rather than three equal tiles. */
+.pcard--place { align-self: end; height: 82%; }
+.pcard--links { align-self: end; height: 66%; }
