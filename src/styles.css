@@ -2412,13 +2412,19 @@ a { color: inherit; text-decoration: none; }
    own. Replaces the accordion, whose shut rows could not reflow when the
    card resized. */
 .pcard--stack {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 12px;
-  padding: 16px;
+  position: relative;
+  display: block;
+  padding: 0;
+}
+.pcard--stack > .pcard__label {
+  position: absolute;
+  z-index: 3;
+  top: 16px;
+  left: 16px;
+  color: rgba(255, 255, 255, 0.82);
 }
 
-.deck { position: relative; min-height: 0; border-radius: 12px; overflow: hidden; }
+.deck { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
 .deck__track {
   display: flex;
   height: 100%;
@@ -2432,7 +2438,6 @@ a { color: inherit; text-decoration: none; }
   min-width: 0;
   display: flex;
   align-items: flex-end;
-  border-radius: 12px;
   overflow: hidden;
 }
 .slide__bg {
@@ -2446,14 +2451,14 @@ a { color: inherit; text-decoration: none; }
 .slide__veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.2) 46%, rgba(0, 0, 0, 0.62) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.14) 28%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.78) 100%);
 }
 .slide__body {
   position: relative;
   display: grid;
   gap: 12px;
   width: 100%;
-  padding: 16px;
+  padding: 16px 16px 54px;
   color: #fff;
 }
 .slide__name {
@@ -2509,6 +2514,9 @@ a { color: inherit; text-decoration: none; }
 
 /* ── the foot: pips that fill as the slide runs, and what comes next ── */
 .deck__nav {
+  position: absolute;
+  z-index: 3;
+  inset: auto 16px 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2521,13 +2529,13 @@ a { color: inherit; text-decoration: none; }
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: var(--line-strong);
+  background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
   overflow: hidden;
   transition: width 0.45s cubic-bezier(0.33, 1, 0.68, 1), background 0.3s ease;
 }
 .pip i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent); }
-.pip[data-on='true'] { width: 30px; background: var(--line); }
+.pip[data-on='true'] { width: 30px; background: rgba(255, 255, 255, 0.22); }
 /* only the live pip runs its fill */
 .pip[data-on='true'] i { animation: pip-fill linear forwards; }
 @keyframes pip-fill { from { width: 0; } to { width: 100%; } }
@@ -2541,12 +2549,12 @@ a { color: inherit; text-decoration: none; }
   background: none;
   font: inherit;
   font-size: 11px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.72);
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.25s ease;
 }
-.deck__next:hover { color: var(--text); }
+.deck__next:hover { color: #fff; }
 .deck__next svg { transition: transform 0.25s ease; }
 .deck__next:hover svg { transform: translateX(2px); }
 
