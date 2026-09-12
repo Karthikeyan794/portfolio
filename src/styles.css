@@ -1904,7 +1904,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 980px) {
   .about__grid { grid-template-columns: 1fr; }
   /* full width now, so the fixed height would stretch every card */
-  .collage { height: auto; grid-template-rows: repeat(13, minmax(80px, auto)); }
+  .collage { height: auto; grid-template-rows: repeat(15, minmax(70px, auto)); }
 }
 
 .about__col { display: grid; gap: 14px; align-content: start; }
@@ -2025,7 +2025,7 @@ a { color: inherit; text-decoration: none; }
   /* six columns, so the foot row can split 3 / 2 / 1 — four could only
      manage halves and quarters, and a quarter is too narrow for the map */
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   will-change: grid-template-columns, grid-template-rows;
   transition: grid-template-columns 0.62s cubic-bezier(0.33, 1, 0.68, 1),
     grid-template-rows 0.62s cubic-bezier(0.33, 1, 0.68, 1);
@@ -2036,18 +2036,20 @@ a { color: inherit; text-decoration: none; }
     'p p p d d d'
     'p p p d d d'
     'p p p d d d'
+    'p p p d d d'
     'p p p w w w'
     's s s w w w'
     's s s w w w'
-    's s s w w w'
-    's s s w w w'
-    's s s w w w'
+    's s s y y y'
+    's s s y y y'
+    's s s y y y'
+    'l l l y y y'
     'l l l y y y'
     'l l l y y y';
   /* The two columns break at different rows on purpose: the portrait runs
      six rows against the drawings' four, and the toolkit four against
      recognition's six. Matched pairs read as a plain two-column grid. */
-  height: 950px;
+  height: 1050px;
 }
 @media (max-width: 560px) {
   .collage {
@@ -2382,27 +2384,27 @@ a { color: inherit; text-decoration: none; }
    refuses to interpolate — the grid snaps instead of sliding. */
 .collage:has(.pcard--portrait:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.825fr 0.825fr 0.825fr 0.825fr 0.825fr 0.825fr 0.825fr 0.825fr;
 }
 .collage:has(.pcard--shot:hover) {
   grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr;
 }
 .collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
-  grid-template-rows: 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8286fr 0.8286fr;
+  grid-template-rows: 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 1.2fr 1.2fr 1.2fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
-  grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr;
-}
-.collage:has(.pcard--place:hover) {
-  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
-  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
+  grid-template-rows: 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9fr 0.9fr 0.9fr;
 }
 .collage:has(.pcard--music:hover) {
   grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
-  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
+  grid-template-rows: 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 0.8667fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr;
+}
+.collage:has(.pcard--place:hover) {
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
+  grid-template-rows: 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 0.95fr 1.2fr 1.2fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -2678,8 +2680,6 @@ a { color: inherit; text-decoration: none; }
 /* the place card shares the toolkit's column now, so it has room again */
 .pcard--place .place__meta span { font-size: 10px; }
 
-/* The two foot cards share the same two rows, so they'd otherwise be the
-   same height. Hanging them from a common baseline at different heights
-   gives the row a ragged top against a straight bottom. */
-.pcard--place { align-self: end; height: 100%; }
-.pcard--music { align-self: end; height: 84%; }
+/* The playlist reaches up past the place card into rows Recognition gave
+   up, so the two differ by their row spans now rather than by a height
+   percentage hung off a shared baseline. */
