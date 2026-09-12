@@ -2361,8 +2361,8 @@ a { color: inherit; text-decoration: none; }
 .np__play {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border: 0;
   border-radius: 50%;
   background: var(--accent);
@@ -2643,8 +2643,8 @@ a { color: inherit; text-decoration: none; }
 .np__skip {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -2663,11 +2663,12 @@ a { color: inherit; text-decoration: none; }
    card's top-right corner. */
 .pcard--music .np {
   align-self: end;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
 }
-/* record first, then the track it is playing */
+/* record, then the track, then the controls — all along the foot */
 .pcard--music .disc { grid-column: 1; grid-row: 1; }
 .pcard--music .np__meta { grid-column: 2; grid-row: 1; align-self: center; }
+.pcard--music .np__ctrl { grid-column: 3; grid-row: 1; }
 .pcard--music .np__bar { grid-column: 1 / -1; grid-row: 2; }
 
 .np__head {
@@ -2684,11 +2685,9 @@ a { color: inherit; text-decoration: none; }
 .np__out:hover { color: #fff; transform: translate(2px, -2px); }
 
 .np__ctrl {
-  position: absolute;
-  top: 11px;
-  right: 11px;
+  position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
