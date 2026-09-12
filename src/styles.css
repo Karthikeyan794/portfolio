@@ -2035,15 +2035,15 @@ a { color: inherit; text-decoration: none; }
     'p p p d d d'
     'p p p d d d'
     'p p p d d d'
+    'p p p d d d'
     'p p p w w w'
-    'p p p w w w'
     's s s w w w'
     's s s w w w'
     's s s w w w'
     's s s w w w'
-    'y y y l l n'
-    'y y y l l n'
-    'y y y l l n';
+    'y y y n l l'
+    'y y y n l l'
+    'y y y n l l';
   /* The two columns break at different rows on purpose: the portrait runs
      six rows against the drawings' four, and the toolkit four against
      recognition's six. Matched pairs read as a plain two-column grid. */
@@ -2053,7 +2053,7 @@ a { color: inherit; text-decoration: none; }
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 's' 'w' 'y' 'l' 'n';
+    grid-template-areas: 'p' 'd' 's' 'w' 'y' 'n' 'l';
     aspect-ratio: auto;
     height: auto;
     min-height: 0;
@@ -2398,7 +2398,7 @@ a { color: inherit; text-decoration: none; }
    repeat(6, minmax(0,1fr)) they are a different track type and CSS
    refuses to interpolate — the grid snaps instead of sliding.
 
-   The foot cards take rows only: their columns are 3/2/1, so nudging
+   The foot cards take rows only: their columns are 3/1/2, so nudging
    a column group would drag their neighbours about. */
 .collage:has(.pcard--portrait:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
@@ -2406,11 +2406,11 @@ a { color: inherit; text-decoration: none; }
 }
 .collage:has(.pcard--shot:hover) {
   grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
 }
 .collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
-  grid-template-rows: 0.8286fr 0.8286fr 0.8286fr 0.8286fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8286fr 0.8286fr 0.8286fr;
+  grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
@@ -2420,11 +2420,11 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
   grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
-.collage:has(.pcard--place:hover) {
+.collage:has(.pcard--links:hover) {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
-.collage:has(.pcard--links:hover) {
+.collage:has(.pcard--place:hover) {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
@@ -2724,4 +2724,10 @@ a { color: inherit; text-decoration: none; }
    baseline at different heights instead, which is what makes the row read
    as a bento rather than three equal tiles. */
 .pcard--place { align-self: end; height: 82%; }
-.pcard--links { align-self: end; height: 66%; }
+.pcard--links { align-self: end; height: 58%; }
+
+/* the links column is the smallest thing on the board; size it to its marks */
+.pcard--links { padding: 10px 6px; }
+.pcard--links .plinks { gap: 7px; }
+.pcard--links .plinks__mark { width: 30px; height: 30px; border-radius: 9px; }
+.pcard--links .plinks__mark svg { width: 14px; height: 14px; }
