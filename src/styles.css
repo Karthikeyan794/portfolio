@@ -1904,7 +1904,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 980px) {
   .about__grid { grid-template-columns: 1fr; }
   /* full width now, so the fixed height would stretch every card */
-  .collage { height: auto; grid-template-rows: repeat(11, minmax(80px, auto)); }
+  .collage { height: auto; grid-template-rows: repeat(13, minmax(80px, auto)); }
 }
 
 .about__col { display: grid; gap: 14px; align-content: start; }
@@ -2023,7 +2023,7 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   /* one rectangle, interlocking boxes — the same idea as the work bento */
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   will-change: grid-template-columns, grid-template-rows;
   transition: grid-template-columns 0.62s cubic-bezier(0.33, 1, 0.68, 1),
     grid-template-rows 0.62s cubic-bezier(0.33, 1, 0.68, 1);
@@ -2031,17 +2031,19 @@ a { color: inherit; text-decoration: none; }
   grid-template-areas:
     'p p d d'
     'p p d d'
+    'p p d d'
+    'p p y y'
     'p p y y'
     's s y y'
     's s y y'
-    's s y y'
+    's s w w'
     's s w w'
     's s w w'
     'l l n n'
     'l l n n'
     'l l n n';
-  /* 11 rows at about 66px — place and links share the last band */
-  height: 820px;
+  /* 13 rows at about 64px — the portrait takes five of them */
+  height: 950px;
 }
 @media (max-width: 560px) {
   .collage {
@@ -2327,108 +2329,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 
-/* ── the playlist crate ────────────────────────────────────
-   A glass folder that fans its covers out on hover, with a player
-   underneath. Kept at the end of the sheet with the other folder rules. */
+/* ── the playlist ────────────────────────────────────────── */
 .pcard--music {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 10px;
   padding: 14px;
 }
-
-.crate { position: relative; min-height: 0; display: grid; align-items: end; }
-
-/* the covers live behind the folder front and are tucked inside it at rest */
-.crate__covers {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 64%;
-  height: 0;
-  display: grid;
-  place-items: center;
-  z-index: 1;
-}
-.cover {
-  position: absolute;
-  width: 62px;
-  height: 62px;
-  padding: 0;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  cursor: pointer;
-  /* at rest they already peek out of the crate as a tight stack, so the
-     top of the card isn't just empty waiting for a hover */
-  transform: translate(calc(var(--x) * 0.3), -6px) scale(0.86) rotate(calc(var(--r) * 0.35));
-  opacity: 1;
-  transition: transform 0.6s cubic-bezier(0.34, 1.36, 0.64, 1), opacity 0.34s ease;
-}
-.pcard--music:hover .cover,
-.pcard--music:focus-within .cover {
-  transform: translate(var(--x), -20px) scale(1) rotate(var(--r));
-  opacity: 1;
-  transition-delay: var(--d);
-}
-.cover__art {
-  position: absolute;
-  inset: 0;
-  border-radius: 10px;
-  /* a real cover if the track has one, the drawn gradient otherwise */
-  background: var(--cover, none) center / cover no-repeat, var(--art);
-  box-shadow: 0 16px 26px -14px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(255, 255, 255, 0.16);
-}
-.cover__name {
-  position: absolute;
-  inset: auto 5px 5px 5px;
-  font-size: 8.5px;
-  line-height: 1.25;
-  font-weight: 600;
-  color: #fff;
-  text-align: left;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.cover[data-on='true'] .cover__art { box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 2px var(--accent); }
-/* the track that's cued stands out of the fan, so its name is readable */
-.pcard--music:hover .cover[data-on='true'],
-.pcard--music:focus-within .cover[data-on='true'] {
-  transform: translate(var(--x), -36px) scale(1.08) rotate(var(--r));
-  z-index: 9;
-}
-
-/* the folder front: frosted glass over whatever sits behind it */
-.crate__folder {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: flex-end;
-  height: 64%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--primary) 55%, transparent);
-  backdrop-filter: blur(16px) saturate(1.7);
-  -webkit-backdrop-filter: blur(16px) saturate(1.7);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
-    0 18px 34px -20px rgba(0, 0, 0, 0.7);
-  /* the folder tab, same language as the stack card */
-  clip-path: polygon(0 11px, 8px 0, 33% 0, 42% 11px, 100% 11px, 100% 100%, 0 100%);
-}
-.crate__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  color: #f2f5f1;
-}
+.deck { position: relative; min-height: 0; display: grid; place-items: center; }
 
 /* ── now playing ───────────────────────────────────────────── */
 .np {
@@ -2474,31 +2382,31 @@ a { color: inherit; text-decoration: none; }
    refuses to interpolate — the grid snaps instead of sliding. */
 .collage:has(.pcard--portrait:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
 }
 .collage:has(.pcard--shot:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 1.2fr 1.2fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr;
 }
 .collage:has(.pcard--music:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.8857fr 0.8857fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr;
+  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.8333fr 0.8333fr 0.8333fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8333fr 0.8333fr 0.8333fr;
+  grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr;
 }
 .collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 1.2fr 1.2fr 0.9556fr 0.9556fr 0.9556fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr;
 }
 .collage:has(.pcard--place:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 1.2fr 1.2fr 1.2fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
 .collage:has(.pcard--links:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 1.2fr 1.2fr 1.2fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -2705,3 +2613,29 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .disc { animation: none; }
 }
+
+/* the record is the whole picture now the crate has gone */
+.disc {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  margin: 0;
+  width: min(148px, 78%);
+  aspect-ratio: 1;
+  height: auto;
+}
+.np__skip {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.np__skip:hover { color: #fff; transform: translateX(2px); }
+.np { grid-template-columns: auto minmax(0, 1fr) auto auto; }

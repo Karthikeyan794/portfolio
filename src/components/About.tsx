@@ -243,48 +243,10 @@ function MusicCard() {
 
       <span className="pcard__label pcard__label--over">Playlist</span>
 
-      <div className="crate">
-        {/* the record turns while a track plays, and rests when it doesn't */}
+      {/* the record turns while a track plays, and rests when it doesn't */}
+      <div className="deck">
         <span className="disc" data-spin={playing} aria-hidden="true">
           <span className="disc__label" style={{ background: track.art }} />
-        </span>
-
-        {/* the covers sit behind the folder and rise out of it on hover */}
-        <span className="crate__covers" aria-hidden="true">
-          {playlist.tracks.map((t, i) => {
-            const mid = (playlist.tracks.length - 1) / 2
-            return (
-              <button
-                type="button"
-                className="cover"
-                key={t.title}
-                title={`${t.title} — ${t.artist}`}
-                data-on={i === cur}
-                onClick={() => setCur(i)}
-                style={{
-                  ['--x' as string]: `${(i - mid) * 36}px`,
-                  ['--r' as string]: `${(i - mid) * 8}deg`,
-                  ['--d' as string]: `${i * 55}ms`,
-                  ['--art' as string]: t.art,
-                  ...(t.cover ? { ['--cover' as string]: `url(${t.cover})` } : {}),
-                  zIndex: playlist.tracks.length - Math.abs(i - mid),
-                }}
-              >
-                <span className="cover__art" />
-                {!t.cover && <span className="cover__name">{t.title}</span>}
-              </button>
-            )
-          })}
-        </span>
-
-        {/* the glass folder front */}
-        <span className="crate__folder">
-          <span className="crate__brand">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d={marks.spotify} />
-            </svg>
-            Anirudh · {playlist.tracks.length} tracks
-          </span>
         </span>
       </div>
 
@@ -309,6 +271,15 @@ function MusicCard() {
           <strong>{track.title}</strong>
           <span>{track.artist}</span>
         </span>
+
+        <button
+          type="button"
+          className="np__skip"
+          onClick={() => setCur((c) => (c + 1) % playlist.tracks.length)}
+          aria-label="Next track"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" /></svg>
+        </button>
 
         <a className="np__out" href={playlist.href} target="_blank" rel="noreferrer" aria-label="Open in Spotify">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
