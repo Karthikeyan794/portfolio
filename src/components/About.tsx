@@ -77,7 +77,14 @@ function StackCard() {
             onFocus={() => setOpen(i)}
             onClick={() => setOpen(i)}
           >
-            <img className="trow__bg" src={c.image} alt="" loading="lazy" decoding="async" />
+            <img
+              className="trow__bg"
+              src={c.image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              style={c.shift ? { objectPosition: `center calc(32% + ${c.shift}px)` } : undefined}
+            />
             <span className="trow__veil" aria-hidden="true" />
             <span className="trow__name">
               <em>{c.label.charAt(0)}</em>
