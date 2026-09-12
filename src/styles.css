@@ -1723,7 +1723,8 @@ a { color: inherit; text-decoration: none; }
    gradient rectangle masked down to just the border, so the colour rides the
    edge instead of filling the card; a wide spread lights the two edges
    nearest the cursor at once. */
-.box__glow {
+.box__glow,
+.pcard__glow {
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -1750,10 +1751,14 @@ a { color: inherit; text-decoration: none; }
   mask-composite: exclude;
 }
 .box__hit:hover .box__glow,
-.box__hit:focus-visible .box__glow { opacity: 1; }
+.box__hit:focus-visible .box__glow,
+.pcard:hover .pcard__glow,
+.pcard:focus-visible .pcard__glow,
+.pcard:focus-within .pcard__glow { opacity: 1; }
 
 /* a soft bloom just outside the ring, same gradient, so the edge reads lit */
-.box__glow::after {
+.box__glow::after,
+.pcard__glow::after {
   content: '';
   position: absolute;
   inset: -3px;
@@ -1762,14 +1767,15 @@ a { color: inherit; text-decoration: none; }
   filter: blur(11px);
   opacity: 0.6;
 }
-:root[data-theme='dark'] .box__glow::after { opacity: 0.85; }
+:root[data-theme='dark'] .box__glow::after,
+:root[data-theme='dark'] .pcard__glow::after { opacity: 0.85; }
 
 /* the card's own hairline steps back while the glow is on */
 .box__hit { transition: box-shadow 0.4s ease; }
 .box__hit:hover { box-shadow: inset 0 0 0 1px transparent, 0 22px 46px -28px rgba(0, 0, 0, 0.55); }
 
 @media (prefers-reduced-motion: reduce) {
-  .box__glow { transition: none; }
+  .box__glow, .pcard__glow { transition: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1967,13 +1973,18 @@ a { color: inherit; text-decoration: none; }
   display: block;
   min-width: 0;
   min-height: 0;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  /* the same edge the work bento uses: no real border, a 1px inset ring, so
+     the image sits flush to the corner instead of inside a frame */
+  border: 0;
+  border-radius: 16px;
   background: var(--bg-elev);
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+  isolation: isolate;
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow 0.4s ease;
 }
-.pcard:hover { border-color: var(--line-strong); }
+/* the hairline steps back while the lit ring is on — same as .box__hit */
+.pcard:hover { box-shadow: inset 0 0 0 1px transparent, 0 22px 46px -28px rgba(0, 0, 0, 0.55); }
 .pcard__label {
   font-family: var(--mono);
   font-size: 10.5px;

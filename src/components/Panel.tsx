@@ -11,8 +11,8 @@ function Body({ id }: { id: PanelId }) {
       return (
         <>
           {projects.map((p) => (
-            <article className="pcard" key={p.title}>
-              <div className="pcard__top">
+            <article className="labcard" key={p.title}>
+              <div className="labcard__top">
                 <strong>{p.title}</strong>
                 <span className="card__year">{p.year}</span>
               </div>
@@ -25,7 +25,7 @@ function Body({ id }: { id: PanelId }) {
                 ))}
               </div>
               {p.behance && (
-                <a className="pcard__link" href={p.behance} target="_blank" rel="noreferrer">
+                <a className="labcard__link" href={p.behance} target="_blank" rel="noreferrer">
                   Open project ↗
                 </a>
               )}
@@ -56,8 +56,8 @@ function Body({ id }: { id: PanelId }) {
           </div>
           <h3 className="panel__h">Experience</h3>
           {experience.map((r) => (
-            <div className="pcard" key={r.company}>
-              <div className="pcard__top">
+            <div className="labcard" key={r.company}>
+              <div className="labcard__top">
                 <strong>{r.company}</strong>
                 <span className="card__year">{r.period}</span>
               </div>
@@ -76,8 +76,8 @@ function Body({ id }: { id: PanelId }) {
         <>
           <p className="panel__lead">Placeholder frames for now — real award photos go here.</p>
           {awards.map((a) => (
-            <div className="pcard" key={a.title}>
-              <div className="pcard__top">
+            <div className="labcard" key={a.title}>
+              <div className="labcard__top">
                 <strong>{a.title}</strong>
                 <span className="card__year">{a.year}</span>
               </div>

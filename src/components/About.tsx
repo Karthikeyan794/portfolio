@@ -1,12 +1,43 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { currently, intro_about, place, roleList, stackCards } from '../data'
+
+/**
+ * Light the card's border where the cursor is, exactly like the work bento.
+ * rAF-throttled and written straight to CSS variables, so nothing re-renders
+ * while the pointer moves.
+ */
+function useGlow<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+  const raf = useRef(0)
+
+  function onPointerMove(e: React.PointerEvent<T>) {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width) * 100
+    const y = ((e.clientY - r.top) / r.height) * 100
+    if (raf.current) return
+    raf.current = requestAnimationFrame(() => {
+      raf.current = 0
+      el.style.setProperty('--gx', `${x.toFixed(1)}%`)
+      el.style.setProperty('--gy', `${y.toFixed(1)}%`)
+    })
+  }
+
+  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+  return { ref, onPointerMove }
+}
+
+const Glow = () => <span className="pcard__glow" aria-hidden="true" />
 
 /** Folder tabs stacked front to back; point at one and it slides forward. */
 function StackCard() {
   const [open, setOpen] = useState(0)
+  const glow = useGlow<HTMLDivElement>()
   return (
-    <div className="pcard pcard--stack" style={{ gridArea: 's' }}>
+    <div className="pcard pcard--stack" style={{ gridArea: 's' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
+      <Glow />
       <span className="pcard__label">Stack / {stackCards.length} folders</span>
       <div className="folders" onPointerLeave={() => setOpen(0)}>
         {stackCards.map((c, i) => (
@@ -26,6 +57,7 @@ function StackCard() {
 
 /** Where I am — a drawn panel rather than a map image. */
 function PlaceCard() {
+  const glow = useGlow<HTMLDivElement>()
   const time = new Intl.DateTimeFormat('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
@@ -33,7 +65,8 @@ function PlaceCard() {
   }).format(new Date())
 
   return (
-    <div className="pcard pcard--place" style={{ gridArea: 'l' }}>
+    <div className="pcard pcard--place" style={{ gridArea: 'l' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
+      <Glow />
       <span className="pcard__label">Based in</span>
       <div className="place" aria-hidden="true">
         <span className="place__pin" />
@@ -53,6 +86,9 @@ function PlaceCard() {
 }
 
 export default function About() {
+  const portraitGlow = useGlow<HTMLElement>()
+  const shotGlow = useGlow<HTMLAnchorElement>()
+
   return (
     <section className="section about" id="about">
       <div className="wrap wrap--wide about__grid">
@@ -92,7 +128,8 @@ export default function About() {
           viewport={{ once: true, amount: 0.15 }}
           transition={{ type: 'spring', stiffness: 62, damping: 18, delay: 0.08 }}
         >
-          <figure className="pcard pcard--portrait" style={{ gridArea: 'p' }}>
+          <figure className="pcard pcard--portrait" style={{ gridArea: 'p' }} ref={portraitGlow.ref} onPointerMove={portraitGlow.onPointerMove}>
+            <Glow />
             <img src={currently.portrait} alt="" loading="lazy" decoding="async" />
             <figcaption>
               <span className="pcard__now">
@@ -102,7 +139,8 @@ export default function About() {
             </figcaption>
           </figure>
 
-          <a className="pcard pcard--shot" href="#/project/drawings" style={{ gridArea: 'd' }}>
+          <a className="pcard pcard--shot" href="#/project/drawings" style={{ gridArea: 'd' }} ref={shotGlow.ref} onPointerMove={shotGlow.onPointerMove}>
+            <Glow />
             <img src="/bento/art.jpg" alt="" loading="lazy" decoding="async" />
             <span className="pcard__label pcard__label--over">Drawings</span>
             <span className="pcard__go" aria-hidden="true">

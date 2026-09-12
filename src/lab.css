@@ -161,7 +161,7 @@
 }
 .panel .iconbtn { background: transparent; color: #9fd8e6; border-color: rgba(34, 211, 238, 0.35); }
 
-.pcard {
+.labcard {
   display: grid;
   gap: 8px;
   padding: 16px;
@@ -169,9 +169,9 @@
   border: 1px solid rgba(120, 190, 255, 0.14);
   background: rgba(11, 18, 32, 0.7);
 }
-.pcard__top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; color: #e6f0ff; }
-.pcard__link { color: #22d3ee; font-size: 14px; width: fit-content; }
-.pcard__link:hover { text-decoration: underline; }
+.labcard__top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; color: #e6f0ff; }
+.labcard__link { color: #22d3ee; font-size: 14px; width: fit-content; }
+.labcard__link:hover { text-decoration: underline; }
 
 /* ── enter screen ───────────────────────────────────────── */
 .enter {
