@@ -27,7 +27,7 @@
   --sans: 'Roboto', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   /* a display face with some character, for banner headlines */
-  --display-alt: 'Space Grotesk', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  --display-alt: 'Instrument Serif', 'Playfair Display', Georgia, serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --hud: 'Rajdhani', var(--sans);
   color-scheme: light;
@@ -2497,11 +2497,14 @@ a { color: inherit; text-decoration: none; }
 /* on the banner the name is a headline, not a list row */
 .trow[data-open='true'] .trow__name {
   font-family: var(--display-alt);
-  font-weight: 700;
+  font-weight: 400;
+  /* Instrument Serif ships one weight, so a hairline stroke thickens it
+     rather than letting the browser smear a synthetic bold */
+  -webkit-text-stroke: 0.45px currentColor;
   /* sized to hold 'Artificial Intelligence' on one line at this card
      width — wrapped, it pushed two tags out of the row */
-  font-size: 16px;
-  letter-spacing: -0.015em;
+  font-size: 21px;
+  letter-spacing: 0.005em;
   /* tight, so the 20px below is the gap you actually see rather than
      20px plus the line box's descender space */
   line-height: 1.1;
