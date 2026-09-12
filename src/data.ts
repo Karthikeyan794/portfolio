@@ -53,20 +53,18 @@ export const education: { school: string; course: string; years: string }[] = [
  */
 export type Tool = { name: string; mark?: string; mono?: string }
 /**
- * `image` shows behind a row while it's open.
- * TODO: all five point at the same landscape as a stand-in — a quiet
- * picture reads far better behind the name and tags than the Behance
- * covers did, since those carry their own titles. Drop proper artwork in
- * /public/toolkit and give each row its own.
+ * `image` shows behind a row while it's open. Your artwork, resized to
+ * 1000px wide JPEGs — the originals are 1670px PNGs and live in
+ * /assets-src/toolkit, out of the build.
  */
 export const stackCards: { no: string; label: string; image: string; tools: Tool[] }[] = [
   // TODO: Maze and Notion are my guess at your research tools — the resume
   // lists the skills (usability testing, personas) but not what you use.
-  { no: '01', label: 'research', image: '/intro.jpg', tools: [{ name: 'Maze', mark: 'maze' }, { name: 'Notion', mark: 'notion' }] },
+  { no: '01', label: 'Research', image: '/toolkit/research.jpg', tools: [{ name: 'Maze', mark: 'maze' }, { name: 'Notion', mark: 'notion' }] },
   {
     no: '02',
-    label: 'design',
-    image: '/intro.jpg',
+    label: 'Design',
+    image: '/toolkit/design.jpg',
     tools: [
       { name: 'Figma', mark: 'figma' },
       { name: 'Dora', mono: 'Do' },
@@ -76,7 +74,7 @@ export const stackCards: { no: string; label: string; image: string; tools: Tool
   },
   {
     no: '03',
-    label: 'graphic', image: '/intro.jpg',
+    label: 'Graphic', image: '/toolkit/graphic.jpg',
     tools: [
       { name: 'Photoshop', mono: 'Ps' },
       { name: 'Illustrator', mono: 'Ai' },
@@ -86,7 +84,7 @@ export const stackCards: { no: string; label: string; image: string; tools: Tool
   },
   {
     no: '04',
-    label: 'code', image: '/intro.jpg',
+    label: 'Code', image: '/toolkit/code.jpg',
     tools: [
       { name: 'React', mark: 'react' },
       { name: 'JavaScript', mark: 'javascript' },
@@ -96,7 +94,7 @@ export const stackCards: { no: string; label: string; image: string; tools: Tool
   },
   {
     no: '05',
-    label: 'ai', image: '/intro.jpg',
+    label: 'AI', image: '/toolkit/ai.jpg',
     tools: [
       { name: 'Claude', mark: 'claude' },
       { name: 'Cursor', mark: 'cursor' },

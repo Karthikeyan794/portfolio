@@ -79,7 +79,10 @@ function StackCard() {
           >
             <img className="trow__bg" src={c.image} alt="" loading="lazy" decoding="async" />
             <span className="trow__veil" aria-hidden="true" />
-            <span className="trow__name">{c.label}</span>
+            <span className="trow__name">
+              <em>{c.label.charAt(0)}</em>
+              {c.label.slice(1)}
+            </span>
             <span className="trow__count">{c.tools.length}</span>
             <span className="trow__apps">
               {c.tools.map((t) => (
