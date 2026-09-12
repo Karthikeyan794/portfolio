@@ -2684,9 +2684,9 @@ a { color: inherit; text-decoration: none; }
    up, so the two differ by their row spans now rather than by a height
    percentage hung off a shared baseline.
 
-   The 24px below nudges the boundary between Recognition and the playlist
+   The 84px below nudges the boundary between Recognition and the playlist
    down without touching the 10px gutter: Recognition grows past the gap,
-   the playlist starts the same 24px lower. That lands the playlist on
-   390px. */
-.pcard--awards { height: calc(100% + 24px); }
-.pcard--music { align-self: end; height: calc(100% - 24px); }
+   the playlist starts the same 84px lower. That lands the playlist on
+   330px and Recognition on 286. */
+.pcard--awards { height: calc(100% + 84px); }
+.pcard--music { align-self: end; height: calc(100% - 84px); }
