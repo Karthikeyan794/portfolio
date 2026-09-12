@@ -90,7 +90,11 @@ function StackCard() {
               <em>{c.label.charAt(0)}</em>
               {c.label.slice(1)}
             </span>
-            <span className="trow__count">{c.tools.length}</span>
+            <span className="trow__chev" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m9 5 7 7-7 7" />
+              </svg>
+            </span>
             <span className="trow__apps">
               {c.tools.map((t) => (
                 <ToolChip key={t.name} tool={t} />
