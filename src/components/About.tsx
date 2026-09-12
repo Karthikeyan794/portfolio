@@ -242,30 +242,17 @@ function MusicCard() {
       <span className="crate__veil" aria-hidden="true" />
 
       <span className="pcard__label pcard__label--over">Playlist</span>
+      <a className="pcard__go" href={playlist.href} target="_blank" rel="noreferrer" aria-label="Open in Spotify">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+          <path d="M7 17 17 7M9 7h8v8" />
+        </svg>
+      </a>
 
-      {/* the record turns while a track plays, and rests when it doesn't */}
-      <div className="deck">
+      {/* record on the left, controls on the right */}
+      <div className="np">
         <span className="disc" data-spin={playing} aria-hidden="true">
           <span className="disc__label" style={{ background: track.art }} />
         </span>
-      </div>
-
-      {/* now playing */}
-      <div className="np">
-        <button
-          type="button"
-          className="np__play"
-          onClick={toggle}
-          disabled={!playable}
-          aria-label={playing ? `Pause ${track.title}` : `Play ${track.title}`}
-          title={playable ? undefined : 'Add the MP3 to /public/music to play it here'}
-        >
-          {playing ? (
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h4v16H7zM13 4h4v16h-4z" /></svg>
-          ) : (
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3.5 20 12 7 20.5z" /></svg>
-          )}
-        </button>
 
         <span className="np__meta">
           <strong>{track.title}</strong>
@@ -281,11 +268,20 @@ function MusicCard() {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" /></svg>
         </button>
 
-        <a className="np__out" href={playlist.href} target="_blank" rel="noreferrer" aria-label="Open in Spotify">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-            <path d="M7 17 17 7M9 7h8v8" />
-          </svg>
-        </a>
+        <button
+          type="button"
+          className="np__play"
+          onClick={toggle}
+          disabled={!playable}
+          aria-label={playing ? `Pause ${track.title}` : `Play ${track.title}`}
+          title={playable ? undefined : 'Add the MP3 to /public/music to play it here'}
+        >
+          {playing ? (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h4v16H7zM13 4h4v16h-4z" /></svg>
+          ) : (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3.5 20 12 7 20.5z" /></svg>
+          )}
+        </button>
 
         <span className="np__bar">
           <i style={{ width: `${pct}%` }} />

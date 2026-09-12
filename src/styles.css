@@ -2131,6 +2131,8 @@ a { color: inherit; text-decoration: none; }
   transition: transform 0.3s ease;
 }
 .pcard--shot:hover .pcard__go { transform: translate(2px, -2px); }
+.pcard--music .pcard__go { z-index: 3; }
+.pcard--music:hover .pcard__go { transform: translate(2px, -2px); }
 
 /* the folder stack */
 .pcard--stack { display: grid; gap: 9px; padding: 14px; grid-template-rows: auto 1fr auto; }
@@ -2336,7 +2338,6 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   padding: 14px;
 }
-.deck { position: relative; min-height: 0; display: grid; place-items: center; }
 
 /* ── now playing ───────────────────────────────────────────── */
 .np {
@@ -2620,9 +2621,9 @@ a { color: inherit; text-decoration: none; }
   left: auto;
   bottom: auto;
   margin: 0;
-  width: min(148px, 78%);
-  aspect-ratio: 1;
-  height: auto;
+  width: 56px;
+  height: 56px;
+  flex: none;
 }
 .np__skip {
   display: grid;
@@ -2638,4 +2639,17 @@ a { color: inherit; text-decoration: none; }
   transition: color 0.25s ease, transform 0.25s ease;
 }
 .np__skip:hover { color: #fff; transform: translateX(2px); }
-.np { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+.np {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 6px 10px;
+  align-items: center;
+}
+/* Record on the left, controls on the right, and the title on its own line
+   underneath — sharing one row with a 56px record left it about 65px of
+   space and every title but one was truncated. */
+.pcard--music .np { align-self: end; }
+.pcard--music .disc { grid-column: 1; grid-row: 1; }
+.pcard--music .np__skip { grid-column: 3; grid-row: 1; }
+.pcard--music .np__play { grid-column: 4; grid-row: 1; }
+.pcard--music .np__meta { grid-column: 1 / -1; grid-row: 2; }
+.pcard--music .np__bar { grid-column: 1 / -1; grid-row: 3; }
