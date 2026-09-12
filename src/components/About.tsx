@@ -121,38 +121,40 @@ function PlaceCard() {
 
       <span className="pcard__label">Based in</span>
 
-      <div className="pchips pchips--flow">
-        {places.map((pl, i) => (
-          <button
-            type="button"
-            className="pchip pchip--ink"
-            key={pl.key}
-            data-on={i === which}
-            onPointerEnter={() => setWhich(i)}
-            onFocus={() => setWhich(i)}
-            onClick={() => setWhich(i)}
-          >
-            {pl.label}
-          </button>
-        ))}
-      </div>
+      <div className="place__foot">
+        <div className="place__meta">
+          <strong>
+            {here.href ? (
+              <a href={here.href} target="_blank" rel="noreferrer">
+                {here.city}, {here.country}
+              </a>
+            ) : (
+              <>
+                {here.city}, {here.country}
+              </>
+            )}
+          </strong>
+          <span>{here.coords}</span>
+          <span className="place__time">
+            {time} {place.tzLabel}
+          </span>
+        </div>
 
-      <div className="place__meta">
-        <strong>
-          {here.href ? (
-            <a href={here.href} target="_blank" rel="noreferrer">
-              {here.city}, {here.country}
-            </a>
-          ) : (
-            <>
-              {here.city}, {here.country}
-            </>
-          )}
-        </strong>
-        <span>{here.coords}</span>
-        <span className="place__time">
-          {time} {place.tzLabel}
-        </span>
+        <div className="pchips">
+          {places.map((pl, i) => (
+            <button
+              type="button"
+              className="pchip"
+              key={pl.key}
+              data-on={i === which}
+              onPointerEnter={() => setWhich(i)}
+              onFocus={() => setWhich(i)}
+              onClick={() => setWhich(i)}
+            >
+              {pl.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

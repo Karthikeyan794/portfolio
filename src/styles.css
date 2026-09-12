@@ -2035,14 +2035,15 @@ a { color: inherit; text-decoration: none; }
     'p p y y'
     'p p y y'
     's s y y'
-    's s y y'
     's s w w'
     's s w w'
     's s w w'
-    'l l n n'
-    'l l n n'
-    'l l n n';
-  /* 13 rows at about 64px — the portrait takes five of them */
+    'l l l l'
+    'l l l l'
+    'l l l l'
+    'n n n n';
+  /* 13 rows at about 64px. Place runs the full width, the playlist keeps a
+     half, and the links are a single-row strip. */
   height: 950px;
 }
 @media (max-width: 560px) {
@@ -2204,15 +2205,18 @@ a { color: inherit; text-decoration: none; }
 /* ── the profile links under the About text ────────────────── */
 .pcard--links {
   display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 7px;
-  padding: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
 }
+.pcard--links .pcard__label { white-space: nowrap; }
 /* three across inside the tile, one per row once it gets narrow */
 .plinks {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-content: center;
-  gap: 4px;
+  gap: 8px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2275,12 +2279,20 @@ a { color: inherit; text-decoration: none; }
 .pcard--place {
   position: relative;
   display: grid;
-  align-content: space-between;
+  grid-template-rows: auto 1fr;
   gap: 8px;
-  padding: 12px;
+  padding: 13px 14px;
+}
+.place__foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
 }
 /* the map sits behind the text now — a panel of its own no longer fits */
-.pcard--place > .pcard__label, .pcard--place > .pchips, .pcard--place > .place__meta { position: relative; z-index: 1; }
+.pcard--place > .pcard__label { position: relative; z-index: 1; }
 .place {
   position: absolute;
   inset: 0;
@@ -2391,23 +2403,23 @@ a { color: inherit; text-decoration: none; }
 }
 .collage:has(.pcard--music:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr;
+  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
 }
 .collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr;
 }
 .collage:has(.pcard--place:hover) {
-  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr;
 }
 .collage:has(.pcard--links:hover) {
-  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
