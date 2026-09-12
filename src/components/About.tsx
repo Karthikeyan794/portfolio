@@ -52,56 +52,86 @@ function ToolChip({ tool }: { tool: Tool }) {
 }
 
 /**
- * The stack, as a board rather than a folder drawer: every tool is on show
- * at once, grouped by what it's for. Nothing to hover to find out what's
- * inside, and no dead space waiting for a folder to open.
+ * The toolkit, as a deck: one category at a time filling the card, sliding
+ * left to right on its own. Pointing at it holds the slide so you can read
+ * it, and the pips at the foot jump straight to one.
  */
+const SLIDE_MS = 4200
+
 function StackCard() {
   const glow = useGlow<HTMLDivElement>()
-  // the first row is open to begin with; pointing at or clicking another opens it
-  const [open, setOpen] = useState(0)
+  const [i, setI] = useState(0)
+  const [held, setHeld] = useState(false)
+
+  useEffect(() => {
+    if (held) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setInterval(() => setI((n) => (n + 1) % stackCards.length), SLIDE_MS)
+    return () => clearInterval(t)
+  }, [held])
+
+  const next = () => setI((n) => (n + 1) % stackCards.length)
 
   return (
-    <div className="pcard pcard--stack" style={{ gridArea: 's' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
+    <div
+      className="pcard pcard--stack"
+      style={{ gridArea: 's' }}
+      ref={glow.ref}
+      onPointerMove={glow.onPointerMove}
+      onPointerEnter={() => setHeld(true)}
+      onPointerLeave={() => setHeld(false)}
+    >
       <Glow />
       <span className="pcard__label">Toolkit</span>
-      <div className="tools">
-        {stackCards.map((c, i) => (
-          <button
-            type="button"
-            className="trow"
-            key={c.no}
-            data-open={i === open}
-            aria-expanded={i === open}
-            onPointerEnter={() => setOpen(i)}
-            onFocus={() => setOpen(i)}
-            onClick={() => setOpen(i)}
-          >
-            <img
-              className="trow__bg"
-              src={c.image}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              style={c.shift ? { objectPosition: `center calc(32% + ${c.shift}px)` } : undefined}
-            />
-            <span className="trow__veil" aria-hidden="true" />
-            <span className="trow__name">
-              <em>{c.label.charAt(0)}</em>
-              {c.label.slice(1)}
-            </span>
-            <span className="trow__chev" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m9 5 7 7-7 7" />
-              </svg>
-            </span>
-            <span className="trow__apps">
-              {c.tools.map((t) => (
-                <ToolChip key={t.name} tool={t} />
-              ))}
-            </span>
-          </button>
-        ))}
+
+      <div className="deck">
+        <div className="deck__track" style={{ transform: `translateX(-${i * 100}%)` }}>
+          {stackCards.map((c, n) => (
+            <article className="slide" key={c.no} aria-hidden={n !== i}>
+              <img
+                className="slide__bg"
+                src={c.image}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                style={c.shift ? { objectPosition: `center calc(32% + ${c.shift}px)` } : undefined}
+              />
+              <span className="slide__veil" aria-hidden="true" />
+              <span className="slide__body">
+                <span className="slide__name">{c.label}</span>
+                <span className="slide__apps">
+                  {c.tools.map((t) => (
+                    <ToolChip key={t.name} tool={t} />
+                  ))}
+                </span>
+              </span>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="deck__nav">
+        <span className="pips">
+          {stackCards.map((c, n) => (
+            <button
+              type="button"
+              className="pip"
+              key={c.no}
+              data-on={n === i}
+              onClick={() => setI(n)}
+              aria-label={c.label}
+            >
+              <i style={{ animationDuration: `${SLIDE_MS}ms`, animationPlayState: held ? 'paused' : 'running' }} />
+            </button>
+          ))}
+        </span>
+
+        <button type="button" className="deck__next" onClick={next} aria-label="Next">
+          {stackCards[(i + 1) % stackCards.length].label}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m9 5 7 7-7 7" />
+          </svg>
+        </button>
       </div>
     </div>
   )
