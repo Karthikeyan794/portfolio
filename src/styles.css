@@ -1904,7 +1904,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 980px) {
   .about__grid { grid-template-columns: 1fr; }
   /* full width now, so the fixed height would stretch every card */
-  .collage { height: auto; grid-template-rows: repeat(13, minmax(80px, auto)); }
+  .collage { height: auto; grid-template-rows: repeat(12, minmax(80px, auto)); }
 }
 
 .about__col { display: grid; gap: 14px; align-content: start; }
@@ -2022,35 +2022,35 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   gap: 10px;
   /* one rectangle, interlocking boxes — the same idea as the work bento */
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  /* six columns, so the foot row can split 3 / 2 / 1 — four could only
+     manage halves and quarters, and a quarter is too narrow for the map */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   will-change: grid-template-columns, grid-template-rows;
   transition: grid-template-columns 0.62s cubic-bezier(0.33, 1, 0.68, 1),
     grid-template-rows 0.62s cubic-bezier(0.33, 1, 0.68, 1);
   /* p portrait · d drawings · y playlist · s stack · c photos · l place · n links */
   grid-template-areas:
-    'p p d d'
-    'p p d d'
-    'p p d d'
-    'p p y y'
-    'p p y y'
-    's s y y'
-    's s w w'
-    's s w w'
-    's s w w'
-    'l l l l'
-    'l l l l'
-    'l l l l'
-    'n n n n';
-  /* 13 rows at about 64px. Place runs the full width, the playlist keeps a
-     half, and the links are a single-row strip. */
+    'p p p d d d'
+    'p p p d d d'
+    'p p p d d d'
+    'p p p d d d'
+    'p p p d d d'
+    's s s w w w'
+    's s s w w w'
+    's s s w w w'
+    's s s w w w'
+    'y y y l l n'
+    'y y y l l n'
+    'y y y l l n';
+  /* the foot row: playlist widest, place beside it, links a slim column */
   height: 950px;
 }
 @media (max-width: 560px) {
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 'y' 's' 'l' 'w' 'n';
+    grid-template-areas: 'p' 'd' 's' 'w' 'y' 'l' 'n';
     aspect-ratio: auto;
     height: auto;
     min-height: 0;
@@ -2281,15 +2281,16 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 8px;
-  padding: 13px 14px;
+  padding: 12px;
 }
 .place__foot {
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 9px;
 }
 /* the map sits behind the text now — a panel of its own no longer fits */
 .pcard--place > .pcard__label { position: relative; z-index: 1; }
@@ -2333,7 +2334,7 @@ a { color: inherit; text-decoration: none; }
 }
 @keyframes place-ping { 0% { transform: scale(1); opacity: 0.6; } 70%, 100% { transform: scale(4.5); opacity: 0; } }
 .place__meta { display: grid; gap: 2px; }
-.place__meta strong { font-size: 15px; font-weight: 600; }
+.place__meta strong { font-size: 13.5px; font-weight: 600; }
 .place__meta span { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
 .place__time { color: var(--accent-ink) !important; }
 
@@ -2391,35 +2392,38 @@ a { color: inherit; text-decoration: none; }
    state, so nothing re-renders while the cursor moves.
 
    The base tracks MUST stay a plain fr list. Written as
-   repeat(4, minmax(0,1fr)) they are a different track type and CSS
-   refuses to interpolate — the grid snaps instead of sliding. */
+   repeat(6, minmax(0,1fr)) they are a different track type and CSS
+   refuses to interpolate — the grid snaps instead of sliding.
+
+   The foot cards only take rows: their columns are 3/2/1, so nudging
+   the column groups would drag their neighbours about. */
 .collage:has(.pcard--portrait:hover) {
-  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr;
 }
 .collage:has(.pcard--shot:hover) {
-  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr;
-}
-.collage:has(.pcard--music:hover) {
-  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr;
+  grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr 0.8571fr;
 }
 .collage:has(.pcard--stack:hover) {
-  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
+  grid-template-rows: 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9fr 0.9fr 0.9fr;
 }
 .collage:has(.pcard--awards:hover) {
-  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr;
+  grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
+  grid-template-rows: 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9fr 0.9fr 0.9fr;
+}
+.collage:has(.pcard--music:hover) {
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
+  grid-template-rows: 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 1.2fr 1.2fr 1.2fr;
 }
 .collage:has(.pcard--place:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 1.2fr 1.2fr 1.2fr;
 }
 .collage:has(.pcard--links:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 0.9833fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 0.9333fr 1.2fr 1.2fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -2691,3 +2695,23 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 5px;
 }
+
+/* the place card is a third of the foot row wide; trim to suit */
+.pcard--place .pchip { padding: 5px 9px; font-size: 11px; }
+.pcard--place .place__meta span { font-size: 9.5px; }
+
+/* Elsewhere is a single column now — the marks alone, names in the tooltip */
+.pcard--links {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+}
+.pcard--links .pcard__label { display: none; }
+.pcard--links .plinks { grid-template-columns: minmax(0, 1fr); gap: 9px; justify-items: center; }
+.pcard--links .plinks a { grid-template-columns: auto; padding: 0; background: none; box-shadow: none; }
+.pcard--links .plinks a:hover { transform: translateY(-2px); box-shadow: none; }
+.pcard--links .plinks__label { display: none; }
+.pcard--links .plinks__mark { width: 34px; height: 34px; border-radius: 10px; }
+.pcard--links .plinks__mark svg { width: 16px; height: 16px; }
+.pcard--links .plinks__mark b { font-size: 13px; }
