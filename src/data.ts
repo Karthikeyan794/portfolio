@@ -46,13 +46,40 @@ export const education: { school: string; course: string; years: string }[] = [
   { school: 'University of Madras', course: 'B.Com — Bachelor of Commerce', years: 'Jun 2021 — May 2024' },
 ]
 
-/** The folder stack card — hover one to bring it forward. */
-export const stackCards = [
-  { no: '01', label: 'research', tools: 'miro · balsamiq' },
-  { no: '02', label: 'design', tools: 'figma · dora' },
-  { no: '03', label: 'graphic', tools: 'photoshop · illustrator · canva' },
-  { no: '04', label: 'code', tools: 'react · javascript · vs code · github' },
-  { no: '05', label: 'ai', tools: 'claude · cursor · lovable · midjourney' },
+/**
+ * The folder stack card — hover one and its tools lift out of the folder.
+ * `mark` picks a brand glyph from src/logos.ts; without one the tile shows
+ * `mono` instead. Drop an SVG in /public/logos and point `mark` at it later.
+ */
+export type Tool = { name: string; mark?: string; mono?: string }
+export const stackCards: { no: string; label: string; tools: Tool[] }[] = [
+  { no: '01', label: 'research', tools: [{ name: 'Miro', mark: 'miro' }, { name: 'Balsamiq', mono: 'Bq' }] },
+  { no: '02', label: 'design', tools: [{ name: 'Figma', mark: 'figma' }, { name: 'Dora', mono: 'Do' }] },
+  {
+    no: '03',
+    label: 'graphic',
+    tools: [{ name: 'Photoshop', mono: 'Ps' }, { name: 'Illustrator', mono: 'Ai' }, { name: 'Canva', mono: 'Cv' }],
+  },
+  {
+    no: '04',
+    label: 'code',
+    tools: [
+      { name: 'React', mark: 'react' },
+      { name: 'JavaScript', mark: 'javascript' },
+      { name: 'VS Code', mono: 'VS' },
+      { name: 'GitHub', mark: 'github' },
+    ],
+  },
+  {
+    no: '05',
+    label: 'ai',
+    tools: [
+      { name: 'Claude', mark: 'claude' },
+      { name: 'Cursor', mark: 'cursor' },
+      { name: 'Lovable', mono: 'Lv' },
+      { name: 'Midjourney', mono: 'MJ' },
+    ],
+  },
 ]
 
 /**

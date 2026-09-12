@@ -1,5 +1,7 @@
 import { motion } from 'motion/react'
+import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
+import type { Tool } from '../data'
 import { aboutLinks, awards, currently, education, intro_about, photoSets, place, places, playlist, roleList, stackCards } from '../data'
 
 /**
@@ -31,6 +33,33 @@ function useGlow<T extends HTMLElement>() {
 
 const Glow = () => <span className="pcard__glow" aria-hidden="true" />
 
+/** One tool, as a frosted tile that lifts out of the folder. */
+function ToolTile({ tool, i, count }: { tool: Tool; i: number; count: number }) {
+  // fan them from the middle: the more there are, the wider the spread
+  const mid = (count - 1) / 2
+  const spread = count > 3 ? 30 : 36
+  return (
+    <span
+      className="app"
+      title={tool.name}
+      style={{
+        ['--x' as string]: `${(i - mid) * spread}px`,
+        ['--r' as string]: `${(i - mid) * 9}deg`,
+        ['--d' as string]: `${i * 45}ms`,
+        zIndex: count - Math.abs(i - mid),
+      }}
+    >
+      {tool.mark ? (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d={marks[tool.mark]} />
+        </svg>
+      ) : (
+        <b>{tool.mono}</b>
+      )}
+    </span>
+  )
+}
+
 /** Folder tabs stacked front to back; point at one and it slides forward. */
 function StackCard() {
   const [open, setOpen] = useState(0)
@@ -42,11 +71,20 @@ function StackCard() {
       <div className="folders" onPointerLeave={() => setOpen(0)}>
         {stackCards.map((c, i) => (
           <div className="folder" key={c.no} data-open={i === open} onPointerEnter={() => setOpen(i)}>
-            <span className="folder__top">
-              <span className="folder__no">{c.no}</span>
-              <span className="folder__label">{c.label}</span>
+            {/* the tools sit behind the folder face and rise above its lip */}
+            <span className="folder__apps" aria-hidden="true">
+              {c.tools.map((t, j) => (
+                <ToolTile key={t.name} tool={t} i={j} count={c.tools.length} />
+              ))}
             </span>
-            <span className="folder__tools">{c.tools}</span>
+
+            <span className="folder__face">
+              <span className="folder__top">
+                <span className="folder__no">{c.no}</span>
+                <span className="folder__label">{c.label}</span>
+              </span>
+              <span className="folder__tools">{c.tools.map((t) => t.name).join(' · ')}</span>
+            </span>
           </div>
         ))}
       </div>

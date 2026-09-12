@@ -1968,7 +1968,7 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   /* one rectangle, interlocking boxes — the same idea as the work bento */
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(13, minmax(0, 1fr));
   /* p portrait · d drawings · y playlist · s stack · c photos · l place · n links */
   grid-template-areas:
     'p p d d'
@@ -1978,13 +1978,14 @@ a { color: inherit; text-decoration: none; }
     's s y y'
     's s c c'
     's s c c'
+    's s c c'
     'l l c c'
     'l l c c'
     'l l c c'
     'n n n n'
     'n n n n';
-  aspect-ratio: 0.44 / 1;
-  min-height: 1095px;
+  aspect-ratio: 0.41 / 1;
+  min-height: 1185px;
 }
 @media (max-width: 560px) {
   .collage {
@@ -2072,12 +2073,6 @@ a { color: inherit; text-decoration: none; }
 
 /* the folder stack */
 .pcard--stack { display: grid; gap: 9px; padding: 14px; grid-template-rows: auto 1fr auto; }
-.folder[data-open='true'] { background: var(--primary); border-color: transparent; color: var(--on-primary); box-shadow: 0 14px 26px -16px rgba(0, 0, 0, 0.5); }
-.folder[data-open='true'] .folder__no,
-.folder[data-open='true'] .folder__tools { color: rgba(244, 241, 232, 0.62); }
-.folder__no { font-family: var(--mono); font-size: 10px; color: var(--muted); }
-.folder__tools { font-family: var(--mono); font-size: 10px; color: var(--muted); }
-.folder__label { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: -0.015em; }
 .pcard__hint { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* ── the playlist card ─────────────────────────────────────── */
@@ -2272,18 +2267,45 @@ a { color: inherit; text-decoration: none; }
   .folder, .pcard--shot img { transition: none; }
 }
 
-/* the folder accordion: collapsed rows show just the label, the open one
-   opens up its tools line. No absolute offsets, so nothing clips. */
-.folders { display: flex; flex-direction: column; justify-content: center; gap: 5px; min-height: 0; }
-.folder {
+
+/* ── the folder stack ──────────────────────────────────────
+   Folders with a real tab, and the tools lifting out of them.
+   Kept at the end of the sheet: an earlier edit spliced a second copy
+   of these rules in and the stale one won by source order. */
+.folders {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  min-height: 0;
+  /* headroom, so the first folder's tools don't rise onto the card label */
+  padding-top: 26px;
+}
+
+.folder { position: relative; flex: 0 0 auto; }
+/* the open folder lifts over its neighbours so its tools are never clipped */
+.folder[data-open='true'] { z-index: 3; }
+
+.folder__face {
+  position: relative;
+  z-index: 2;
   display: grid;
-  gap: 0;
-  padding: 8px 11px;
+  padding: 17px 12px 10px;
   border-radius: 11px;
-  border: 1px solid var(--line);
   background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
   cursor: default;
-  transition: background 0.32s ease, border-color 0.32s ease, color 0.32s ease;
+  transition: background 0.34s ease, color 0.34s ease, box-shadow 0.34s ease;
+  /* a tab across the left, stepping down to the body. Pixel stops, not
+     percentages — a percentage tab all but vanishes on a 60px row. */
+  clip-path: polygon(0 9px, 6px 0, 40% 0, 47% 9px, 100% 9px, 100% 100%, 0 100%);
+}
+.folder[data-open='true'] .folder__face {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: none;
 }
 .folder__top { display: flex; align-items: baseline; gap: 9px; }
 .folder__no { font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
@@ -2291,18 +2313,60 @@ a { color: inherit; text-decoration: none; }
 .folder__tools {
   font-family: var(--mono);
   font-size: 9.5px;
+  line-height: 1.5;
   color: var(--muted);
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transition: max-height 0.38s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.3s ease, margin-top 0.38s ease;
-}
-.folder[data-open='true'] {
-  background: var(--primary);
-  border-color: transparent;
-  color: var(--on-primary);
+  transition: max-height 0.4s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.3s ease;
 }
 .folder[data-open='true'] .folder__no,
 .folder[data-open='true'] .folder__tools { color: rgba(244, 241, 232, 0.66); }
-.folder[data-open='true'] .folder__tools { max-height: 20px; opacity: 1; margin-top: 3px; }
-@media (prefers-reduced-motion: reduce) { .folder__tools { transition: none; } }
+.folder[data-open='true'] .folder__tools { max-height: 46px; opacity: 1; margin-top: 3px; }
+
+/* ── the tools that lift out of the folder ─────────────────── */
+.folder__apps {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.app {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  /* frosted glass, so the folder behind reads through */
+  background: color-mix(in srgb, var(--bg-elev) 58%, transparent);
+  backdrop-filter: blur(14px) saturate(1.6);
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px var(--line),
+    0 14px 24px -12px rgba(0, 0, 0, 0.6);
+  color: var(--text);
+  /* tucked down inside the folder until it opens */
+  transform: translate(0, 6px) scale(0.7);
+  opacity: 0;
+  transition: transform 0.52s cubic-bezier(0.34, 1.42, 0.64, 1), opacity 0.3s ease;
+}
+.folder[data-open='true'] .app {
+  transform: translate(var(--x), -64%) scale(1) rotate(var(--r));
+  opacity: 1;
+  transition-delay: var(--d);
+}
+.app svg { width: 17px; height: 17px; fill: currentColor; }
+.app b { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: -0.02em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .app { transition: opacity 0.2s ease; }
+  .folder[data-open='true'] .app { transform: translate(var(--x), -64%) rotate(var(--r)); }
+  .folder__tools { transition: none; }
+}
