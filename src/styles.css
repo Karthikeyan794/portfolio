@@ -2682,4 +2682,10 @@ a { color: inherit; text-decoration: none; }
 
 /* The playlist reaches up past the place card into rows Recognition gave
    up, so the two differ by their row spans now rather than by a height
-   percentage hung off a shared baseline. */
+   percentage hung off a shared baseline.
+
+   The 2px below nudges the boundary between Recognition and the playlist
+   down without touching the 10px gutter: Recognition grows into the gap,
+   the playlist starts the same 2px lower. */
+.pcard--awards { height: calc(100% + 2px); }
+.pcard--music { align-self: end; height: calc(100% - 2px); }
