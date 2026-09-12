@@ -2454,18 +2454,24 @@ a { color: inherit; text-decoration: none; }
 .trow__bg, .trow__veil {
   position: absolute;
   inset: 0;
+  /* a backdrop-filter makes its own containing block and slips the row's
+     overflow clip, so the radius has to be restated here or the picture
+     shows square corners */
+  border-radius: inherit;
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
 }
-.trow__bg { width: 100%; height: 100%; object-fit: cover; }
-.trow__veil {
-  background: linear-gradient(180deg, rgba(6, 10, 9, 0.42) 0%, rgba(6, 10, 9, 0.62) 100%);
-}
+/* a wide strip of a tall photo: bias the crop upward or every row
+   lands on the dark foreground */
+.trow__bg { width: 100%; height: 100%; object-fit: cover; object-position: center 32%; }
+/* flat black at 20%, no blur — the picture stays sharp underneath */
+.trow__veil { background: rgba(0, 0, 0, 0.2); }
 .trow[data-open='true'] .trow__bg, .trow[data-open='true'] .trow__veil { opacity: 1; }
 
 .trow__name {
   position: relative;
+  text-shadow: 0 1px 10px rgba(4, 8, 7, 0.6);
   grid-column: 1;
   grid-row: 1;
   font-family: var(--display);
@@ -2519,11 +2525,15 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
-  color: #14181b;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 10px 18px -10px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px) saturate(1.3);
-  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.26),
+    0 10px 20px -10px rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  text-shadow: 0 1px 6px rgba(4, 8, 7, 0.45);
   opacity: 0;
   transform: translateY(14px) scale(0.94);
   transition: opacity 0.34s ease, transform 0.52s cubic-bezier(0.34, 1.32, 0.64, 1);
@@ -2541,8 +2551,8 @@ a { color: inherit; text-decoration: none; }
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #14181b;
-  color: #fff;
+  background: #fff;
+  color: #14181b;
 }
 .tchip__mark svg { width: 12px; height: 12px; fill: currentColor; }
 .tchip__mark b { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: -0.04em; }
