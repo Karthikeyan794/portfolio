@@ -1936,15 +1936,37 @@ a { color: inherit; text-decoration: none; }
 /* ── the collage ────────────────────────────────────────── */
 .collage {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: minmax(0, auto);
-  gap: 14px;
+  gap: 10px;
+  /* one rectangle, interlocking boxes — the same idea as the work bento */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  /* five rows so the stack gets three and the place card two — both were
+     being squeezed into slots shorter than their content */
+  grid-template-areas:
+    'p p d d'
+    'p p d d'
+    'p p s s'
+    'l l s s'
+    'l l s s';
+  aspect-ratio: 0.94 / 1;
+  min-height: 520px;
 }
-@media (max-width: 560px) { .collage { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .collage {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 'p' 'd' 's' 'l';
+    aspect-ratio: auto;
+  }
+  .pcard--portrait { min-height: 320px; }
+  .pcard--shot, .pcard--stack, .pcard--place { min-height: 220px; }
+}
 
 .pcard {
   position: relative;
   display: block;
+  min-width: 0;
+  min-height: 0;
   border-radius: 18px;
   border: 1px solid var(--line);
   background: var(--bg-elev);
@@ -1961,7 +1983,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* portrait, tall on the left of the collage */
-.pcard--portrait { grid-row: span 2; margin: 0; min-height: 100%; }
+.pcard--portrait { margin: 0; }
 .pcard--portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 42%; }
 .pcard--portrait figcaption { position: absolute; inset: auto 12px 12px 12px; }
 .pcard__now {
@@ -1980,7 +2002,7 @@ a { color: inherit; text-decoration: none; }
 .pcard__now i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(166, 232, 91, 0.22); }
 
 /* the drawings card */
-.pcard--shot { min-height: 230px; }
+.pcard--shot { display: block; }
 .pcard--shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1); }
 .pcard--shot:hover img { transform: scale(1.04); }
 .pcard__label--over {
@@ -2006,24 +2028,7 @@ a { color: inherit; text-decoration: none; }
 .pcard--shot:hover .pcard__go { transform: translate(2px, -2px); }
 
 /* the folder stack */
-.pcard--stack { display: grid; gap: 10px; padding: 15px 15px 13px; min-height: 248px; grid-template-rows: auto 1fr auto; }
-.folders { position: relative; display: grid; min-height: 150px; }
-.folder {
-  position: relative;
-  grid-area: 1 / 1;
-  align-self: start;
-  display: grid;
-  gap: 2px;
-  padding: 10px 13px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--bg-sunk);
-  transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1), background 0.3s ease, border-color 0.3s ease;
-}
-.folder:nth-child(1) { transform: translateY(0); }
-.folder:nth-child(2) { transform: translateY(23px); }
-.folder:nth-child(3) { transform: translateY(46px); }
-.folder:nth-child(4) { transform: translateY(69px); }
+.pcard--stack { display: grid; gap: 9px; padding: 14px; grid-template-rows: auto 1fr auto; }
 .folder[data-open='true'] { background: var(--primary); border-color: transparent; color: var(--on-primary); box-shadow: 0 14px 26px -16px rgba(0, 0, 0, 0.5); }
 .folder[data-open='true'] .folder__no,
 .folder[data-open='true'] .folder__tools { color: rgba(244, 241, 232, 0.62); }
@@ -2033,10 +2038,10 @@ a { color: inherit; text-decoration: none; }
 .pcard__hint { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* the place card */
-.pcard--place { display: grid; gap: 12px; padding: 15px; min-height: 248px; grid-template-rows: auto 1fr auto; }
+.pcard--place { display: grid; gap: 10px; padding: 14px; grid-template-rows: auto 1fr auto; }
 .place {
   position: relative;
-  min-height: 110px;
+  min-height: 0;
   border-radius: 12px;
   background:
     radial-gradient(circle at 50% 52%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 62%),
@@ -2076,3 +2081,38 @@ a { color: inherit; text-decoration: none; }
   .place__ring { animation: none; }
   .folder, .pcard--shot img { transition: none; }
 }
+
+/* the folder accordion: collapsed rows show just the label, the open one
+   opens up its tools line. No absolute offsets, so nothing clips. */
+.folders { display: flex; flex-direction: column; justify-content: center; gap: 5px; min-height: 0; }
+.folder {
+  display: grid;
+  gap: 0;
+  padding: 8px 11px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: var(--bg-sunk);
+  cursor: default;
+  transition: background 0.32s ease, border-color 0.32s ease, color 0.32s ease;
+}
+.folder__top { display: flex; align-items: baseline; gap: 9px; }
+.folder__no { font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
+.folder__label { font-family: var(--display); font-weight: 700; font-size: 14.5px; letter-spacing: -0.015em; line-height: 1.2; }
+.folder__tools {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--muted);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.38s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.3s ease, margin-top 0.38s ease;
+}
+.folder[data-open='true'] {
+  background: var(--primary);
+  border-color: transparent;
+  color: var(--on-primary);
+}
+.folder[data-open='true'] .folder__no,
+.folder[data-open='true'] .folder__tools { color: rgba(244, 241, 232, 0.66); }
+.folder[data-open='true'] .folder__tools { max-height: 20px; opacity: 1; margin-top: 3px; }
+@media (prefers-reduced-motion: reduce) { .folder__tools { transition: none; } }

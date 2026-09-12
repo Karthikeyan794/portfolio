@@ -6,20 +6,16 @@ import { currently, intro_about, place, roleList, stackCards } from '../data'
 function StackCard() {
   const [open, setOpen] = useState(0)
   return (
-    <div className="pcard pcard--stack">
+    <div className="pcard pcard--stack" style={{ gridArea: 's' }}>
       <span className="pcard__label">Stack / {stackCards.length} folders</span>
       <div className="folders" onPointerLeave={() => setOpen(0)}>
         {stackCards.map((c, i) => (
-          <div
-            className="folder"
-            key={c.no}
-            data-open={i === open}
-            style={{ zIndex: stackCards.length - i }}
-            onPointerEnter={() => setOpen(i)}
-          >
-            <span className="folder__no">{c.no}</span>
+          <div className="folder" key={c.no} data-open={i === open} onPointerEnter={() => setOpen(i)}>
+            <span className="folder__top">
+              <span className="folder__no">{c.no}</span>
+              <span className="folder__label">{c.label}</span>
+            </span>
             <span className="folder__tools">{c.tools}</span>
-            <span className="folder__label">{c.label}</span>
           </div>
         ))}
       </div>
@@ -37,7 +33,7 @@ function PlaceCard() {
   }).format(new Date())
 
   return (
-    <div className="pcard pcard--place">
+    <div className="pcard pcard--place" style={{ gridArea: 'l' }}>
       <span className="pcard__label">Based in</span>
       <div className="place" aria-hidden="true">
         <span className="place__pin" />
@@ -96,7 +92,7 @@ export default function About() {
           viewport={{ once: true, amount: 0.15 }}
           transition={{ type: 'spring', stiffness: 62, damping: 18, delay: 0.08 }}
         >
-          <figure className="pcard pcard--portrait">
+          <figure className="pcard pcard--portrait" style={{ gridArea: 'p' }}>
             <img src={currently.portrait} alt="" loading="lazy" decoding="async" />
             <figcaption>
               <span className="pcard__now">
@@ -106,7 +102,7 @@ export default function About() {
             </figcaption>
           </figure>
 
-          <a className="pcard pcard--shot" href="#/project/drawings">
+          <a className="pcard pcard--shot" href="#/project/drawings" style={{ gridArea: 'd' }}>
             <img src="/bento/art.jpg" alt="" loading="lazy" decoding="async" />
             <span className="pcard__label pcard__label--over">Drawings</span>
             <span className="pcard__go" aria-hidden="true">
