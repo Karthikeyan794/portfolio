@@ -40,6 +40,12 @@ export const roleList: { org: string; role: string; years: string }[] = [
   { org: 'T-Eurasia', role: 'Creative Designer', years: '' },
 ]
 
+/** Education — from the resume. */
+export const education: { school: string; course: string; years: string }[] = [
+  { school: 'Web D Schools', course: 'Mastery UX/UI Designing', years: 'Jun 2024 — Jan 2025' },
+  { school: 'University of Madras', course: 'B.Com — Bachelor of Commerce', years: 'Jun 2021 — May 2024' },
+]
+
 /** The folder stack card — hover one to bring it forward. */
 export const stackCards = [
   { no: '01', label: 'research', tools: 'miro · balsamiq' },
@@ -534,6 +540,8 @@ export const marquee = [
 // ── Awards & certificates (PLACEHOLDERS — replace with real ones) ──
 export type Award = { title: string; issuer: string; year: string; note?: string; kind: 'award' | 'certificate' | 'hackathon' }
 
+// ⚠️ PLACEHOLDERS — I made these up. Replace them with your real awards and
+// certificates, or empty the array and the About list hides itself.
 export const awards: Award[] = [
   { title: 'Best Frontend Project', issuer: 'Company Hackathon', year: '2025', note: 'Built a live dashboard in 24 hours with a team of three.', kind: 'hackathon' },
   { title: 'Design Excellence Award', issuer: 'Internal design review', year: '2024', note: 'For the shared component library adopted across squads.', kind: 'award' },
@@ -556,7 +564,7 @@ export const intro = {
   headline: ['I Design And Build', 'For The Web.'],
   punch: 'Karthikeyan.', // the serif word that ends the headline
   paragraph:
-    'Frontend Engineer From Chennai. I Turn Fuzzy Ideas Into Interfaces That Hold Up Under Real Users — Design Systems, Data-Heavy Screens, And The Tools Teams Actually Use.',
+    'Product Designer From Chennai. I Go Deep On Research To Find The Real Problem, Design It In Figma, Then Build It In React.',
   placeholder: 'Your email here…',
   cta: ['Say', 'Hello.'], // second word is set in the serif
   toolsLabel: 'Working With',

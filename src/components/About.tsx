@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { aboutLinks, currently, intro_about, photoSets, place, playlist, roleList, stackCards } from '../data'
+import { aboutLinks, awards, currently, education, intro_about, photoSets, place, playlist, roleList, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -178,17 +178,6 @@ export default function About() {
             ))}
           </div>
 
-          <ul className="roles">
-            {roleList.map((r) => (
-              <li className="role" key={r.org}>
-                <span className="role__org">{r.org}</span>
-                <span className="role__slash">/</span>
-                <span className="role__title">{r.role}</span>
-                <span className="role__years">{r.years}</span>
-              </li>
-            ))}
-          </ul>
-
           {/* where else to find me */}
           <ul className="plinks">
             {aboutLinks.map((l) => (
@@ -241,6 +230,60 @@ export default function About() {
           <PlaceCard />
         </motion.div>
       </div>
+
+      {/* the resume facts, in three columns under the collage */}
+      <motion.div
+        className="wrap wrap--wide about__facts"
+        initial={{ opacity: 0, y: 26 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ type: 'spring', stiffness: 64, damping: 19 }}
+      >
+          <div className="fact">
+          <h3 className="about__sub">Experience</h3>
+          <ul className="roles">
+            {roleList.map((r) => (
+              <li className="role" key={r.org}>
+                <span className="role__org">{r.org}</span>
+                <span className="role__slash">/</span>
+                <span className="role__title">{r.role}</span>
+                <span className="role__years">{r.years}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="fact">
+          <h3 className="about__sub">Education</h3>
+          <ul className="roles">
+            {education.map((e) => (
+              <li className="role" key={e.school}>
+                <span className="role__org">{e.school}</span>
+                <span className="role__slash">/</span>
+                <span className="role__title">{e.course}</span>
+                <span className="role__years">{e.years}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* hides itself while the awards list is empty */}
+        {awards.length > 0 && (
+          <div className="fact">
+            <h3 className="about__sub">Recognition</h3>
+            <ul className="roles">
+              {awards.map((a) => (
+                <li className="role" key={a.title}>
+                  <span className="role__org">{a.title}</span>
+                  <span className="role__slash">/</span>
+                  <span className="role__title">{a.issuer}</span>
+                  <span className="role__years">{a.year}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </motion.div>
     </section>
   )
 }
