@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { currently, intro_about, place, roleList, stackCards } from '../data'
+import { aboutLinks, currently, intro_about, photoSets, place, playlist, roleList, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -85,6 +85,76 @@ function PlaceCard() {
   )
 }
 
+/** What's on while I build — the record is drawn, not an image. */
+function PlaylistCard() {
+  const glow = useGlow<HTMLAnchorElement>()
+  return (
+    <a
+      className="pcard pcard--vinyl"
+      href={playlist.href}
+      target="_blank"
+      rel="noreferrer"
+      style={{ gridArea: 'y' }}
+      ref={glow.ref}
+      onPointerMove={glow.onPointerMove}
+    >
+      <Glow />
+      <span className="pcard__label">Playlist</span>
+      <span className="pcard__go" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+          <path d="M7 17 17 7M9 7h8v8" />
+        </svg>
+      </span>
+      <span className="pcard__hint">{playlist.title}</span>
+      {/* the disc sits half out of frame and turns while you point at it */}
+      <span className="vinyl" aria-hidden="true">
+        <span className="vinyl__label" />
+      </span>
+    </a>
+  )
+}
+
+/** Recent pictures — the chips swap the shot. */
+function PhotosCard() {
+  const glow = useGlow<HTMLDivElement>()
+  const [set, setSet] = useState(0)
+
+  return (
+    <div className="pcard pcard--photos" style={{ gridArea: 'c' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
+      <Glow />
+      {photoSets.map((ps, i) => (
+        <img
+          key={ps.label}
+          className="photos__img"
+          src={ps.src}
+          alt=""
+          data-on={i === set}
+          loading="lazy"
+          decoding="async"
+        />
+      ))}
+      <span className="photos__veil" aria-hidden="true" />
+      <span className="pcard__label pcard__label--over">Recent photos</span>
+
+      <div className="pchips">
+        {photoSets.map((ps, i) => (
+          <button
+            type="button"
+            className="pchip"
+            key={ps.label}
+            data-on={i === set}
+            onPointerEnter={() => setSet(i)}
+            onFocus={() => setSet(i)}
+            onClick={() => setSet(i)}
+          >
+            {ps.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function About() {
   const portraitGlow = useGlow<HTMLElement>()
   const shotGlow = useGlow<HTMLAnchorElement>()
@@ -115,6 +185,21 @@ export default function About() {
                 <span className="role__slash">/</span>
                 <span className="role__title">{r.role}</span>
                 <span className="role__years">{r.years}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* where else to find me */}
+          <ul className="plinks">
+            {aboutLinks.map((l) => (
+              <li key={l.label}>
+                <a href={l.href} target="_blank" rel="noreferrer">
+                  <span className="plinks__label">{l.label}</span>
+                  <span className="plinks__handle">{l.handle}</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </a>
               </li>
             ))}
           </ul>
@@ -150,6 +235,8 @@ export default function About() {
             </span>
           </a>
 
+          <PlaylistCard />
+          <PhotosCard />
           <StackCard />
           <PlaceCard />
         </motion.div>

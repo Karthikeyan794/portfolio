@@ -5,13 +5,12 @@
 
 export const profile = {
   name: 'Karthikeyan B',
-  role: 'Frontend Engineer',
+  role: 'Product Designer · Front-end Developer',
   location: 'Chennai, India',
   available: true,
-  availableNote: 'Open to interesting frontend work',
-  tagline:
-    'I build product interfaces that stay fast and legible as they grow — design systems, dense data UI, and the internal tools teams actually use every day.',
-  email: 'karthikeyan.b@facilio.com',
+  availableNote: 'Open to Product Designer & Design Engineer roles',
+  tagline: 'Turning user problems into working products.',
+  email: 'babubkarthikeyan@gmail.com',
   resumeUrl: '', // e.g. '/resume.pdf' — drop the file in /public
   photo: '', // e.g. '/me.jpg' — drop the file in /public. Empty = initials placeholder.
 }
@@ -19,7 +18,7 @@ export const profile = {
 export const socials: { label: string; href: string }[] = [
   { label: 'Behance', href: 'https://www.behance.net/karthikbabu13' },
   { label: 'GitHub', href: 'https://github.com/Karthikeyan794' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/b-karthikeyan-35192b28a' },
   { label: 'X', href: 'https://x.com/' },
 ]
 
@@ -27,24 +26,52 @@ export const socials: { label: string; href: string }[] = [
 export const intro_about = {
   greeting: "Hey, I'm Karthikeyan!",
   paragraphs: [
-    "I'm a frontend engineer who designs. For the past few years I've worked on product UI at Facilio — support tooling, dashboards and the design system several squads build from.",
-    "What I enjoy is owning a problem end to end: finding the gap worth solving, shaping the interface, building it, and watching what people actually do with it.",
-    "Away from the screen I draw, and I keep a sketchbook going for its own sake.",
+    "I'm a product designer who builds. I go deep on research to find the real problem, design the solution in Figma, then build it with React — vibe coding my way to something that actually ships.",
+    "At Facilio I designed and built Support Desk, a ticket app with a chat assistant in Teams, and designed Atom AI, our gallery of AI apps for facility teams.",
+    "Away from work I draw, edit video, and keep side projects going — like Clickly, one dashboard for every social platform.",
   ],
 }
 
 /** The compact role list on the left — a summary; the timeline below has the detail. */
 export const roleList: { org: string; role: string; years: string }[] = [
-  { org: 'Facilio', role: 'Frontend Engineer', years: '2022 — Present' },
-  { org: 'Freelance', role: 'Design & Frontend', years: '2020 — 2022' },
+  { org: 'Facilio', role: 'Product Designer', years: '2025 — Present' },
+  // TODO: the resume doesn't date these two — add the years.
+  { org: 'Amvion Labs', role: 'UI + Graphic Design Intern', years: '' },
+  { org: 'T-Eurasia', role: 'Creative Designer', years: '' },
 ]
 
 /** The folder stack card — hover one to bring it forward. */
 export const stackCards = [
-  { no: '01', label: 'design', tools: 'figma' },
-  { no: '02', label: 'prototype', tools: 'figma · motion' },
-  { no: '03', label: 'build', tools: 'react · typescript' },
-  { no: '04', label: 'ship', tools: 'vite · vercel' },
+  { no: '01', label: 'research', tools: 'miro · balsamiq' },
+  { no: '02', label: 'design', tools: 'figma · dora' },
+  { no: '03', label: 'graphic', tools: 'photoshop · illustrator · canva' },
+  { no: '04', label: 'code', tools: 'react · javascript · vs code · github' },
+  { no: '05', label: 'ai', tools: 'claude · cursor · lovable · midjourney' },
+]
+
+/**
+ * The photo card. Chips switch the picture.
+ * TODO: these point at your own Behance covers so the card renders — swap in
+ * real photos under /public/photos and rename the chips to match.
+ */
+export const photoSets = [
+  { label: 'Interfaces', src: '/work/coffee-dashboard.jpg' },
+  { label: 'Logos', src: '/work/logofolio-clickly.jpg' },
+  { label: 'Studies', src: '/work/neomorphism.jpg' },
+]
+
+/** What's on while I build. TODO: paste your own Spotify playlist link. */
+export const playlist = {
+  title: 'On repeat while building',
+  href: 'https://open.spotify.com/',
+}
+
+/** The three profiles that sit under the About text. */
+export const aboutLinks = [
+  { label: 'LinkedIn', handle: 'b-karthikeyan', href: 'https://www.linkedin.com/in/b-karthikeyan-35192b28a' },
+  // TODO: your Instagram isn't on the resume — paste your handle and URL here.
+  { label: 'Instagram', handle: 'add your handle', href: 'https://www.instagram.com/' },
+  { label: 'Behance', handle: 'karthikbabu13', href: 'https://www.behance.net/karthikbabu13' },
 ]
 
 /** The location card. */
@@ -57,7 +84,7 @@ export const place = {
 
 /** The "currently" line in the portrait caption. */
 export const currently = {
-  role: 'Frontend Engineer',
+  role: 'Product Designer',
   at: 'Facilio',
   focus: 'Support Desk & Atom',
   portrait: '/intro.jpg', // swap for a photo of you when you have one
