@@ -160,37 +160,6 @@ function PlaceCard() {
   )
 }
 
-/** Where else to find me — a full-width tile at the foot of the collage. */
-function LinksCard() {
-  const glow = useGlow<HTMLDivElement>()
-  return (
-    <div className="pcard pcard--links" style={{ gridArea: 'n' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
-      <Glow />
-      <span className="pcard__label">Elsewhere</span>
-      <div className="plinks">
-        {aboutLinks.map((l) => (
-          <a key={l.label} href={l.href} target="_blank" rel="noreferrer" title={l.handle} style={{ ['--brand' as string]: l.brand }}>
-            <span className="plinks__mark" aria-hidden="true">
-              {l.mark ? (
-                <svg viewBox="0 0 24 24">
-                  <path d={marks[l.mark]} />
-                </svg>
-              ) : (
-                <b>{l.mono}</b>
-              )}
-            </span>
-            <span className="plinks__label">{l.label}</span>
-            <span className="plinks__handle">{l.handle}</span>
-            <svg className="plinks__go" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
-              <path d="M7 17 17 7M9 7h8v8" />
-            </svg>
-          </a>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 /**
  * The crate: a glass folder that fans its covers out when you point at it,
  * with a working player underneath. The player drives a real <audio>; with
@@ -368,6 +337,25 @@ export default function About() {
             </ul>
           </div>
 
+          {/* where else to find me */}
+          <ul className="plinks">
+            {aboutLinks.map((l) => (
+              <li key={l.label}>
+                <a href={l.href} target="_blank" rel="noreferrer" title={l.handle} style={{ ['--brand' as string]: l.brand }}>
+                  <span className="plinks__mark" aria-hidden="true">
+                    {l.mark ? (
+                      <svg viewBox="0 0 24 24">
+                        <path d={marks[l.mark]} />
+                      </svg>
+                    ) : (
+                      <b>{l.mono}</b>
+                    )}
+                  </span>
+                  <span className="plinks__label">{l.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </motion.div>
 
         {/* right: the collage */}
@@ -404,7 +392,6 @@ export default function About() {
           <StackCard />
           <AwardsCard />
           <PlaceCard />
-          <LinksCard />
         </motion.div>
       </div>
 

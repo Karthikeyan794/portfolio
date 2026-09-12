@@ -2042,8 +2042,8 @@ a { color: inherit; text-decoration: none; }
     's s s w w w'
     's s s w w w'
     's s s w w w'
-    'l l y y y n'
-    'l l y y y n';
+    'l l l y y y'
+    'l l l y y y';
   /* The two columns break at different rows on purpose: the portrait runs
      six rows against the drawings' four, and the toolkit four against
      recognition's six. Matched pairs read as a plain two-column grid. */
@@ -2053,7 +2053,7 @@ a { color: inherit; text-decoration: none; }
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 's' 'w' 'l' 'y' 'n';
+    grid-template-areas: 'p' 'd' 's' 'w' 'l' 'y';
     aspect-ratio: auto;
     height: auto;
     min-height: 0;
@@ -2063,7 +2063,6 @@ a { color: inherit; text-decoration: none; }
   .collage:has(.pcard:hover) { grid-template-columns: 1fr; grid-template-rows: auto; }
   .pcard--portrait { min-height: 320px; }
   .pcard--shot, .pcard--stack, .pcard--place, .pcard--music, .pcard--awards { min-height: 220px; }
-  .pcard--links { min-height: 0; }
 }
 
 .pcard {
@@ -2206,33 +2205,19 @@ a { color: inherit; text-decoration: none; }
 .pchip[data-on='true'] { background: var(--primary); color: var(--on-primary); box-shadow: none; }
 
 /* ── the profile links under the About text ────────────────── */
-.pcard--links {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
-  padding: 10px 12px;
-}
-.pcard--links .pcard__label { white-space: nowrap; }
-/* three across inside the tile, one per row once it gets narrow */
 .plinks {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-content: center;
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
   list-style: none;
-  margin: 0;
+  margin: 16px 0 0;
   padding: 0;
 }
 .plinks a {
-  /* logo down the left, name over handle, arrow on the right */
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-rows: auto auto;
+  display: inline-flex;
   align-items: center;
-  align-content: center;
-  gap: 0 8px;
-  padding: 4px 9px;
+  gap: 8px;
+  padding: 7px 12px 7px 7px;
   border-radius: 12px;
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
@@ -2242,7 +2227,7 @@ a { color: inherit; text-decoration: none; }
 }
 .plinks a:hover { box-shadow: inset 0 0 0 1px var(--line-strong); transform: translateY(-2px); }
 
-.plinks__label { grid-column: 2; grid-row: 1; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.plinks__label { font-size: 13px; font-weight: 600; white-space: nowrap; }
 /* the handle is the tooltip now — the strip is one row tall */
 .plinks__handle { display: none; }
 .plinks__go { display: none; }
@@ -2250,8 +2235,6 @@ a { color: inherit; text-decoration: none; }
 
 /* the logo tile — it takes the brand colour on hover */
 .plinks__mark {
-  grid-column: 1;
-  grid-row: 1 / -1;
   display: grid;
   place-items: center;
   width: 21px;
@@ -2396,10 +2379,7 @@ a { color: inherit; text-decoration: none; }
 
    The base tracks MUST stay a plain fr list. Written as
    repeat(6, minmax(0,1fr)) they are a different track type and CSS
-   refuses to interpolate — the grid snaps instead of sliding.
-
-   The foot cards take rows only: their columns are 2/3/1, so nudging
-   a column group would drag their neighbours about. */
+   refuses to interpolate — the grid snaps instead of sliding. */
 .collage:has(.pcard--portrait:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
   grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr;
@@ -2417,15 +2397,11 @@ a { color: inherit; text-decoration: none; }
   grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr;
 }
 .collage:has(.pcard--place:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
   grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
 }
 .collage:has(.pcard--music:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
-}
-.collage:has(.pcard--links:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
   grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
 }
 
@@ -2699,43 +2675,11 @@ a { color: inherit; text-decoration: none; }
   gap: 5px;
 }
 
-/* the place card is a third of the foot row wide; trim to suit */
-.pcard--place .pchip { padding: 5px 9px; font-size: 11px; }
-.pcard--place .place__meta span { font-size: 9.5px; }
+/* the place card shares the toolkit's column now, so it has room again */
+.pcard--place .place__meta span { font-size: 10px; }
 
-/* Elsewhere is a single column now — the marks alone, names in the tooltip */
-.pcard--links {
-  grid-template-columns: minmax(0, 1fr);
-  justify-items: center;
-  gap: 8px;
-  padding: 12px 8px;
-}
-.pcard--links .pcard__label { display: none; }
-.pcard--links .plinks { grid-template-columns: minmax(0, 1fr); gap: 9px; justify-items: center; }
-.pcard--links .plinks a { grid-template-columns: auto; padding: 0; background: none; box-shadow: none; }
-.pcard--links .plinks a:hover { transform: translateY(-2px); box-shadow: none; }
-.pcard--links .plinks__label { display: none; }
-.pcard--links .plinks__mark { width: 34px; height: 34px; border-radius: 10px; }
-.pcard--links .plinks__mark svg { width: 16px; height: 16px; }
-.pcard--links .plinks__mark b { font-size: 13px; }
-
-/* The foot row steps down too. All three share the same three rows, so
-   they'd otherwise be identical heights; these hang them from a common
-   baseline at different heights instead, which is what makes the row read
-   as a bento rather than three equal tiles. */
+/* The two foot cards share the same two rows, so they'd otherwise be the
+   same height. Hanging them from a common baseline at different heights
+   gives the row a ragged top against a straight bottom. */
 .pcard--place { align-self: end; height: 100%; }
-.pcard--links { align-self: end; height: 78%; }
-
-/* the links column is the smallest thing on the board; size it to its marks */
-.pcard--links { padding: 10px 6px; }
-.pcard--links .plinks { gap: 7px; }
-.pcard--links .plinks__mark { width: 30px; height: 30px; border-radius: 9px; }
-.pcard--links .plinks__mark svg { width: 14px; height: 14px; }
-
-/* the foot band is two rows now, so the playlist sits just under place */
-.pcard--music { align-self: end; height: 90%; }
-.pcard--links .plinks__mark { width: 26px; height: 26px; border-radius: 8px; }
-.pcard--links .plinks__mark svg { width: 12px; height: 12px; }
-.pcard--links .plinks__mark b { font-size: 11px; }
-.pcard--links { padding: 8px 6px; }
-.pcard--links .plinks { gap: 6px; }
+.pcard--music { align-self: end; height: 84%; }
