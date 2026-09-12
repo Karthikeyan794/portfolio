@@ -1904,7 +1904,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 980px) {
   .about__grid { grid-template-columns: 1fr; }
   /* full width now, so the fixed height would stretch every card */
-  .collage { height: auto; grid-template-rows: repeat(13, minmax(90px, auto)); }
+  .collage { height: auto; grid-template-rows: repeat(13, minmax(80px, auto)); }
 }
 
 .about__col { display: grid; gap: 14px; align-content: start; }
@@ -2035,20 +2035,22 @@ a { color: inherit; text-decoration: none; }
     's s y y'
     's s y y'
     's s y y'
-    's s y y'
     's s c c'
     'l l c c'
     'l l c c'
     'l l c c'
-    'n n n n'
-    'n n n n';
-  height: 1185px;
+    'w w n n'
+    'w w n n'
+    'w w n n';
+  /* 13 rows at about 71px — the cards were sized for far more content
+     than any of them actually hold */
+  height: 1040px;
 }
 @media (max-width: 560px) {
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 'y' 's' 'c' 'l' 'n';
+    grid-template-areas: 'p' 'd' 'y' 's' 'c' 'l' 'w' 'n';
     aspect-ratio: auto;
     height: auto;
     min-height: 0;
@@ -2227,12 +2229,12 @@ a { color: inherit; text-decoration: none; }
 .pchip[data-on='true'] { background: #fff; color: #14181b; box-shadow: none; }
 
 /* ── the profile links under the About text ────────────────── */
-.pcard--links { display: grid; gap: 10px; padding: 14px; grid-template-rows: auto 1fr; }
+.pcard--links { display: grid; gap: 8px; padding: 12px; grid-template-rows: auto 1fr; }
 /* three across inside the tile, one per row once it gets narrow */
 .plinks {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  align-content: center;
+  gap: 6px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2245,7 +2247,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   align-content: center;
   gap: 1px 10px;
-  padding: 11px 12px;
+  padding: 9px 12px;
   border-radius: 12px;
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
@@ -2254,7 +2256,7 @@ a { color: inherit; text-decoration: none; }
   transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .plinks a:hover { box-shadow: inset 0 0 0 1px var(--line-strong); transform: translateY(-2px); }
-@media (max-width: 560px) { .plinks { grid-template-columns: 1fr; } }
+
 .plinks__label { grid-column: 2; grid-row: 1; font-size: 13.5px; font-weight: 600; }
 .plinks__handle { grid-column: 2; grid-row: 2; font-family: var(--mono); font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .plinks__go { grid-column: 3; grid-row: 1 / -1; opacity: 0.35; transition: transform 0.3s ease, opacity 0.3s ease; }
@@ -2352,112 +2354,6 @@ a { color: inherit; text-decoration: none; }
 }
 
 
-/* ── the folder stack ──────────────────────────────────────
-   Folders with a real tab, and the tools lifting out of them.
-   Kept at the end of the sheet: an earlier edit spliced a second copy
-   of these rules in and the stale one won by source order. */
-.folders {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  gap: 10px;
-  min-height: 0;
-  /* headroom, so the first folder's tools don't rise onto the card label */
-  padding-top: 20px;
-}
-
-.folder { position: relative; flex: 1 1 0; min-height: 54px; }
-.folder[data-open='true'] { flex-grow: 1.5; }
-/* the open folder lifts over its neighbours so its tools are never clipped */
-.folder[data-open='true'] { z-index: 3; }
-
-.folder__face {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  display: grid;
-  align-content: center;
-  padding: 19px 12px 11px;
-  border-radius: 11px;
-  background: var(--bg-sunk);
-  box-shadow: inset 0 0 0 1px var(--line);
-  color: var(--text);
-  cursor: default;
-  transition: background 0.34s ease, color 0.34s ease, box-shadow 0.34s ease;
-  /* a tab across the left, stepping down to the body. Pixel stops, not
-     percentages — a percentage tab all but vanishes on a 60px row. */
-  clip-path: polygon(0 11px, 8px 0, 33% 0, 42% 11px, 100% 11px, 100% 100%, 0 100%);
-}
-.folder[data-open='true'] .folder__face {
-  background: var(--primary);
-  color: var(--on-primary);
-  box-shadow: none;
-}
-.folder__top { display: flex; align-items: baseline; gap: 9px; }
-.folder__no { font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
-.folder__label { font-family: var(--display); font-weight: 700; font-size: 14.5px; letter-spacing: -0.015em; line-height: 1.2; }
-.folder__tools {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  line-height: 1.5;
-  color: var(--muted);
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition: max-height 0.4s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.3s ease;
-}
-.folder[data-open='true'] .folder__no,
-.folder[data-open='true'] .folder__tools { color: rgba(244, 241, 232, 0.66); }
-.folder[data-open='true'] .folder__tools { max-height: 46px; opacity: 1; margin-top: 3px; }
-
-/* ── the tools that lift out of the folder ─────────────────── */
-.folder__apps {
-  position: absolute;
-  z-index: 1;
-  left: 54px;
-  right: 0;
-  top: 0;
-  height: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-}
-.app {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  /* frosted glass, so the folder behind reads through */
-  background: color-mix(in srgb, var(--bg-elev) 58%, transparent);
-  backdrop-filter: blur(14px) saturate(1.6);
-  -webkit-backdrop-filter: blur(14px) saturate(1.6);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 0 0 1px var(--line),
-    0 14px 24px -12px rgba(0, 0, 0, 0.6);
-  color: var(--text);
-  /* tucked down inside the folder until it opens */
-  transform: translate(0, 6px) scale(0.7);
-  opacity: 0;
-  transition: transform 0.52s cubic-bezier(0.34, 1.42, 0.64, 1), opacity 0.3s ease;
-}
-.folder[data-open='true'] .app {
-  transform: translate(var(--x), -50%) scale(1) rotate(var(--r));
-  opacity: 1;
-  transition-delay: var(--d);
-}
-.app svg { width: 17px; height: 17px; fill: currentColor; }
-.app b { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: -0.02em; }
-
-@media (prefers-reduced-motion: reduce) {
-  .app { transition: opacity 0.2s ease; }
-  .folder[data-open='true'] .app { transform: translate(var(--x), -50%) rotate(var(--r)); }
-  .folder__tools { transition: none; }
-}
-
 /* ── the playlist crate ────────────────────────────────────
    A glass folder that fans its covers out on hover, with a player
    underneath. Kept at the end of the sheet with the other folder rules. */
@@ -2475,7 +2371,7 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 58%;
+  bottom: 64%;
   height: 0;
   display: grid;
   place-items: center;
@@ -2490,8 +2386,10 @@ a { color: inherit; text-decoration: none; }
   border-radius: 10px;
   background: transparent;
   cursor: pointer;
-  transform: translate(0, 26px) scale(0.72) rotate(0deg);
-  opacity: 0;
+  /* at rest they already peek out of the crate as a tight stack, so the
+     top of the card isn't just empty waiting for a hover */
+  transform: translate(calc(var(--x) * 0.3), -6px) scale(0.86) rotate(calc(var(--r) * 0.35));
+  opacity: 1;
   transition: transform 0.6s cubic-bezier(0.34, 1.36, 0.64, 1), opacity 0.34s ease;
 }
 .pcard--music:hover .cover,
@@ -2535,7 +2433,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 2;
   display: flex;
   align-items: flex-end;
-  height: 58%;
+  height: 64%;
   padding: 10px 12px;
   border-radius: 12px;
   background: color-mix(in srgb, var(--primary) 55%, transparent);
@@ -2597,7 +2495,7 @@ a { color: inherit; text-decoration: none; }
    and its neighbours give it up. Driven by :has() rather than React
    state, so nothing re-renders while the cursor moves.
 
-   The base tracks below MUST stay a plain fr list. Written as
+   The base tracks MUST stay a plain fr list. Written as
    repeat(4, minmax(0,1fr)) they are a different track type and CSS
    refuses to interpolate — the grid snaps instead of sliding. */
 .collage:has(.pcard--portrait:hover) {
@@ -2610,22 +2508,146 @@ a { color: inherit; text-decoration: none; }
 }
 .collage:has(.pcard--music:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
+  grid-template-rows: 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
+  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr;
 }
 .collage:has(.pcard--photos:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr;
+  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr;
 }
 .collage:has(.pcard--place:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr;
+}
+.collage:has(.pcard--awards:hover) {
+  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
 .collage:has(.pcard--links:hover) {
-  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
+  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
+
+/* ── the toolkit board ─────────────────────────────────────
+   Replaces the folder drawer: every tool visible at once, grouped by
+   what it's for. The drawer hid four fifths of the card behind a hover
+   and left the rest empty. */
+.pcard--stack { display: grid; grid-template-rows: auto 1fr; gap: 10px; padding: 14px; }
+.tools { display: grid; align-content: stretch; gap: 6px; min-height: 0; }
+.trow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 11px;
+  border-radius: 11px;
+  background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.trow:hover { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.trow__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.015em;
+  text-transform: capitalize;
+}
+.trow__apps { display: flex; gap: 5px; }
+.tchip {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 7px;
+  background: var(--bg-elev);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), background 0.3s ease;
+}
+.trow:hover .tchip { transform: translateY(-2px); background: var(--primary); color: var(--on-primary); }
+.tchip svg { width: 13px; height: 13px; fill: currentColor; }
+.tchip b { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: -0.03em; }
+
+/* ── the recognition card ──────────────────────────────────── */
+.pcard--awards {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  padding: 12px;
+  background:
+    radial-gradient(120% 90% at 12% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
+    var(--bg-elev);
+}
+.atags { display: flex; flex-wrap: wrap; align-content: center; gap: 6px; }
+.atag {
+  display: grid;
+  gap: 1px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.atag b { font-size: 12px; font-weight: 600; }
+.atag i { font-family: var(--mono); font-style: normal; font-size: 9px; color: var(--muted); }
+
+/* ── experience: panels, the current role picked out ────────── */
+.fact--exp .roles { gap: 7px; }
+.fact--exp .role {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: var(--bg-elev);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.fact--exp .role::before { display: none; }
+.fact--exp .role[data-now='true'] {
+  background: color-mix(in srgb, var(--primary) 16%, var(--bg-elev));
+  box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 1px var(--line);
+}
+.fact--exp .role__org { grid-column: 1; font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.02em; }
+.fact--exp .role__title { grid-column: 1; flex: none; font-size: 12.5px; }
+.fact--exp .role__years { grid-column: 1; margin: 3px 0 0; font-size: 10.5px; }
+.fact--exp .role__now {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-primary);
+  background: var(--primary);
+}
+
+/* ── education: year-led rows, deliberately not panels ──────── */
+.fact--edu .roles { gap: 2px; }
+.fact--edu .role {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+  padding: 10px 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.fact--edu .role:hover { box-shadow: none; padding-left: 0; }
+.fact--edu .role__years {
+  grid-row: 1;
+  margin: 0 0 2px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.fact--edu .role__org { grid-row: 2; font-family: var(--mono); font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+.fact--edu .role__title { grid-row: 3; flex: none; font-size: 12.5px; }

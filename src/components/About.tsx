@@ -33,22 +33,10 @@ function useGlow<T extends HTMLElement>() {
 
 const Glow = () => <span className="pcard__glow" aria-hidden="true" />
 
-/** One tool, as a frosted tile that lifts out of the folder. */
-function ToolTile({ tool, i, count }: { tool: Tool; i: number; count: number }) {
-  // fan them from the middle: the more there are, the wider the spread
-  const mid = (count - 1) / 2
-  const spread = count > 3 ? 30 : 36
+/** One tool, as a small tile. Real mark where there is one, monogram otherwise. */
+function ToolChip({ tool }: { tool: Tool }) {
   return (
-    <span
-      className="app"
-      title={tool.name}
-      style={{
-        ['--x' as string]: `${(i - mid) * spread}px`,
-        ['--r' as string]: `${(i - mid) * 9}deg`,
-        ['--d' as string]: `${i * 45}ms`,
-        zIndex: count - Math.abs(i - mid),
-      }}
-    >
+    <span className="tchip" title={tool.name}>
       {tool.mark ? (
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d={marks[tool.mark]} />
@@ -60,35 +48,48 @@ function ToolTile({ tool, i, count }: { tool: Tool; i: number; count: number }) 
   )
 }
 
-/** Folder tabs stacked front to back; point at one and it slides forward. */
+/**
+ * The stack, as a board rather than a folder drawer: every tool is on show
+ * at once, grouped by what it's for. Nothing to hover to find out what's
+ * inside, and no dead space waiting for a folder to open.
+ */
 function StackCard() {
-  const [open, setOpen] = useState(0)
   const glow = useGlow<HTMLDivElement>()
   return (
     <div className="pcard pcard--stack" style={{ gridArea: 's' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
-      <span className="pcard__label">Stack / {stackCards.length} folders</span>
-      <div className="folders" onPointerLeave={() => setOpen(0)}>
-        {stackCards.map((c, i) => (
-          <div className="folder" key={c.no} data-open={i === open} onPointerEnter={() => setOpen(i)}>
-            {/* the tools sit behind the folder face and rise above its lip */}
-            <span className="folder__apps" aria-hidden="true">
-              {c.tools.map((t, j) => (
-                <ToolTile key={t.name} tool={t} i={j} count={c.tools.length} />
+      <span className="pcard__label">Toolkit</span>
+      <div className="tools">
+        {stackCards.map((c) => (
+          <div className="trow" key={c.no}>
+            <span className="trow__name">{c.label}</span>
+            <span className="trow__apps">
+              {c.tools.map((t) => (
+                <ToolChip key={t.name} tool={t} />
               ))}
-            </span>
-
-            <span className="folder__face">
-              <span className="folder__top">
-                <span className="folder__no">{c.no}</span>
-                <span className="folder__label">{c.label}</span>
-              </span>
-              <span className="folder__tools">{c.tools.map((t) => t.name).join(' · ')}</span>
             </span>
           </div>
         ))}
       </div>
-      <span className="pcard__hint">Hover a folder to peek inside</span>
+    </div>
+  )
+}
+
+/** Recognition, as a card rather than a column of text. */
+function AwardsCard() {
+  const glow = useGlow<HTMLDivElement>()
+  return (
+    <div className="pcard pcard--awards" style={{ gridArea: 'w' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
+      <Glow />
+      <span className="pcard__label">Recognition</span>
+      <div className="atags">
+        {awards.map((a, i) => (
+          <span className="atag" key={`${a.title}-${i}`}>
+            <b>{a.title}</b>
+            <i>{a.issuer}</i>
+          </span>
+        ))}
+      </div>
     </div>
   )
 }
@@ -380,50 +381,34 @@ export default function About() {
             ))}
           </div>
 
+          {/* Experience — panels, the current role picked out */}
           <div className="fact fact--exp">
             <h3 className="about__sub">Experience</h3>
             <ul className="roles">
-              {roleList.map((r) => (
-                <li className="role" key={r.org}>
+              {roleList.map((r, i) => (
+                <li className="role" key={r.org} data-now={i === 0}>
                   <span className="role__org">{r.org}</span>
-                  <span className="role__slash">/</span>
                   <span className="role__title">{r.role}</span>
-                  <span className="role__years">{r.years}</span>
+                  {r.years && <span className="role__years">{r.years}</span>}
+                  {i === 0 && <span className="role__now">Current</span>}
                 </li>
               ))}
             </ul>
           </div>
 
+          {/* Education — year-led rows, deliberately not panels */}
           <div className="fact fact--edu">
             <h3 className="about__sub">Education</h3>
             <ul className="roles">
               {education.map((e) => (
                 <li className="role" key={e.school}>
-                  <span className="role__org">{e.school}</span>
-                  <span className="role__slash">/</span>
-                  <span className="role__title">{e.course}</span>
                   <span className="role__years">{e.years}</span>
+                  <span className="role__org">{e.school}</span>
+                  <span className="role__title">{e.course}</span>
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* hides itself while the awards list is empty */}
-          {awards.length > 0 && (
-            <div className="fact fact--rec">
-              <h3 className="about__sub">Recognition</h3>
-              <ul className="roles">
-                {awards.map((a) => (
-                  <li className="role" key={a.title}>
-                    <span className="role__org">{a.title}</span>
-                    <span className="role__slash">/</span>
-                    <span className="role__title">{a.issuer}</span>
-                    <span className="role__years">{a.year}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
         </motion.div>
 
@@ -460,6 +445,7 @@ export default function About() {
           <MusicCard />
           <PhotosCard />
           <StackCard />
+          <AwardsCard />
           <PlaceCard />
           <LinksCard />
         </motion.div>
