@@ -23,55 +23,37 @@ export const socials: { label: string; href: string }[] = [
   { label: 'X', href: 'https://x.com/' },
 ]
 
-/** Big type at the top of About — keep it to two sentences. */
-export const manifesto =
-  'I care about the part of a product people actually touch. Not the launch screenshot — the screen someone opens for the two-hundredth time, tired, in a hurry, and needs to work.'
+/** The greeting and the two or three short paragraphs beside it. */
+export const intro_about = {
+  greeting: "Hey, I'm Karthikeyan!",
+  paragraphs: [
+    "I'm a frontend engineer who designs. For the past few years I've worked on product UI at Facilio — support tooling, dashboards and the design system several squads build from.",
+    "What I enjoy is owning a problem end to end: finding the gap worth solving, shaping the interface, building it, and watching what people actually do with it.",
+    "Away from the screen I draw, and I keep a sketchbook going for its own sake.",
+  ],
+}
 
-/** Counts up when the section scrolls in. Edit the numbers as they change. */
-export const stats: { value: number; suffix?: string; label: string }[] = [
-  { value: 4, suffix: '+', label: 'Years designing & building' },
-  { value: 15, suffix: '', label: 'Projects shipped' },
-  { value: 2, suffix: '', label: 'Products in production' },
-  { value: 12, suffix: '', label: 'Design explorations' },
+/** The compact role list on the left — a summary; the timeline below has the detail. */
+export const roleList: { org: string; role: string; years: string }[] = [
+  { org: 'Facilio', role: 'Frontend Engineer', years: '2022 — Present' },
+  { org: 'Freelance', role: 'Design & Frontend', years: '2020 — 2022' },
 ]
 
-/**
- * The expanding strip in About. Each slat is one facet of me: collapsed it
- * shows just the image and a vertical label, hovered it opens and tells its
- * bit of the story. Swap `image` for your own photos when you have them.
- */
-export const facets: { label: string; title: string; body: string; image: string }[] = [
-  {
-    label: 'Now',
-    title: 'Frontend Engineer at Facilio',
-    body: 'I build the product UI facility teams open every morning — Support Desk and Atom, both in production.',
-    image: '/bento/support-desk.jpg',
-  },
-  {
-    label: 'Design',
-    title: 'I design before I build',
-    body: 'Figma first, then code. Handing off to myself means nothing gets lost in translation.',
-    image: '/bento/fm-assistant.jpg',
-  },
-  {
-    label: 'Systems',
-    title: 'Design systems, not screens',
-    body: 'Tokens and primitives that let several squads build from the same vocabulary.',
-    image: '/bento/smart-findings.jpg',
-  },
-  {
-    label: 'Data UI',
-    title: 'At home in dense screens',
-    body: 'Queues, dashboards and tables under real load. The messy views are the interesting ones.',
-    image: '/bento/documents.jpg',
-  },
-  {
-    label: 'Craft',
-    title: 'I still draw',
-    body: 'Sketchbook work, logos, illustration. It is where the eye gets trained.',
-    image: '/bento/art.jpg',
-  },
+/** The folder stack card — hover one to bring it forward. */
+export const stackCards = [
+  { no: '01', label: 'design', tools: 'figma' },
+  { no: '02', label: 'prototype', tools: 'figma · motion' },
+  { no: '03', label: 'build', tools: 'react · typescript' },
+  { no: '04', label: 'ship', tools: 'vite · vercel' },
 ]
+
+/** The location card. */
+export const place = {
+  city: 'Chennai',
+  country: 'India',
+  coords: '13.0827° N, 80.2707° E',
+  tzLabel: 'IST',
+}
 
 /** The "currently" line in the portrait caption. */
 export const currently = {

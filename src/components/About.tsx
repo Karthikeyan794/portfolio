@@ -1,126 +1,123 @@
-import { animate, motion, useInView } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
-import { facets, manifesto, skills, stats } from '../data'
+import { motion } from 'motion/react'
+import { useState } from 'react'
+import { currently, intro_about, place, roleList, stackCards } from '../data'
 
-/** Counts from 0 to `value` the first time it scrolls into view. */
-function Stat({ value, suffix, label, delay }: { value: number; suffix?: string; label: string; delay: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const seen = useInView(ref, { once: true, amount: 0.6 })
-  const [n, setN] = useState(0)
-
-  useEffect(() => {
-    if (!seen) return
-    const controls = animate(0, value, {
-      duration: 1.1,
-      delay,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => setN(Math.round(v)),
-    })
-    return () => controls.stop()
-  }, [seen, value, delay])
-
+/** Folder tabs stacked front to back; point at one and it slides forward. */
+function StackCard() {
+  const [open, setOpen] = useState(0)
   return (
-    <div className="stat" ref={ref}>
-      <span className="stat__value">
-        {n}
-        {suffix && <i>{suffix}</i>}
-      </span>
-      <span className="stat__label">{label}</span>
+    <div className="pcard pcard--stack">
+      <span className="pcard__label">Stack / {stackCards.length} folders</span>
+      <div className="folders" onPointerLeave={() => setOpen(0)}>
+        {stackCards.map((c, i) => (
+          <div
+            className="folder"
+            key={c.no}
+            data-open={i === open}
+            style={{ zIndex: stackCards.length - i }}
+            onPointerEnter={() => setOpen(i)}
+          >
+            <span className="folder__no">{c.no}</span>
+            <span className="folder__tools">{c.tools}</span>
+            <span className="folder__label">{c.label}</span>
+          </div>
+        ))}
+      </div>
+      <span className="pcard__hint">Hover a folder to peek inside</span>
     </div>
   )
 }
 
-/** The toolkit as a slow ticker — reads as one line rather than a wall of chips. */
-function Ticker() {
-  const items = skills.flatMap((g) => g.items)
-  const loop = [...items, ...items]
+/** Where I am — a drawn panel rather than a map image. */
+function PlaceCard() {
+  const time = new Intl.DateTimeFormat('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Kolkata',
+  }).format(new Date())
+
   return (
-    <div className="ticker" aria-label="Toolkit">
-      <div className="ticker__track">
-        {loop.map((item, i) => (
-          <span className="ticker__item" key={`${item}-${i}`} aria-hidden={i >= items.length}>
-            {item}
-            <i className="ticker__dot" aria-hidden="true" />
-          </span>
-        ))}
+    <div className="pcard pcard--place">
+      <span className="pcard__label">Based in</span>
+      <div className="place" aria-hidden="true">
+        <span className="place__pin" />
+        <span className="place__ring" />
+      </div>
+      <div className="place__meta">
+        <strong>
+          {place.city}, {place.country}
+        </strong>
+        <span>{place.coords}</span>
+        <span className="place__time">
+          {time} {place.tzLabel}
+        </span>
       </div>
     </div>
   )
 }
 
-/**
- * Slats side by side in a fixed-width strip. The open one takes most of the
- * room and shows its story; the rest collapse to a spine with a vertical
- * label. Pointer or keyboard both drive it, and one is always open so the
- * strip never looks empty.
- */
-function Facets() {
-  const [open, setOpen] = useState(0)
-
-  return (
-    <motion.div
-      className="facets"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ type: 'spring', stiffness: 62, damping: 18 }}
-    >
-      {facets.map((f, i) => (
-        <button
-          type="button"
-          className="facet"
-          key={f.label}
-          data-open={i === open}
-          aria-expanded={i === open}
-          onPointerEnter={() => setOpen(i)}
-          onFocus={() => setOpen(i)}
-          onClick={() => setOpen(i)}
-        >
-          <img className="facet__img" src={f.image} alt="" loading="lazy" decoding="async" />
-          <span className="facet__veil" aria-hidden="true" />
-          <span className="facet__spine">{f.label}</span>
-          <span className="facet__story">
-            <span className="facet__label">{f.label}</span>
-            <span className="facet__title">{f.title}</span>
-            <span className="facet__body">{f.body}</span>
-          </span>
-        </button>
-      ))}
-    </motion.div>
-  )
-}
-
-/** Kept deliberately spare: one statement, the strip, the numbers, the tools. */
 export default function About() {
   return (
     <section className="section about" id="about">
-      <div className="wrap wrap--wide">
+      <div className="wrap wrap--wide about__grid">
+        {/* left: the words and the roles */}
         <motion.div
-          className="about__head"
+          className="about__col"
           initial={{ opacity: 0, y: 34 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ type: 'spring', stiffness: 68, damping: 18 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ type: 'spring', stiffness: 66, damping: 18 }}
         >
           <span className="eyebrow">01 — About</span>
-          <p className="about__manifesto">{manifesto}</p>
-        </motion.div>
-
-        <Facets />
-
-        <motion.div
-          className="about__foot"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.7 }}
-        >
-          <div className="stats">
-            {stats.map((s, i) => (
-              <Stat key={s.label} {...s} delay={i * 0.08} />
+          <h2 className="about__greeting">{intro_about.greeting}</h2>
+          <div className="about__text">
+            {intro_about.paragraphs.map((p) => (
+              <p key={p.slice(0, 24)}>{p}</p>
             ))}
           </div>
-          <Ticker />
+
+          <ul className="roles">
+            {roleList.map((r) => (
+              <li className="role" key={r.org}>
+                <span className="role__org">{r.org}</span>
+                <span className="role__slash">/</span>
+                <span className="role__title">{r.role}</span>
+                <span className="role__years">{r.years}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+
+        {/* right: the collage */}
+        <motion.div
+          className="collage"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ type: 'spring', stiffness: 62, damping: 18, delay: 0.08 }}
+        >
+          <figure className="pcard pcard--portrait">
+            <img src={currently.portrait} alt="" loading="lazy" decoding="async" />
+            <figcaption>
+              <span className="pcard__now">
+                <i aria-hidden="true" />
+                {currently.role} · {currently.at}
+              </span>
+            </figcaption>
+          </figure>
+
+          <a className="pcard pcard--shot" href="#/project/drawings">
+            <img src="/bento/art.jpg" alt="" loading="lazy" decoding="async" />
+            <span className="pcard__label pcard__label--over">Drawings</span>
+            <span className="pcard__go" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                <path d="M7 17 17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </a>
+
+          <StackCard />
+          <PlaceCard />
         </motion.div>
       </div>
     </section>
