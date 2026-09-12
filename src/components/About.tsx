@@ -177,32 +177,133 @@ function LinksCard() {
   )
 }
 
-/** What's on while I build — the record is drawn, not an image. */
-function PlaylistCard() {
-  const glow = useGlow<HTMLAnchorElement>()
+/**
+ * The crate: a glass folder that fans its covers out when you point at it,
+ * with a working player underneath. The player drives a real <audio>; with
+ * no file behind a track it falls back to the Spotify link.
+ */
+function MusicCard() {
+  const glow = useGlow<HTMLDivElement>()
+  const audio = useRef<HTMLAudioElement>(null)
+  const [cur, setCur] = useState(0)
+  const [playing, setPlaying] = useState(false)
+  const [pct, setPct] = useState(0)
+
+  const track = playlist.tracks[cur]
+  const playable = Boolean(track.src)
+
+  // swapping tracks while playing should keep playing
+  useEffect(() => {
+    const el = audio.current
+    if (!el || !playable) return
+    el.load()
+    if (playing) void el.play().catch(() => setPlaying(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cur])
+
+  function toggle() {
+    const el = audio.current
+    if (!el || !playable) return
+    if (el.paused) void el.play().then(() => setPlaying(true)).catch(() => setPlaying(false))
+    else {
+      el.pause()
+      setPlaying(false)
+    }
+  }
+
   return (
-    <a
-      className="pcard pcard--vinyl"
-      href={playlist.href}
-      target="_blank"
-      rel="noreferrer"
-      style={{ gridArea: 'y' }}
-      ref={glow.ref}
-      onPointerMove={glow.onPointerMove}
-    >
+    <div className="pcard pcard--music" style={{ gridArea: 'y' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
       <span className="pcard__label">Playlist</span>
-      <span className="pcard__go" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-          <path d="M7 17 17 7M9 7h8v8" />
-        </svg>
-      </span>
-      <span className="pcard__hint">{playlist.title}</span>
-      {/* the disc sits half out of frame and turns while you point at it */}
-      <span className="vinyl" aria-hidden="true">
-        <span className="vinyl__label" />
-      </span>
-    </a>
+
+      <div className="crate">
+        {/* the covers sit behind the folder and rise out of it on hover */}
+        <span className="crate__covers" aria-hidden="true">
+          {playlist.tracks.map((t, i) => {
+            const mid = (playlist.tracks.length - 1) / 2
+            return (
+              <button
+                type="button"
+                className="cover"
+                key={t.title}
+                title={`${t.title} — ${t.artist}`}
+                data-on={i === cur}
+                onClick={() => setCur(i)}
+                style={{
+                  ['--x' as string]: `${(i - mid) * 36}px`,
+                  ['--r' as string]: `${(i - mid) * 8}deg`,
+                  ['--d' as string]: `${i * 55}ms`,
+                  ['--art' as string]: t.art,
+                  zIndex: playlist.tracks.length - Math.abs(i - mid),
+                }}
+              >
+                <span className="cover__art" />
+                <span className="cover__name">{t.title}</span>
+              </button>
+            )
+          })}
+        </span>
+
+        {/* the glass folder front */}
+        <span className="crate__folder">
+          <span className="crate__brand">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.4 14.4a.8.8 0 0 1-1.1.3c-3-1.8-6.7-2.2-11.1-1.2a.8.8 0 1 1-.4-1.5c4.8-1.1 8.9-.6 12.3 1.4.4.2.5.7.3 1Zm1.2-2.8a1 1 0 0 1-1.3.3c-3.4-2.1-8.6-2.7-12.6-1.5a1 1 0 1 1-.6-1.9c4.6-1.4 10.3-.7 14.2 1.7.5.3.6.9.3 1.4Zm.1-2.9C13.6 8.3 7 8.1 3.1 9.3a1.2 1.2 0 0 1-.7-2.3C6.9 5.6 14.2 5.9 18.9 8.7a1.2 1.2 0 0 1-1.2 2Z" />
+            </svg>
+            Anirudh · {playlist.tracks.length} tracks
+          </span>
+        </span>
+      </div>
+
+      {/* now playing */}
+      <div className="np">
+        <button
+          type="button"
+          className="np__play"
+          onClick={toggle}
+          disabled={!playable}
+          aria-label={playing ? `Pause ${track.title}` : `Play ${track.title}`}
+          title={playable ? undefined : 'Add the MP3 to /public/music to play it here'}
+        >
+          {playing ? (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h4v16H7zM13 4h4v16h-4z" /></svg>
+          ) : (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3.5 20 12 7 20.5z" /></svg>
+          )}
+        </button>
+
+        <span className="np__meta">
+          <strong>{track.title}</strong>
+          <span>{track.artist}</span>
+        </span>
+
+        <a className="np__out" href={playlist.href} target="_blank" rel="noreferrer" aria-label="Open in Spotify">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+            <path d="M7 17 17 7M9 7h8v8" />
+          </svg>
+        </a>
+
+        <span className="np__bar">
+          <i style={{ width: `${pct}%` }} />
+        </span>
+      </div>
+
+      {playable && (
+        <audio
+          ref={audio}
+          src={track.src}
+          preload="none"
+          onTimeUpdate={(e) => {
+            const el = e.currentTarget
+            setPct(el.duration ? (el.currentTime / el.duration) * 100 : 0)
+          }}
+          onEnded={() => {
+            setPct(0)
+            setCur((c) => (c + 1) % playlist.tracks.length)
+          }}
+        />
+      )}
+    </div>
   )
 }
 
@@ -347,7 +448,7 @@ export default function About() {
             </span>
           </a>
 
-          <PlaylistCard />
+          <MusicCard />
           <PhotosCard />
           <StackCard />
           <PlaceCard />

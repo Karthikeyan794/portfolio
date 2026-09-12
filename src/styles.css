@@ -1976,8 +1976,8 @@ a { color: inherit; text-decoration: none; }
     'p p y y'
     's s y y'
     's s y y'
-    's s c c'
-    's s c c'
+    's s y y'
+    's s y y'
     's s c c'
     'l l c c'
     'l l c c'
@@ -2369,4 +2369,138 @@ a { color: inherit; text-decoration: none; }
   .app { transition: opacity 0.2s ease; }
   .folder[data-open='true'] .app { transform: translate(var(--x), -50%) rotate(var(--r)); }
   .folder__tools { transition: none; }
+}
+
+/* ── the playlist crate ────────────────────────────────────
+   A glass folder that fans its covers out on hover, with a player
+   underneath. Kept at the end of the sheet with the other folder rules. */
+.pcard--music {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  padding: 14px;
+}
+
+.crate { position: relative; min-height: 0; display: grid; align-items: end; }
+
+/* the covers live behind the folder front and are tucked inside it at rest */
+.crate__covers {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 62%;
+  height: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+.cover {
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(0, 26px) scale(0.72) rotate(0deg);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.34, 1.36, 0.64, 1), opacity 0.34s ease;
+}
+.pcard--music:hover .cover,
+.pcard--music:focus-within .cover {
+  transform: translate(var(--x), -20px) scale(1) rotate(var(--r));
+  opacity: 1;
+  transition-delay: var(--d);
+}
+.cover__art {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: var(--art);
+  box-shadow: 0 16px 26px -14px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+.cover__name {
+  position: absolute;
+  inset: auto 5px 5px 5px;
+  font-size: 8.5px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.cover[data-on='true'] .cover__art { box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 2px var(--accent); }
+/* the track that's cued stands out of the fan, so its name is readable */
+.pcard--music:hover .cover[data-on='true'],
+.pcard--music:focus-within .cover[data-on='true'] {
+  transform: translate(var(--x), -36px) scale(1.08) rotate(var(--r));
+  z-index: 9;
+}
+
+/* the folder front: frosted glass over whatever sits behind it */
+.crate__folder {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  height: 62%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--primary) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(1.7);
+  -webkit-backdrop-filter: blur(16px) saturate(1.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 18px 34px -20px rgba(0, 0, 0, 0.7);
+  /* the folder tab, same language as the stack card */
+  clip-path: polygon(0 11px, 8px 0, 33% 0, 42% 11px, 100% 11px, 100% 100%, 0 100%);
+}
+.crate__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #f2f5f1;
+}
+
+/* ── now playing ───────────────────────────────────────────── */
+.np {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+}
+.np__play {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #10210c;
+  cursor: pointer;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.np__play:hover:not(:disabled) { transform: scale(1.08); }
+.np__play:disabled { opacity: 0.42; cursor: not-allowed; }
+.np__meta { display: grid; min-width: 0; }
+.np__meta strong { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np__meta span { font-family: var(--mono); font-size: 9.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np__out { color: var(--muted); display: grid; place-items: center; transition: color 0.25s ease, transform 0.25s ease; }
+.np__out:hover { color: var(--text); transform: translate(2px, -2px); }
+.np__bar { grid-column: 1 / -1; height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.np__bar i { display: block; height: 100%; background: var(--accent); transition: width 0.25s linear; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cover { transition: opacity 0.2s ease; }
+  .pcard--music:hover .cover { transform: translate(var(--x), -20px) rotate(var(--r)); }
 }

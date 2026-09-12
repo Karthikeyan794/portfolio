@@ -93,10 +93,27 @@ export const photoSets = [
   { label: 'Studies', src: '/work/neomorphism.jpg' },
 ]
 
-/** What's on while I build. TODO: paste your own Spotify playlist link. */
+/**
+ * What's on while I build.
+ *
+ * `src` is intentionally empty: I can't ship Anirudh's tracks with the site —
+ * they're copyrighted and not mine to distribute. Drop your own MP3s in
+ * /public/music and point `src` at them ('/music/the-one.mp3') and the player
+ * below starts working immediately. Until then the card links out to Spotify.
+ *
+ * `art` is a drawn gradient rather than real cover art, for the same reason.
+ */
+export type Track = { title: string; artist: string; src: string; art: string }
 export const playlist = {
   title: 'On repeat while building',
   href: 'https://open.spotify.com/',
+  tracks: [
+    { title: 'The One', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #1db954, #0b3d22)' },
+    { title: 'Arabic Kuthu', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #f2994a, #6b2d12)' },
+    { title: 'Vaathi Coming', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #56ccf2, #10394d)' },
+    { title: 'Why This Kolaveri Di', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #eb5757, #4a1212)' },
+    { title: 'Jolly O Gymkhana', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #bb6bd9, #3a1547)' },
+  ] as Track[],
 }
 
 /** The three profiles that sit under the About text. */
