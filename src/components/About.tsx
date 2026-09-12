@@ -241,24 +241,17 @@ function MusicCard() {
       )}
       <span className="crate__veil" aria-hidden="true" />
 
-      <span className="pcard__label pcard__label--over">Playlist</span>
-      <a className="pcard__go" href={playlist.href} target="_blank" rel="noreferrer" aria-label="Open in Spotify">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-          <path d="M7 17 17 7M9 7h8v8" />
-        </svg>
-      </a>
+      <span className="np__head">
+        <span className="pcard__label pcard__label--over">Playlist</span>
+        <a className="np__out" href={playlist.href} target="_blank" rel="noreferrer" aria-label="Open in Spotify">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+            <path d="M7 17 17 7M9 7h8v8" />
+          </svg>
+        </a>
+      </span>
 
-      {/* record on the left, controls on the right */}
-      <div className="np">
-        <span className="disc" data-spin={playing} aria-hidden="true">
-          <span className="disc__label" style={{ background: track.art }} />
-        </span>
-
-        <span className="np__meta">
-          <strong>{track.title}</strong>
-          <span>{track.artist}</span>
-        </span>
-
+      {/* controls live in the top-right corner */}
+      <span className="np__ctrl">
         <button
           type="button"
           className="np__skip"
@@ -267,7 +260,6 @@ function MusicCard() {
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" /></svg>
         </button>
-
         <button
           type="button"
           className="np__play"
@@ -282,6 +274,21 @@ function MusicCard() {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3.5 20 12 7 20.5z" /></svg>
           )}
         </button>
+      </span>
+
+      {/* words on the left, record on the right */}
+      <div className="np">
+        <span className="np__meta">
+          <strong>{track.title}</strong>
+          <span>{track.artist}</span>
+        </span>
+
+        <span className="disc" data-spin={playing} aria-hidden="true">
+          <span
+            className="disc__label"
+            style={track.cover ? { backgroundImage: `url(${track.cover})` } : { background: track.art }}
+          />
+        </span>
 
         <span className="np__bar">
           <i style={{ width: `${pct}%` }} />

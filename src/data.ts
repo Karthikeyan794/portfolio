@@ -106,7 +106,8 @@ export const playlist = {
   /** Plays muted behind the crate. '' hides it and the card falls back to the card ground. */
   video: '/music/playlist-bg.mp4',
   tracks: [
-    { title: 'The One', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #1db954, #0b3d22)' },
+    // TODO: save the AA23 poster to public/music/art/aa23.jpg and this picks it up.
+    { title: 'The One', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #1db954, #0b3d22)', cover: '' },
     { title: 'Arabic Kuthu', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #f2994a, #6b2d12)' },
     { title: 'Vaathi Coming', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #56ccf2, #10394d)' },
     { title: 'Why This Kolaveri Di', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #eb5757, #4a1212)' },
