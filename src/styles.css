@@ -2465,8 +2465,12 @@ a { color: inherit; text-decoration: none; }
 /* a wide strip of a tall photo: bias the crop upward or every row
    lands on the dark foreground */
 .trow__bg { width: 100%; height: 100%; object-fit: cover; object-position: center 32%; }
-/* flat black at 20%, no blur — the picture stays sharp underneath */
-.trow__veil { background: rgba(0, 0, 0, 0.2); }
+/* 20% black with a light blur over it */
+.trow__veil {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
 .trow[data-open='true'] .trow__bg, .trow[data-open='true'] .trow__veil { opacity: 1; }
 
 .trow__name {
@@ -2480,26 +2484,24 @@ a { color: inherit; text-decoration: none; }
   font-size: 14.5px;
   letter-spacing: -0.005em;
 }
-/* The opening letter carries the accent on the dark theme, so the names
-   read as marks rather than a plain list. On the light theme it stays a
-   single ink — the lime is for dark grounds and looked like a mistake
-   against the pale rows. */
+/* one ink in both themes — the opening letter is only heavier, not a
+   second colour */
 .trow__name em {
   font-style: normal;
   font-weight: 700;
   color: inherit;
 }
-:root[data-theme='dark'] .trow__name em { color: var(--accent); }
 
 /* on the banner the name is a headline, not a list row */
 .trow[data-open='true'] .trow__name {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 21px;
-  letter-spacing: -0.02em;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   /* tight, so the 20px below is the gap you actually see rather than
      20px plus the line box's descender space */
-  line-height: 1.08;
+  line-height: 1.1;
 }
 
 
