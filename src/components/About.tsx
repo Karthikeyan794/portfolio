@@ -62,15 +62,34 @@ function StackCard() {
   const glow = useGlow<HTMLDivElement>()
   const [i, setI] = useState(0)
   const [held, setHeld] = useState(false)
+  // +1 walking forward, -1 walking back. The deck turns round at each end
+  // rather than wrapping, so it never rewinds past every slide at once.
+  const dir = useRef(1)
+
+  const step = () =>
+    setI((n) => {
+      if (n + dir.current >= stackCards.length) dir.current = -1
+      else if (n + dir.current < 0) dir.current = 1
+      return n + dir.current
+    })
 
   useEffect(() => {
     if (held) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setInterval(() => setI((n) => (n + 1) % stackCards.length), SLIDE_MS)
+    const t = setInterval(step, SLIDE_MS)
     return () => clearInterval(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [held])
 
-  const next = () => setI((n) => (n + 1) % stackCards.length)
+  // the label has to allow for the turn, or it names the current slide
+  // again at either end
+  const peek = (() => {
+    let d = dir.current
+    if (i + d >= stackCards.length) d = -1
+    else if (i + d < 0) d = 1
+    return i + d
+  })()
+  const upNext = stackCards[peek]
 
   return (
     <div
@@ -118,7 +137,10 @@ function StackCard() {
               className="pip"
               key={c.no}
               data-on={n === i}
-              onClick={() => setI(n)}
+              onClick={() => {
+                dir.current = n >= i ? 1 : -1
+                setI(n)
+              }}
               aria-label={c.label}
             >
               <i style={{ animationDuration: `${SLIDE_MS}ms`, animationPlayState: held ? 'paused' : 'running' }} />
@@ -126,8 +148,8 @@ function StackCard() {
           ))}
         </span>
 
-        <button type="button" className="deck__next" onClick={next} aria-label="Next">
-          {stackCards[(i + 1) % stackCards.length].label}
+        <button type="button" className="deck__next" onClick={step} aria-label="Next">
+          {upNext.label}
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
             <path d="m9 5 7 7-7 7" />
           </svg>

@@ -2414,8 +2414,8 @@ a { color: inherit; text-decoration: none; }
 .pcard--stack {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 10px;
-  padding: 14px;
+  gap: 12px;
+  padding: 16px;
 }
 
 .deck { position: relative; min-height: 0; border-radius: 12px; overflow: hidden; }
@@ -2453,7 +2453,7 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   gap: 12px;
   width: 100%;
-  padding: 16px 14px 14px;
+  padding: 16px;
   color: #fff;
 }
 .slide__name {
