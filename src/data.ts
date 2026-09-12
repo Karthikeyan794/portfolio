@@ -60,12 +60,29 @@ export type Tool = { name: string; mark?: string; mono?: string }
  * /public/toolkit and give each row its own.
  */
 export const stackCards: { no: string; label: string; image: string; tools: Tool[] }[] = [
-  { no: '01', label: 'research', image: '/intro.jpg', tools: [{ name: 'Miro', mark: 'miro' }, { name: 'Balsamiq', mono: 'Bq' }] },
-  { no: '02', label: 'design', image: '/intro.jpg', tools: [{ name: 'Figma', mark: 'figma' }, { name: 'Dora', mono: 'Do' }] },
+  // TODO: Maze and Notion are my guess at your research tools — the resume
+  // lists the skills (usability testing, personas) but not what you use.
+  { no: '01', label: 'research', image: '/intro.jpg', tools: [{ name: 'Maze', mark: 'maze' }, { name: 'Notion', mark: 'notion' }] },
+  {
+    no: '02',
+    label: 'design',
+    image: '/intro.jpg',
+    tools: [
+      { name: 'Figma', mark: 'figma' },
+      { name: 'Dora', mono: 'Do' },
+      { name: 'Miro', mark: 'miro' },
+      { name: 'Balsamiq', mono: 'Bq' },
+    ],
+  },
   {
     no: '03',
     label: 'graphic', image: '/intro.jpg',
-    tools: [{ name: 'Photoshop', mono: 'Ps' }, { name: 'Illustrator', mono: 'Ai' }, { name: 'Canva', mono: 'Cv' }],
+    tools: [
+      { name: 'Photoshop', mono: 'Ps' },
+      { name: 'Illustrator', mono: 'Ai' },
+      { name: 'Canva', mono: 'Cv' },
+      { name: 'CapCut', mono: 'Cc' },
+    ],
   },
   {
     no: '04',
