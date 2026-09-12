@@ -33,17 +33,20 @@ function useGlow<T extends HTMLElement>() {
 
 const Glow = () => <span className="pcard__glow" aria-hidden="true" />
 
-/** One tool, as a small tile. Real mark where there is one, monogram otherwise. */
+/** One tool, as a floating pill: its mark on a disc, then its name. */
 function ToolChip({ tool }: { tool: Tool }) {
   return (
-    <span className="tchip" title={tool.name}>
-      {tool.mark ? (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d={marks[tool.mark]} />
-        </svg>
-      ) : (
-        <b>{tool.mono}</b>
-      )}
+    <span className="tchip">
+      <i className="tchip__mark" aria-hidden="true">
+        {tool.mark ? (
+          <svg viewBox="0 0 24 24">
+            <path d={marks[tool.mark]} />
+          </svg>
+        ) : (
+          <b>{tool.mono}</b>
+        )}
+      </i>
+      {tool.name}
     </span>
   )
 }

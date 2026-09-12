@@ -2140,7 +2140,6 @@ a { color: inherit; text-decoration: none; }
 .pcard--music:hover .pcard__go { transform: translate(2px, -2px); }
 
 /* the folder stack */
-.pcard--stack { display: grid; gap: 9px; padding: 14px; grid-template-rows: auto 1fr auto; }
 .pcard__hint { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* ── the playlist card ─────────────────────────────────────── */
@@ -2413,7 +2412,9 @@ a { color: inherit; text-decoration: none; }
    Rows sit closed showing only what they're for. Point at one and it
    takes space from the others — flex-grow interpolates, so the open row
    slides rather than jumping — and its tools fan in from the right. */
-.pcard--stack { display: grid; grid-template-rows: auto 1fr; gap: 10px; padding: 14px; }
+/* minmax(0, 1fr), not 1fr: a plain fr track keeps an auto minimum, so the
+   open row's content pushed the accordion straight past the card's foot. */
+.pcard--stack { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; padding: 14px; }
 .tools { display: flex; flex-direction: column; gap: 6px; min-height: 0; }
 
 .trow {
@@ -2422,6 +2423,8 @@ a { color: inherit; text-decoration: none; }
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-content: center;
   align-items: center;
   gap: 0 10px;
   padding: 0 13px;
@@ -2455,7 +2458,7 @@ a { color: inherit; text-decoration: none; }
   text-transform: capitalize;
   transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
 }
-.trow:hover .trow__name { transform: translateY(-9px); }
+
 
 /* the count marks a closed row; it steps aside when the row opens */
 .trow__count {
@@ -2468,43 +2471,64 @@ a { color: inherit; text-decoration: none; }
 }
 .trow:hover .trow__count { opacity: 0; transform: translateX(8px); }
 
-/* the tools live under the name and slide in from the right, one after
-   the next, once the row is open */
+/* The tools float in as pills — mark on a disc, then the name — rising
+   and settling one after the next, the way the cards do in the reference. */
 .trow__apps {
   grid-column: 1 / -1;
-  grid-row: 1;
-  align-self: end;
+  grid-row: 2;
   display: flex;
-  gap: 6px;
-  padding-bottom: 9px;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+  /* collapsed to nothing when closed, so a shut row is just its name */
+  max-height: 0;
+  padding-top: 0;
+  overflow: hidden;
   opacity: 0;
-  transform: translateY(10px);
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+  transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1), padding-top 0.5s ease, opacity 0.3s ease;
 }
-.trow:hover .trow__apps { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.trow:hover .trow__apps { max-height: 84px; padding-top: 9px; opacity: 1; pointer-events: auto; }
 
 .tchip {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px 4px 4px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
   color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 10px 18px -10px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px) saturate(1.3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
   opacity: 0;
-  transform: translateX(14px);
-  transition: opacity 0.34s ease, transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+  transform: translateY(14px) scale(0.94);
+  transition: opacity 0.34s ease, transform 0.52s cubic-bezier(0.34, 1.32, 0.64, 1);
 }
-.trow:hover .tchip { opacity: 1; transform: translateX(0); }
+.trow:hover .tchip { opacity: 1; transform: translateY(0) scale(1); }
 /* each one a beat behind the last */
 .trow:hover .tchip:nth-child(1) { transition-delay: 60ms; }
-.trow:hover .tchip:nth-child(2) { transition-delay: 115ms; }
-.trow:hover .tchip:nth-child(3) { transition-delay: 170ms; }
-.trow:hover .tchip:nth-child(4) { transition-delay: 225ms; }
-.tchip svg { width: 18px; height: 18px; fill: currentColor; }
-.tchip b { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.03em; }
+.trow:hover .tchip:nth-child(2) { transition-delay: 120ms; }
+.trow:hover .tchip:nth-child(3) { transition-delay: 180ms; }
+.trow:hover .tchip:nth-child(4) { transition-delay: 240ms; }
+
+.tchip__mark {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  color: #14181b;
+}
+.tchip__mark svg { width: 12px; height: 12px; fill: currentColor; }
+.tchip__mark b { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: -0.04em; }
 
 @media (prefers-reduced-motion: reduce) {
   .trow, .trow__name, .trow__apps, .tchip { transition: opacity 0.2s ease; }
