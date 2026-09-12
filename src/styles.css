@@ -2651,10 +2651,11 @@ a { color: inherit; text-decoration: none; }
    card's top-right corner. */
 .pcard--music .np {
   align-self: end;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
 }
-.pcard--music .np__meta { grid-column: 1; grid-row: 1; align-self: center; }
-.pcard--music .disc { grid-column: 2; grid-row: 1; }
+/* record first, then the track it is playing */
+.pcard--music .disc { grid-column: 1; grid-row: 1; }
+.pcard--music .np__meta { grid-column: 2; grid-row: 1; align-self: center; }
 .pcard--music .np__bar { grid-column: 1 / -1; grid-row: 2; }
 
 .np__head {

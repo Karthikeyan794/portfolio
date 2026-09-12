@@ -278,16 +278,16 @@ function MusicCard() {
 
       {/* words on the left, record on the right */}
       <div className="np">
-        <span className="np__meta">
-          <strong>{track.title}</strong>
-          <span>{track.artist}</span>
-        </span>
-
         <span className="disc" data-spin={playing} aria-hidden="true">
           <span
             className="disc__label"
             style={track.cover ? { backgroundImage: `url(${track.cover})` } : { background: track.art }}
           />
+        </span>
+
+        <span className="np__meta">
+          <strong>{track.title}</strong>
+          <span>{track.artist}</span>
         </span>
 
         <span className="np__bar">
