@@ -2468,8 +2468,8 @@ a { color: inherit; text-decoration: none; }
 /* 20% black with a light blur over it */
 .trow__veil {
   background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
 }
 .trow[data-open='true'] .trow__bg, .trow[data-open='true'] .trow__veil { opacity: 1; }
 
@@ -2494,11 +2494,10 @@ a { color: inherit; text-decoration: none; }
 
 /* on the banner the name is a headline, not a list row */
 .trow[data-open='true'] .trow__name {
-  font-family: var(--mono);
-  font-weight: 600;
-  font-size: 17px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.015em;
   /* tight, so the 20px below is the gap you actually see rather than
      20px plus the line box's descender space */
   line-height: 1.1;

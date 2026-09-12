@@ -96,7 +96,7 @@ export const stackCards: { no: string; label: string; image: string; shift?: num
   },
   {
     no: '05',
-    label: 'AI', image: '/toolkit/ai.jpg',
+    label: 'Artificial Intelligence', image: '/toolkit/ai.jpg',
     tools: [
       { name: 'Claude', mark: 'claude' },
       { name: 'Cursor', mark: 'cursor' },
