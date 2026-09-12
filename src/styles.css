@@ -2036,12 +2036,12 @@ a { color: inherit; text-decoration: none; }
     's s y y'
     's s y y'
     's s w w'
-    'l l w w'
-    'l l w w'
-    'l l w w'
-    'n n n n';
-  /* 11 rows at about 69px */
-  height: 855px;
+    's s w w'
+    'l l n n'
+    'l l n n'
+    'l l n n';
+  /* 11 rows at about 66px — place and links share the last band */
+  height: 820px;
 }
 @media (max-width: 560px) {
   .collage {
@@ -2200,18 +2200,15 @@ a { color: inherit; text-decoration: none; }
 /* ── the profile links under the About text ────────────────── */
 .pcard--links {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
-  padding: 10px 12px;
+  grid-template-rows: auto 1fr;
+  gap: 7px;
+  padding: 12px;
 }
-.pcard--links .pcard__label { white-space: nowrap; }
 /* three across inside the tile, one per row once it gets narrow */
 .plinks {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-content: center;
-  gap: 8px;
+  gap: 4px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2224,7 +2221,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   align-content: center;
   gap: 0 8px;
-  padding: 8px 10px;
+  padding: 4px 9px;
   border-radius: 12px;
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
@@ -2246,16 +2243,16 @@ a { color: inherit; text-decoration: none; }
   grid-row: 1 / -1;
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
+  width: 21px;
+  height: 21px;
+  border-radius: 6px;
   background: var(--bg-elev);
   box-shadow: inset 0 0 0 1px var(--line);
   color: var(--text);
   transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
-.plinks__mark svg { width: 13px; height: 13px; fill: currentColor; }
-.plinks__mark b { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.03em; }
+.plinks__mark svg { width: 12px; height: 12px; fill: currentColor; }
+.plinks__mark b { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: -0.03em; }
 .plinks a:hover .plinks__mark {
   background: var(--brand);
   color: #fff;
@@ -2271,11 +2268,19 @@ a { color: inherit; text-decoration: none; }
 .place__meta a:hover { border-bottom-color: currentColor; }
 
 /* the place card */
-.pcard--place { display: grid; gap: 9px; padding: 14px; grid-template-rows: auto 1fr auto auto; }
-.place {
+.pcard--place {
   position: relative;
-  min-height: 0;
-  border-radius: 12px;
+  display: grid;
+  align-content: space-between;
+  gap: 8px;
+  padding: 12px;
+}
+/* the map sits behind the text now — a panel of its own no longer fits */
+.pcard--place > .pcard__label, .pcard--place > .pchips, .pcard--place > .place__meta { position: relative; z-index: 1; }
+.place {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   background:
     radial-gradient(circle at 52% 50%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 68%),
     linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 100% 18px,
@@ -2481,19 +2486,19 @@ a { color: inherit; text-decoration: none; }
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.8857fr 0.8857fr 0.8857fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr;
+  grid-template-rows: 0.8333fr 0.8333fr 0.8333fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8333fr 0.8333fr 0.8333fr;
 }
 .collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
-  grid-template-rows: 0.8857fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr 0.8857fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8857fr;
+  grid-template-rows: 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 0.9556fr 1.2fr 1.2fr 0.9556fr 0.9556fr 0.9556fr;
 }
 .collage:has(.pcard--place:hover) {
   grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
-  grid-template-rows: 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 1.2fr 1.2fr 1.2fr 0.925fr;
+  grid-template-rows: 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 1.2fr 1.2fr 1.2fr;
 }
 .collage:has(.pcard--links:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 0.98fr 1.2fr;
+  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
+  grid-template-rows: 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 0.925fr 1.2fr 1.2fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -2549,17 +2554,18 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(120% 90% at 12% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
     var(--bg-elev);
 }
-.atags { display: flex; flex-wrap: wrap; align-content: center; gap: 6px; }
+.atags { display: flex; flex-wrap: wrap; align-content: flex-end; gap: 5px; min-height: 0; overflow: hidden; }
 .atag {
-  display: grid;
-  gap: 1px;
-  padding: 7px 11px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 10px;
   border-radius: 999px;
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
 }
-.atag b { font-size: 12px; font-weight: 600; }
-.atag i { font-family: var(--mono); font-style: normal; font-size: 9px; color: var(--muted); }
+.atag b { font-size: 11.5px; font-weight: 600; }
+.atag i { font-family: var(--mono); font-style: normal; font-size: 8.5px; color: var(--muted); }
 
 /* ── experience: panels, the current role picked out ────────── */
 .fact--exp .roles { gap: 7px; }
@@ -2623,7 +2629,7 @@ a { color: inherit; text-decoration: none; }
 .awards__veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(6, 8, 10, 0.58) 0%, rgba(6, 8, 10, 0.3) 34%, rgba(6, 8, 10, 0.86) 100%);
+  background: linear-gradient(180deg, rgba(6, 8, 10, 0.82) 0%, rgba(6, 8, 10, 0.46) 38%, rgba(6, 8, 10, 0.9) 100%);
 }
 .pcard--awards .pcard__label, .pcard--awards .atags { position: relative; z-index: 2; }
 .pcard--awards .atags { align-content: end; }

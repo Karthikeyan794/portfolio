@@ -87,7 +87,7 @@ export const stackCards: { no: string; label: string; tools: Tool[] }[] = [
  * TODO: one of your own Behance covers standing in — swap it for a photo of
  * the trophies when you have them.
  */
-export const awardsCard = { image: '/work/redesign-challenge.jpg' }
+export const awardsCard = { image: '/work/neomorphism.jpg' }
 
 /**
  * What's on while I build.
