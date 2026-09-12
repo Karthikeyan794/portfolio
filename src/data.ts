@@ -103,6 +103,8 @@ export type Track = { title: string; artist: string; src: string; art: string; c
 export const playlist = {
   title: 'On repeat while building',
   href: 'https://open.spotify.com/',
+  /** Plays muted behind the crate. '' hides it and the card falls back to the card ground. */
+  video: '/music/playlist-bg.mp4',
   tracks: [
     { title: 'The One', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #1db954, #0b3d22)' },
     { title: 'Arabic Kuthu', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #f2994a, #6b2d12)' },

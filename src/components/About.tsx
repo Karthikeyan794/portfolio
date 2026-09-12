@@ -226,9 +226,29 @@ function MusicCard() {
   return (
     <div className="pcard pcard--music" style={{ gridArea: 'y' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
-      <span className="pcard__label">Playlist</span>
+      {/* muted ambience behind the crate */}
+      {playlist.video && (
+        <video
+          className="crate__video"
+          src={playlist.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
+      )}
+      <span className="crate__veil" aria-hidden="true" />
+
+      <span className="pcard__label pcard__label--over">Playlist</span>
 
       <div className="crate">
+        {/* the record turns while a track plays, and rests when it doesn't */}
+        <span className="disc" data-spin={playing} aria-hidden="true">
+          <span className="disc__label" style={{ background: track.art }} />
+        </span>
+
         {/* the covers sit behind the folder and rise out of it on hover */}
         <span className="crate__covers" aria-hidden="true">
           {playlist.tracks.map((t, i) => {
