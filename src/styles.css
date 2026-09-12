@@ -2041,9 +2041,9 @@ a { color: inherit; text-decoration: none; }
     's s s w w w'
     's s s w w w'
     's s s w w w'
-    'y y y n l l'
-    'y y y n l l'
-    'y y y n l l';
+    's s s w w w'
+    'l l y y y n'
+    'l l y y y n';
   /* The two columns break at different rows on purpose: the portrait runs
      six rows against the drawings' four, and the toolkit four against
      recognition's six. Matched pairs read as a plain two-column grid. */
@@ -2053,7 +2053,7 @@ a { color: inherit; text-decoration: none; }
   .collage {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    grid-template-areas: 'p' 'd' 's' 'w' 'y' 'n' 'l';
+    grid-template-areas: 'p' 'd' 's' 'w' 'l' 'y' 'n';
     aspect-ratio: auto;
     height: auto;
     min-height: 0;
@@ -2398,7 +2398,7 @@ a { color: inherit; text-decoration: none; }
    repeat(6, minmax(0,1fr)) they are a different track type and CSS
    refuses to interpolate — the grid snaps instead of sliding.
 
-   The foot cards take rows only: their columns are 3/1/2, so nudging
+   The foot cards take rows only: their columns are 2/3/1, so nudging
    a column group would drag their neighbours about. */
 .collage:has(.pcard--portrait:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
@@ -2410,23 +2410,23 @@ a { color: inherit; text-decoration: none; }
 }
 .collage:has(.pcard--awards:hover) {
   grid-template-columns: 0.9fr 0.9fr 0.9fr 1.1fr 1.1fr 1.1fr;
-  grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr;
+  grid-template-rows: 0.8286fr 0.8286fr 0.8286fr 0.8286fr 0.8286fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8286fr 0.8286fr;
 }
 .collage:has(.pcard--stack:hover) {
   grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
-  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr 0.9111fr;
-}
-.collage:has(.pcard--music:hover) {
-  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
-}
-.collage:has(.pcard--links:hover) {
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
+  grid-template-rows: 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr;
 }
 .collage:has(.pcard--place:hover) {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr;
+  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
+}
+.collage:has(.pcard--music:hover) {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
+}
+.collage:has(.pcard--links:hover) {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -2723,11 +2723,19 @@ a { color: inherit; text-decoration: none; }
    they'd otherwise be identical heights; these hang them from a common
    baseline at different heights instead, which is what makes the row read
    as a bento rather than three equal tiles. */
-.pcard--place { align-self: end; height: 82%; }
-.pcard--links { align-self: end; height: 58%; }
+.pcard--place { align-self: end; height: 100%; }
+.pcard--links { align-self: end; height: 78%; }
 
 /* the links column is the smallest thing on the board; size it to its marks */
 .pcard--links { padding: 10px 6px; }
 .pcard--links .plinks { gap: 7px; }
 .pcard--links .plinks__mark { width: 30px; height: 30px; border-radius: 9px; }
 .pcard--links .plinks__mark svg { width: 14px; height: 14px; }
+
+/* the foot band is two rows now, so the playlist sits just under place */
+.pcard--music { align-self: end; height: 90%; }
+.pcard--links .plinks__mark { width: 26px; height: 26px; border-radius: 8px; }
+.pcard--links .plinks__mark svg { width: 12px; height: 12px; }
+.pcard--links .plinks__mark b { font-size: 11px; }
+.pcard--links { padding: 8px 6px; }
+.pcard--links .plinks { gap: 6px; }
