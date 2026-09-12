@@ -117,11 +117,12 @@ export const playlist = {
 }
 
 /** The three profiles that sit under the About text. */
-export const aboutLinks = [
-  { label: 'LinkedIn', handle: 'b-karthikeyan', href: 'https://www.linkedin.com/in/b-karthikeyan-35192b28a' },
+export const aboutLinks: { label: string; handle: string; href: string; brand: string; mark?: string; mono?: string }[] = [
+  // LinkedIn is absent from simple-icons, so it wears the 'in' monogram.
+  { label: 'LinkedIn', handle: 'b-karthikeyan', href: 'https://www.linkedin.com/in/b-karthikeyan-35192b28a', mono: 'in', brand: '#0A66C2' },
   // TODO: your Instagram isn't on the resume — paste your handle and URL here.
-  { label: 'Instagram', handle: 'add your handle', href: 'https://www.instagram.com/' },
-  { label: 'Behance', handle: 'karthikbabu13', href: 'https://www.behance.net/karthikbabu13' },
+  { label: 'Instagram', handle: 'add your handle', href: 'https://www.instagram.com/', mark: 'instagram', brand: '#E1306C' },
+  { label: 'Behance', handle: 'karthikbabu13', href: 'https://www.behance.net/karthikbabu13', mark: 'behance', brand: '#1769FF' },
 ]
 
 /**

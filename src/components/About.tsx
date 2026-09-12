@@ -164,10 +164,19 @@ function LinksCard() {
       <span className="pcard__label">Elsewhere</span>
       <div className="plinks">
         {aboutLinks.map((l) => (
-          <a key={l.label} href={l.href} target="_blank" rel="noreferrer">
+          <a key={l.label} href={l.href} target="_blank" rel="noreferrer" style={{ ['--brand' as string]: l.brand }}>
+            <span className="plinks__mark" aria-hidden="true">
+              {l.mark ? (
+                <svg viewBox="0 0 24 24">
+                  <path d={marks[l.mark]} />
+                </svg>
+              ) : (
+                <b>{l.mono}</b>
+              )}
+            </span>
             <span className="plinks__label">{l.label}</span>
             <span className="plinks__handle">{l.handle}</span>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+            <svg className="plinks__go" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
               <path d="M7 17 17 7M9 7h8v8" />
             </svg>
           </a>
@@ -247,8 +256,8 @@ function MusicCard() {
         {/* the glass folder front */}
         <span className="crate__folder">
           <span className="crate__brand">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.4 14.4a.8.8 0 0 1-1.1.3c-3-1.8-6.7-2.2-11.1-1.2a.8.8 0 1 1-.4-1.5c4.8-1.1 8.9-.6 12.3 1.4.4.2.5.7.3 1Zm1.2-2.8a1 1 0 0 1-1.3.3c-3.4-2.1-8.6-2.7-12.6-1.5a1 1 0 1 1-.6-1.9c4.6-1.4 10.3-.7 14.2 1.7.5.3.6.9.3 1.4Zm.1-2.9C13.6 8.3 7 8.1 3.1 9.3a1.2 1.2 0 0 1-.7-2.3C6.9 5.6 14.2 5.9 18.9 8.7a1.2 1.2 0 0 1-1.2 2Z" />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d={marks.spotify} />
             </svg>
             Anirudh · {playlist.tracks.length} tracks
           </span>
@@ -371,7 +380,7 @@ export default function About() {
             ))}
           </div>
 
-          <div className="fact">
+          <div className="fact fact--exp">
             <h3 className="about__sub">Experience</h3>
             <ul className="roles">
               {roleList.map((r) => (
@@ -385,7 +394,7 @@ export default function About() {
             </ul>
           </div>
 
-          <div className="fact">
+          <div className="fact fact--edu">
             <h3 className="about__sub">Education</h3>
             <ul className="roles">
               {education.map((e) => (
@@ -401,7 +410,7 @@ export default function About() {
 
           {/* hides itself while the awards list is empty */}
           {awards.length > 0 && (
-            <div className="fact">
+            <div className="fact fact--rec">
               <h3 className="about__sub">Recognition</h3>
               <ul className="roles">
                 {awards.map((a) => (

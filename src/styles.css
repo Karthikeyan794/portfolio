@@ -1901,7 +1901,11 @@ a { color: inherit; text-decoration: none; }
   gap: clamp(32px, 5vw, 76px);
   align-items: start;
 }
-@media (max-width: 980px) { .about__grid { grid-template-columns: 1fr; } }
+@media (max-width: 980px) {
+  .about__grid { grid-template-columns: 1fr; }
+  /* full width now, so the fixed height would stretch every card */
+  .collage { height: auto; grid-template-rows: repeat(13, minmax(90px, auto)); }
+}
 
 .about__col { display: grid; gap: 14px; align-content: start; }
 /* the collage is far taller than the bio, so the words ride along with it */
@@ -1940,7 +1944,7 @@ a { color: inherit; text-decoration: none; }
   transition: padding-left 0.35s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .role:last-child { border-bottom: 1px solid var(--line); }
-.role:hover { padding-left: 8px; }
+.fact .role:hover { padding-left: 21px; }
 .role__org { font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--text); }
 .role__slash { color: var(--muted); }
 .role__title { flex: 1 1 auto; min-width: 0; font-family: var(--mono); font-size: 13.5px; color: var(--muted); }
@@ -1953,22 +1957,76 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── the resume facts: experience · education · recognition ── */
-/* one narrow column, so each entry stacks: name on top, detail under */
+/* One narrow column, each entry stacking: name on top, detail under.
+   No rules between rows — the page already carries a grid texture, and a
+   second set of hairlines on top of it just reads as noise. The three
+   lists are told apart by their marker instead. */
 .fact { min-width: 0; }
-.fact .roles { margin: 8px 0 0; }
-.fact .role { row-gap: 3px; }
+.fact .roles { margin: 10px 0 0; display: grid; gap: 4px; }
+.fact .role {
+  row-gap: 2px;
+  border: 0;
+  padding: 9px 0;
+  background: none;
+}
+.fact .role:first-child, .fact .role:last-child { border: 0; }
 .fact .role__slash { display: none; }
 /* name and year share the top line; the detail wraps under both */
 .fact .role__years { order: 1; margin-left: auto; }
 .fact .role__title { order: 2; flex: 1 0 100%; }
+
+/* Experience — a dotted track, each role pinned by a lit dot */
+.fact--exp .role { position: relative; padding-left: 21px; }
+.fact--exp .role::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.fact--exp .role__org { font-size: 14.5px; }
+
+/* Education — panels rather than rows, and the school set in the serif */
+.fact--edu .roles { gap: 8px; }
+.fact--edu .role {
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: var(--bg-elev);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow 0.3s ease;
+}
+.fact--edu .role:hover { box-shadow: inset 0 0 0 1px var(--line-strong); padding-left: 14px; }
+.fact--edu .role__org { font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.02em; }
+
+/* Recognition — a hollow ring, so it reads apart from both of the above */
+.fact--rec .role { position: relative; padding-left: 21px; }
+.fact--rec .role::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--muted);
+}
+.fact--rec .role__org { font-size: 14px; }
+.fact--rec .role__title { font-size: 12.5px; }
 
 /* ── the collage ────────────────────────────────────────── */
 .collage {
   display: grid;
   gap: 10px;
   /* one rectangle, interlocking boxes — the same idea as the work bento */
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(13, minmax(0, 1fr));
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  will-change: grid-template-columns, grid-template-rows;
+  transition: grid-template-columns 0.62s cubic-bezier(0.33, 1, 0.68, 1),
+    grid-template-rows 0.62s cubic-bezier(0.33, 1, 0.68, 1);
   /* p portrait · d drawings · y playlist · s stack · c photos · l place · n links */
   grid-template-areas:
     'p p d d'
@@ -1984,8 +2042,7 @@ a { color: inherit; text-decoration: none; }
     'l l c c'
     'n n n n'
     'n n n n';
-  aspect-ratio: 0.41 / 1;
-  min-height: 1185px;
+  height: 1185px;
 }
 @media (max-width: 560px) {
   .collage {
@@ -1993,8 +2050,12 @@ a { color: inherit; text-decoration: none; }
     grid-template-rows: auto;
     grid-template-areas: 'p' 'd' 'y' 's' 'c' 'l' 'n';
     aspect-ratio: auto;
+    height: auto;
     min-height: 0;
+    transition: none;
   }
+  /* one card per row — nothing to expand into */
+  .collage:has(.pcard:hover) { grid-template-columns: 1fr; grid-template-rows: auto; }
   .pcard--portrait { min-height: 320px; }
   .pcard--shot, .pcard--stack, .pcard--place, .pcard--vinyl { min-height: 220px; }
   .pcard--links { min-height: 0; }
@@ -2177,13 +2238,14 @@ a { color: inherit; text-decoration: none; }
   padding: 0;
 }
 .plinks a {
-  /* name and arrow on top, handle under — side by side was clipping them */
+  /* logo down the left, name over handle, arrow on the right */
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   align-items: center;
   align-content: center;
-  gap: 3px 8px;
-  padding: 11px 13px;
+  gap: 1px 10px;
+  padding: 11px 12px;
   border-radius: 12px;
   background: var(--bg-sunk);
   box-shadow: inset 0 0 0 1px var(--line);
@@ -2193,10 +2255,32 @@ a { color: inherit; text-decoration: none; }
 }
 .plinks a:hover { box-shadow: inset 0 0 0 1px var(--line-strong); transform: translateY(-2px); }
 @media (max-width: 560px) { .plinks { grid-template-columns: 1fr; } }
-.plinks__label { grid-column: 1; font-size: 14px; font-weight: 500; }
-.plinks__handle { grid-column: 1 / -1; font-family: var(--mono); font-size: 10.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.plinks a svg { grid-column: 2; grid-row: 1; opacity: 0.4; transition: transform 0.3s ease, opacity 0.3s ease; }
-.plinks a:hover svg { opacity: 1; transform: translate(2px, -2px); }
+.plinks__label { grid-column: 2; grid-row: 1; font-size: 13.5px; font-weight: 600; }
+.plinks__handle { grid-column: 2; grid-row: 2; font-family: var(--mono); font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plinks__go { grid-column: 3; grid-row: 1 / -1; opacity: 0.35; transition: transform 0.3s ease, opacity 0.3s ease; }
+.plinks a:hover .plinks__go { opacity: 1; transform: translate(2px, -2px); }
+
+/* the logo tile — it takes the brand colour on hover */
+.plinks__mark {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--bg-elev);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.plinks__mark svg { width: 15px; height: 15px; fill: currentColor; }
+.plinks__mark b { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.03em; }
+.plinks a:hover .plinks__mark {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px transparent, 0 8px 18px -10px var(--brand);
+}
 .plinks a:hover .plinks__handle { color: var(--text-mid); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2276,21 +2360,24 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: stretch;
   gap: 10px;
   min-height: 0;
   /* headroom, so the first folder's tools don't rise onto the card label */
   padding-top: 20px;
 }
 
-.folder { position: relative; flex: 0 0 auto; }
+.folder { position: relative; flex: 1 1 0; min-height: 54px; }
+.folder[data-open='true'] { flex-grow: 1.5; }
 /* the open folder lifts over its neighbours so its tools are never clipped */
 .folder[data-open='true'] { z-index: 3; }
 
 .folder__face {
   position: relative;
   z-index: 2;
+  height: 100%;
   display: grid;
+  align-content: center;
   padding: 19px 12px 11px;
   border-radius: 11px;
   background: var(--bg-sunk);
@@ -2388,7 +2475,7 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 62%;
+  bottom: 58%;
   height: 0;
   display: grid;
   place-items: center;
@@ -2448,7 +2535,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 2;
   display: flex;
   align-items: flex-end;
-  height: 62%;
+  height: 58%;
   padding: 10px 12px;
   border-radius: 12px;
   background: color-mix(in srgb, var(--primary) 55%, transparent);
@@ -2504,3 +2591,41 @@ a { color: inherit; text-decoration: none; }
   .cover { transition: opacity 0.2s ease; }
   .pcard--music:hover .cover { transform: translate(var(--x), -20px) rotate(var(--r)); }
 }
+
+/* ── the collage expands like the work bento ──────────────
+   Same idea as .bento[data-hot]: the hovered card takes track space
+   and its neighbours give it up. Driven by :has() rather than React
+   state, so nothing re-renders while the cursor moves.
+
+   The base tracks below MUST stay a plain fr list. Written as
+   repeat(4, minmax(0,1fr)) they are a different track type and CSS
+   refuses to interpolate — the grid snaps instead of sliding. */
+.collage:has(.pcard--portrait:hover) {
+  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr;
+}
+.collage:has(.pcard--shot:hover) {
+  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
+  grid-template-rows: 1.2fr 1.2fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr;
+}
+.collage:has(.pcard--music:hover) {
+  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
+  grid-template-rows: 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
+}
+.collage:has(.pcard--stack:hover) {
+  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
+  grid-template-rows: 0.875fr 0.875fr 0.875fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.875fr 0.875fr 0.875fr 0.875fr 0.875fr;
+}
+.collage:has(.pcard--photos:hover) {
+  grid-template-columns: 0.86fr 0.86fr 1.14fr 1.14fr;
+  grid-template-rows: 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 0.9111fr 1.2fr 1.2fr 1.2fr 1.2fr 0.9111fr 0.9111fr;
+}
+.collage:has(.pcard--place:hover) {
+  grid-template-columns: 1.14fr 1.14fr 0.86fr 0.86fr;
+  grid-template-rows: 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 0.94fr 1.2fr 1.2fr 1.2fr 0.94fr 0.94fr;
+}
+.collage:has(.pcard--links:hover) {
+  grid-template-rows: 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 0.9636fr 1.2fr 1.2fr;
+}
+
+@media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
