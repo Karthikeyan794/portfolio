@@ -2906,9 +2906,15 @@ a { color: inherit; text-decoration: none; }
 }
 /* contain, not cover: these are wordmarks and a crop cuts the name in half */
 .step__logo img { width: 100%; height: 100%; object-fit: contain; }
-/* the marks are dark ink; on the dark ground they'd disappear, so there
-   they render as white silhouettes instead */
-:root[data-theme='dark'] .step__logo img { filter: brightness(0) invert(1); opacity: 0.92; }
+/* The marks are dark ink on transparent, which vanishes on the dark
+   ground — so THERE they get a light tile and keep their real colours.
+   The light theme needs no tile: the page is already pale. */
+:root[data-theme='dark'] .step__logo {
+  padding: 4px;
+  border-radius: 9px;
+  background: #f4f5f6;
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.6);
+}
 .step__item[data-open='true'] .step__logo { transform: scale(1.06); }
 .step__logo b { font-family: var(--sans); font-weight: 700; font-size: 15px; color: var(--muted); }
 
