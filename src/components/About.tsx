@@ -441,6 +441,9 @@ export default function About() {
               {education.map((e, n) => (
                 <li className="step__item" key={e.school} data-open={n === school}>
                   <button type="button" className="step__head" onPointerEnter={() => setSchool(n)} onFocus={() => setSchool(n)} onClick={() => setSchool(n)} aria-expanded={n === school}>
+                    <span className="step__logo" aria-hidden="true">
+                      {e.logo ? <img src={e.logo} alt="" loading="lazy" decoding="async" /> : <b>{e.school.charAt(0)}</b>}
+                    </span>
                     <span className="step__org">{e.school}</span>
                     <span className="step__when">{e.years}</span>
                   </button>

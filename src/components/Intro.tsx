@@ -245,16 +245,6 @@ export default function Intro() {
         </motion.aside>
       </div>
 
-      <motion.a
-        className="intro__scroll"
-        href="#about"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: T.nav + 0.4, duration: 0.8 }}
-        aria-label="Scroll down"
-      >
-        <span />
-      </motion.a>
     </section>
   )
 }

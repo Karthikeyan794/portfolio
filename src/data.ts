@@ -43,9 +43,9 @@ export const roleList: { org: string; role: string; years: string }[] = [
 ]
 
 /** Education — from the resume. */
-export const education: { school: string; course: string; years: string }[] = [
-  { school: 'Web D Schools', course: 'Mastery UX/UI Designing', years: 'Jun 2024 — Jan 2025' },
-  { school: 'University of Madras', course: 'B.Com — Bachelor of Commerce', years: 'Jun 2021 — May 2024' },
+export const education: { school: string; course: string; years: string; logo?: string }[] = [
+  { school: 'Web D Schools', course: 'Mastery UX/UI Designing', years: 'Jun 2024 — Jan 2025', logo: '/logos/webd.png' },
+  { school: 'University of Madras', course: 'B.Com — Bachelor of Commerce', years: 'Jun 2021 — May 2024', logo: '/logos/madras.png' },
 ]
 
 /**
@@ -567,6 +567,7 @@ export type Role = {
 export const experience: Role[] = [
   {
     company: 'Facilio',
+    logo: '/logos/facilio.png',
     title: 'Product Designer',
     period: '2025 — Present',
     marker: 'Now',
@@ -581,6 +582,7 @@ export const experience: Role[] = [
   },
   {
     company: 'Amvion Labs',
+    logo: '/logos/amvion.png',
     title: 'UI + Graphic Design Intern',
     // TODO: the resume doesn't date this one — add the years.
     period: 'Internship',
@@ -592,6 +594,7 @@ export const experience: Role[] = [
   {
     company: 'T-Eurasia Business Communication',
     short: 'T-Eurasia',
+    logo: '/logos/t-eurasia.png',
     title: 'Creative Designer',
     // TODO: the resume doesn't date this one either.
     period: 'Earlier',
