@@ -567,10 +567,9 @@ export const experience: Role[] = [
     marker: 'Now',
     place: 'Chennai, India',
     points: [
-      'Designed and built Support Desk — a support ticket web app with a chat assistant in Microsoft Teams.',
-      'Designed Atom AI, the gallery of AI apps and assistants for facility teams, and the controls for usage and access per app.',
-      'Build my Figma designs in React and ship complete apps with vibe coding.',
-      'Own the FM dashboards and Figma component libraries, and partner with developers on hand-off.',
+      'Designed and built Support Desk — tickets, with a chat assistant in Teams.',
+      'Designed Atom AI, our gallery of AI apps for facility teams.',
+      'Ship my own Figma designs in React.',
     ],
     stack: ['Figma', 'React', 'Design systems', 'Vibe coding'],
     image: '/bento/support-desk.jpg',
@@ -581,10 +580,7 @@ export const experience: Role[] = [
     // TODO: the resume doesn't date this one — add the years.
     period: 'Internship',
     marker: 'Intern',
-    points: [
-      'Web app UI and dashboards.',
-      'Built reusable Figma components the team worked from.',
-    ],
+    points: ['Web app UI and dashboards.', 'Reusable Figma components for the team.'],
     stack: ['Figma', 'UI design'],
     image: '/bento/welcome.jpg',
   },
@@ -594,10 +590,7 @@ export const experience: Role[] = [
     // TODO: the resume doesn't date this one either.
     period: 'Earlier',
     marker: 'Start',
-    points: [
-      'Website redesign and the TEB School platform.',
-      'Brand and social assets across the business.',
-    ],
+    points: ['Website redesign and the TEB School platform.', 'Brand and social assets.'],
     stack: ['Photoshop', 'Illustrator', 'Branding'],
     image: '/work/tnpsc.jpg',
   },

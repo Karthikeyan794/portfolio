@@ -378,8 +378,9 @@ function MusicCard() {
 }
 
 export default function About() {
-  const [job, setJob] = useState(0)
-  const [school, setSchool] = useState(0)
+  // both steppers start shut; a stop opens only while you point at it
+  const [job, setJob] = useState(-1)
+  const [school, setSchool] = useState(-1)
   const portraitGlow = useGlow<HTMLElement>()
   const shotGlow = useGlow<HTMLAnchorElement>()
 
@@ -405,7 +406,7 @@ export default function About() {
           {/* Experience — a stepper: each stop opens to what the work was */}
           <div className="fact fact--exp">
             <h3 className="about__sub">Experience</h3>
-            <ol className="step">
+            <ol className="step" onPointerLeave={() => setJob(-1)}>
               {experience.map((r, n) => (
                 <li className="step__item" key={r.company} data-open={n === job}>
                   <button type="button" className="step__head" onPointerEnter={() => setJob(n)} onFocus={() => setJob(n)} onClick={() => setJob(n)} aria-expanded={n === job}>
@@ -433,7 +434,7 @@ export default function About() {
           {/* Education — the same stepper, hollow markers and a dashed rail */}
           <div className="fact fact--edu">
             <h3 className="about__sub">Education</h3>
-            <ol className="step step--edu">
+            <ol className="step step--edu" onPointerLeave={() => setSchool(-1)}>
               {education.map((e, n) => (
                 <li className="step__item" key={e.school} data-open={n === school}>
                   <button type="button" className="step__head" onPointerEnter={() => setSchool(n)} onFocus={() => setSchool(n)} onClick={() => setSchool(n)} aria-expanded={n === school}>
