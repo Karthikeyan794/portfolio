@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
 import type { Tool } from '../data'
-import { aboutLinks, awards, awardsCard, currently, education, intro_about, place, places, playlist, roleList, stackCards } from '../data'
+import { aboutLinks, awards, awardsCard, currently, education, experience, intro_about, place, places, playlist, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -378,6 +378,8 @@ function MusicCard() {
 }
 
 export default function About() {
+  const [job, setJob] = useState(0)
+  const [school, setSchool] = useState(0)
   const portraitGlow = useGlow<HTMLElement>()
   const shotGlow = useGlow<HTMLAnchorElement>()
 
@@ -400,33 +402,52 @@ export default function About() {
             ))}
           </div>
 
-          {/* Experience — panels, the current role picked out */}
+          {/* Experience — a stepper: each stop opens to what the work was */}
           <div className="fact fact--exp">
             <h3 className="about__sub">Experience</h3>
-            <ul className="roles">
-              {roleList.map((r, i) => (
-                <li className="role" key={r.org} data-now={i === 0}>
-                  <span className="role__org">{r.org}</span>
-                  <span className="role__title">{r.role}</span>
-                  {r.years && <span className="role__years">{r.years}</span>}
-                  {i === 0 && <span className="role__now">Current</span>}
+            <ol className="step">
+              {experience.map((r, n) => (
+                <li className="step__item" key={r.company} data-open={n === job}>
+                  <button type="button" className="step__head" onPointerEnter={() => setJob(n)} onFocus={() => setJob(n)} onClick={() => setJob(n)} aria-expanded={n === job}>
+                    <span className="step__org">{r.company}</span>
+                    <span className="step__role">{r.title}</span>
+                    <span className="step__when">{r.period}</span>
+                  </button>
+                  <div className="step__body">
+                    <div className="step__inner">
+                      <ul className="step__points">
+                        {r.points.map((pt) => (
+                          <li key={pt.slice(0, 22)}>{pt}</li>
+                        ))}
+                      </ul>
+                      {r.stack && (
+                        <span className="step__stack">{r.stack.join(' · ')}</span>
+                      )}
+                    </div>
+                  </div>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
 
-          {/* Education — year-led rows, deliberately not panels */}
+          {/* Education — the same stepper, hollow markers and a dashed rail */}
           <div className="fact fact--edu">
             <h3 className="about__sub">Education</h3>
-            <ul className="roles">
-              {education.map((e) => (
-                <li className="role" key={e.school}>
-                  <span className="role__years">{e.years}</span>
-                  <span className="role__org">{e.school}</span>
-                  <span className="role__title">{e.course}</span>
+            <ol className="step step--edu">
+              {education.map((e, n) => (
+                <li className="step__item" key={e.school} data-open={n === school}>
+                  <button type="button" className="step__head" onPointerEnter={() => setSchool(n)} onFocus={() => setSchool(n)} onClick={() => setSchool(n)} aria-expanded={n === school}>
+                    <span className="step__org">{e.school}</span>
+                    <span className="step__when">{e.years}</span>
+                  </button>
+                  <div className="step__body">
+                    <div className="step__inner">
+                      <span className="step__course">{e.course}</span>
+                    </div>
+                  </div>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
 
           {/* where else to find me */}
