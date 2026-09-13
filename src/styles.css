@@ -2989,3 +2989,19 @@ a { color: inherit; text-decoration: none; }
    previous +124px was left behind after its partner was removed). */
 .pcard--music { align-self: end; height: calc(100% - 40px); }
 .pcard--awards { height: calc(100% + 40px); }
+
+/* the greeting rises word by word out of its own mask. The padding and
+   the matching negative margin give the descenders somewhere to live —
+   overflow: hidden alone clips the tail of a 'y'. */
+.about__greeting .rise {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0.12em 0.06em 0.14em;
+  margin: -0.12em -0.06em -0.14em;
+}
+.about__greeting .rise > span { display: inline-block; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .about__greeting .rise > span { transform: none !important; }
+}

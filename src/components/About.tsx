@@ -379,6 +379,31 @@ function MusicCard() {
 
 export default function About() {
   // both steppers start shut; a stop opens only while you point at it
+  const greetingRef = useRef<HTMLHeadingElement>(null)
+  const [greetingSeen, setGreetingSeen] = useState(false)
+  /**
+   * Plain rect maths rather than useInView. The intro wraps the whole page
+   * in a 3D transform for its first couple of seconds, and an
+   * IntersectionObserver under a 3D ancestor is never called at all — so a
+   * `once: true` observer that is missed in that window would leave this
+   * heading blank for good.
+   */
+  useEffect(() => {
+    if (greetingSeen) return
+    const check = () => {
+      const el = greetingRef.current
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      if (r.top < window.innerHeight * 0.92 && r.bottom > 0) setGreetingSeen(true)
+    }
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [greetingSeen])
   const [job, setJob] = useState(-1)
   const [school, setSchool] = useState(-1)
   const portraitGlow = useGlow<HTMLElement>()
@@ -396,7 +421,26 @@ export default function About() {
           transition={{ type: 'spring', stiffness: 66, damping: 18 }}
         >
           <span className="eyebrow">01 — About</span>
-          <h2 className="about__greeting">{intro_about.greeting}</h2>
+          {/* Driven by useInView on the heading rather than whileInView.
+              The words start translated fully below their own masks, and an
+              element clipped away by an ancestor's overflow never registers
+              as intersecting — so the trigger has to watch the heading, and
+              watching it explicitly is the version that actually fires. */}
+          <h2 className="about__greeting" ref={greetingRef}>
+            {intro_about.greeting.split(' ').map((word, i, all) => (
+              <span className="rise" key={`${word}-${i}`}>
+                <motion.span
+                  initial={{ y: '108%' }}
+                  animate={greetingSeen ? { y: 0 } : { y: '108%' }}
+                  transition={{ delay: 0.08 + i * 0.09, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {/* the space sits inside the mask, so the heading still
+                      reads and copies as a sentence */}
+                  {i < all.length - 1 ? `${word}\u00a0` : word}
+                </motion.span>
+              </span>
+            ))}
+          </h2>
           <div className="about__text">
             {intro_about.paragraphs.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>
