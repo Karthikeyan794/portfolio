@@ -457,9 +457,6 @@ export default function About() {
               {experience.map((r, n) => (
                 <li className="step__item" key={r.company} data-open={n === job}>
                   <button type="button" className="step__head" onPointerEnter={() => setJob(n)} onFocus={() => setJob(n)} onClick={() => setJob(n)} aria-expanded={n === job}>
-                    <span className="step__logo" aria-hidden="true">
-                      {r.logo ? <img src={r.logo} alt="" loading="lazy" decoding="async" /> : <b>{r.company.charAt(0)}</b>}
-                    </span>
                     <span className="step__org">{r.short ?? r.company}</span>
                     <span className="step__role">{r.title}</span>
                     <span className="step__when">{r.period}</span>
@@ -488,9 +485,6 @@ export default function About() {
               {education.map((e, n) => (
                 <li className="step__item" key={e.school} data-open={n === school}>
                   <button type="button" className="step__head" onPointerEnter={() => setSchool(n)} onFocus={() => setSchool(n)} onClick={() => setSchool(n)} aria-expanded={n === school}>
-                    <span className="step__logo" aria-hidden="true">
-                      {e.logo ? <img src={e.logo} alt="" loading="lazy" decoding="async" /> : <b>{e.school.charAt(0)}</b>}
-                    </span>
                     <span className="step__org">{e.school}</span>
                     <span className="step__when">{e.years}</span>
                   </button>
