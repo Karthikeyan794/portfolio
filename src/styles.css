@@ -2313,9 +2313,14 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.46) 0%, rgba(0, 0, 0, 0.1) 24%, rgba(0, 0, 0, 0.52) 56%, rgba(0, 0, 0, 0.9) 100%);
 }
 
-.place__meta { display: grid; gap: 2px; color: #fff; }
-.place__meta strong { font-size: 14px; font-weight: 600; }
-.place__meta span { font-family: var(--mono); font-size: 10.5px; color: rgba(255, 255, 255, 0.72); }
+.place__meta { display: grid; gap: 3px; color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55); }
+.place__meta strong {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+}
+.place__meta span { font-family: var(--mono); font-size: 11px; color: rgba(255, 255, 255, 0.88); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6); }
 .place__time { color: var(--accent-ink) !important; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2829,7 +2834,11 @@ a { color: inherit; text-decoration: none; }
 }
 .pcard--place .pchip:hover { background: rgba(255, 255, 255, 0.24); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34); }
 .pcard--place .pchip[data-on='true'] { background: #fff; color: #14181b; box-shadow: none; }
-.place__meta a { color: inherit; border-bottom-color: rgba(255, 255, 255, 0.45); }
+/* no rule under the city — it read as a stray line over the photograph.
+   The arrow says it opens a map instead. */
+.place__meta a { color: inherit; text-decoration: none; border-bottom: 0; display: inline-flex; align-items: baseline; gap: 5px; }
+.place__meta a::after { content: '↗'; font-size: 0.6em; opacity: 0.75; transition: transform 0.25s ease; }
+.place__meta a:hover::after { transform: translate(2px, -2px); }
 .place__time { color: var(--accent) !important; }
 
 
@@ -2884,9 +2893,9 @@ a { color: inherit; text-decoration: none; }
 
 .step__head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 2px 12px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px 11px;
   width: 100%;
   padding: 8px 0;
   border: 0;
@@ -2896,9 +2905,33 @@ a { color: inherit; text-decoration: none; }
   text-align: left;
   cursor: pointer;
 }
-.step__org { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-.step__when { font-family: var(--mono); font-size: 10px; color: var(--muted); white-space: nowrap; }
-.step__role { grid-column: 1; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.step__logo {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--bg-sunk);
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow: hidden;
+  transition: box-shadow 0.35s ease;
+}
+.step__logo img { width: 100%; height: 100%; object-fit: cover; }
+.step__logo b { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--muted); transition: color 0.35s ease; }
+.step__item[data-open='true'] .step__logo { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.step__item[data-open='true'] .step__logo b { color: var(--accent-ink, var(--text)); }
+
+.step__org {
+  grid-column: 2;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+.step__when { grid-column: 3; grid-row: 1; font-family: var(--mono); font-size: 10px; color: var(--muted); white-space: nowrap; }
+.step__role { grid-column: 2; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 .step__item[data-open='true'] .step__org { color: var(--accent-ink, var(--text)); }
 
 /* 0fr → 1fr interpolates; height: auto does not */
@@ -2911,7 +2944,7 @@ a { color: inherit; text-decoration: none; }
 .step__item[data-open='true'] .step__body { grid-template-rows: 1fr; opacity: 1; }
 .step__inner { min-height: 0; overflow: hidden; }
 
-.step__points { display: grid; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.step__points { display: grid; gap: 6px; margin: 4px 0 0 41px; padding: 0; list-style: none; }
 .step__points li {
   position: relative;
   padding-left: 13px;
@@ -2931,7 +2964,7 @@ a { color: inherit; text-decoration: none; }
 }
 .step__stack {
   display: block;
-  margin-top: 9px;
+  margin: 9px 0 0 41px;
   padding-bottom: 4px;
   font-family: var(--mono);
   font-size: 10px;
@@ -2940,6 +2973,7 @@ a { color: inherit; text-decoration: none; }
 }
 .step__course {
   display: block;
+  margin-left: 41px;
   padding-bottom: 6px;
   font-family: var(--mono);
   font-size: 12px;
@@ -2950,6 +2984,11 @@ a { color: inherit; text-decoration: none; }
   .step__body, .step__item::before { transition: none; }
 }
 
-/* the playlist sits 40px shorter, hanging from the same baseline as the
-   place card so the foot of the collage stays straight */
+/* The playlist sits 40px shorter, hanging from the same baseline as the
+   place card so the foot of the collage stays straight. Recognition takes
+   exactly that 40px back, so the gap between them stays 10px like every
+   other one. THESE TWO ARE A PAIR — change one and the other must match,
+   or you get a hole here (or an overlap, which is what happened when a
+   previous +124px was left behind after its partner was removed). */
 .pcard--music { align-self: end; height: calc(100% - 40px); }
+.pcard--awards { height: calc(100% + 40px); }

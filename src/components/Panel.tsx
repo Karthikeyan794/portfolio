@@ -75,8 +75,9 @@ function Body({ id }: { id: PanelId }) {
       return (
         <>
           <p className="panel__lead">Placeholder frames for now — real award photos go here.</p>
-          {awards.map((a) => (
-            <div className="labcard" key={a.title}>
+          {awards.map((a, i) => (
+            // two awards share a title, so the index has to be part of the key
+            <div className="labcard" key={`${a.title}-${i}`}>
               <div className="labcard__top">
                 <strong>{a.title}</strong>
                 <span className="card__year">{a.year}</span>

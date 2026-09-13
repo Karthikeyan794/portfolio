@@ -163,7 +163,8 @@ export const places = [
     coords: '13.0827° N, 80.2707° E',
     image: '/places/chennai.jpg',
     pin: { x: 58, y: 44 },
-    href: '',
+    // TODO: swap for your own share link if you want a specific spot
+    href: 'https://www.google.com/maps/search/?api=1&query=13.0827,80.2707',
   },
   {
     key: 'born',
@@ -548,6 +549,10 @@ export const projectBySlug = (slug: string) => projects.find((p) => p.slug === s
 
 export type Role = {
   company: string
+  /** a logo in /public/logos; without one the stepper shows a monogram */
+  logo?: string
+  /** short name for the stepper, when the legal one is a mouthful */
+  short?: string
   title: string
   period: string
   /** shown on the rail — a short state, e.g. 'Now' or the year */
@@ -586,6 +591,7 @@ export const experience: Role[] = [
   },
   {
     company: 'T-Eurasia Business Communication',
+    short: 'T-Eurasia',
     title: 'Creative Designer',
     // TODO: the resume doesn't date this one either.
     period: 'Earlier',
