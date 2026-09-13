@@ -1,59 +1,68 @@
-import { motion, useScroll, useSpring } from 'motion/react'
-import { useRef } from 'react'
+import { motion } from 'motion/react'
+import { useState } from 'react'
 import { experience, type Role } from '../data'
 
-/** One stop on the timeline: marker on the rail, the role, and a picture. */
-function Stop({ role, index }: { role: Role; index: number }) {
+/**
+ * One company, as a row that opens. Shut it is a single line — company,
+ * title, years. Point at it and it opens to show what the work actually
+ * was, with a picture beside it.
+ */
+function Stop({ role, open, onOpen }: { role: Role; open: boolean; onOpen: () => void }) {
   return (
-    <motion.article
-      className="stop"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ type: 'spring', stiffness: 66, damping: 18, delay: index * 0.06 }}
-    >
-      <div className="stop__rail" aria-hidden="true">
-        <span className="stop__dot" />
-        <span className="stop__marker">{role.marker}</span>
-      </div>
+    <div className="xrow" data-open={open}>
+      <button
+        type="button"
+        className="xrow__head"
+        onPointerEnter={onOpen}
+        onFocus={onOpen}
+        onClick={onOpen}
+        aria-expanded={open}
+      >
+        <span className="xrow__marker">{role.marker}</span>
+        <span className="xrow__company">{role.company}</span>
+        <span className="xrow__title">{role.title}</span>
+        <span className="xrow__period">{role.period}</span>
+        <span className="xrow__chev" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m9 5 7 7-7 7" />
+          </svg>
+        </span>
+      </button>
 
-      <div className="stop__card">
-        <div className="stop__text">
-          <span className="stop__period">{role.period}</span>
-          <h3 className="stop__company">{role.company}</h3>
-          <span className="stop__title">{role.title}</span>
-          {role.place && <span className="stop__place">{role.place}</span>}
-          <ul className="stop__points">
-            {role.points.map((pt) => (
-              <li key={pt.slice(0, 24)}>{pt}</li>
-            ))}
-          </ul>
-          {role.stack && (
-            <div className="chips">
-              {role.stack.map((t) => (
-                <span className="chip" key={t}>
-                  {t}
-                </span>
+      <div className="xrow__body">
+        <div className="xrow__inner">
+          <div className="xrow__text">
+            {role.place && <span className="xrow__place">{role.place}</span>}
+            <ul className="xrow__points">
+              {role.points.map((pt) => (
+                <li key={pt.slice(0, 24)}>{pt}</li>
               ))}
+            </ul>
+            {role.stack && (
+              <div className="chips">
+                {role.stack.map((t) => (
+                  <span className="chip" key={t}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {role.image && (
+            <div className="xrow__shot">
+              <img src={role.image} alt="" loading="lazy" decoding="async" />
             </div>
           )}
         </div>
-
-        {role.image && (
-          <div className="stop__shot">
-            <img src={role.image} alt="" loading="lazy" decoding="async" />
-          </div>
-        )}
       </div>
-    </motion.article>
+    </div>
   )
 }
 
 export default function Experience() {
-  const ref = useRef<HTMLDivElement>(null)
-  // the rail draws itself as the section passes
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.4'] })
-  const draw = useSpring(scrollYProgress, { stiffness: 90, damping: 28, restDelta: 0.001 })
+  // the newest role is open to begin with
+  const [open, setOpen] = useState(0)
 
   return (
     <section className="section experience" id="experience">
@@ -69,14 +78,17 @@ export default function Experience() {
           <h2>Where I've worked</h2>
         </motion.div>
 
-        <div className="timeline" ref={ref}>
-          <div className="timeline__track" aria-hidden="true">
-            <motion.span className="timeline__drawn" style={{ scaleY: draw }} />
-          </div>
+        <motion.div
+          className="xlist"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ type: 'spring', stiffness: 66, damping: 19, delay: 0.06 }}
+        >
           {experience.map((r, i) => (
-            <Stop key={r.company + r.period} role={r} index={i} />
+            <Stop key={r.company + r.period} role={r} open={i === open} onOpen={() => setOpen(i)} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

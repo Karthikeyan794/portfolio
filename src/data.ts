@@ -560,31 +560,44 @@ export type Role = {
 export const experience: Role[] = [
   {
     company: 'Facilio',
-    title: 'Frontend Engineer',
-    period: '2022 — Present',
+    title: 'Product Designer',
+    period: '2025 — Present',
     marker: 'Now',
     place: 'Chennai, India',
     points: [
-      'Build and maintain product UI across web clients used daily by facility teams.',
-      'Own shared component and design-system work that several product squads build on.',
-      'Designed and shipped Support Desk and Atom, both in production.',
+      'Designed and built Support Desk — a support ticket web app with a chat assistant in Microsoft Teams.',
+      'Designed Atom AI, the gallery of AI apps and assistants for facility teams, and the controls for usage and access per app.',
+      'Build my Figma designs in React and ship complete apps with vibe coding.',
+      'Own the FM dashboards and Figma component libraries, and partner with developers on hand-off.',
     ],
-    stack: ['React', 'TypeScript', 'Design systems'],
+    stack: ['Figma', 'React', 'Design systems', 'Vibe coding'],
     image: '/bento/support-desk.jpg',
   },
   {
-    company: 'Freelance & self-directed',
-    title: 'Designer / Web Developer',
-    period: '2020 — 2022',
-    marker: '2020',
-    place: 'Remote',
+    company: 'Amvion Labs',
+    title: 'UI + Graphic Design Intern',
+    // TODO: the resume doesn't date this one — add the years.
+    period: 'Internship',
+    marker: 'Intern',
     points: [
-      'Built client-facing sites and dashboards end to end.',
-      'Moved legacy pages onto a component-driven frontend.',
-      'Took on branding and logo work alongside the build.',
+      'Web app UI and dashboards.',
+      'Built reusable Figma components the team worked from.',
     ],
-    stack: ['Figma', 'JavaScript', 'CSS'],
+    stack: ['Figma', 'UI design'],
     image: '/bento/welcome.jpg',
+  },
+  {
+    company: 'T-Eurasia Business Communication',
+    title: 'Creative Designer',
+    // TODO: the resume doesn't date this one either.
+    period: 'Earlier',
+    marker: 'Start',
+    points: [
+      'Website redesign and the TEB School platform.',
+      'Brand and social assets across the business.',
+    ],
+    stack: ['Photoshop', 'Illustrator', 'Branding'],
+    image: '/work/tnpsc.jpg',
   },
 ]
 
