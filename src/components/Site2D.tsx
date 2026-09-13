@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import About from './About'
-import Awards from './Awards'
 import Contact from './Contact'
 import GridBg from './GridBg'
 import Intro, { INTRO_NAV_DELAY } from './Intro'
@@ -70,7 +69,6 @@ export default function Site2D({ onEnterLab }: Props) {
               <Marquee />
               <About />
               <Bento />
-              <Awards />
               <Contact />
             </main>
           </motion.div>

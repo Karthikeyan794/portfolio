@@ -12,7 +12,7 @@ export default function Contact() {
         <div className="contact">
           <div className="contact__left">
             <div>
-              <span className="eyebrow">04 — Contact</span>
+              <span className="eyebrow">03 — Contact</span>
               <h2>Let's build something.</h2>
             </div>
             <p>

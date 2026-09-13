@@ -2806,7 +2806,10 @@ a { color: inherit; text-decoration: none; }
    down without touching the 10px gutter: Recognition grows past the gap,
    the playlist starts the same 124px lower. That lands the playlist on
    290px and Recognition on 326. */
-.pcard--awards { height: calc(100% + 124px); }
+/* Recognition fills its own grid area. It used to carry
+   height: calc(100% + 124px) — the other half of a nudge whose playlist
+   side I removed — which grew it past its rows and straight over the card
+   below, so the two read as one merged block. */
 /* the playlist fills its own five rows now; the 124px trim was sized for
    the six it used to span and was leaving it at 193px */
 

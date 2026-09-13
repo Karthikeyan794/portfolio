@@ -614,7 +614,6 @@ export const sections = [
   { id: 'top', label: 'Home' }, // the opening screen
   { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
-  { id: 'awards', label: 'Awards' },
   { id: 'contact', label: 'Contact' },
 ] as const
 
