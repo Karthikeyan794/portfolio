@@ -3005,3 +3005,15 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .about__greeting .rise > span { transform: none !important; }
 }
+
+/* the snow that carries on into About: behind everything, softer, and it
+   never takes a click so the cards underneath stay reachable */
+.about { position: relative; }
+.snow--drift {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.about > .wrap { position: relative; z-index: 1; }

@@ -43,7 +43,14 @@ function drawCrystal(ctx: CanvasRenderingContext2D, size: number, tint: string) 
  * layer never takes pointer events, it only listens to the page's clicks).
  * If public/burst.png exists it is drawn as an expanding flash behind the shards.
  */
-export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/burst.png', density = 1 }: { sprite?: string; burstSprite?: string; density?: number }) {
+export default function SnowLayer({
+  sprite = '/snowflake.svg',
+  burstSprite = '/burst.png',
+  density = 1,
+  /** multiplies the fall speed — under 1 for a slower, softer drift */
+  speed = 1,
+  className = '',
+}: { sprite?: string; burstSprite?: string; density?: number; speed?: number; className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -77,7 +84,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
         x: Math.random() * w,
         y: fromTop ? -size - Math.random() * 40 : Math.random() * h,
         size,
-        speed: 14 + depth * 34, // px per second
+        speed: (14 + depth * 34) * speed, // px per second
         sway: 8 + Math.random() * 22,
         phase: Math.random() * Math.PI * 2,
         rot: Math.random() * Math.PI * 2,
@@ -322,7 +329,7 @@ export default function SnowLayer({ sprite = '/snowflake.svg', burstSprite = '/b
       window.removeEventListener('pointermove', onMove)
       if (host) host.style.cursor = ''
     }
-  }, [sprite, burstSprite, density])
+  }, [sprite, burstSprite, density, speed])
 
-  return <canvas ref={ref} className="snow" aria-hidden="true" />
+  return <canvas ref={ref} className={`snow ${className}`.trim()} aria-hidden="true" />
 }

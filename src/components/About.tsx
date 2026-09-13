@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import SnowLayer from './SnowLayer'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
 import type { Tool } from '../data'
@@ -411,6 +412,8 @@ export default function About() {
 
   return (
     <section className="section about" id="about">
+      {/* a few flakes drift on from the landing screen — sparser and slower */}
+      <SnowLayer density={0.26} speed={0.4} className="snow--drift" />
       <div className="wrap wrap--wide about__grid">
         {/* left: the words and the roles */}
         <motion.div
