@@ -195,12 +195,20 @@ function PlaceCard() {
   return (
     <div className="pcard pcard--place" style={{ gridArea: 'l' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
-      {/* the map is the card's ground; the dot slides between the two pins */}
+      {/* each place brings its own picture; they cross-fade as you switch */}
       <div className="place" aria-hidden="true">
-        <span className="place__dot" style={{ left: `${here.pin.x}%`, top: `${here.pin.y}%` }}>
-          <span className="place__pin" />
-          <span className="place__ring" />
-        </span>
+        {places.map((pl, n) => (
+          <img
+            key={pl.key}
+            className="place__bg"
+            src={pl.image}
+            alt=""
+            data-on={n === which}
+            loading="lazy"
+            decoding="async"
+          />
+        ))}
+        <span className="place__veil" />
       </div>
 
       <span className="pcard__label">Based in</span>

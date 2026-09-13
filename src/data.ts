@@ -149,8 +149,8 @@ export const aboutLinks: { label: string; handle: string; href: string; brand: s
 ]
 
 /**
- * The location card — two pins, current and born.
- * `pin` is where the dot sits on the drawn map, as a percentage.
+ * The location card — two places, current and born, each with its own
+ * picture behind the card. `pin` is kept for the drawn map fallback.
  */
 export const places = [
   {
@@ -159,6 +159,7 @@ export const places = [
     city: 'Chennai',
     country: 'India',
     coords: '13.0827° N, 80.2707° E',
+    image: '/places/chennai.jpg',
     pin: { x: 58, y: 44 },
     href: '',
   },
@@ -168,6 +169,7 @@ export const places = [
     city: 'Villupuram',
     country: 'India',
     coords: '11.9401° N, 79.4861° E',
+    image: '/places/villupuram.jpg',
     pin: { x: 45, y: 62 },
     href: 'https://maps.app.goo.gl/HnRycLDBaYb8xMud8',
   },
