@@ -2903,3 +2903,6 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .xrow__body, .xrow__chev { transition: none; }
 }
+
+/* the profile pills sit under the email in the contact column too */
+.contact__left .plinks { margin-top: 4px; }

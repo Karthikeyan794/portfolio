@@ -1,4 +1,5 @@
-import { profile, socials } from '../data'
+import { aboutLinks, profile, socials } from '../data'
+import { marks } from '../logos'
 import { useReveal } from '../hooks'
 import ContactForm from './ContactForm'
 
@@ -21,6 +22,26 @@ export default function Contact() {
             <a className="mailto" href={`mailto:${profile.email}`}>
               {profile.email}
             </a>
+
+            {/* where else to find me */}
+            <ul className="plinks">
+              {aboutLinks.map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} target="_blank" rel="noreferrer" title={l.handle} style={{ ['--brand' as string]: l.brand }}>
+                    <span className="plinks__mark" aria-hidden="true">
+                      {l.mark ? (
+                        <svg viewBox="0 0 24 24">
+                          <path d={marks[l.mark]} />
+                        </svg>
+                      ) : (
+                        <b>{l.mono}</b>
+                      )}
+                    </span>
+                    <span className="plinks__label">{l.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
           <ContactForm />
         </div>

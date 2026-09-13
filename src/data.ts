@@ -19,7 +19,9 @@ export const socials: { label: string; href: string }[] = [
   { label: 'Behance', href: 'https://www.behance.net/karthikbabu13' },
   { label: 'GitHub', href: 'https://github.com/Karthikeyan794' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/b-karthikeyan-35192b28a' },
-  { label: 'X', href: 'https://x.com/' },
+  // TODO: dropped from the footer — it pointed at x.com with no handle.
+  // Put your own URL here and add it back.
+  // { label: 'X', href: 'https://x.com/' },
 ]
 
 /** The greeting and the two or three short paragraphs beside it. */
