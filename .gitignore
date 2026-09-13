@@ -4,3 +4,6 @@ dist
 *.local
 .vite
 public/_ref
+
+# tsc incremental cache
+*.tsbuildinfo

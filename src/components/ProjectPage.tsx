@@ -1,7 +1,8 @@
 import { motion, useScroll, useSpring, useTransform } from 'motion/react'
-import { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
+import Diagram from './Diagrams'
 
 function isEmbed(src: string) {
   return /^https?:\/\//.test(src)
@@ -33,57 +34,147 @@ function detailFor(p: Project) {
   }
 }
 
+/* the row plays in: number, heading, body, then the screen settles and a light
+   sweeps across it once. Everything below is one variant tree so the order holds. */
+const groupV = { rest: {}, in: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } } }
+const lineV = {
+  rest: { opacity: 0, y: 18 },
+  in: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 92, damping: 18 } },
+} as const
+const frameV = {
+  rest: { opacity: 0, y: 48 },
+  in: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 60, damping: 18 } },
+} as const
+const shotV = {
+  rest: { scale: 1.09 },
+  in: { scale: 1, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
+} as const
+const sheenV = {
+  rest: { x: '-130%' },
+  in: { x: '130%', transition: { duration: 1.15, delay: 0.4, ease: 'easeInOut' } },
+} as const
+
 /** One media block on the right with its explanation on the left. */
-function Row({ slice, index }: { slice: Slice; index: number }) {
-  const hasMedia = Boolean(slice.image || slice.video)
+function Row({ slice, no }: { slice: Slice; no: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  // a slice with no image and no video field is prose — it gets the full width
+  const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats) || slice.video !== undefined
+
+  // the screen drifts a few pixels against the page as it passes, so a still
+  // screenshot still moves. It is the frame that travels, never the image
+  // inside it, so nothing ever gets cropped.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const drift = useTransform(scrollYProgress, [0, 1], [26, -26])
+  const float = useSpring(drift, { stiffness: 80, damping: 24, restDelta: 0.4 })
+
   return (
     <motion.section
-      className="row"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ type: 'spring', stiffness: 66, damping: 18 }}
+      className={hasMedia ? 'row' : 'row row--text'}
+      ref={ref}
+      variants={groupV}
+      initial="rest"
+      whileInView="in"
+      viewport={{ once: true, amount: 0.2 }}
     >
       {/* left: the words */}
-      <div className="row__text">
-        <span className="row__no">{String(index + 1).padStart(2, '0')}</span>
-        {slice.heading && <h2 className="row__h">{slice.heading}</h2>}
-        {slice.body && <p className="row__p">{slice.body}</p>}
-      </div>
+      <motion.div className="row__text" variants={groupV}>
+        <motion.span className="row__no" variants={lineV}>
+          {String(no).padStart(2, '0')}
+        </motion.span>
+        {slice.heading && (
+          <motion.h2 className="row__h" variants={lineV}>
+            {slice.heading}
+          </motion.h2>
+        )}
+        {slice.body && (
+          <motion.p className="row__p" variants={lineV}>
+            {slice.body}
+          </motion.p>
+        )}
+      </motion.div>
 
       {/* right: the screens or the video */}
-      <div className="row__media">
-        {slice.video ? (
-          <div className="frame frame--video">
-            {isEmbed(slice.video) ? (
-              <iframe
-                src={slice.video}
-                title={slice.heading ?? 'Demo video'}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+      {hasMedia && (
+        <motion.div className="row__media" style={{ y: float }}>
+          {slice.video !== undefined ? (
+            slice.video ? (
+              <motion.div className="frame frame--video" variants={frameV}>
+                {isEmbed(slice.video) ? (
+                  <iframe
+                    src={slice.video}
+                    title={slice.heading ?? 'Demo video'}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video src={slice.video} controls playsInline preload="metadata" />
+                )}
+              </motion.div>
             ) : (
-              <video src={slice.video} controls playsInline preload="metadata" />
-            )}
-          </div>
-        ) : slice.image ? (
-          /* point at the image and its note slides up over it */
-          <figure className="frame frame--shot">
-            <img src={slice.image} alt={slice.caption ?? slice.heading ?? ''} loading="lazy" decoding="async" />
-            {slice.caption && <figcaption>{slice.caption}</figcaption>}
-          </figure>
-        ) : (
-          <div className="frame frame--empty">
-            <strong>Demo video goes here.</strong>
-            <span>
-              Drop an MP4 in <code>public/</code> or paste a YouTube / Loom link into this slice's <code>video</code> field.
-            </span>
-          </div>
-        )}
-        {!hasMedia && null}
-      </div>
+              <motion.div className="frame frame--empty" variants={frameV}>
+                <strong>Demo video goes here.</strong>
+                <span>
+                  Drop an MP4 in <code>public/</code> or paste a YouTube / Loom link into this slice's <code>video</code> field.
+                </span>
+              </motion.div>
+            )
+          ) : slice.diagram ? (
+            <motion.div className="frame frame--dia" variants={frameV}>
+              <Diagram id={slice.diagram} />
+            </motion.div>
+          ) : slice.pair ? (
+            <motion.div className="frame frame--pair" variants={frameV}>
+              <div className="pair">
+                <span className="pair__k">The problem</span>
+                <p>{slice.pair.problem}</p>
+              </div>
+              <div className="pair pair--good">
+                <span className="pair__k">What I did</span>
+                <p>{slice.pair.solution}</p>
+              </div>
+            </motion.div>
+          ) : slice.stats ? (
+            <motion.div className="frame frame--stats" variants={frameV}>
+              {slice.stats.map((st) => (
+                <motion.div className="stat" key={st.label} variants={lineV}>
+                  <span className="stat__v">{st.value}</span>
+                  <span className="stat__l">{st.label}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            /* point at the image and its note slides up over it */
+            <motion.figure className="frame frame--shot" variants={frameV}>
+              <motion.img
+                src={slice.image}
+                alt={slice.caption ?? slice.heading ?? ''}
+                loading="lazy"
+                decoding="async"
+                variants={shotV}
+              />
+              <motion.span className="frame__sheen" variants={sheenV} aria-hidden="true" />
+              {slice.caption && <figcaption>{slice.caption}</figcaption>}
+            </motion.figure>
+          )}
+        </motion.div>
+      )}
     </motion.section>
   )
+}
+
+/** Slices carry a chapter label; this turns them into chapters that number from 01. */
+function chaptered(slices: Slice[]) {
+  let current = ''
+  let n = 0
+  return slices.map((slice) => {
+    const opens = Boolean(slice.chapter && slice.chapter !== current)
+    if (opens) {
+      current = slice.chapter as string
+      n = 0
+    }
+    n += 1
+    return { slice, opens: opens ? current : null, no: n }
+  })
 }
 
 export default function ProjectPage({ slug }: { slug: string }) {
@@ -186,8 +277,29 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </motion.div>
 
         <div className="rows">
-          {detail.slices.map((s, i) => (
-            <Row key={(s.heading ?? '') + i} slice={s} index={i} />
+          {chaptered(detail.slices).map((item, i) => (
+            <Fragment key={(item.slice.heading ?? '') + i}>
+              {item.opens && (
+                <motion.h2
+                  className="chapter"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <span className="chapter__name">{item.opens}</span>
+                  <motion.span
+                    className="chapter__rule"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{ duration: 0.9, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                    aria-hidden="true"
+                  />
+                </motion.h2>
+              )}
+              <Row slice={item.slice} no={item.no} />
+            </Fragment>
           ))}
         </div>
 

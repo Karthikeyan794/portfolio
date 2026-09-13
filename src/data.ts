@@ -195,6 +195,8 @@ export const about = [
 ]
 
 export type Slice = {
+  /** starts a new chapter above this slice — 'Research', 'The build', … */
+  chapter?: string
   /** 'full' = wide row · 'half' = two per row */
   span?: 'full' | 'half'
   heading?: string
@@ -203,6 +205,12 @@ export type Slice = {
   caption?: string
   /** an embedded video: an mp4 in /public or a YouTube/Loom embed URL */
   video?: string
+  /** a drawn explanation instead of a screenshot — see components/Diagrams.tsx */
+  diagram?: string
+  /** a problem → what I did pair, the way my Behance case studies read */
+  pair?: { problem: string; solution: string }
+  /** the numbers a slice landed on */
+  stats?: { value: string; label: string }[]
 }
 
 export type Project = {
@@ -250,12 +258,12 @@ export const projects: Project[] = [
     title: 'Support Desk',
     tagline: 'A shared mailbox, turned into a support system',
     blurb:
-      'Customer support ran out of one Outlook mailbox: 670 mails, no queue, no categories, no customer view. I built the desk that reads that same data — the live email thread, a derived customer directory and a rules classifier — without replacing the mailbox, the flow or the list the business already depended on.',
+      'Customer support ran out of one Outlook mailbox: 670 mails, no queue, no categories, no customer view. I measured what was there, found I had read-only rights to the schema, and built the desk that reads that same data — the live email thread over Microsoft Graph, a derived customer directory, a rules classifier and a Teams bot — without replacing the mailbox, the flow or the list the business already depended on.',
     year: '2025',
     role: 'Product owner / designer',
-    tags: ['Product', 'React', 'Microsoft Graph'],
+    tags: ['Product', 'React', 'Microsoft Graph', 'Teams bot'],
     emoji: '🎧',
-    cover: '/work/support-desk/2-queue.jpg',
+    cover: '/bento/support-desk.jpg',
     size: 'hero',
     tone: 'sage',
     kind: 'work',
@@ -264,7 +272,7 @@ export const projects: Project[] = [
     demo: { label: 'Try the demo', href: '' },
     detail: {
       intro:
-        'Support ran out of a shared Outlook mailbox. A Power Automate flow copied each mail into a SharePoint list, which gave the team a record but not a system — no queue, no categories, and the mail itself still lived in Outlook. The ask was a desk that read the existing data without replacing anything underneath it.',
+        'Support ran out of a shared Outlook mailbox. A Power Automate flow copied each mail into a SharePoint list, which gave the team a record but not a system. Before I designed a screen I spent the first stretch measuring — how much mail, which columns were actually filled, and what my own account was allowed to do. Almost everything below is downstream of what that turned up.',
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
         { label: 'Built', value: '~6 weeks, part-time' },
@@ -273,59 +281,147 @@ export const projects: Project[] = [
       ],
       slices: [
         {
+          chapter: 'Research',
           span: 'full',
-          heading: 'The constraint that shaped everything',
-          body: 'I had delegated, user-level access only. I could read and write list items and create them, but adding a column returned 403 and so did creating a list. No new columns, no new tables — every feature had to fit the columns that already existed, or not ship. That one fact drove most of what follows.',
+          heading: 'I counted before I designed anything',
+          body: 'One shared mailbox, 670 tickets, about 29 new every day. The flow into SharePoint gave the team a record and nothing else. No queue, so whether a mail had been answered lived in somebody’s memory. No categories, so nobody could say what customers kept asking for. No customer view, so you could read one ticket but not what an account had raised this quarter, or who kept raising it. And the mail itself was still in Outlook, because the list only stored a link to it. The brief I wrote from that was deliberately narrow: read the data that already exists, and replace nothing underneath it.',
+          diagram: 'system',
+        },
+        {
+          span: 'full',
+          heading: 'Then I measured the columns, and they were lying',
+          body: 'I checked every column against all 670 rows instead of trusting the schema. Received date, description and mail link were filled on all 670. Assigned to was filled on two. Escalated had been written 670 times and was true zero times. Sentiment, root cause, agent and both resolution timestamps had never been written at all. The same pass turned up that 59% of what sat in the ticket list was the system’s own notifications rather than customers. So the columns any dashboard would want to read were exactly the columns nobody was filling.',
+          diagram: 'audit',
+        },
+        {
+          span: 'full',
+          heading: 'What access I asked for — and what I actually got',
+          body: 'I asked for room to add structure: a status column, a category column, ideally a small table for customers. What I got was delegated, user-level access — the app can only ever do what the signed-in person can do, and nothing beyond it. I measured that against the live site rather than assuming. Reading items worked, writing a field returned 200, creating an item returned 201, adding a column returned 403, creating a list returned 403. No new columns and no new tables. Every feature after this had to fit the columns that already existed or not ship, which is exactly why the customer directory is derived and the classifier writes into fields that were already sitting there.',
+          diagram: 'access',
+        },
+        {
+          span: 'full',
+          heading: 'Two permissions everyone confuses',
+          body: 'Reading and replying from that mailbox is not one permission, it is two — and neither of them belongs to the app. Full Access lets a person open the shared mailbox. Send As lets them reply so the customer sees the mailbox rather than the individual. Both are granted by an Exchange admin, take up to an hour to apply, and — the part that shaped the whole UI — there is no API to read whether somebody else has them, so the desk can never display “you have Send As”. What the app does own is its own role: admin, support or viewer. I agreed the split with the three people it crosses: IT, who alone can grant the mailbox; the support lead, who decides who belongs on the desk; and the person hitting the gate, who needs to know what to ask for. The rule that fell out of it is that an admin pressing Approve grants the app role only, and the dialog says so out loud instead of implying the click was enough.',
+          diagram: 'permissions',
+        },
+        {
+          chapter: 'The build',
+          span: 'full',
+          heading: 'The queue',
+          body: 'One list, filters for type, category, module, customer, handler and status, plus search, sort and a split you can drag. Nothing clever — this is the screen the team lives in all day, so it loads fast, keeps your place and never buries a ticket behind a tab.',
           image: '/work/support-desk/2-queue.jpg',
           caption: 'The queue: filters, search and a resizable list/detail split.',
         },
         {
           span: 'full',
-          heading: 'The email lives in the app',
-          body: 'SharePoint only stores a deeplink, so the app parses the message id out of it and pulls the real conversation from Graph — every message, recipients, inline images and attachments, in a sandboxed iframe. Replies go back out through the shared mailbox, so the customer sees one thread.',
+          heading: 'The email lives inside the app',
+          body: 'SharePoint stores a deeplink, not a mail. The app pulls the message id out of that link and asks Microsoft Graph for the real conversation — every message, the recipients, inline images and attachments — and renders it in a sandboxed iframe so nobody’s email HTML can reach the page around it. That single move removed the daily round trip to Outlook.',
           image: '/work/support-desk/3-thread.jpg',
           caption: 'The thread beside the record — the core of the app.',
         },
         {
-          span: 'half',
-          heading: 'Draft, then send',
-          body: 'A reply is not a fresh mail. The app asks Graph for a reply draft, which already carries the conversation id and quoted history, writes on top of it and sends that. A plain send would start a new thread — and a new ticket.',
-          image: '/work/support-desk/4-composer.jpg',
+          span: 'full',
+          heading: 'Draft first, then send',
+          body: 'A reply is not a fresh mail. The app asks Graph to create a reply draft, which already carries the conversation id, the threading headers and the quoted history; the typed reply goes on top of that draft, and the draft is what gets sent. A plain send would start a new conversation, and the flow underneath would file it as a second ticket for the same problem. When the person is missing Send As, Graph refuses with a send-as error and the app shows it instead of swallowing it.',
+          diagram: 'reply',
         },
         {
-          span: 'half',
-          heading: 'Customers, derived',
-          body: 'No customer table existed. The email domain becomes the account and the local part becomes the person, so a three-column directory falls out of the ticket list with no data entry — 62 accounts.',
+          span: 'full',
+          heading: 'The composer',
+          body: 'Reply, reply-all and forward sit on the record itself, with recipient chips you can check before you send, the quoted history kept underneath, and attachments carried through. The send control is only there for the people who can actually send.',
+          image: '/work/support-desk/4-composer.jpg',
+          caption: 'Reply, reply-all and forward, with recipient chips.',
+        },
+        {
+          span: 'full',
+          heading: 'The gate, and the three kinds of people who hit it',
+          body: 'On load the app reads the shared inbox with the signed-in person’s own token. A 403 or 404 is a genuine no, and a full-screen gate stands where the desk would be: pick read or read-and-reply, add a note, request. The waiting screen offers a way out and a way forward, and the desk opens on its own the moment the real access exists. Any other failure — a timeout, a throttle, a dropped connection — is treated as access, because a blip must never lock out somebody who can actually do the work. A viewer sees every thread with reply and assign hidden and can ask for more. Support gets the full desk.',
+          diagram: 'gate',
+        },
+        {
+          span: 'full',
+          heading: 'A dashboard that admits it reads zero',
+          body: 'Resolved this week, escalations and my performance could only ever show zero. I shipped those widgets showing zero, with a line on the page saying nothing in this list is marked resolved, and took the finding to the team as a process problem rather than a UI one. Hiding them would have made the desk look finished and left the team blind; showing them started the conversation about who sets a status.',
+          image: '/work/support-desk/1-dashboard.jpg',
+          caption: 'Volume, intake trend, recurring problems and repeat reporters.',
+        },
+        {
+          span: 'full',
+          heading: 'Customers, derived from the mail itself',
+          body: 'No customer table existed, and I could not create one. So the app derives it from the only thing the list already had — the sender’s address. The domain becomes the account, the local part becomes the person, and both sides normalise to one key so the same customer never lands twice. 62 accounts came out of it, with no data entry anywhere.',
+          diagram: 'derive',
+        },
+        {
+          span: 'full',
+          heading: 'The directory it produces',
+          body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody has to keep it current — a new address creates its person the first time they write.',
           image: '/work/support-desk/6-customers.jpg',
+          caption: 'Accounts → people → their tickets.',
         },
         {
           span: 'full',
           heading: 'Subject before body',
-          body: 'My first classifier read the whole email and labelled almost everything an implementation request — because these mails come from an implementation team and the phrase sits in every signature and quoted wrapper. Matching the subject first and treating the body as a fallback fixed it. In email the signal is in the subject; the body is mostly other people\u2019s text.',
+          body: 'My first classifier read the whole email and labelled almost everything an implementation request — because these mails come from an implementation team and the phrase sits in every signature and quoted wrapper. Matching the subject first and treating the body only as a fallback fixed it. In email the signal is in the subject; the body is mostly other people’s text. The rules assign a ticket type plus multi-label categories and product modules, all written into columns that already existed.',
           image: '/work/support-desk/5-requester.jpg',
           caption: 'Classification: ticket type, categories and product modules.',
         },
         {
           span: 'full',
-          heading: 'I shipped a dashboard that reads zero',
-          body: 'Building it, I measured the columns rather than trusting them. Received date, description and mail link were filled on all 670 tickets. Assigned to was filled on two. Escalated was written 670 times and never once true. Sentiment, root cause, agent and both resolution timestamps were empty. So resolved-this-week, escalations and my-performance could only ever read zero. I shipped those widgets showing zero with a line saying nothing here is marked resolved, and took it to the team as a process problem. The fix is not a chart; it is someone setting a status.',
-          image: '/work/support-desk/1-dashboard.jpg',
-          caption: 'Volume, intake trend, recurring problems and repeat reporters.',
-        },
-        {
-          span: 'half',
-          heading: 'The join that nearly duplicated a production list',
-          body: 'The app keyed accounts by full domain; the list stored the bare label. Every lookup silently missed. The dangerous part was the sync button — it compared the same two forms and would have written 62 duplicate rows into a 145-row production list. I caught it because a customer I knew rendered as "not saved". Both sides now normalise before comparing or writing.',
-        },
-        {
-          span: 'half',
-          heading: 'Left 248 tickets blank on purpose',
-          body: 'The backfill wrote a type to 399 tickets and skipped 248 where no rule matched confidently. A guess in a ticket-type column is indistinguishable from a fact once written, and somebody would have reported on it. Blank is honest; wrong is expensive.',
+          heading: 'The desk, inside Teams',
+          body: 'The last piece is a Teams bot, so the people who report problems never have to open the desk at all. @mention it in a chat or a channel and you can raise a ticket, ask for its status, comment, close it, reassign it to somebody you @mention, or ping a person without raising a ticket at all. Answers come back as Adaptive Cards carrying real profile photos pulled from Graph, falling back to an initials badge when there is no photo. It runs end to end against a stubbed desk API today: the six calls it needs are marked in one file, and going live needs a tenant admin to register the identity and approve the photo permission.',
+          diagram: 'teams',
         },
         {
           span: 'full',
-          heading: 'Where it landed',
-          body: '670 tickets in one queue with the thread in the same window. 609 classified in a single backfill — type on 407, categories on 546, modules on 497, from 8 / 1 / 0 before. 62 accounts derived with no data entry. And the team learned that 59% of what sat in the ticket list was the system\u2019s own notifications.',
+          heading: 'Design decisions, made rather than defaulted',
+          body: 'Three small rules. Values the app inferred look different from values a person confirmed — inferred is an outline, confirmed is filled — which let me delete an “AUTO” badge from every field. Thread avatars first took their colour from the address, and measuring showed white initials at 2.4:1 on some hues, so they became eight fixed fills, each checked at 4.5:1 or better for text. And every dropdown is a popover the app owns, so lists look and behave the same everywhere and flip themselves when they would overflow the panel.',
+          diagram: 'rules',
+        },
+        {
+          chapter: 'What broke',
+          span: 'full',
+          heading: 'The join that nearly duplicated a production list',
+          body: 'I caught it because a customer I knew perfectly well rendered as “not saved”. One mismatched key, and the feature that was meant to keep two systems in step would have doubled a production list instead.',
+          pair: {
+            problem: 'The app keyed accounts by full domain, the list stored the bare label, so every lookup silently missed. The sync button compared those same two forms — it would have written 62 duplicate rows into a 145-row production list.',
+            solution: 'Both sides normalise to one key before they compare or write. Nothing silently misses now, because a miss and a match are measured against the same string.',
+          },
+        },
+        {
+          span: 'full',
+          heading: 'Left 248 tickets blank on purpose',
+          body: 'The backfill wrote a type to 399 tickets. It could have written one to all 647.',
+          pair: {
+            problem: 'On 248 tickets no rule matched confidently. Filling them anyway would have made the column look complete, and a guess is indistinguishable from a fact once it is written — somebody reports on it a month later.',
+            solution: 'Skip them. Blank is honest, wrong is expensive, and a visible gap is the thing that gets a rule written properly later.',
+          },
+        },
+        {
+          span: 'full',
+          heading: 'A misdiagnosis I corrected',
+          body: 'Worth writing down because the evidence was there the whole time and I read it backwards.',
+          pair: {
+            problem: 'A deploy started failing with a generic fetch error — nothing in the console, the page rendering fine. I concluded the browser had lost networking, and looked in the wrong place for an afternoon.',
+            solution: 'The API was answering with a redirect to the Microsoft login page, and a cross-origin redirect on fetch surfaces as exactly that generic error. The session had expired. I had read a 302 from the shell as “the site is up” instead of “the session is gone”.',
+          },
+        },
+        {
+          chapter: 'Where it landed',
+          span: 'full',
+          heading: 'What changed',
+          body: 'Replies now leave from the app; the old route was open Outlook and go and find it. And the team learned two things about its own data that nobody had seen before — most of the list was system noise, and assignment and resolution were effectively never being recorded.',
+          stats: [
+            { value: '670', label: 'tickets in one queue, with the email thread beside the record' },
+            { value: '609', label: 'classified in a single backfill — type, categories and modules, from 8 · 1 · 0' },
+            { value: '62', label: 'customer accounts derived from the mail, with no data entry' },
+            { value: '59%', label: 'of the “tickets” turned out to be the system’s own notifications' },
+          ],
+        },
+        {
+          span: 'full',
+          heading: 'What I would do next',
+          body: 'Get a resolution time actually written — the column exists and is writable, and filling it revives six dead metrics and half the intake chart. Fix sender attribution on forwarded threads, where a support reply is currently credited to the customer and skews the who-answers data. Tighten the incident rule, which absorbs 61% of everything classified. And make it responsive: it is desktop-only today, and the queue is the obvious phone screen.',
         },
         {
           span: 'full',

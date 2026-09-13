@@ -20,6 +20,8 @@
   --accent: #a6e85b;        /* lime — marks, fills, highlights */
   --accent-ink: #1e3a34;    /* readable "accent" for text/links on light */
   --accent-soft: rgba(166, 232, 91, 0.28);
+  --dia-good: #2f7d62;      /* diagram: the path that works */
+  --dia-bad: #b8452f;       /* diagram: the path that is refused */
   --glow: 0 0 0 rgba(0, 0, 0, 0);
   --shadow: 0 1px 2px rgba(20, 26, 30, 0.05), 0 14px 40px -18px rgba(20, 26, 30, 0.22);
   --radius: 18px;
@@ -52,6 +54,8 @@
   --accent: #a6e85b;
   --accent-ink: #a6e85b;
   --accent-soft: rgba(166, 232, 91, 0.16);
+  --dia-good: #7ad3a6;
+  --dia-bad: #e08a75;
   --glow: 0 0 24px rgba(166, 232, 91, 0.3);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 20px 50px -24px rgba(0, 0, 0, 0.8);
   color-scheme: dark;
@@ -1187,6 +1191,77 @@ a { color: inherit; text-decoration: none; }
 .row__p { color: var(--text-mid); font-size: 16px; line-height: 1.6; max-width: 46ch; }
 
 .row__media { display: grid; gap: 14px; }
+
+/* a chapter title between groups of rows — Research, The build, What broke … */
+.chapter {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: clamp(16px, 3vh, 44px) 0 -14px;
+}
+.chapter__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.chapter__rule { flex: 1; height: 1px; background: var(--line); transform-origin: left center; }
+
+/* prose-only slices — the research — run the full width instead of leaving a hole */
+.row--text { grid-template-columns: minmax(0, 1fr); }
+.row--text .row__text { position: static; max-width: 72ch; }
+.row--text .row__p { max-width: 72ch; font-size: 16.5px; }
+
+/* a light passes over a screen once, the first time it comes into view */
+.frame--dia { padding: 22px 20px; background: var(--bg-elev); }
+.dia { display: block; width: 100%; height: auto; }
+.dia__label { font-family: var(--sans); font-size: 13.5px; font-weight: 600; fill: var(--text); }
+.dia__sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; fill: var(--muted); }
+.dia__note { font-family: var(--sans); font-size: 12.5px; fill: var(--text-mid); }
+.dia__eyebrow { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; fill: var(--muted); }
+.dia__code { font-family: var(--mono); font-size: 12.5px; fill: var(--text); }
+.dia__pin { font-family: var(--mono); font-size: 11px; font-weight: 600; fill: var(--text); }
+
+/* problem → what I did, the pairing my Behance case studies use */
+.frame--pair { padding: 18px; background: var(--bg-elev); display: grid; gap: 14px; }
+.pair { border: 1px dashed var(--line-strong); border-radius: 14px; padding: 16px 18px; display: grid; gap: 8px; }
+.pair--good { border-style: solid; border-color: var(--dia-good); }
+.pair__k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pair--good .pair__k { color: var(--dia-good); }
+.pair p { font-size: 14.5px; line-height: 1.6; color: var(--text-mid); }
+
+/* the numbers a chapter landed on */
+.frame--stats {
+  padding: 18px;
+  background: var(--bg-elev);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.stat { border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; background: var(--bg); display: grid; gap: 4px; }
+.stat__v { font-family: var(--display); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1; }
+.stat__l { font-size: 13px; line-height: 1.5; color: var(--text-mid); }
+
+/* a diagram has a minimum readable width — let it scroll rather than shrink */
+@media (max-width: 780px) {
+  .frame--dia { overflow-x: auto; }
+  .dia { min-width: 680px; }
+}
+
+.frame__sheen {
+  position: absolute;
+  inset: -20% -40%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.3) 50%, transparent 62%);
+}
 .frame {
   position: relative;
   margin: 0;
