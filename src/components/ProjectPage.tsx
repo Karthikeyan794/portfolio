@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 import Diagram from './Diagrams'
+import Phases from './Phases'
 
 function isEmbed(src: string) {
   return /^https?:\/\//.test(src)
@@ -286,6 +287,13 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <span className="case__lead-label">Overview</span>
           <p className="case__intro">{detail.intro}</p>
         </motion.div>
+
+        {detail.phases && (
+          <Phases
+            phases={detail.phases}
+            note={`${detail.facts.find((f) => f.label === 'Built')?.value ?? ''}, in ${detail.phases.length} phases — from the first meeting to the desk in daily use.`}
+          />
+        )}
 
         <div className="rows">
           {chaptered(detail.slices).map((item, i) => (

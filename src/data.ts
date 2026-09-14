@@ -215,6 +215,16 @@ export type Slice = {
   stats?: { value: string; label: string }[]
 }
 
+export type Phase = {
+  name: string
+  /** how long it ran — shown as a pill */
+  duration: string
+  /** the three or four things that phase produced */
+  items: string[]
+  /** give this one the accent wash */
+  accent?: boolean
+}
+
 export type Project = {
   slug: string
   title: string
@@ -242,6 +252,8 @@ export type Project = {
   detail?: {
     intro: string
     facts: { label: string; value: string }[]
+    /** the run of the work, drawn as a numbered spine above the story */
+    phases?: Phase[]
     slices: Slice[]
   }
 }
@@ -280,6 +292,42 @@ export const projects: Project[] = [
         { label: 'Built', value: '~6 weeks, part-time' },
         { label: 'Stack', value: 'React · Graph · SharePoint · Power Automate' },
         { label: 'Status', value: 'In daily use · ~900 tickets' },
+      ],
+      // TODO: these are my split of the ~6 weeks — correct any duration that is
+      // wrong and the pills update, nothing else to change.
+      phases: [
+        {
+          name: 'Discovery',
+          duration: '1 week',
+          items: ['Sat with the support team', 'Reviewed the Freshdesk plan', 'Wrote down the six asks'],
+          accent: true,
+        },
+        {
+          name: 'Access',
+          duration: '3 days',
+          items: ['Listed every permission, with a reason', 'Probed what the token could do', 'Settled the two-permission model'],
+        },
+        {
+          name: 'Design',
+          duration: '1 week',
+          items: ['Flow diagram, end to end', 'Weighed the alternatives', 'Rough layout in Figma'],
+        },
+        {
+          name: 'Build',
+          duration: '2 weeks',
+          items: ['Queue and the live thread', 'Assignment and the Teams card', 'Reply, drafts and templates'],
+        },
+        {
+          name: 'Data',
+          duration: '1 week',
+          items: ['Classifier and the backfill', 'Derived customer directory', 'SLA clocks and dashboards'],
+        },
+        {
+          name: 'Release',
+          duration: '1 week',
+          items: ['Test rounds on real tickets', 'Roles and the access gate', 'The intake check'],
+          accent: true,
+        },
       ],
       slices: [
         {

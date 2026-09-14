@@ -1192,6 +1192,121 @@ a { color: inherit; text-decoration: none; }
 
 .row__media { display: grid; gap: 14px; }
 
+/* ── the phases spine ─────────────────────────────────────────────────────
+   Cards alternate either side of a numbered line, the way my Behance case
+   studies lay a process out. Below 880px it folds to one column with the
+   line on the left. */
+.phases { margin: clamp(40px, 7vh, 96px) 0 clamp(30px, 5vh, 64px); }
+.phases__head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(20px, 4vw, 56px);
+  align-items: end;
+  margin-bottom: clamp(28px, 5vh, 56px);
+}
+.phases__title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(38px, 6vw, 76px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+.phases__note { color: var(--text-mid); font-size: 15.5px; line-height: 1.6; max-width: 46ch; }
+
+.phases__track { position: relative; display: grid; gap: clamp(18px, 3vh, 34px); }
+.phases__spine {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--line-strong);
+  transform-origin: top center;
+}
+
+.phase {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px minmax(0, 1fr);
+  align-items: center;
+}
+.phase__node {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--text);
+}
+.phase__card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px 22px 22px;
+  background: var(--bg-elev);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+/* the stub that ties a card to its node */
+.phase__card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 19px;
+  height: 1px;
+  background: var(--line-strong);
+}
+.phase--left .phase__card { grid-column: 1; grid-row: 1; }
+.phase--left .phase__card::after { right: -20px; }
+.phase--right .phase__card { grid-column: 3; grid-row: 1; }
+.phase--right .phase__card::after { left: -20px; }
+.phase__card--accent {
+  background: linear-gradient(135deg, var(--accent-soft), transparent 62%), var(--bg-elev);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.phase__top { display: flex; align-items: center; gap: 14px; justify-content: space-between; margin-bottom: 14px; }
+.phase__name { font-family: var(--display); font-weight: 700; font-size: clamp(19px, 2vw, 24px); letter-spacing: -0.02em; }
+.phase__time {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+.phase__list { display: grid; gap: 9px; }
+.phase__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--text-mid);
+}
+.phase__list svg { flex: none; color: var(--muted); }
+.phase__card--accent .phase__list svg { color: var(--accent-ink); }
+
+@media (max-width: 880px) {
+  .phases__head { grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+  .phases__spine { left: 23px; margin-left: 0; }
+  .phase { grid-template-columns: 46px minmax(0, 1fr); gap: 20px; }
+  .phase__node { grid-column: 1; grid-row: 1; }
+  .phase--left .phase__card,
+  .phase--right .phase__card { grid-column: 2; grid-row: 1; }
+  .phase--left .phase__card::after,
+  .phase--right .phase__card::after { left: -21px; right: auto; }
+}
+
 /* a chapter title between groups of rows — Research, The build, What broke … */
 .chapter {
   display: flex;
