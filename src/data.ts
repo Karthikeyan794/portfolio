@@ -215,6 +215,13 @@ export type Slice = {
   stats?: { value: string; label: string }[]
 }
 
+/** the opening spread: what was wrong, what answered it, and what we were aiming at */
+export type Brief = {
+  problems: { lead: string; items: string[] }
+  solutions: { lead: string; items: string[] }
+  goals: { label: string; text: string }[]
+}
+
 export type Phase = {
   name: string
   /** how long it ran — shown as a pill */
@@ -252,6 +259,8 @@ export type Project = {
   detail?: {
     intro: string
     facts: { label: string; value: string }[]
+    /** problems beside solutions, then the goals — the opening spread */
+    brief?: Brief
     /** the run of the work, drawn as a numbered spine above the story */
     phases?: Phase[]
     slices: Slice[]
@@ -293,6 +302,40 @@ export const projects: Project[] = [
         { label: 'Stack', value: 'React · Graph · SharePoint · Power Automate' },
         { label: 'Status', value: 'In daily use · ~900 tickets' },
       ],
+      brief: {
+        problems: {
+          lead: 'Support ran on one shared Outlook mailbox, and a ticket that is only an email carries nothing with it.',
+          items: [
+            'No owner — a ticket could not be handed to the person who knows that module',
+            'No status, so “is anyone on this?” was a question asked out loud',
+            'Replies scattered across personal inboxes, leaving the next person no history',
+            'Nothing counted whether we had answered inside the hours we promise',
+            'No way to see everything one customer had raised, or who raised the most',
+            'A Freshdesk plan we paid for that still left the mail sitting in Outlook',
+          ],
+        },
+        solutions: {
+          lead: 'A desk built on the tenant we already pay for, reading the data that was already there.',
+          items: [
+            'Assign a ticket to a person, and the card lands in their Teams chat',
+            'Status, priority and owner on one row the whole team can see',
+            'The live email thread beside the record — reply without leaving',
+            'Two SLA clocks, with the response target measured rather than guessed',
+            'A customer directory derived from the mail itself, with no data entry',
+            'Roles, saved views and an access gate — no new licence for anybody',
+          ],
+        },
+        goals: [
+          {
+            label: 'Project goal',
+            text: 'Turn a shared mailbox into a support system without replacing the mailbox, the intake flow or the SharePoint list the business already depends on — and without buying a seat for anyone. Every feature has to fit the columns that already exist, or not ship.',
+          },
+          {
+            label: 'User goal',
+            text: 'A support person should be able to see which tickets are theirs, what is still owed and how long it has been owed, and answer the customer from one place — without opening Outlook, without asking who is on it, and without a reply ever turning into a second ticket.',
+          },
+        ],
+      },
       // TODO: these are my split of the ~6 weeks — correct any duration that is
       // wrong and the pills update, nothing else to change.
       phases: [

@@ -4,6 +4,8 @@ import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 import Diagram from './Diagrams'
 import Phases from './Phases'
+import Brief from './Brief'
+import UserFlow from './UserFlow'
 
 function isEmbed(src: string) {
   return /^https?:\/\//.test(src)
@@ -288,12 +290,16 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <p className="case__intro">{detail.intro}</p>
         </motion.div>
 
+        {detail.brief && <Brief brief={detail.brief} />}
+
         {detail.phases && (
           <Phases
             phases={detail.phases}
             note={`${detail.facts.find((f) => f.label === 'Built')?.value ?? ''}, in ${detail.phases.length} phases — from the first meeting to the desk in daily use.`}
           />
         )}
+
+        {project.slug === 'support-desk' && <UserFlow />}
 
         <div className="rows">
           {chaptered(detail.slices).map((item, i) => (
