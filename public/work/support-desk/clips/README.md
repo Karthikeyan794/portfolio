@@ -1,0 +1,30 @@
+# Flow clips
+
+One short screen recording per flow, played under the diagram that explains it.
+Record them from the demo (`~/Desktop/support-desk-demo/start-demo.command`) so no
+customer data is on screen.
+
+| File | The flow it shows | What to capture (10–20s, no audio needed) |
+|---|---|---|
+| `access.mp4` | Flow 1 — who gets in | The gate, picking Read + Reply, Request, the waiting screen, then the desk opening |
+| `assign.mp4` | Flow 2 — assign + Teams | Opening the assignee picker, picking a person, then the card arriving in Teams |
+| `reply.mp4` | Flow 3 — a reply that starts written | Composer opening on the template, the AI suggestion beside it, editing, sending |
+| `views.mp4` | Flow 5 — saved views | Setting filters, saving with a name, switching between mine and shared |
+| `customer.mp4` | Flow 6 — the customer view | Accounts → the people in one → that person's tickets |
+| `sla.mp4` | Flow 7 — the clocks | A ticket with a running response clock, and one that has stopped |
+| `dashboard.mp4` | Flow 8 — dashboards | Changing the period and watching the intake chart redraw |
+| `intake.mp4` | Flow 9 — the intake check | Opening the check and reading conversations against tickets, per address |
+| `teams.mp4` | Flow 10 — the Teams bot | @mentioning the bot, `create`, then `status` on the card that comes back |
+
+## Wiring one up
+
+Drop the file here, then add one line to that slice in `src/data.ts`:
+
+```ts
+clip: '/work/support-desk/clips/assign.mp4',
+```
+
+It renders under the diagram, autoplaying, looped and muted. A `.gif` works too —
+the code picks `<img>` for gifs and `<video>` for everything else.
+
+Keep each file small (an MP4 under ~3 MB); they load on the case-study page.

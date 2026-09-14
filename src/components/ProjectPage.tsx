@@ -58,7 +58,7 @@ const sheenV = {
 function Row({ slice, no }: { slice: Slice; no: number }) {
   const ref = useRef<HTMLDivElement>(null)
   // a slice with no image and no video field is prose — it gets the full width
-  const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats) || slice.video !== undefined
+  const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats || slice.clip) || slice.video !== undefined
 
   // the screen drifts a few pixels against the page as it passes, so a still
   // screenshot still moves. It is the frame that travels, never the image
@@ -154,6 +154,17 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
               />
               <motion.span className="frame__sheen" variants={sheenV} aria-hidden="true" />
               {slice.caption && <figcaption>{slice.caption}</figcaption>}
+            </motion.figure>
+          )}
+
+          {/* the flow, recorded — sits under whatever explains it */}
+          {slice.clip && (
+            <motion.figure className="frame frame--clip" variants={frameV}>
+              {/\.gif$/.test(slice.clip) ? (
+                <img src={slice.clip} alt={slice.heading ?? ''} loading="lazy" decoding="async" />
+              ) : (
+                <video src={slice.clip} autoPlay loop muted playsInline preload="metadata" />
+              )}
             </motion.figure>
           )}
         </motion.div>
