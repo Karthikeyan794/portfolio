@@ -220,7 +220,7 @@ export type Slice = {
 /** the plain-English layer: what it is, what it does, how a day on it goes */
 export type Primer = {
   what: string
-  does: { title: string; text: string }[]
+  does: { icon?: string; title: string; text: string }[]
 }
 
 /** the opening spread: what was wrong, what answered it, and what we were aiming at */
@@ -310,12 +310,12 @@ export const projects: Project[] = [
       primer: {
         what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         does: [
-          { title: 'One place for every request', text: 'Every customer request lands in a single queue your team can filter, search and sort. Nothing sits forgotten in somebody’s inbox.' },
-          { title: 'Someone owns it, instantly', text: 'Assign a request to the right person and it reaches them in Teams straight away, with the customer and the question already on the card.' },
-          { title: 'Reply in one click', text: 'The customer’s whole conversation sits beside the request and the reply opens already written, so your team answers in seconds instead of hours.' },
-          { title: 'Know your customer', text: 'Requests are grouped by company, so your team can see everything that customer has asked before — and answer like they remember them.' },
-          { title: 'Answer on time, every time', text: 'A response clock runs on every request, so your team can see who is still waiting and for how long, before it turns into a complaint.' },
-          { title: 'Stop the same issue coming back', text: 'Volume, repeat problems and your most frequent requesters, all in one view — so your team can fix the cause instead of the symptom.' },
+          { icon: 'queue', title: 'Shared queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
+          { icon: 'owner', title: 'Assignment and Teams alerts', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },
+          { icon: 'reply', title: 'Reply from the request', text: 'Answer on the customer’s own thread without leaving the desk, with the reply already drafted and the full conversation beside it.' },
+          { icon: 'customer', title: 'Customer view', text: 'Group every request by company, so your team sees an account’s whole history before they answer the one in front of them.' },
+          { icon: 'clock', title: 'Response SLA', text: 'Run a response clock on every request, so your team knows who is still waiting and for how long — before it turns into a complaint.' },
+          { icon: 'insight', title: 'Insights', text: 'Surface volume, repeat problems and your most frequent requesters in one view, so your team fixes causes instead of symptoms.' },
         ],
       },
       brief: {

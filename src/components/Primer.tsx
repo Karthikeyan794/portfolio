@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import type { ReactNode } from 'react'
 import type { Primer as PrimerData } from '../data'
 
 /**
@@ -25,6 +26,63 @@ const item = {
   rest: { opacity: 0, y: 16 },
   in: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 90, damping: 18 } },
 } as const
+
+
+/** one line icon per feature — drawn here so the cards carry no image weight */
+const ICONS: Record<string, ReactNode> = {
+  queue: (
+    <>
+      <rect x="3" y="4" width="18" height="4.5" rx="1.6" />
+      <rect x="3" y="11" width="18" height="4.5" rx="1.6" />
+      <path d="M6.5 19.5h11" />
+    </>
+  ),
+  owner: (
+    <>
+      <circle cx="10" cy="8" r="3.4" />
+      <path d="M4 19.5a6 6 0 0 1 10.5-3.9" />
+      <path d="M15 18.6l1.9 1.9 3.6-3.9" />
+    </>
+  ),
+  reply: (
+    <>
+      <path d="M9 7 4 12l5 5" />
+      <path d="M4 12h9a7 7 0 0 1 7 7v1" />
+    </>
+  ),
+  customer: (
+    <>
+      <path d="M4 20V6.5a1.5 1.5 0 0 1 1.5-1.5h7A1.5 1.5 0 0 1 14 6.5V20" />
+      <path d="M14 11h4.5A1.5 1.5 0 0 1 20 12.5V20" />
+      <path d="M7 9h4M7 13h4M17 15h1M3 20h18" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="8.2" />
+      <path d="M12 7.4V12l3.2 2" />
+    </>
+  ),
+  insight: (
+    <>
+      <path d="M4 20h16" />
+      <path d="M7 20v-5.5M12 20V8M17 20v-9" />
+      <path d="M5.5 6.5 10 9l4-4.5 4.5 2" />
+    </>
+  ),
+}
+
+function Icon({ name }: { name?: string }) {
+  const art = name ? ICONS[name] : null
+  if (!art) return null
+  return (
+    <span className="does__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        {art}
+      </svg>
+    </span>
+  )
+}
 
 export default function Primer({ primer }: { primer: PrimerData }) {
   return (
@@ -57,7 +115,11 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         <div className="primer__grid">
           {primer.does.map((d, i) => (
             <motion.article className="does" key={d.title} variants={item}>
-              <span className="does__no">{String(i + 1).padStart(2, '0')}</span>
+              <span className="does__glow" aria-hidden="true" />
+              <div className="does__head">
+                <Icon name={d.icon} />
+                <span className="does__no">{String(i + 1).padStart(2, '0')}</span>
+              </div>
               <h4 className="does__title">{d.title}</h4>
               <p className="does__text">{d.text}</p>
             </motion.article>
