@@ -27,7 +27,7 @@
   --radius: 18px;
   --maxw: 1080px;
   --sans: 'Roboto', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --display: 'Fraunces', 'Playfair Display', Georgia, serif;
+  --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --hud: 'Rajdhani', var(--sans);
   color-scheme: light;
@@ -84,10 +84,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* Fraunces' own axes: SOFT rounds the joints, WONK swaps in the curved
-     cuts on M, f, g and r. Inherited, and ignored by Roboto and the mono. */
-  font-variation-settings: 'SOFT' 60, 'WONK' 1;
-  font-optical-sizing: auto;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -1069,10 +1065,6 @@ a { color: inherit; text-decoration: none; }
   min-height: 100vh;
   background: var(--bg);
   padding-bottom: 80px;
-  /* the case study is set in the same face as the labs banner — Playfair on
-     Roboto — so the rotating line reads the way it does there. The rest of the
-     site keeps Fraunces. */
-  --display: 'Playfair Display', Georgia, serif;
 }
 .case--missing { display: grid; place-content: center; gap: 16px; justify-items: center; text-align: center; }
 .case__bar {
