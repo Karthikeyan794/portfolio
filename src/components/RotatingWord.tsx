@@ -1,23 +1,25 @@
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 
 /**
  * A line whose last words keep changing: the outgoing phrase lifts away and
  * blurs while the incoming one rises into its place.
  *
- * Two details make it feel settled rather than twitchy. The slot's width is
- * measured off-screen for every phrase and animated between them, so the line
- * around it glides instead of snapping. And nothing is clipped — the words
- * fade and blur as they travel, which means a descender on the italic serif
- * never gets sliced off.
+ * Three details make it behave. The slot's width is measured off-screen for
+ * every phrase and eased between them, so the line never snaps. Nothing is
+ * clipped — the words blur as they travel, which keeps the descenders on the
+ * italic serif. And the outgoing word is dropped by a timer rather than by an
+ * exit animation: an animation that never runs (a background tab freezes them)
+ * would leave every old word in the DOM, and with all of them positioned out
+ * of flow the slot collapses and the line breaks apart.
  */
 const EVERY_MS = 3400
+const OUT_MS = 800
 
 export default function RotatingWord({ lead, words }: { lead: string; words: string[] }) {
   const [i, setI] = useState(0)
+  const [out, setOut] = useState<number | null>(null)
   const [widths, setWidths] = useState<number[]>([])
   const sizer = useRef<HTMLSpanElement>(null)
-  const still = useReducedMotion()
 
   // measure each phrase once, and again when the webfont lands or the box resizes
   useEffect(() => {
@@ -34,20 +36,28 @@ export default function RotatingWord({ lead, words }: { lead: string; words: str
   }, [words])
 
   useEffect(() => {
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (still || words.length < 2) return
-    const id = window.setInterval(() => setI((n) => (n + 1) % words.length), EVERY_MS)
+    const id = window.setInterval(() => {
+      setI((n) => {
+        setOut(n)
+        return (n + 1) % words.length
+      })
+    }, EVERY_MS)
     return () => window.clearInterval(id)
-  }, [still, words.length])
+  }, [words.length])
+
+  // drop the outgoing word once its exit has had time to play
+  useEffect(() => {
+    if (out == null) return
+    const t = window.setTimeout(() => setOut(null), OUT_MS)
+    return () => window.clearTimeout(t)
+  }, [out])
 
   return (
     <span className="rotline">
       {lead}{' '}
-      <motion.span
-        className="rotline__slot"
-        aria-live="polite"
-        animate={{ width: widths[i] ?? 'auto' }}
-        transition={{ type: 'spring', stiffness: 120, damping: 22, mass: 0.7 }}
-      >
+      <span className="rotline__slot" aria-live="polite" style={widths[i] ? { width: `${widths[i]}px` } : undefined}>
         {/* laid out, never shown — purely to measure each phrase at this face */}
         <span className="rotline__sizer" ref={sizer} aria-hidden="true">
           {words.map((w) => (
@@ -55,19 +65,15 @@ export default function RotatingWord({ lead, words }: { lead: string; words: str
           ))}
         </span>
 
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.span
-            key={words[i]}
-            className="rotline__word"
-            initial={{ opacity: 0, y: '0.48em', scale: 0.96, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: '0em', scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: '-0.42em', scale: 0.98, filter: 'blur(8px)', position: 'absolute' }}
-            transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {words[i]}
-          </motion.span>
-        </AnimatePresence>
-      </motion.span>
+        {out != null && out !== i && (
+          <span className="rotline__word rotline__word--out" key={`out-${out}`} aria-hidden="true">
+            {words[out]}
+          </span>
+        )}
+        <span className="rotline__word rotline__word--in" key={`in-${i}`}>
+          {words[i]}
+        </span>
+      </span>
     </span>
   )
 }

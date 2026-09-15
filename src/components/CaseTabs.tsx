@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
  * on its own — an observer watches each section rather than doing the maths on
  * every scroll frame.
  *
- * It only appears once the cover is behind you; on the picture it would be one
- * bar too many.
+ * It sits on the picture from the start, so the sections are visible before
+ * anybody scrolls.
  */
 export type Tab = { id: string; label: string }
 
@@ -17,15 +17,6 @@ const BAR = 126
 
 export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
   const [active, setActive] = useState(tabs[0]?.id ?? '')
-  const [shown, setShown] = useState(false)
-
-  // show it once the cover has scrolled away
-  useEffect(() => {
-    const onScroll = () => setShown(window.scrollY > window.innerHeight * 0.7)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   // light the section you are in: the lowest one whose top has passed the bar
   useEffect(() => {
@@ -59,14 +50,14 @@ export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
     <motion.nav
       className="ctabs"
       aria-label="Sections"
-      initial={false}
-      animate={{ opacity: shown ? 1 : 0, y: shown ? 0 : -10 }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      style={{ pointerEvents: shown ? 'auto' : 'none' }}
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="wrap wrap--wide ctabs__row">
-        {tabs.map((t) => (
-          <button
+      <div className="wrap wrap--wide ctabs__wrap">
+        <div className="ctabs__row">
+          {tabs.map((t) => (
+            <button
             key={t.id}
             type="button"
             className={t.id === active ? 'ctab ctab--on' : 'ctab'}
@@ -76,7 +67,8 @@ export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
             {t.id === active && <motion.span className="ctab__pill" layoutId="ctab-pill" aria-hidden="true" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
             <span className="ctab__label">{t.label}</span>
           </button>
-        ))}
+          ))}
+        </div>
       </div>
     </motion.nav>
   )

@@ -1249,7 +1249,30 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 .rotline__sizer > span { display: inline-block; font-family: inherit; font-style: inherit; font-weight: inherit; }
-.rotline__word { display: inline-block; white-space: nowrap; left: 0; top: 0; }
+/* the word arriving stays in flow — it is what gives the slot its height and
+   the line its baseline. The one leaving is taken out of flow so it cannot
+   push the line while it fades. */
+.rotline__word { display: inline-block; white-space: nowrap; }
+.rotline__word--in { animation: word-in 0.78s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rotline__word--out {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  animation: word-out 0.62s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(0.48em) scale(0.96); filter: blur(8px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes word-out {
+  from { opacity: 1; transform: none; filter: blur(0); }
+  to { opacity: 0; transform: translateY(-0.42em) scale(0.98); filter: blur(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotline__word--in, .rotline__word--out { animation: none; }
+  .rotline__word--out { display: none; }
+}
 
 
 .case__body { display: grid; gap: clamp(44px, 7vh, 88px); padding-top: clamp(44px, 7vh, 80px); }
@@ -1307,13 +1330,13 @@ a { color: inherit; text-decoration: none; }
   z-index: 45;
   pointer-events: none;
 }
+/* the wrap owns the column; the pill hugs its right edge */
+.ctabs__wrap { display: flex; justify-content: flex-end; }
 .ctabs__row {
   display: flex;
   gap: 2px;
   align-items: center;
-  width: fit-content;
   max-width: 100%;
-  margin-left: auto;
   padding: 5px;
   border-radius: 999px;
   border: 1px solid var(--line);
