@@ -298,7 +298,7 @@ export const projects: Project[] = [
     demo: { label: 'Try the demo', href: '' },
     detail: {
       intro:
-        'Support ran on one shared Outlook mailbox. A ticket was an email, so it had no owner, no status, no clock and no customer — and the team was paying for a Freshdesk plan that still left the mail in Outlook. This is the whole story: what the team asked for in the first meeting, the access I collected before writing anything, the flow I drew, what I weighed it against, and then every flow in the desk, one at a time.',
+        'Here is the desk itself — every flow a support person uses in a day, the two things that broke on the way, and what changed once it was in daily use.',
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
         { label: 'Built', value: '~6 weeks, part-time' },
@@ -308,42 +308,42 @@ export const projects: Project[] = [
       hook: {
         // a short lead, so the ending is the thing that lands — and every
         // ending is two or three words, so the slot never swings far
-        lead: 'Every email now has',
+        lead: 'Every customer request now has',
         words: ['an owner.', 'a status.', 'a clock.', 'a customer.', 'a reply already written.'],
       },
       primer: {
-        what: 'Support Desk is where a support team runs every customer request. Each ticket has *an owner*, *a clock* and that customer’s *whole history* beside it, so the team can get back to people *quickly*, understand what they actually need, and keep the conversation going *until it is solved*. The mail still arrives in the same shared mailbox it always did — the desk is what turns it into something a team can run.',
-        benefit: 'The customer gets a real answer inside the hours they were promised, from somebody who can see everything they have raised before. Nothing sits unowned, nothing gets answered twice, and nobody leaves the desk to reply.',
+        what: 'Support Desk lets your team *manage every customer request in one place* — so you can *reach the customer quickly*, understand *what they actually need*, solve it, and *keep the conversation going* until that customer is happy.',
+        benefit: 'Your customers get a fast, personal answer from someone who already knows their history. Your team knows who owns what, who is still waiting, and what customers keep asking for.',
         does: [
-          { title: 'Nothing slips past the team', text: 'Every customer request lands in one queue you can filter, search and sort — so no email quietly goes unanswered in somebody’s inbox.' },
-          { title: 'Every request has an owner', text: 'Hand a ticket to the person who knows that area and it reaches them in Teams straight away, with the customer and the question already on the card.' },
-          { title: 'Reach the customer in a click', text: 'Their whole email thread sits beside the ticket and the reply opens already written — answer on the same conversation without opening Outlook.' },
-          { title: 'Know who you are answering', text: 'Requests group themselves by company, so you can see everything that account has raised before you reply to the one in front of you.' },
-          { title: 'Answer inside the promise', text: 'A response clock runs on every ticket, so the team can see which customers are still waiting — and how long they have been waiting.' },
-          { title: 'Fix what keeps coming back', text: 'Volume, recurring problems and repeat reporters, read from the tickets themselves — so the team can solve the cause, not the same symptom every week.' },
+          { title: 'One place for every request', text: 'Every customer request lands in a single queue your team can filter, search and sort. Nothing sits forgotten in somebody’s inbox.' },
+          { title: 'Someone owns it, instantly', text: 'Assign a request to the right person and it reaches them in Teams straight away, with the customer and the question already on the card.' },
+          { title: 'Reply in one click', text: 'The customer’s whole conversation sits beside the request and the reply opens already written, so your team answers in seconds instead of hours.' },
+          { title: 'Know your customer', text: 'Requests are grouped by company, so your team can see everything that customer has asked before — and answer like they remember them.' },
+          { title: 'Answer on time, every time', text: 'A response clock runs on every request, so your team can see who is still waiting and for how long, before it turns into a complaint.' },
+          { title: 'Stop the same issue coming back', text: 'Volume, repeat problems and your most frequent requesters, all in one view — so your team can fix the cause instead of the symptom.' },
         ],
       },
       brief: {
         problems: {
-          lead: 'Every customer request arrived as an email in one shared mailbox — and an email carries nothing with it.',
+          lead: 'Most support teams answer customers out of a shared inbox — and an email on its own carries nothing with it.',
           items: [
-            'No owner — a ticket could not be handed to the person who knows that module',
-            'No status, so “is anyone on this?” was a question asked out loud',
-            'Replies scattered across personal inboxes, leaving the next person no history',
-            'Nothing counted whether we had answered inside the hours we promise',
-            'No way to see everything one customer had raised, or who raised the most',
-            'A Freshdesk plan we paid for that still left the mail sitting in Outlook',
+            'No owner — nobody can tell whose request it is',
+            'No status, so “is anyone on this?” gets asked out loud',
+            'Replies scatter across personal inboxes, leaving the next person no history',
+            'Nothing counts whether the customer was answered in the time you promised',
+            'No way to see everything one customer has raised, or who raises the most',
+            'A helpdesk you pay for that still leaves the mail sitting in the inbox',
           ],
         },
         solutions: {
-          lead: 'A desk that lets the team answer quickly and keep answering — built on the tenant the company already pays for.',
+          lead: 'Support Desk puts a real desk around that inbox, so your team can answer quickly and keep answering.',
           items: [
-            'Assign a ticket to a person, and the card lands in their Teams chat',
+            'Assign a request and its owner hears about it in Teams',
             'Status, priority and owner on one row the whole team can see',
-            'The live email thread beside the record — reply without leaving',
-            'Two SLA clocks, with the response target measured rather than guessed',
-            'A customer directory derived from the mail itself, with no data entry',
-            'Roles, saved views and an access gate — no new licence for anybody',
+            'The customer’s conversation beside the request — reply without leaving',
+            'A response clock, with the target measured rather than guessed',
+            'A customer directory that builds itself out of the requests',
+            'Roles and saved views — and no new licence for anybody',
           ],
         },
       },
