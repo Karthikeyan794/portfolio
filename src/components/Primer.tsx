@@ -55,26 +55,6 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         </div>
       </motion.div>
 
-      <motion.div
-        className="primer__block"
-        variants={group}
-        initial="rest"
-        whileInView="in"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h3 className="primer__h" variants={item}>
-          How you use it
-        </motion.h3>
-        <ol className="primer__day">
-          {primer.day.map((d, i) => (
-            <motion.li className="day" key={d.title} variants={item}>
-              <span className="day__dot">{i + 1}</span>
-              <h4 className="day__title">{d.title}</h4>
-              <p className="day__text">{d.text}</p>
-            </motion.li>
-          ))}
-        </ol>
-      </motion.div>
     </section>
   )
 }

@@ -50,15 +50,6 @@ const heroMask = {
   rest: { y: '112%' },
   in: { y: '0%', transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] } },
 } as const
-const factsV = { rest: {}, in: { transition: { staggerChildren: 0.1, delayChildren: 0.12 } } }
-const ruleV = {
-  rest: { scaleX: 0 },
-  in: { scaleX: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
-} as const
-const factV = {
-  rest: { opacity: 0, y: 12 },
-  in: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-} as const
 
 /* the row plays in: number, heading, body, then the screen settles and a light
    sweeps across it once. Everything below is one variant tree so the order holds. */
@@ -310,23 +301,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </motion.div>
       </div>
 
-      {/* the facts sit under the picture now, as a band across the page: the
-          rule draws across, then each fact arrives behind it */}
-      <motion.dl
-        className="wrap wrap--wide case__facts"
-        variants={factsV}
-        initial="rest"
-        whileInView="in"
-        viewport={{ once: true, amount: 0.4 }}
-      >
-        <motion.span className="case__facts-rule" variants={ruleV} aria-hidden="true" />
-        {detail.facts.map((f) => (
-          <motion.div className="fact" key={f.label} variants={factV}>
-            <dt>{f.label}</dt>
-            <dd>{f.value}</dd>
-          </motion.div>
-        ))}
-      </motion.dl>
 
       <div className="wrap wrap--wide case__body">
         {detail.primer && <Primer primer={detail.primer} />}

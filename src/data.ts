@@ -220,7 +220,6 @@ export type Primer = {
   what: string
   benefit: string
   does: { title: string; text: string }[]
-  day: { title: string; text: string }[]
 }
 
 /** the opening spread: what was wrong, what answered it, and what we were aiming at */
@@ -325,13 +324,6 @@ export const projects: Project[] = [
           { title: 'Know the customer', text: 'Tickets group themselves by company, so it is obvious who raises the most and what they keep raising.' },
           { title: 'Watch the clock', text: 'A response clock runs on every ticket, so nothing quietly misses the hours we promised that customer.' },
           { title: 'See the shape of the work', text: 'Volume, recurring problem types, who reports the most and who answers — all read from the tickets themselves.' },
-        ],
-        day: [
-          { title: 'Open the desk', text: 'Sign in with your work account. If you can read the shared mailbox, you are in — nothing else to set up.' },
-          { title: 'Take a ticket', text: 'The queue opens on what nobody owns. Assign it to yourself, or to whoever knows that module; they hear about it in Teams.' },
-          { title: 'Read the whole thread', text: 'The customer’s email — every message, attachments and all — sits next to the record, so you have the history before you type.' },
-          { title: 'Reply', text: 'The composer opens already written: greeting, signature, the quoted thread, and a suggested answer where one exists. Edit it and send.' },
-          { title: 'Close it out', text: 'Set the status. The clock stops, the ticket leaves the open queue, and the next person can see what happened.' },
         ],
       },
       brief: {
