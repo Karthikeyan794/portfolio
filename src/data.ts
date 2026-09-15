@@ -215,6 +215,14 @@ export type Slice = {
   stats?: { value: string; label: string }[]
 }
 
+/** the plain-English layer: what it is, what it does, how a day on it goes */
+export type Primer = {
+  what: string
+  benefit: string
+  does: { title: string; text: string }[]
+  day: { title: string; text: string }[]
+}
+
 /** the opening spread: what was wrong, what answered it, and what we were aiming at */
 export type Brief = {
   problems: { lead: string; items: string[] }
@@ -261,6 +269,8 @@ export type Project = {
   detail?: {
     intro: string
     facts: { label: string; value: string }[]
+    /** the plain-English opener, before any of the process */
+    primer?: Primer
     /** problems beside solutions, then the goals — the opening spread */
     brief?: Brief
     /** the run of the work, drawn as a numbered spine above the story */
@@ -305,6 +315,25 @@ export const projects: Project[] = [
         { label: 'Stack', value: 'React · Graph · SharePoint · Power Automate' },
         { label: 'Status', value: 'In daily use · ~900 tickets' },
       ],
+      primer: {
+        what: 'Support Desk is the web app the support team answers customer email in. The mail still arrives in the same shared Outlook mailbox it always did — the app puts a desk around it, so a ticket finally has an owner, a status, a clock and a customer, all on one screen.',
+        benefit: 'Before it, all of that lived in somebody’s memory. Now nothing sits unowned, nobody opens Outlook to answer, and the team can see what customers keep asking for.',
+        does: [
+          { title: 'Every ticket in one queue', text: 'Filter by status, customer, module or person, search it, and save the view you work in.' },
+          { title: 'Give a ticket an owner', text: 'Assign it and that person gets a card in Teams with the ticket number, the customer and a link straight back.' },
+          { title: 'Answer without leaving', text: 'The real email thread sits beside the record — reply, reply-all or forward, and it goes out on the same conversation.' },
+          { title: 'Know the customer', text: 'Tickets group themselves by company, so it is obvious who raises the most and what they keep raising.' },
+          { title: 'Watch the clock', text: 'A response clock runs on every ticket, so nothing quietly misses the hours we promised that customer.' },
+          { title: 'See the shape of the work', text: 'Volume, recurring problem types, who reports the most and who answers — all read from the tickets themselves.' },
+        ],
+        day: [
+          { title: 'Open the desk', text: 'Sign in with your work account. If you can read the shared mailbox, you are in — nothing else to set up.' },
+          { title: 'Take a ticket', text: 'The queue opens on what nobody owns. Assign it to yourself, or to whoever knows that module; they hear about it in Teams.' },
+          { title: 'Read the whole thread', text: 'The customer’s email — every message, attachments and all — sits next to the record, so you have the history before you type.' },
+          { title: 'Reply', text: 'The composer opens already written: greeting, signature, the quoted thread, and a suggested answer where one exists. Edit it and send.' },
+          { title: 'Close it out', text: 'Set the status. The clock stops, the ticket leaves the open queue, and the next person can see what happened.' },
+        ],
+      },
       brief: {
         problems: {
           lead: 'Support ran on one shared Outlook mailbox, and a ticket that is only an email carries nothing with it.',

@@ -1,10 +1,11 @@
 import { motion, useScroll, useSpring, useTransform } from 'motion/react'
-import { Fragment, useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 import Diagram from './Diagrams'
 import Phases from './Phases'
 import Brief from './Brief'
+import Primer from './Primer'
 import UserFlow from './UserFlow'
 
 function isEmbed(src: string) {
@@ -36,6 +37,30 @@ function detailFor(p: Project) {
     ] as Slice[],
   }
 }
+
+/* the hero opens one piece at a time: the tags, then the title rising out of
+   its own mask, the line under it, and last the facts strip wiping open from
+   the left with each fact arriving behind the wipe. */
+const heroV = { rest: {}, in: { transition: { staggerChildren: 0.14, delayChildren: 0.25 } } }
+const heroLine = {
+  rest: { opacity: 0, y: 20 },
+  in: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 74, damping: 18 } },
+} as const
+const heroMask = {
+  rest: { y: '112%' },
+  in: { y: '0%', transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] } },
+} as const
+const factsV = {
+  rest: { clipPath: 'inset(0 100% 0 0)' },
+  in: {
+    clipPath: 'inset(0 0% 0 0)',
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.09, delayChildren: 0.28 },
+  },
+} as const
+const factV = {
+  rest: { opacity: 0, y: 12 },
+  in: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+} as const
 
 /* the row plays in: number, heading, body, then the screen settles and a light
    sweeps across it once. Everything below is one variant tree so the order holds. */
@@ -202,6 +227,16 @@ export default function ProjectPage({ slug }: { slug: string }) {
   const heroY = useTransform(heroProgress, [0, 1], ['0%', '16%'])
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, 0.3])
 
+  // the nav floats on the hero image, and only takes a background once the
+  // hero has scrolled away and there is text under it
+  const [solid, setSolid] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.7)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [slug])
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
     const onKey = (e: KeyboardEvent) => {
@@ -228,7 +263,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
     <main className="case">
       <motion.div className="case__bar" style={{ scaleX: bar }} aria-hidden="true" />
 
-      <header className="case__nav">
+      <header className={solid ? 'case__nav case__nav--solid' : 'case__nav'}>
         <button className="case__back" onClick={closeProject}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M19 12H5M11 18l-6-6 6-6" />
@@ -249,42 +284,47 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </div>
       </header>
 
-      {/* the thumbnail, up top */}
+      {/* full screen, and the nav sits on top of it */}
       <div className="case__hero" ref={heroRef}>
         {project.cover && (
-          <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
+          <motion.div
+            className="case__hero-media"
+            initial={{ opacity: 0, scale: 1.06 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+            aria-hidden="true"
+          >
+            <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
+          </motion.div>
         )}
         <div className="case__hero-blur" aria-hidden="true" />
         <div className="case__hero-shade" aria-hidden="true" />
-        <div className="wrap wrap--wide case__hero-text">
-          <motion.span className="eyebrow case__eyebrow" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}>
+        <motion.div className="wrap wrap--wide case__hero-text" variants={heroV} initial="rest" animate="in">
+          <motion.span className="eyebrow case__eyebrow" variants={heroLine}>
             {project.tags.join(' · ')}
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, type: 'spring', stiffness: 70, damping: 18 }}>
-            {project.title}
-          </motion.h1>
-          <motion.p className="case__tagline" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7 }}>
+          <span className="case__h1">
+            <motion.h1 variants={heroMask}>{project.title}</motion.h1>
+          </span>
+          <motion.p className="case__tagline" variants={heroLine}>
             {project.tagline}
           </motion.p>
 
-          {/* the facts sit on the banner as a frosted strip */}
-          <motion.dl
-            className="case__facts"
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.42, type: 'spring', stiffness: 70, damping: 18 }}
-          >
+          {/* the facts strip wipes open, then fills in one fact at a time */}
+          <motion.dl className="case__facts" variants={factsV}>
             {detail.facts.map((f) => (
-              <div key={f.label}>
+              <motion.div key={f.label} variants={factV}>
                 <dt>{f.label}</dt>
                 <dd>{f.value}</dd>
-              </div>
+              </motion.div>
             ))}
           </motion.dl>
-        </div>
+        </motion.div>
       </div>
 
       <div className="wrap wrap--wide case__body">
+        {detail.primer && <Primer primer={detail.primer} />}
+
         <motion.div className="case__lead" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7 }}>
           <span className="case__lead-label">Overview</span>
           <p className="case__intro">{detail.intro}</p>
