@@ -1415,9 +1415,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* the app itself, beside the overview: a dimmed still of the cover behind, and
-   the product sitting on top of it, bleeding off the corner. A clip in the
-   data plays here in place of the still — same box, same frame. */
-.shot {
+   the product sitting on top of it. A clip in the data plays here in place of
+   the still — same box, same frame.
+   Named .oshot, not .shot: .shot is already the media box on the project cards
+   further up this file, and sharing it let those rules into this one. */
+.oshot {
   position: relative;
   align-self: start;
   border: 1px solid var(--line);
@@ -1428,7 +1430,7 @@ a { color: inherit; text-decoration: none; }
   padding: clamp(12px, 1.4vw, 18px);
   background: var(--bg-elev);
 }
-.shot__bg {
+.oshot__bg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1436,15 +1438,17 @@ a { color: inherit; text-decoration: none; }
   object-fit: cover;
   filter: saturate(1.05);
   opacity: 0.55;
+  /* the ground drifts, very slowly, so the panel is never quite still */
+  animation: oshot-drift 26s ease-in-out infinite alternate;
 }
-.shot__wash {
+.oshot__wash {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(90% 70% at 0% 0%, rgba(166, 232, 91, 0.16), transparent 60%),
     linear-gradient(140deg, rgba(8, 12, 11, 0.55) 0%, rgba(8, 12, 11, 0.86) 70%);
 }
-.shot__frame {
+.oshot__frame {
   position: relative;
   z-index: 1;
   border-radius: 10px;
@@ -1452,10 +1456,31 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.7);
 }
-.shot__frame img, .shot__frame video { display: block; width: 100%; height: auto; }
+.oshot__frame img, .oshot__frame video { display: block; width: 100%; height: auto; }
+/* a light passes over the screen once, the first time the panel arrives */
+.oshot__sheen {
+  position: absolute;
+  inset: -20% -40%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.22) 50%, transparent 62%);
+  transform: translateX(-130%);
+  animation: oshot-sheen 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both;
+}
+@keyframes oshot-drift {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+}
+@keyframes oshot-sheen {
+  to { transform: translateX(130%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oshot__bg, .oshot__sheen { animation: none; }
+}
 
 @media (max-width: 1000px) {
   .primer__top { grid-template-columns: minmax(0, 1fr); }
+  .oshot { margin-top: 6px; }
 }
 
 .primer__block { display: grid; gap: 14px; }

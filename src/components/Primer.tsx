@@ -106,10 +106,17 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         </motion.p>
 
         {primer.showcase && (
-          <motion.div className="shot" variants={item}>
-            {primer.showcase.bg && <img className="shot__bg" src={primer.showcase.bg} alt="" aria-hidden="true" />}
-            <span className="shot__wash" aria-hidden="true" />
-            <div className="shot__frame">
+          <motion.div
+            className="oshot"
+            initial={{ opacity: 0, y: 26, scale: 0.975 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {primer.showcase.bg && <img className="oshot__bg" src={primer.showcase.bg} alt="" aria-hidden="true" />}
+            <span className="oshot__wash" aria-hidden="true" />
+            <div className="oshot__frame">
+              <span className="oshot__sheen" aria-hidden="true" />
               {primer.showcase.clip ? (
                 /\.gif$/.test(primer.showcase.clip) ? (
                   <img src={primer.showcase.clip} alt="Support Desk in use" loading="lazy" decoding="async" />
