@@ -1380,15 +1380,13 @@ a { color: inherit; text-decoration: none; }
 /* ── the plain-English opener ─────────────────────────────────────────────
    What it is, what it does, how a day on it goes — before any process. */
 .primer { margin: clamp(10px, 2vh, 24px) 0 0; display: grid; gap: clamp(34px, 6vh, 72px); }
+/* centred: the label, the statement, then the product underneath it */
 .primer__top {
   display: grid;
-  /* the picture takes the larger share — it is the product */
-  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
-  column-gap: clamp(24px, 3vw, 48px);
-  row-gap: 16px;
-  align-items: start;
+  justify-items: center;
+  text-align: center;
+  row-gap: 18px;
 }
-.primer__top > .primer__h { grid-column: 1 / -1; }
 .primer__what {
   /* the sans, at a size that still leads the page — a paragraph this long in
      the display serif was a wall. The marked phrase keeps the serif, so the
@@ -1399,8 +1397,8 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.62;
   letter-spacing: -0.005em;
   color: var(--text);
-  /* the column sets the measure now that the picture has the width */
-  max-width: 56ch;
+  /* a centred measure — long enough to hold the thought, short enough to scan */
+  max-width: 62ch;
 }
 
 /* the phrases worth landing on — the display italic, in the accent */
@@ -1420,6 +1418,9 @@ a { color: inherit; text-decoration: none; }
 .shot {
   position: relative;
   align-self: start;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: clamp(10px, 2vh, 22px);
   border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
