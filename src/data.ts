@@ -317,10 +317,10 @@ export const projects: Project[] = [
         { label: 'Status', value: 'In daily use · ~900 tickets' },
       ],
       hook: {
-        // the lead sits on one line at every width; the ending is always two
-        // or three words, so the slot never has to swing far
-        lead: 'Every email now has an owner, a status and',
-        words: ['a clock.', 'a customer.', 'a written reply.'],
+        // a short lead, so the ending is the thing that lands — and every
+        // ending is two or three words, so the slot never swings far
+        lead: 'Every email now has',
+        words: ['an owner.', 'a status.', 'a clock.', 'a customer.', 'a reply already written.'],
       },
       primer: {
         what: 'Support Desk is the web app the support team answers customer email in. The mail still arrives in the same shared Outlook mailbox it always did — the app puts a desk around it, so a ticket finally has an owner, a status, a clock and a customer, all on one screen.',

@@ -1144,6 +1144,13 @@ a { color: inherit; text-decoration: none; }
 .case__hero-shade {
   position: absolute;
   inset: 0;
+  /* a low wash of the brand green at the foot, under the words */
+  background-image: radial-gradient(70% 60% at 8% 100%, rgba(166, 232, 91, 0.16), transparent 62%);
+}
+.case__hero-shade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   /* light enough that the picture reads the whole way down, dark enough at the
      foot that white type still clears 4.5:1 */
   background: linear-gradient(
@@ -1185,15 +1192,40 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.025em;
 }
 .case__hook {
-  font-size: clamp(19px, 2.5vw, 30px);
-  line-height: 1.32;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(20px, 2.7vw, 32px);
+  line-height: 1.3;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.86);
   /* no measure cap: the line is written to sit on one row, so the ending can
      change width without re-breaking the line above it */
   max-width: none;
 }
-/* the part that changes is set apart by the face, the way the labs banner does it */
-.case__hook .rotline__slot { font-weight: 600; }
+/* the part that changes is set apart twice over — the italic display face, the
+   way the labs banner does it, and the brand green so the eye goes to it */
+.case__hook .rotline__slot {
+  font-weight: 600;
+  color: var(--accent);
+  text-shadow: 0 0 26px rgba(166, 232, 91, 0.35), 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+/* a short accent rule that draws itself in under the line */
+.case__hook::after {
+  content: '';
+  display: block;
+  width: 84px;
+  height: 2px;
+  margin-top: clamp(14px, 2vh, 22px);
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: left center;
+  animation: hook-rule 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
+}
+@keyframes hook-rule {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case__hook::after { animation: none; }
+}
 
 /* the line under a case-study title whose ending keeps changing */
 .rotline { display: inline; }

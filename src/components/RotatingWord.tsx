@@ -59,10 +59,10 @@ export default function RotatingWord({ lead, words }: { lead: string; words: str
           <motion.span
             key={words[i]}
             className="rotline__word"
-            initial={{ opacity: 0, y: '0.5em', filter: 'blur(7px)' }}
-            animate={{ opacity: 1, y: '0em', filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: '-0.5em', filter: 'blur(7px)', position: 'absolute' }}
-            transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: '0.48em', scale: 0.96, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: '0em', scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: '-0.42em', scale: 0.98, filter: 'blur(8px)', position: 'absolute' }}
+            transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] }}
           >
             {words[i]}
           </motion.span>
