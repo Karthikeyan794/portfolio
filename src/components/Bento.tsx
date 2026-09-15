@@ -1,11 +1,12 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { groups, projects, type Project } from '../data'
+import { projects, socials, type Project } from '../data'
 import { openProject } from '../router'
 
 /**
- * Two bento blocks, one per group, each its own rectangle subdivided by named
- * grid areas into interlocking boxes. A labelled rule separates the blocks.
+ * One bento rectangle, subdivided by named grid areas into interlocking boxes:
+ * the five projects worth opening, plus a tile that sends everything else to
+ * Behance rather than padding the grid out with thumbnails.
  *
  * Reveal follows the reference reel: boxes scale up from 0.9 and fade in a
  * beat apart, so the rectangle assembles rather than appearing at once.
@@ -97,40 +98,50 @@ function Box({ project, slot, index, onHot }: BoxProps) {
   )
 }
 
-/** One group's rectangle; tracks which box is hovered so the others can react. */
-function Block({ group, items, index }: { group: (typeof groups)[number]; items: Project[]; index: number }) {
-  const [hot, setHot] = useState<string | null>(null)
-
+/** The tile that carries everything not worth its own case study. */
+function MoreBox({ slot, index, count, href, onHot }: { slot: string; index: number; count: number; href: string; onHot: (s: string | null) => void }) {
   return (
-    <div className="blockwrap">
-      <motion.div
-        className="blockrule"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.6 }}
-      >
-        <span className="blockrule__no">{String(index + 1).padStart(2, '0')}</span>
-        <span className="blockrule__label">{group.label}</span>
-        <span className="blockrule__line" aria-hidden="true" />
-        <span className="blockrule__note">{group.note}</span>
-        <span className="blockrule__count">{items.length}</span>
-      </motion.div>
-
-      <div
-        className={`bento bento--${items.length} bento--${index % 2 === 0 ? 'l' : 'r'}`}
-        data-hot={hot ?? undefined}
-        onPointerLeave={() => setHot(null)}
-      >
-        {items.map((p, i) => (
-          <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} onHot={setHot} />
-        ))}
+    <motion.article
+      className={`box box--${slot} box--more`}
+      onPointerEnter={() => onHot(slot)}
+      onPointerLeave={() => onHot(null)}
+      onFocus={() => onHot(slot)}
+      onBlur={() => onHot(null)}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ delay: index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="box__lift">
+        <a className="box__hit" href={href} target="_blank" rel="noreferrer" aria-label={`${count} more projects on Behance`}>
+          <span className="box__glow" aria-hidden="true" />
+          <span className="box__label">
+            <span className="box__kicker">
+              Behance
+              <span className="box__tag box__tag--ghost">{count} more</span>
+            </span>
+            <span className="box__title">The rest of the work</span>
+            <span className="box__tagline">Branding, motion, redesign studies and drawings.</span>
+            <span className="box__cta">
+              Open Behance
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+                <path d="M7 17 17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </span>
+        </a>
       </div>
-    </div>
+    </motion.article>
   )
 }
 
 export default function Bento() {
+  const [hot, setHot] = useState<string | null>(null)
+  const featured = projects.filter((p) => p.featured).sort((a, b) => (a.featured ?? 99) - (b.featured ?? 99))
+  const rest = projects.length - featured.length
+  const behance = socials.find((s) => s.label === 'Behance')?.href ?? 'https://www.behance.net/karthikbabu13'
+  const count = featured.length + 1
+
   return (
     <section className="section work" id="work">
       <motion.div
@@ -145,14 +156,12 @@ export default function Bento() {
       </motion.div>
 
       <div className="wrap wrap--wide bentos">
-        {groups.map((group, gi) => (
-          <Block
-            key={group.id}
-            group={group}
-            index={gi}
-            items={projects.filter((p) => p.group === group.id).slice(0, SLOTS.length)}
-          />
-        ))}
+        <div className={`bento bento--${count}`} data-hot={hot ?? undefined} onPointerLeave={() => setHot(null)}>
+          {featured.map((p, i) => (
+            <Box key={p.slug} project={p} slot={SLOTS[i]} index={i} onHot={setHot} />
+          ))}
+          <MoreBox slot={SLOTS[featured.length]} index={featured.length} count={rest} href={behance} onHot={setHot} />
+        </div>
       </div>
     </section>
   )

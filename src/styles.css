@@ -274,6 +274,17 @@ a { color: inherit; text-decoration: none; }
   gap: clamp(28px, 5vw, 56px);
   align-items: center;
 }
+@media (max-width: 900px) {
+  .bento--6 {
+    grid-template-rows: auto;
+    grid-template-areas:
+      'a a'
+      'b b'
+      'c d'
+      'e f';
+  }
+}
+
 @media (max-width: 900px) { .hero__grid { grid-template-columns: 1fr; } }
 
 .hero h1 {
@@ -1643,6 +1654,17 @@ a { color: inherit; text-decoration: none; }
   overflow: visible;
 }
 @media (max-width: 1200px) { .bento { aspect-ratio: 1.35 / 1; } }
+/* 6 boxes — the five projects worth opening, and the tile that sends the rest
+   to Behance: two big blocks over two portraits and two wide strips */
+.bento--6 {
+  /* three rows, not four: two big blocks over four equal squares, so the
+     Behance tile reads as one more small project rather than a footer strip */
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    'a a b b'
+    'a a b b'
+    'c d e f';
+}
 /* 7 boxes — a big 2x2, a wide strip, two squares, a big 2x2, two portraits */
 .bento--7.bento--l {
   grid-template-areas:
@@ -1825,6 +1847,17 @@ a { color: inherit; text-decoration: none; }
 /* .box__lift only carries the dim of the boxes you're not on — the growing
    is done by the block's tracks (see the [data-hot] rules at the end). */
 .box__lift { height: 100%; }
+/* the "rest of the work" tile — no cover, so it paints its own ground */
+.box--more .box__hit {
+  background:
+    radial-gradient(120% 110% at 100% 0%, var(--accent-soft), transparent 58%),
+    var(--bg-elev);
+  text-decoration: none;
+}
+.box--more .box__title { font-family: var(--sans); font-weight: 700; }
+.box--more .box__label { color: var(--text); }
+.box--more .box__tagline { color: var(--text-mid); }
+
 .bento .box:hover { z-index: 3; }
 /* `contain` stops a track resize from re-running layout inside every box —
    the single biggest cost when the grid animates. */
@@ -1847,6 +1880,32 @@ a { color: inherit; text-decoration: none; }
 /* ── hover: the hot box takes room from its neighbours, inside the block ──
    Tracks resize rather than the box scaling, so nothing ever grows past
    the rectangle's edges and the neighbours genuinely shrink. */
+
+/* 6 */
+.bento--6[data-hot='a'] {
+  grid-template-columns: 1.260fr 1.260fr 0.790fr 0.790fr;
+  grid-template-rows: 1.200fr 1.200fr 0.600fr;
+}
+.bento--6[data-hot='b'] {
+  grid-template-columns: 0.790fr 0.790fr 1.260fr 1.260fr;
+  grid-template-rows: 1.200fr 1.200fr 0.600fr;
+}
+.bento--6[data-hot='c'] {
+  grid-template-columns: 1.420fr 0.860fr 0.860fr 0.860fr;
+  grid-template-rows: 0.850fr 0.850fr 1.300fr;
+}
+.bento--6[data-hot='d'] {
+  grid-template-columns: 0.860fr 1.420fr 0.860fr 0.860fr;
+  grid-template-rows: 0.850fr 0.850fr 1.300fr;
+}
+.bento--6[data-hot='e'] {
+  grid-template-columns: 0.860fr 0.860fr 1.420fr 0.860fr;
+  grid-template-rows: 0.850fr 0.850fr 1.300fr;
+}
+.bento--6[data-hot='f'] {
+  grid-template-columns: 0.860fr 0.860fr 0.860fr 1.420fr;
+  grid-template-rows: 0.850fr 0.850fr 1.300fr;
+}
 
 /* 7.bento--l */
 .bento--7.bento--l[data-hot='a'] {

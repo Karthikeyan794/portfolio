@@ -255,6 +255,8 @@ export type Project = {
   kind?: 'work' | 'practice'
   /** which bento block this belongs to */
   group: 'product' | 'craft'
+  /** its place on the home grid, 1 first — everything else lives on Behance */
+  featured?: number
   /** when present the tile opens a case-study page instead of an external link */
   detail?: {
     intro: string
@@ -287,6 +289,7 @@ export const projects: Project[] = [
     tags: ['Product', 'React', 'Microsoft Graph', 'Teams bot'],
     emoji: '🎧',
     cover: '/bento/support-desk.jpg',
+    featured: 1,
     size: 'hero',
     tone: 'sage',
     kind: 'work',
@@ -618,6 +621,7 @@ export const projects: Project[] = [
     tags: ['AI', 'Platform', 'Dashboard'],
     emoji: '⚛️',
     cover: '/bento/atom.jpg',
+    featured: 2,
     size: 'wide',
     tone: 'mist',
     kind: 'work',
@@ -684,6 +688,7 @@ export const projects: Project[] = [
     emoji: '🏛️',
     cover: '/bento/city.jpg',
     behance: 'https://www.behance.net/gallery/214619697/TNPSC-website-Redesign-case-study',
+    featured: 4,
     size: 'small',
     tone: 'sand',
   },
@@ -698,6 +703,7 @@ export const projects: Project[] = [
     emoji: '🏫',
     cover: '/bento/documents.jpg',
     behance: 'https://www.behance.net/gallery/214624079/POS-school-management-Dashboard',
+    featured: 5,
     size: 'small',
     tone: 'sage',
   },
@@ -733,14 +739,15 @@ export const projects: Project[] = [
   {
     slug: 'logofolio',
     group: 'craft',
-    title: 'Logofolio',
-    tagline: 'Marks, including Clickly',
+    title: 'Clickly',
+    tagline: 'A logofolio, and the mark it is named after',
     blurb: 'Logo and identity work — construction, spacing and how each mark holds up small.',
     year: '2024',
     tags: ['Branding', 'Logo'],
     emoji: '✦',
     cover: '/bento/welcome.jpg',
     behance: 'https://www.behance.net/gallery/215584601/Logofolio-%28Clickly%29',
+    featured: 3,
     size: 'small',
     tone: 'cream',
   },
