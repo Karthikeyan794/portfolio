@@ -285,8 +285,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </div>
       </header>
 
-      {tabs.length > 1 && <CaseTabs tabs={tabs} />}
-
       {/* full screen, and the nav sits on top of it */}
       <div className="case__hero" ref={heroRef}>
         {project.cover && (
@@ -316,6 +314,8 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
 
       <div className="wrap wrap--wide case__body">
+        {tabs.length > 1 && <CaseTabs tabs={tabs} />}
+
         {detail.primer && <Primer primer={detail.primer} />}
 
         <motion.div className="case__lead" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7 }}>

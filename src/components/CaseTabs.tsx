@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
  * on its own — an observer watches each section rather than doing the maths on
  * every scroll frame.
  *
- * It sits on the picture from the start, so the sections are visible before
- * anybody scrolls.
+ * It sits at the top of the overview, on the right, and stays with you from
+ * there — under the banner rather than on it.
  */
 export type Tab = { id: string; label: string }
 
@@ -54,7 +54,7 @@ export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="wrap wrap--wide ctabs__wrap">
+      <div className="ctabs__wrap">
         <div className="ctabs__row">
           {tabs.map((t) => (
             <button
