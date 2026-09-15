@@ -1,5 +1,5 @@
-import { motion } from 'motion/react'
-import { useState } from 'react'
+import { motion, useScroll, useSpring, useTransform } from 'motion/react'
+import { useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Primer as PrimerData } from '../data'
 
@@ -89,6 +89,13 @@ export default function Primer({ primer }: { primer: PrimerData }) {
   // one card is open at a time — the first, until you point at another
   const [hot, setHot] = useState(0)
 
+  // the picture travels against the page as the section passes, so it and the
+  // words beside it never scroll at quite the same rate
+  const shotRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: shotRef, offset: ['start end', 'end start'] })
+  const drift = useTransform(scrollYProgress, [0, 1], [46, -46])
+  const float = useSpring(drift, { stiffness: 70, damping: 24, restDelta: 0.4 })
+
   return (
     <section className="primer" id="overview" aria-label="What this is, in plain words">
       <motion.div
@@ -106,13 +113,14 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         </motion.p>
 
         {primer.showcase && (
-          <motion.div
-            className="oshot"
-            initial={{ opacity: 0, y: 26, scale: 0.975 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <motion.div className="oshot__track" ref={shotRef} style={{ y: float }}>
+            <motion.div
+              className="oshot"
+              initial={{ opacity: 0, y: 26, scale: 0.975 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            >
             {primer.showcase.bg && <img className="oshot__bg" src={primer.showcase.bg} alt="" aria-hidden="true" />}
             <span className="oshot__wash" aria-hidden="true" />
             <div className="oshot__frame">
@@ -126,7 +134,8 @@ export default function Primer({ primer }: { primer: PrimerData }) {
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />
               )}
-            </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </motion.div>
@@ -152,6 +161,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
               tabIndex={0}
               aria-expanded={i === hot}
             >
+              {d.shot && <img className="feat__shot" src={d.shot} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
               <span className="feat__no" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}.
               </span>
