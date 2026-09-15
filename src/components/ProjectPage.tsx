@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 import Diagram from './Diagrams'
+import GridBg from './GridBg'
 import Brief from './Brief'
 import Primer from './Primer'
 import CaseTabs, { type Tab } from './CaseTabs'
@@ -264,7 +265,9 @@ export default function ProjectPage({ slug }: { slug: string }) {
   ].filter(Boolean) as Tab[]
 
   return (
-    <main className="case">
+    <>
+      <GridBg />
+      <main className="case">
       <motion.div className="case__bar" style={{ scaleX: bar }} aria-hidden="true" />
 
       <header className={solid ? 'case__nav case__nav--solid' : 'case__nav'}>
@@ -368,6 +371,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
           </div>
         </motion.div>
       </div>
-    </main>
+      </main>
+    </>
   )
 }

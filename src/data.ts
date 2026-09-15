@@ -312,7 +312,7 @@ export const projects: Project[] = [
         words: ['an owner.', 'a status.', 'a clock.', 'a customer.', 'a reply already written.'],
       },
       primer: {
-        what: 'Support Desk is where a support team runs every customer request. Each ticket has an owner, a clock and that customer’s whole history beside it, so the team can get back to people quickly, understand what they actually need, and keep the conversation going until it is solved. The mail still arrives in the same shared mailbox it always did — the desk is what turns it into something a team can run.',
+        what: 'Support Desk is where a support team runs every customer request. Each ticket has *an owner*, *a clock* and that customer’s *whole history* beside it, so the team can get back to people *quickly*, understand what they actually need, and keep the conversation going *until it is solved*. The mail still arrives in the same shared mailbox it always did — the desk is what turns it into something a team can run.',
         benefit: 'The customer gets a real answer inside the hours they were promised, from somebody who can see everything they have raised before. Nothing sits unowned, nothing gets answered twice, and nobody leaves the desk to reply.',
         does: [
           { title: 'Nothing slips past the team', text: 'Every customer request lands in one queue you can filter, search and sort — so no email quietly goes unanswered in somebody’s inbox.' },
@@ -349,70 +349,6 @@ export const projects: Project[] = [
       },
       slices: [
         {
-          chapter: 'The problem',
-          span: 'full',
-          heading: 'A ticket was an email, and only an email',
-          body: 'Everything a customer sent arrived in one shared Outlook mailbox. You could read it, and that was the end of what the tool would do for you. You could not hand a ticket to the person who knows that module, so the ones who noticed first did everything. Replies scattered across individual inboxes, so the next person had no history. There was no status, so “is anyone on this?” was a question you asked out loud. There was no way to see everything one customer had raised. And nothing anywhere counted whether we had answered inside the hours we promise.',
-          diagram: 'problem',
-        },
-        {
-          span: 'full',
-          heading: 'Where the tickets already lived',
-          body: 'One thing did exist. A Power Automate flow copied each incoming mail into a SharePoint list, and somebody typed a status and a name into it by hand. That list was the closest thing the team had to a shared truth, and it is the reason this app has a database at all — I did not build one, I used the one already sitting there, and left the mailbox and the flow above it untouched.',
-          diagram: 'system',
-        },
-        {
-          chapter: 'The meeting',
-          span: 'full',
-          heading: 'What the support team asked for',
-          body: 'I sat with the support team before designing anything. They were on a Freshdesk basic plan and wanted out of it — another login, a licence per agent, and the mail still landing in Outlook regardless. What they actually wanted was smaller and more specific than a product: give a ticket an owner and tell that person in Teams; put a clock on the first reply; group tickets by customer so it is obvious who raises the most; open the reply already written; let each person keep the view they work in; and decide who can read, who can reply and who can manage. Six asks. Everything below is one of them.',
-          diagram: 'asks',
-        },
-        {
-          span: 'full',
-          heading: 'Built, rather than bought',
-          body: 'I weighed four options against those six asks, including staying exactly where we were. What decided it was that the six asks were all reachable with permissions the company already owned: the list is SharePoint, the notification is Teams, the mail is the same mailbox. Buying another desk meant a seat per agent, one more place to sign into, and the tickets leaving the tenant. Building meant no new licence and no data leaving — and every feature becoming mine to keep working, which is the honest cost of this choice.',
-          diagram: 'compare',
-        },
-        {
-          chapter: 'Access first',
-          span: 'full',
-          heading: 'Before I built anything, I collected the access',
-          body: 'A delegated app can only ever do what the signed-in person can do, so the permission list is a design document: it says exactly what the desk can reach and, by omission, what it cannot. I wrote a reason next to each one before asking. Reading and writing the list is the database. Two shared-mailbox scopes open and answer the thread. The roster and presence scopes are what make an assignee picker possible. Chat is the Teams card. And one of them — the directory read that keeps the roster to enabled, licensed people — needs admin consent, so it is asked for separately and silently after sign-in: if it is never granted, the app still works and falls back to internal staff, because sign-in must never depend on a permission somebody else has to approve.',
-          diagram: 'scopes',
-        },
-        {
-          span: 'full',
-          heading: 'What that access could actually do',
-          body: 'Then I measured it against the live site instead of assuming. Reading items worked, writing a field returned 200, creating an item returned 201, adding a column returned 403, creating a list returned 403. No new columns and no new tables. Every feature after this had to fit the columns that already existed or not ship — which is why the customer directory is derived from the mail rather than stored, and why the classifier writes into fields that were already sitting there.',
-          diagram: 'access',
-        },
-        {
-          span: 'full',
-          heading: 'Two permissions everyone confuses',
-          body: 'Opening and answering that mailbox is not one permission, it is two, and neither belongs to the app. Full Access lets a person open it; Send As lets them reply as the desk rather than as themselves. Both are granted by an Exchange admin, take up to an hour, and — the part that shaped the UI — there is no API to read whether somebody else has them, so the desk can never display “you have Send As”. What the app owns is its own role. That is why an admin pressing Approve grants the app role only, and the dialog says so out loud instead of implying the click was enough.',
-          diagram: 'permissions',
-        },
-        {
-          chapter: 'Design',
-          span: 'full',
-          heading: 'I drew the flow before I drew a screen',
-          body: 'One page, at home, before any layout: where a mail enters, what writes to what, and what the desk is allowed to do at each hop. It settled the two things that mattered. The intake side is untouched — mailbox, flow, list, exactly as they were, because the business already runs on them. And the desk is static files carrying your own token, with no server of its own holding anybody’s data.',
-          diagram: 'overview',
-        },
-        {
-          span: 'full',
-          heading: 'Rough in Figma, then built for real',
-          body: 'I laid the screens out rough in Figma first — the queue, the ticket with its thread beside it, and where assignment, status and the clock sit — because it is far cheaper to find out there that a three-pane layout leaves no room for the email than to find it in code. Then I built it, pairing with an AI to write the code while I owned the product: what it does, what it looks like, what the data is allowed to say, and whether each release was good enough to ship. Every decision in this case study is one I made and can defend — the speed came from the typing, not the thinking.',
-        },
-        {
-          span: 'full',
-          heading: 'Design decisions, made rather than defaulted',
-          body: 'Three small rules that hold the whole interface together. Values the app inferred look different from values a person confirmed — inferred is an outline, confirmed is filled — which let me delete an “AUTO” badge from every field. Thread avatars first took their colour from the address, and measuring showed white initials at 2.4:1 on some hues, so they became eight fixed fills, each checked at 4.5:1 or better. And every dropdown is a popover the app owns, so lists look and behave the same everywhere and flip themselves when they would overflow the panel.',
-          diagram: 'rules',
-        },
-        {
-          chapter: 'Every flow',
           span: 'full',
           heading: 'The queue you land on',
           body: 'One list, thirteen filters, search, sort, and a split you can drag. This is the screen the team lives in all day, so it loads fast, keeps your place, and never buries a ticket behind a tab.',

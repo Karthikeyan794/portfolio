@@ -2,10 +2,23 @@ import { motion } from 'motion/react'
 import type { Primer as PrimerData } from '../data'
 
 /**
- * The plain-English layer, before any of the process: what this app is, what
- * it does, and what a day on it looks like. Somebody who has never heard of
- * the desk should understand it from this block alone.
+ * The plain-English layer, before any of the process: what this app is and
+ * what it does. Somebody who has never heard of the desk should understand it
+ * from this block alone.
  */
+
+/** `*like this*` in the copy comes out in the display italic, in the accent */
+function marked(text: string) {
+  return text.split(/(\*[^*]+\*)/g).map((part, i) =>
+    part.length > 2 && part.startsWith('*') && part.endsWith('*') ? (
+      <em className="hi" key={i}>
+        {part.slice(1, -1)}
+      </em>
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  )
+}
 
 const group = { rest: {}, in: { transition: { staggerChildren: 0.07 } } }
 const item = {
@@ -27,7 +40,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
           In one minute
         </motion.span>
         <motion.p className="primer__what" variants={item}>
-          {primer.what}
+          {marked(primer.what)}
         </motion.p>
         <motion.p className="primer__benefit" variants={item}>
           {primer.benefit}
