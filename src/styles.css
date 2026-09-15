@@ -1411,11 +1411,14 @@ a { color: inherit; text-decoration: none; }
 /* clear of the section pill, which rests in this corner */
 .primer__benefit { margin-top: 62px; }
 .primer__what {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(21px, 2.5vw, 32px);
-  line-height: 1.22;
-  letter-spacing: -0.022em;
+  /* the sans, at a size that still leads the page — a paragraph this long in
+     the display serif was a wall. The marked phrase keeps the serif, so the
+     contrast does the highlighting. */
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(19px, 2.1vw, 27px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 .primer__benefit { font-size: 16px; line-height: 1.7; color: var(--text-mid); }
