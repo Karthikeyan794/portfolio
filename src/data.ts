@@ -220,6 +220,8 @@ export type Slice = {
 /** the plain-English layer: what it is, what it does, how a day on it goes */
 export type Primer = {
   what: string
+  /** the app itself, beside the overview: a still, or a clip once there is one */
+  showcase?: { bg?: string; poster: string; clip?: string }
   does: { icon?: string; title: string; text: string }[]
 }
 
@@ -309,6 +311,13 @@ export const projects: Project[] = [
       },
       primer: {
         what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
+        showcase: {
+          bg: '/bento/support-desk.jpg',
+          poster: '/work/support-desk/2-queue.jpg',
+          // TODO: record the desk and drop the file in /public/work/support-desk/
+          // — an .mp4 or a .gif here plays in place of the still, no other change.
+          clip: '',
+        },
         does: [
           { icon: 'queue', title: 'Shared queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
           { icon: 'owner', title: 'Assignment and Teams alerts', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },

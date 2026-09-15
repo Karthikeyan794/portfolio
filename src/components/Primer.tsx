@@ -104,6 +104,24 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         <motion.p className="primer__what" variants={item}>
           {marked(primer.what)}
         </motion.p>
+
+        {primer.showcase && (
+          <motion.div className="shot" variants={item}>
+            {primer.showcase.bg && <img className="shot__bg" src={primer.showcase.bg} alt="" aria-hidden="true" />}
+            <span className="shot__wash" aria-hidden="true" />
+            <div className="shot__frame">
+              {primer.showcase.clip ? (
+                /\.gif$/.test(primer.showcase.clip) ? (
+                  <img src={primer.showcase.clip} alt="Support Desk in use" loading="lazy" decoding="async" />
+                ) : (
+                  <video src={primer.showcase.clip} autoPlay loop muted playsInline preload="metadata" />
+                )
+              ) : (
+                <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />
+              )}
+            </div>
+          </motion.div>
+        )}
       </motion.div>
 
       <motion.div

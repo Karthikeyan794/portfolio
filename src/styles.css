@@ -1382,7 +1382,14 @@ a { color: inherit; text-decoration: none; }
 /* ── the plain-English opener ─────────────────────────────────────────────
    What it is, what it does, how a day on it goes — before any process. */
 .primer { margin: clamp(10px, 2vh, 24px) 0 0; display: grid; gap: clamp(34px, 6vh, 72px); }
-.primer__top { display: grid; gap: 16px; }
+.primer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  column-gap: clamp(26px, 4vw, 64px);
+  row-gap: 16px;
+  align-items: start;
+}
+.primer__top > .primer__h { grid-column: 1 / -1; }
 .primer__what {
   /* the sans, at a size that still leads the page — a paragraph this long in
      the display serif was a wall. The marked phrase keeps the serif, so the
@@ -1406,6 +1413,54 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   font-size: 1.04em;
   color: var(--accent-ink);
+}
+
+/* the app itself, beside the overview: a dimmed still of the cover behind, and
+   the product sitting on top of it, bleeding off the corner. A clip in the
+   data plays here in place of the still — same box, same frame. */
+.shot {
+  position: relative;
+  align-self: start;
+  /* clear of the section pill, which rests in this corner */
+  margin-top: 58px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 26px 0 0 26px;
+  min-height: 230px;
+  background: var(--bg-elev);
+}
+.shot__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05);
+  opacity: 0.55;
+}
+.shot__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 70% at 0% 0%, rgba(166, 232, 91, 0.16), transparent 60%),
+    linear-gradient(140deg, rgba(8, 12, 11, 0.55) 0%, rgba(8, 12, 11, 0.86) 70%);
+}
+.shot__frame {
+  position: relative;
+  z-index: 1;
+  border-radius: 12px 0 0 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-right: 0;
+  border-bottom: 0;
+  box-shadow: -18px -14px 50px -24px rgba(0, 0, 0, 0.75);
+}
+.shot__frame img, .shot__frame video { display: block; width: 100%; height: auto; }
+
+@media (max-width: 1000px) {
+  .primer__top { grid-template-columns: minmax(0, 1fr); }
+  .shot { margin-top: 8px; }
 }
 
 .primer__block { display: grid; gap: 14px; }
