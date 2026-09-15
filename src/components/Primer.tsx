@@ -113,14 +113,12 @@ export default function Primer({ primer }: { primer: PrimerData }) {
           What it does
         </motion.h3>
         <div className="primer__grid">
-          {primer.does.map((d, i) => (
+          {primer.does.map((d) => (
             <motion.article className="does" key={d.title} variants={item}>
-              <span className="does__glow" aria-hidden="true" />
-              <div className="does__head">
+              <h4 className="does__title">
                 <Icon name={d.icon} />
-                <span className="does__no">{String(i + 1).padStart(2, '0')}</span>
-              </div>
-              <h4 className="does__title">{d.title}</h4>
+                {d.title}
+              </h4>
               <p className="does__text">{d.text}</p>
             </motion.article>
           ))}
