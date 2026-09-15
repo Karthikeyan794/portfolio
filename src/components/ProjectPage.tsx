@@ -219,14 +219,22 @@ export default function ProjectPage({ slug }: { slug: string }) {
   const heroY = useTransform(heroProgress, [0, 1], ['0%', '16%'])
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, 0.3])
 
-  // the nav floats on the hero image, and only takes a background once the
-  // hero has scrolled away and there is text under it
+  // the nav floats on the cover, and takes a background the moment the cover
+  // leaves — measured off the hero itself, not a guessed share of the screen,
+  // so it still lines up if the cover's height changes
   const [solid, setSolid] = useState(false)
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.7)
+    const onScroll = () => {
+      const h = heroRef.current?.offsetHeight ?? window.innerHeight
+      setSolid(window.scrollY > h - 72)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [slug])
 
   useEffect(() => {

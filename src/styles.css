@@ -1328,8 +1328,10 @@ a { color: inherit; text-decoration: none; }
      the flow, lining it up with the overview's first line instead of sitting
      on a row of its own. */
   position: sticky;
-  top: 78px;
-  z-index: 45;
+  /* 9px = centred in the 65px top bar, so once it pins it is sitting in that
+     bar, on the right, level with the back button */
+  top: 9px;
+  z-index: 51;
   /* a zero-height row that the pill overflows, so it takes no space of its
      own; the overview then loses the row gap below and its first line lands
      level with the pill. (A negative margin alone cannot do this — a grid
