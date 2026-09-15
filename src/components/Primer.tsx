@@ -42,9 +42,6 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         <motion.p className="primer__what" variants={item}>
           {marked(primer.what)}
         </motion.p>
-        <motion.p className="primer__benefit" variants={item}>
-          {primer.benefit}
-        </motion.p>
       </motion.div>
 
       <motion.div

@@ -220,7 +220,6 @@ export type Slice = {
 /** the plain-English layer: what it is, what it does, how a day on it goes */
 export type Primer = {
   what: string
-  benefit: string
   does: { title: string; text: string }[]
 }
 
@@ -313,7 +312,6 @@ export const projects: Project[] = [
       },
       primer: {
         what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
-        benefit: 'Your customers get a fast, personal answer from someone who already knows their history. Your team knows who owns what, who is still waiting, and what customers keep asking for.',
         does: [
           { title: 'One place for every request', text: 'Every customer request lands in a single queue your team can filter, search and sort. Nothing sits forgotten in somebody’s inbox.' },
           { title: 'Someone owns it, instantly', text: 'Assign a request to the right person and it reaches them in Teams straight away, with the customer and the question already on the card.' },

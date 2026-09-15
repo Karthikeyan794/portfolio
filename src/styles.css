@@ -1400,16 +1400,7 @@ a { color: inherit; text-decoration: none; }
 /* ── the plain-English opener ─────────────────────────────────────────────
    What it is, what it does, how a day on it goes — before any process. */
 .primer { margin: clamp(10px, 2vh, 24px) 0 0; display: grid; gap: clamp(34px, 6vh, 72px); }
-.primer__top {
-  display: grid;
-  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
-  column-gap: clamp(28px, 5vw, 80px);
-  row-gap: 16px;
-  align-items: start;
-}
-.primer__top > .eyebrow { grid-column: 1 / -1; }
-/* clear of the section pill, which rests in this corner */
-.primer__benefit { margin-top: 62px; }
+.primer__top { display: grid; gap: 16px; }
 .primer__what {
   /* the sans, at a size that still leads the page — a paragraph this long in
      the display serif was a wall. The marked phrase keeps the serif, so the
@@ -1420,8 +1411,9 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.45;
   letter-spacing: -0.01em;
   color: var(--text);
+  /* wide enough to use the page, short enough to still scan */
+  max-width: 64ch;
 }
-.primer__benefit { font-size: 16px; line-height: 1.7; color: var(--text-mid); }
 
 /* the phrases worth landing on — the display italic, in the accent */
 .hi {
@@ -1462,8 +1454,6 @@ a { color: inherit; text-decoration: none; }
 /* the five steps of a day, on one rail */
 @media (max-width: 1000px) {
   .primer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .primer__top { grid-template-columns: minmax(0, 1fr); }
-  .primer__benefit { margin-top: 4px; }
 }
 @media (max-width: 680px) {
   .primer__grid { grid-template-columns: minmax(0, 1fr); }
