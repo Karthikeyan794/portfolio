@@ -20,7 +20,6 @@ function isEmbed(src: string) {
 function detailFor(p: Project) {
   if (p.detail) return p.detail
   return {
-    intro: p.blurb,
     facts: [
       { label: 'Type', value: p.tags[0] ?? 'Design' },
       { label: 'Year', value: p.year },
@@ -324,10 +323,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
         {detail.primer && <Primer primer={detail.primer} />}
 
-        <motion.div className="case__lead" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7 }}>
-          <span className="case__lead-label">Overview</span>
-          <p className="case__intro">{detail.intro}</p>
-        </motion.div>
 
         {detail.brief && <Brief brief={detail.brief} />}
 

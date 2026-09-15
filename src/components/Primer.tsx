@@ -37,7 +37,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         viewport={{ once: true, amount: 0.3 }}
       >
         <motion.span className="eyebrow" variants={item}>
-          In one minute
+          Overview
         </motion.span>
         <motion.p className="primer__what" variants={item}>
           {marked(primer.what)}

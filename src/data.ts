@@ -256,7 +256,6 @@ export type Project = {
   featured?: number
   /** when present the tile opens a case-study page instead of an external link */
   detail?: {
-    intro: string
     facts: { label: string; value: string }[]
     /** a line under the title whose ending keeps changing */
     hook?: { lead: string; words: string[] }
@@ -296,8 +295,6 @@ export const projects: Project[] = [
     // from ~/Desktop/support-desk-demo via ./start-demo.command
     demo: { label: 'Try the demo', href: '' },
     detail: {
-      intro:
-        'What follows is the desk in use: how a request reaches the person who can answer it, how the reply gets written and sent on the customer’s own thread, how the clock tells your team who is still waiting, and what they see when they want to know which customers keep coming back. Then the two things that broke on the way, and what changed once it was running every day.',
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
         { label: 'Built', value: '~6 weeks, part-time' },
@@ -534,8 +531,6 @@ export const projects: Project[] = [
     kind: 'work',
     demo: { label: 'Try the demo', href: '' },
     detail: {
-      intro:
-        'Atom turns "I wish we had a tool for this" into a working app. My part was the surface people actually touch: browsing what exists, asking for something new, and understanding what it costs.',
       facts: [
         { label: 'Role', value: 'Design + Frontend' },
         { label: 'Year', value: '2025' },
@@ -672,8 +667,6 @@ export const projects: Project[] = [
     size: 'hero',
     tone: 'sand',
     detail: {
-      intro:
-        'I draw. Not for a brief and not for a client — it is where the eye gets trained. This is a growing set of sketches, studies and finished pieces.',
       facts: [
         { label: 'Medium', value: 'Pencil · Digital' },
         { label: 'Years', value: '2024 — 2026' },
