@@ -15,7 +15,7 @@ const item = {
 
 export default function Primer({ primer }: { primer: PrimerData }) {
   return (
-    <section className="primer" aria-label="What this is, in plain words">
+    <section className="primer" id="overview" aria-label="What this is, in plain words">
       <motion.div
         className="primer__top"
         variants={group}

@@ -209,6 +209,8 @@ export type Slice = {
   diagram?: string
   /** a short screen recording of this flow — an mp4 or gif in /public, shown under the diagram */
   clip?: string
+  /** an id, so the section nav can scroll to this slice */
+  anchor?: string
   /** a problem → what I did pair, the way my Behance case studies read */
   pair?: { problem: string; solution: string }
   /** the numbers a slice landed on */
@@ -620,6 +622,7 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          anchor: 'demo',
           heading: 'Try it yourself',
           body: 'There is a runnable demo of the desk on generated data — the same layout, volumes and behaviour as production, with fictional companies, people and email bodies. No customer information appears in it, and it needs no sign-in and no internet.',
           // TODO: paste the hosted demo URL into `demo.href` above and it appears in

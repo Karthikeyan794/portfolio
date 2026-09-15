@@ -81,7 +81,7 @@ const draw = {
 
 export default function UserFlow() {
   return (
-    <section className="uflow" aria-label="User flow through the desk">
+    <section className="uflow" id="how" aria-label="User flow through the desk">
       <div className="uflow__head">
         <h2 className="uflow__title">User flow</h2>
         <p className="uflow__note">

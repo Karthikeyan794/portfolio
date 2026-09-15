@@ -52,6 +52,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
     <section className="brief" aria-label="Problems, solutions and goals">
       <motion.div
         className="brief__split"
+        id="why"
         variants={group}
         initial="rest"
         whileInView="in"
@@ -63,6 +64,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
 
       <motion.div
         className="brief__goals"
+        id="benefit"
         variants={group}
         initial="rest"
         whileInView="in"

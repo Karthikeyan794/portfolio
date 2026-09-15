@@ -6,6 +6,7 @@ import Diagram from './Diagrams'
 import Phases from './Phases'
 import Brief from './Brief'
 import Primer from './Primer'
+import CaseTabs, { type Tab } from './CaseTabs'
 import RotatingWord from './RotatingWord'
 import UserFlow from './UserFlow'
 
@@ -88,6 +89,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
   return (
     <motion.section
       className={hasMedia ? 'row' : 'row row--text'}
+      id={slice.anchor}
       ref={ref}
       variants={groupV}
       initial="rest"
@@ -248,6 +250,15 @@ export default function ProjectPage({ slug }: { slug: string }) {
   }
 
   const detail = detailFor(project)
+  // only the sections this project really has get a tab
+  const tabs: Tab[] = [
+    detail.primer && { id: 'overview', label: 'Overview' },
+    detail.brief && { id: 'why', label: 'Why' },
+    detail.brief && { id: 'benefit', label: 'Benefit' },
+    project.slug === 'support-desk' && { id: 'how', label: 'How it works' },
+    detail.phases && { id: 'process', label: 'Process' },
+    detail.slices.some((s) => s.anchor === 'demo') && { id: 'demo', label: 'Demo' },
+  ].filter(Boolean) as Tab[]
 
   return (
     <main className="case">
@@ -273,6 +284,8 @@ export default function ProjectPage({ slug }: { slug: string }) {
           )}
         </div>
       </header>
+
+      {tabs.length > 1 && <CaseTabs tabs={tabs} />}
 
       {/* full screen, and the nav sits on top of it */}
       <div className="case__hero" ref={heroRef}>
@@ -312,14 +325,14 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
         {detail.brief && <Brief brief={detail.brief} />}
 
+        {project.slug === 'support-desk' && <UserFlow />}
+
         {detail.phases && (
           <Phases
             phases={detail.phases}
             note={`${detail.facts.find((f) => f.label === 'Built')?.value ?? ''}, in ${detail.phases.length} phases — from the first meeting to the desk in daily use.`}
           />
         )}
-
-        {project.slug === 'support-desk' && <UserFlow />}
 
         <div className="rows">
           {chaptered(detail.slices).map((item, i) => (

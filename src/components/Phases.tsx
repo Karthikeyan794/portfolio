@@ -34,7 +34,7 @@ function Tick() {
 
 export default function Phases({ phases, note }: { phases: Phase[]; note?: string }) {
   return (
-    <section className="phases" aria-label="How the work ran">
+    <section className="phases" id="process" aria-label="How the work ran">
       <div className="phases__head">
         <h2 className="phases__title">
           Design
