@@ -325,20 +325,20 @@ export const projects: Project[] = [
         words: ['an owner.', 'a status.', 'a clock.', 'a customer.', 'a reply already written.'],
       },
       primer: {
-        what: 'Support Desk is the web app the support team answers customer email in. The mail still arrives in the same shared Outlook mailbox it always did — the app puts a desk around it, so a ticket finally has an owner, a status, a clock and a customer, all on one screen.',
-        benefit: 'Before it, all of that lived in somebody’s memory. Now nothing sits unowned, nobody opens Outlook to answer, and the team can see what customers keep asking for.',
+        what: 'Support Desk is where a support team runs every customer request. Each ticket has an owner, a clock and that customer’s whole history beside it, so the team can get back to people quickly, understand what they actually need, and keep the conversation going until it is solved. The mail still arrives in the same shared mailbox it always did — the desk is what turns it into something a team can run.',
+        benefit: 'The customer gets a real answer inside the hours they were promised, from somebody who can see everything they have raised before. Nothing sits unowned, nothing gets answered twice, and nobody leaves the desk to reply.',
         does: [
-          { title: 'Every ticket in one queue', text: 'Filter by status, customer, module or person, search it, and save the view you work in.' },
-          { title: 'Give a ticket an owner', text: 'Assign it and that person gets a card in Teams with the ticket number, the customer and a link straight back.' },
-          { title: 'Answer without leaving', text: 'The real email thread sits beside the record — reply, reply-all or forward, and it goes out on the same conversation.' },
-          { title: 'Know the customer', text: 'Tickets group themselves by company, so it is obvious who raises the most and what they keep raising.' },
-          { title: 'Watch the clock', text: 'A response clock runs on every ticket, so nothing quietly misses the hours we promised that customer.' },
-          { title: 'See the shape of the work', text: 'Volume, recurring problem types, who reports the most and who answers — all read from the tickets themselves.' },
+          { title: 'Nothing slips past the team', text: 'Every customer request lands in one queue you can filter, search and sort — so no email quietly goes unanswered in somebody’s inbox.' },
+          { title: 'Every request has an owner', text: 'Hand a ticket to the person who knows that area and it reaches them in Teams straight away, with the customer and the question already on the card.' },
+          { title: 'Reach the customer in a click', text: 'Their whole email thread sits beside the ticket and the reply opens already written — answer on the same conversation without opening Outlook.' },
+          { title: 'Know who you are answering', text: 'Requests group themselves by company, so you can see everything that account has raised before you reply to the one in front of you.' },
+          { title: 'Answer inside the promise', text: 'A response clock runs on every ticket, so the team can see which customers are still waiting — and how long they have been waiting.' },
+          { title: 'Fix what keeps coming back', text: 'Volume, recurring problems and repeat reporters, read from the tickets themselves — so the team can solve the cause, not the same symptom every week.' },
         ],
       },
       brief: {
         problems: {
-          lead: 'Support ran on one shared Outlook mailbox, and a ticket that is only an email carries nothing with it.',
+          lead: 'Every customer request arrived as an email in one shared mailbox — and an email carries nothing with it.',
           items: [
             'No owner — a ticket could not be handed to the person who knows that module',
             'No status, so “is anyone on this?” was a question asked out loud',
@@ -349,7 +349,7 @@ export const projects: Project[] = [
           ],
         },
         solutions: {
-          lead: 'A desk built on the tenant we already pay for, reading the data that was already there.',
+          lead: 'A desk that lets the team answer quickly and keep answering — built on the tenant the company already pays for.',
           items: [
             'Assign a ticket to a person, and the card lands in their Teams chat',
             'Status, priority and owner on one row the whole team can see',
@@ -362,11 +362,11 @@ export const projects: Project[] = [
         goals: [
           {
             label: 'Project goal',
-            text: 'Turn a shared mailbox into a support system without replacing the mailbox, the intake flow or the SharePoint list the business already depends on — and without buying a seat for anyone. Every feature has to fit the columns that already exist, or not ship.',
+            text: 'Give the support team one place to run every customer request — owner, status, clock and history — so customers are answered quickly and nothing is dropped. Without replacing the mailbox, the intake flow or the SharePoint list the business already depends on, and without buying a seat for anyone.',
           },
           {
             label: 'User goal',
-            text: 'A support person should be able to see which tickets are theirs, what is still owed and how long it has been owed, and answer the customer from one place — without opening Outlook, without asking who is on it, and without a reply ever turning into a second ticket.',
+            text: 'A support person should see which customers are waiting on them and for how long, know what that customer has asked before, and answer from one screen — so the customer gets a real reply on the same thread, without anybody asking who is on it.',
           },
         ],
       },
