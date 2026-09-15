@@ -1417,34 +1417,99 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
 }
 
-.primer__grid {
+/* a strip of cards where one is open at a time: the others hold a ghost
+   number and their title, and the open one carries the sentence. The tracks
+   resize rather than the cards scaling, so nothing overflows the row.
+   Plain fr values, never repeat()/minmax() — CSS only interpolates two track
+   lists when the track types match. */
+.feats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: clamp(20px, 3vw, 52px);
-  row-gap: 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  will-change: grid-template-columns;
+  transition: grid-template-columns 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* no boxes: each one is a row under a hairline, the way a spec sheet reads */
-.does {
-  border-top: 1px solid var(--line);
-  padding: 16px 0 22px;
-  display: grid;
-  gap: 6px;
-  align-content: start;
-}
-.does__title {
+.feats[data-hot='0'] { grid-template-columns: 2.5fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr; }
+.feats[data-hot='1'] { grid-template-columns: 0.7fr 2.5fr 0.7fr 0.7fr 0.7fr 0.7fr; }
+.feats[data-hot='2'] { grid-template-columns: 0.7fr 0.7fr 2.5fr 0.7fr 0.7fr 0.7fr; }
+.feats[data-hot='3'] { grid-template-columns: 0.7fr 0.7fr 0.7fr 2.5fr 0.7fr 0.7fr; }
+.feats[data-hot='4'] { grid-template-columns: 0.7fr 0.7fr 0.7fr 0.7fr 2.5fr 0.7fr; }
+.feats[data-hot='5'] { grid-template-columns: 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr 2.5fr; }
+
+.feat {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.012em;
-  line-height: 1.3;
-  transition: color 0.25s ease;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: clamp(230px, 30vh, 300px);
+  padding: 16px 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-elev);
+  overflow: hidden;
+  outline: none;
+  transition: background 0.45s ease, border-color 0.45s ease;
 }
-.does__icon { display: inline-grid; place-items: center; color: var(--accent-ink); flex: none; }
-.does__icon svg { width: 17px; height: 17px; }
-.does__text { font-size: 13.5px; line-height: 1.6; color: var(--text-mid); }
-.does:hover .does__title { color: var(--accent-ink); }
+.feat--on {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 13%, var(--bg-elev)) 0%, var(--bg-elev) 44%);
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+}
+.feat:focus-visible { border-color: var(--accent); }
+.feat__no {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(26px, 3vw, 44px);
+  line-height: 1;
+  color: color-mix(in srgb, var(--text) 13%, transparent);
+  transition: color 0.45s ease;
+}
+.feat--on .feat__no { color: color-mix(in srgb, var(--text) 22%, transparent); }
+.feat__body { display: grid; gap: 9px; }
+.feat__title {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.feat--on .feat__title { font-size: clamp(17px, 1.8vw, 23px); letter-spacing: -0.02em; }
+.feat__text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-mid);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.35s ease, max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.feat--on .feat__text { opacity: 1; max-height: 180px; }
+/* the icon lives in the card body — size it here, or the svg fills the card */
+.does__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--accent-ink);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+.does__icon svg { width: 16px; height: 16px; }
+.feat--on .does__icon { width: 36px; height: 36px; border-radius: 11px; }
+.feat--on .does__icon svg { width: 19px; height: 19px; }
+
+/* on a phone there is no hover and no room: every card opens */
+@media (max-width: 900px) {
+  .feats, .feats[data-hot='0'], .feats[data-hot='1'], .feats[data-hot='2'],
+  .feats[data-hot='3'], .feats[data-hot='4'], .feats[data-hot='5'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .feat { min-height: 0; }
+  .feat__title { font-size: clamp(16px, 4.6vw, 20px); }
+  .feat__text { opacity: 1; max-height: none; }
+}
 
 /* the five steps of a day, on one rail */
 @media (max-width: 1000px) {

@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Primer as PrimerData } from '../data'
 
@@ -85,6 +86,9 @@ function Icon({ name }: { name?: string }) {
 }
 
 export default function Primer({ primer }: { primer: PrimerData }) {
+  // one card is open at a time — the first, until you point at another
+  const [hot, setHot] = useState(0)
+
   return (
     <section className="primer" id="overview" aria-label="What this is, in plain words">
       <motion.div
@@ -112,14 +116,25 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         <motion.h3 className="primer__h" variants={item}>
           What it does
         </motion.h3>
-        <div className="primer__grid">
-          {primer.does.map((d) => (
-            <motion.article className="does" key={d.title} variants={item}>
-              <h4 className="does__title">
+        <div className="feats" data-hot={hot}>
+          {primer.does.map((d, i) => (
+            <motion.article
+              className={i === hot ? 'feat feat--on' : 'feat'}
+              key={d.title}
+              variants={item}
+              onPointerEnter={() => setHot(i)}
+              onFocus={() => setHot(i)}
+              tabIndex={0}
+              aria-expanded={i === hot}
+            >
+              <span className="feat__no" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}.
+              </span>
+              <div className="feat__body">
                 <Icon name={d.icon} />
-                {d.title}
-              </h4>
-              <p className="does__text">{d.text}</p>
+                <h4 className="feat__title">{d.title}</h4>
+                <p className="feat__text">{d.text}</p>
+              </div>
             </motion.article>
           ))}
         </div>
