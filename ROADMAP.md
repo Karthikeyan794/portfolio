@@ -240,6 +240,10 @@
 
 ---
 
+## 2b. The work grid (15 Sep 2026)
+
+Only five projects get a tile: **Support Desk · Atom · Clickly · TNPSC · POS**, in that order, then a sixth tile sending the rest to Behance. Membership *and* order are one field — `featured: 1…5` on a project in `src/data.ts`; swap a number to reorder, delete it to drop a tile. Every other project stays in the file and its page still opens at `#/project/<slug>`, it just has no tile on the home grid.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup
