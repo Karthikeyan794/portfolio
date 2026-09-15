@@ -268,6 +268,8 @@ export type Project = {
   detail?: {
     intro: string
     facts: { label: string; value: string }[]
+    /** a line under the title whose ending keeps changing */
+    hook?: { lead: string; words: string[] }
     /** the plain-English opener, before any of the process */
     primer?: Primer
     /** problems beside solutions, then the goals — the opening spread */
@@ -314,6 +316,10 @@ export const projects: Project[] = [
         { label: 'Stack', value: 'React · Graph · SharePoint · Power Automate' },
         { label: 'Status', value: 'In daily use · ~900 tickets' },
       ],
+      hook: {
+        lead: 'Now every customer email has an owner, a status and',
+        words: ['a clock.', 'a customer.', 'an answer already written.'],
+      },
       primer: {
         what: 'Support Desk is the web app the support team answers customer email in. The mail still arrives in the same shared Outlook mailbox it always did — the app puts a desk around it, so a ticket finally has an owner, a status, a clock and a customer, all on one screen.',
         benefit: 'Before it, all of that lived in somebody’s memory. Now nothing sits unowned, nobody opens Outlook to answer, and the team can see what customers keep asking for.',

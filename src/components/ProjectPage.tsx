@@ -6,6 +6,7 @@ import Diagram from './Diagrams'
 import Phases from './Phases'
 import Brief from './Brief'
 import Primer from './Primer'
+import RotatingWord from './RotatingWord'
 import UserFlow from './UserFlow'
 
 function isEmbed(src: string) {
@@ -295,6 +296,11 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <motion.p className="case__tagline" variants={heroLine}>
             {project.tagline}
           </motion.p>
+          {detail.hook && (
+            <motion.p className="case__hook" variants={heroLine}>
+              <RotatingWord lead={detail.hook.lead} words={detail.hook.words} />
+            </motion.p>
+          )}
         </motion.div>
       </div>
 
