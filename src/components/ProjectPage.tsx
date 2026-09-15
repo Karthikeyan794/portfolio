@@ -293,9 +293,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <span className="case__h1">
             <motion.h1 variants={heroMask}>{project.title}</motion.h1>
           </span>
-          <motion.p className="case__tagline" variants={heroLine}>
-            {project.tagline}
-          </motion.p>
           {detail.hook && (
             <motion.p className="case__hook" variants={heroLine}>
               <RotatingWord lead={detail.hook.lead} words={detail.hook.words} />
