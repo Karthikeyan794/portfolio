@@ -50,12 +50,10 @@ const heroMask = {
   rest: { y: '112%' },
   in: { y: '0%', transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] } },
 } as const
-const factsV = {
-  rest: { clipPath: 'inset(0 100% 0 0)' },
-  in: {
-    clipPath: 'inset(0 0% 0 0)',
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.09, delayChildren: 0.28 },
-  },
+const factsV = { rest: {}, in: { transition: { staggerChildren: 0.1, delayChildren: 0.12 } } }
+const ruleV = {
+  rest: { scaleX: 0 },
+  in: { scaleX: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
 } as const
 const factV = {
   rest: { opacity: 0, y: 12 },
@@ -309,18 +307,26 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <motion.p className="case__tagline" variants={heroLine}>
             {project.tagline}
           </motion.p>
-
-          {/* the facts strip wipes open, then fills in one fact at a time */}
-          <motion.dl className="case__facts" variants={factsV}>
-            {detail.facts.map((f) => (
-              <motion.div key={f.label} variants={factV}>
-                <dt>{f.label}</dt>
-                <dd>{f.value}</dd>
-              </motion.div>
-            ))}
-          </motion.dl>
         </motion.div>
       </div>
+
+      {/* the facts sit under the picture now, as a band across the page: the
+          rule draws across, then each fact arrives behind it */}
+      <motion.dl
+        className="wrap wrap--wide case__facts"
+        variants={factsV}
+        initial="rest"
+        whileInView="in"
+        viewport={{ once: true, amount: 0.4 }}
+      >
+        <motion.span className="case__facts-rule" variants={ruleV} aria-hidden="true" />
+        {detail.facts.map((f) => (
+          <motion.div className="fact" key={f.label} variants={factV}>
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </motion.div>
+        ))}
+      </motion.dl>
 
       <div className="wrap wrap--wide case__body">
         {detail.primer && <Primer primer={detail.primer} />}

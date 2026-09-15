@@ -1129,8 +1129,8 @@ a { color: inherit; text-decoration: none; }
 /* full screen: the nav is fixed over it, so this starts at the very top */
 .case__hero {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: 75vh;
+  min-height: 75svh;
   overflow: hidden;
   display: grid;
   align-items: end;
@@ -1185,28 +1185,45 @@ a { color: inherit; text-decoration: none; }
 
 .case__body { display: grid; gap: clamp(44px, 7vh, 88px); padding-top: clamp(44px, 7vh, 80px); }
 .case__facts {
-  margin: 10px 0 0;
+  position: relative;
+  /* clear of the picture's edge, so the rule reads as the page starting */
+  margin: clamp(26px, 5vh, 56px) auto 0;
+  padding: clamp(22px, 3.4vh, 38px) 0 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
-  gap: 4px;
-  max-width: 780px;
-  padding: 4px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px) saturate(1.2);
-  box-shadow: 0 20px 44px -28px rgba(0, 0, 0, 0.6);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 44px);
 }
-.case__facts > div { display: grid; gap: 3px; padding: 13px 16px; border-radius: 12px; }
-.case__facts > div + div { box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.12); }
+/* the rule draws across before the facts arrive under it */
+.case__facts-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line-strong);
+  transform-origin: left center;
+}
+.fact { display: grid; gap: 10px; align-content: start; }
 .case__facts dt {
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--muted);
 }
-.case__facts dd { margin: 0; font-size: 15px; font-weight: 500; color: #fff; }
+.case__facts dd {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(17px, 1.7vw, 22px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+@media (max-width: 820px) {
+  .case__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+}
 @media (max-width: 560px) {
   .case__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case__facts > div + div { box-shadow: none; }
