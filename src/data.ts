@@ -298,7 +298,7 @@ export const projects: Project[] = [
     demo: { label: 'Try the demo', href: '' },
     detail: {
       intro:
-        'Here is the desk itself — every flow a support person uses in a day, the two things that broke on the way, and what changed once it was in daily use.',
+        'What follows is the desk in use: how a request reaches the person who can answer it, how the reply gets written and sent on the customer’s own thread, how the clock tells your team who is still waiting, and what they see when they want to know which customers keep coming back. Then the two things that broke on the way, and what changed once it was running every day.',
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
         { label: 'Built', value: '~6 weeks, part-time' },
@@ -312,7 +312,7 @@ export const projects: Project[] = [
         words: ['an owner.', 'a status.', 'a clock.', 'a customer.', 'a reply already written.'],
       },
       primer: {
-        what: 'Support Desk lets your team *manage every customer request in one place* — so you can *reach the customer quickly*, understand *what they actually need*, solve it, and *keep the conversation going* until that customer is happy.',
+        what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         benefit: 'Your customers get a fast, personal answer from someone who already knows their history. Your team knows who owns what, who is still waiting, and what customers keep asking for.',
         does: [
           { title: 'One place for every request', text: 'Every customer request lands in a single queue your team can filter, search and sort. Nothing sits forgotten in somebody’s inbox.' },
