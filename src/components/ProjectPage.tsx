@@ -289,9 +289,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
         <div className="case__hero-blur" aria-hidden="true" />
         <div className="case__hero-shade" aria-hidden="true" />
         <motion.div className="wrap wrap--wide case__hero-text" variants={heroV} initial="rest" animate="in">
-          <motion.span className="eyebrow case__eyebrow" variants={heroLine}>
-            {project.tags.join(' · ')}
-          </motion.span>
           <span className="case__h1">
             <motion.h1 variants={heroMask}>{project.title}</motion.h1>
           </span>
