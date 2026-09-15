@@ -2,8 +2,7 @@ import { motion } from 'motion/react'
 import type { Brief as BriefData } from '../data'
 
 /**
- * Problems beside solutions, then the two goals — the opening spread every
- * case study on my Behance uses, before the process starts.
+ * Problems beside solutions — the opening spread, before the story starts.
  */
 
 const group = { rest: {}, in: { transition: { staggerChildren: 0.06 } } }
@@ -49,7 +48,7 @@ function Column({ title, lead, items, good }: { title: string; lead: string; ite
 
 export default function Brief({ brief }: { brief: BriefData }) {
   return (
-    <section className="brief" aria-label="Problems, solutions and goals">
+    <section className="brief" aria-label="Problems and solutions">
       <motion.div
         className="brief__split"
         id="why"
@@ -62,26 +61,6 @@ export default function Brief({ brief }: { brief: BriefData }) {
         <Column title="Solutions" lead={brief.solutions.lead} items={brief.solutions.items} good />
       </motion.div>
 
-      <motion.div
-        className="brief__goals"
-        id="benefit"
-        variants={group}
-        initial="rest"
-        whileInView="in"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <motion.h3 className="brief__goals-h" variants={item}>
-          Goals
-        </motion.h3>
-        <div className="brief__goal-grid">
-          {brief.goals.map((g) => (
-            <motion.article className="goal" key={g.label} variants={item}>
-              <span className="goal__label">{g.label}</span>
-              <p className="goal__text">{g.text}</p>
-            </motion.article>
-          ))}
-        </div>
-      </motion.div>
     </section>
   )
 }

@@ -228,17 +228,6 @@ export type Primer = {
 export type Brief = {
   problems: { lead: string; items: string[] }
   solutions: { lead: string; items: string[] }
-  goals: { label: string; text: string }[]
-}
-
-export type Phase = {
-  name: string
-  /** how long it ran — shown as a pill */
-  duration: string
-  /** the three or four things that phase produced */
-  items: string[]
-  /** give this one the accent wash */
-  accent?: boolean
 }
 
 export type Project = {
@@ -276,8 +265,6 @@ export type Project = {
     primer?: Primer
     /** problems beside solutions, then the goals — the opening spread */
     brief?: Brief
-    /** the run of the work, drawn as a numbered spine above the story */
-    phases?: Phase[]
     slices: Slice[]
   }
 }
@@ -359,53 +346,7 @@ export const projects: Project[] = [
             'Roles, saved views and an access gate — no new licence for anybody',
           ],
         },
-        goals: [
-          {
-            label: 'Project goal',
-            text: 'Give the support team one place to run every customer request — owner, status, clock and history — so customers are answered quickly and nothing is dropped. Without replacing the mailbox, the intake flow or the SharePoint list the business already depends on, and without buying a seat for anyone.',
-          },
-          {
-            label: 'User goal',
-            text: 'A support person should see which customers are waiting on them and for how long, know what that customer has asked before, and answer from one screen — so the customer gets a real reply on the same thread, without anybody asking who is on it.',
-          },
-        ],
       },
-      // TODO: these are my split of the ~6 weeks — correct any duration that is
-      // wrong and the pills update, nothing else to change.
-      phases: [
-        {
-          name: 'Discovery',
-          duration: '1 week',
-          items: ['Sat with the support team', 'Reviewed the Freshdesk plan', 'Wrote down the six asks'],
-          accent: true,
-        },
-        {
-          name: 'Access',
-          duration: '3 days',
-          items: ['Listed every permission, with a reason', 'Probed what the token could do', 'Settled the two-permission model'],
-        },
-        {
-          name: 'Design',
-          duration: '1 week',
-          items: ['Flow diagram, end to end', 'Weighed the alternatives', 'Rough layout in Figma'],
-        },
-        {
-          name: 'Build',
-          duration: '2 weeks',
-          items: ['Queue and the live thread', 'Assignment and the Teams card', 'Reply, drafts and templates'],
-        },
-        {
-          name: 'Data',
-          duration: '1 week',
-          items: ['Classifier and the backfill', 'Derived customer directory', 'SLA clocks and dashboards'],
-        },
-        {
-          name: 'Release',
-          duration: '1 week',
-          items: ['Test rounds on real tickets', 'Roles and the access gate', 'The intake check'],
-          accent: true,
-        },
-      ],
       slices: [
         {
           chapter: 'The problem',

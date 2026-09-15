@@ -3,12 +3,10 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 import Diagram from './Diagrams'
-import Phases from './Phases'
 import Brief from './Brief'
 import Primer from './Primer'
 import CaseTabs, { type Tab } from './CaseTabs'
 import RotatingWord from './RotatingWord'
-import UserFlow from './UserFlow'
 
 function isEmbed(src: string) {
   return /^https?:\/\//.test(src)
@@ -262,9 +260,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
   const tabs: Tab[] = [
     detail.primer && { id: 'overview', label: 'Overview' },
     detail.brief && { id: 'why', label: 'Why' },
-    detail.brief && { id: 'benefit', label: 'Benefit' },
-    project.slug === 'support-desk' && { id: 'how', label: 'How it works' },
-    detail.phases && { id: 'process', label: 'Process' },
     detail.slices.some((s) => s.anchor === 'demo') && { id: 'demo', label: 'Demo' },
   ].filter(Boolean) as Tab[]
 
@@ -332,15 +327,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </motion.div>
 
         {detail.brief && <Brief brief={detail.brief} />}
-
-        {project.slug === 'support-desk' && <UserFlow />}
-
-        {detail.phases && (
-          <Phases
-            phases={detail.phases}
-            note={`${detail.facts.find((f) => f.label === 'Built')?.value ?? ''}, in ${detail.phases.length} phases — from the first meeting to the desk in daily use.`}
-          />
-        )}
 
         <div className="rows">
           {chaptered(detail.slices).map((item, i) => (
