@@ -1382,8 +1382,9 @@ a { color: inherit; text-decoration: none; }
 .primer { margin: clamp(10px, 2vh, 24px) 0 0; display: grid; gap: clamp(34px, 6vh, 72px); }
 .primer__top {
   display: grid;
-  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
-  column-gap: clamp(26px, 4vw, 64px);
+  /* the picture takes the larger share — it is the product */
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  column-gap: clamp(24px, 3vw, 48px);
   row-gap: 16px;
   align-items: start;
 }
@@ -1398,8 +1399,8 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.62;
   letter-spacing: -0.005em;
   color: var(--text);
-  /* wide enough to use the page, short enough to still scan */
-  max-width: 70ch;
+  /* the column sets the measure now that the picture has the width */
+  max-width: 56ch;
 }
 
 /* the phrases worth landing on — the display italic, in the accent */
