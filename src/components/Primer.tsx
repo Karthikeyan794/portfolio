@@ -33,6 +33,16 @@ const row = {
 } as const
 
 
+/** a block's title: its name as a small lime kicker, then the line itself */
+function Head({ kick, text }: { kick: string; text?: string }) {
+  return (
+    <motion.div className="primer__head" variants={item}>
+      {text && <span className="primer__kick">{kick}</span>}
+      <h3 className="primer__h">{text ?? kick}</h3>
+    </motion.div>
+  )
+}
+
 export default function Primer({ primer }: { primer: PrimerData }) {
   // the picture travels against the page as the section passes, so it and the
   // words beside it never scroll at quite the same rate
@@ -50,9 +60,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         whileInView="in"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <motion.h3 className="primer__h" variants={item}>
-          Overview
-        </motion.h3>
+        <Head kick="Overview" text={primer.heads?.what} />
         <motion.p className="primer__what" variants={item}>
           {marked(primer.what)}
         </motion.p>
@@ -92,9 +100,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         whileInView="in"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <motion.h3 className="primer__h" variants={item}>
-          What it does
-        </motion.h3>
+        <Head kick="What it does" text={primer.heads?.does} />
         <ol className="flist">
           {primer.does.map((d, i) => (
             <motion.li className="fl" key={d.title} variants={row}>

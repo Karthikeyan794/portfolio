@@ -6,6 +6,7 @@ import GridBg from './GridBg'
 import Intro, { INTRO_NAV_DELAY } from './Intro'
 import Marquee from './Marquee'
 import Nav from './Nav'
+import Notice from './Notice'
 import Preloader from './Preloader'
 import Bento from './Bento'
 
@@ -74,6 +75,8 @@ export default function Site2D({ onEnterLab }: Props) {
           </motion.div>
         </div>
       )}
+
+      {!loading && <Notice />}
     </>
   )
 }
