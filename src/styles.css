@@ -1504,7 +1504,13 @@ a { color: inherit; text-decoration: none; }
   justify-items: start;
   /* the big word is allowed to sit high; this stops it forcing page scroll */
   overflow: clip;
-  padding-top: clamp(18px, 4vw, 52px);
+  /* one size, used three ways: the big word is set in it, the head clears a
+     band for it, and nothing below has to know it is there. The word is
+     absolutely positioned, so it contributes no height of its own. */
+  --ghost-size: clamp(38px, calc(64vw / (var(--ghost-len, 8) * 0.58)), 106px);
+  /* its glyph box is size x line-height; padding that much keeps the lime
+     kicker off the letters instead of printing across them */
+  padding-top: calc(var(--ghost-size) * 0.82);
 }
 .primer__kick {
   /* the block's name, small and lime, with a lit dot — the product-page kicker */
@@ -1516,9 +1522,6 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent-ink);
-  /* the label owns the full width and a hairline carries the eye off it */
-  justify-self: stretch;
-  width: 100%;
 }
 .primer__kick::before {
   content: '';
@@ -1527,13 +1530,6 @@ a { color: inherit; text-decoration: none; }
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
-}
-.primer__kick::after {
-  content: '';
-  flex: 1 1 auto;
-  height: 1px;
-  margin-left: 4px;
-  background: linear-gradient(90deg, var(--line-strong), transparent 92%);
 }
 .primer__h {
   /* the line itself: the display serif in its italic, light, the way the
@@ -3655,9 +3651,7 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--display);
   font-weight: 700;
   font-style: normal;
-  /* ~0.58em per capital in Playfair, so width ≈ len × 0.58 × size. Solving
-     for the column gives the middle term; the clamp holds the extremes. */
-  font-size: clamp(46px, calc(76vw / (var(--ghost-len, 8) * 0.58)), 132px);
+  font-size: var(--ghost-size);
   line-height: 0.82;
   letter-spacing: -0.045em;
   text-transform: uppercase;

@@ -34,26 +34,26 @@ const row = {
 
 
 /**
- * A block's title. The block's name sits behind it as one big word — the
- * editorial trick of saying it twice, once to read and once to look at — with
- * the small lime kicker and the line itself on top.
+ * A block's title: the block's name as one big word behind a small lime
+ * kicker. `text` adds a written line under it — a block whose big word says
+ * enough on its own leaves it out.
  *
- * `--ghost-len` is the character count, so the big word can size itself to
- * fit the column instead of running off it: "Overview" and "What it does"
- * are very different widths and both have to land.
+ * `--ghost-len` (the character count) sizes the big word to fit the column
+ * rather than run off it, and reserves the head's height: the big word is
+ * absolutely positioned, so it contributes none of its own.
  */
 function Head({ kick, text }: { kick: string; text?: string }) {
   return (
-    <motion.div className="primer__head" variants={item}>
-      <span
-        className="primer__ghost"
-        aria-hidden="true"
-        style={{ '--ghost-len': kick.length } as React.CSSProperties}
-      >
+    <motion.div
+      className="primer__head"
+      variants={item}
+      style={{ '--ghost-len': kick.length } as React.CSSProperties}
+    >
+      <span className="primer__ghost" aria-hidden="true">
         {kick}
       </span>
-      {text && <span className="primer__kick">{kick}</span>}
-      <h3 className="primer__h">{text ?? kick}</h3>
+      <span className="primer__kick">{kick}</span>
+      {text && <h3 className="primer__h">{text}</h3>}
     </motion.div>
   )
 }
