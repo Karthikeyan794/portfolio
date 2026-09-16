@@ -1502,8 +1502,10 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   gap: 10px;
   justify-items: start;
-  /* the big word is allowed to sit high; this stops it forcing page scroll */
-  overflow: clip;
+  /* the big word is nowrap, so only sideways overflow needs clipping —
+     clipping both axes cut the accent underline off the heading below */
+  overflow-x: clip;
+  overflow-y: visible;
   /* one size, used three ways: the big word is set in it, the head clears a
      band for it, and nothing below has to know it is there. The word is
      absolutely positioned, so it contributes no height of its own. */
@@ -1512,35 +1514,22 @@ a { color: inherit; text-decoration: none; }
      kicker off the letters instead of printing across them */
   padding-top: calc(var(--ghost-size) * 0.82);
 }
-.primer__kick {
-  /* the block's name, small and lime, with a lit dot — the product-page kicker */
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent-ink);
-}
-.primer__kick::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
-}
 .primer__h {
   /* the line itself: the display serif in its italic, light, the way the
      hero's rotating words are set — one voice for the page's titles */
   font-family: var(--display);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(34px, 4.2vw, 54px);
+  font-size: clamp(27px, 3.2vw, 40px);
   line-height: 1.04;
   letter-spacing: -0.018em;
   color: var(--text);
+  /* underscored in the accent — the line under the title, not a link */
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  text-decoration-skip-ink: none;
 }
 .primer__h::after { content: '.'; color: var(--accent); font-style: normal; }
 

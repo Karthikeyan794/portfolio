@@ -316,7 +316,7 @@ export const projects: Project[] = [
         words: ['an owner.', 'a status.', 'a clock.', 'a customer.', 'a reply already written.'],
       },
       primer: {
-        heads: { does: 'What your team gets' },
+        heads: { what: 'Meet Support Desk', does: 'What your team gets' },
         what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         showcase: {
           bg: '/bento/support-desk.jpg',

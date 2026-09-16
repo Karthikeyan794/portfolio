@@ -34,9 +34,8 @@ const row = {
 
 
 /**
- * A block's title: the block's name as one big word behind a small lime
- * kicker. `text` adds a written line under it — a block whose big word says
- * enough on its own leaves it out.
+ * A block's title: the block's name as one big word, with the written line
+ * sitting under it, underscored in the accent.
  *
  * `--ghost-len` (the character count) sizes the big word to fit the column
  * rather than run off it, and reserves the head's height: the big word is
@@ -52,7 +51,6 @@ function Head({ kick, text }: { kick: string; text?: string }) {
       <span className="primer__ghost" aria-hidden="true">
         {kick}
       </span>
-      <span className="primer__kick">{kick}</span>
       {text && <h3 className="primer__h">{text}</h3>}
     </motion.div>
   )
