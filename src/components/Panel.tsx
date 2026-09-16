@@ -113,7 +113,9 @@ function Body({ id }: { id: PanelId }) {
           </a>
         </>
       ) : (
-        <p className="panel__lead">Résumé PDF isn't uploaded yet. Drop it in <code>public/resume.pdf</code> and set <code>profile.resumeUrl</code>.</p>
+        <p className="panel__lead">
+          Happy to send the résumé over — email <a href={`mailto:${profile.email}`}>{profile.email}</a> and it&rsquo;s yours.
+        </p>
       )
     case 'bot':
       return <MiniBot />

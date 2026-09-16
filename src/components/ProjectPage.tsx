@@ -28,12 +28,19 @@ function detailFor(p: Project) {
     ],
     slices: [
       {
-        heading: 'The screens',
-        body: 'Add the screens for this project — drop images in public/work/ and list them here. Each one can carry its own note, which appears when you point at it.',
-        image: p.cover,
-        caption: `${p.title} — replace with the real screens.`,
+        heading: 'The work',
+        // This project has no written case study yet, so the page says what it
+        // is in its own words and hands people to the full set on Behance. It
+        // must never print build instructions at a visitor.
+        body: p.behance
+          ? `${p.blurb} The full set of screens is on Behance.`
+          : p.blurb,
+        // Only show a picture when it IS the work. The bento covers are
+        // decorative stock, so putting one under "The work" would misrepresent
+        // it — better a clean text slice and a link to the real thing.
+        image: p.cover && !p.cover.startsWith('/bento/') ? p.cover : undefined,
+        caption: p.tagline,
       },
-      { heading: 'Walkthrough', body: '', video: '' },
     ] as Slice[],
   }
 }
@@ -75,7 +82,7 @@ const sheenV = {
 function Row({ slice, no }: { slice: Slice; no: number }) {
   const ref = useRef<HTMLDivElement>(null)
   // a slice with no image and no video field is prose — it gets the full width
-  const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats || slice.clip) || slice.video !== undefined
+  const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats || slice.clip || slice.video)
 
   // the screen drifts a few pixels against the page as it passes, so a still
   // screenshot still moves. It is the frame that travels, never the image
@@ -114,9 +121,8 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
       {/* right: the screens or the video */}
       {hasMedia && (
         <motion.div className="row__media" style={{ y: float }}>
-          {slice.video !== undefined ? (
-            slice.video ? (
-              <motion.div className="frame frame--video" variants={frameV}>
+          {slice.video ? (
+            <motion.div className="frame frame--video" variants={frameV}>
                 {isEmbed(slice.video) ? (
                   <iframe
                     src={slice.video}
@@ -127,15 +133,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
                 ) : (
                   <video src={slice.video} controls playsInline preload="metadata" />
                 )}
-              </motion.div>
-            ) : (
-              <motion.div className="frame frame--empty" variants={frameV}>
-                <strong>Demo video goes here.</strong>
-                <span>
-                  Drop an MP4 in <code>public/</code> or paste a YouTube / Loom link into this slice's <code>video</code> field.
-                </span>
-              </motion.div>
-            )
+            </motion.div>
           ) : slice.diagram ? (
             <motion.div className="frame frame--dia" variants={frameV}>
               <Diagram id={slice.diagram} />
@@ -195,7 +193,13 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
 function chaptered(slices: Slice[]) {
   let current = ''
   let n = 0
-  return slices.map((slice) => {
+  // A slice that asks for a video but has no URL yet is not ready to show —
+  // its prose promises a clip that isn't there. Drop it here, before the
+  // numbering runs, so nothing renders and no number is skipped. Paste a URL
+  // into the field and the slice reappears in place, prose and all.
+  // (Prose slices never set `video`, so they are untouched.)
+  const ready = slices.filter((slice) => slice.video !== '')
+  return ready.map((slice) => {
     const opens = Boolean(slice.chapter && slice.chapter !== current)
     if (opens) {
       current = slice.chapter as string
