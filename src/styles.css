@@ -1408,12 +1408,11 @@ a { color: inherit; text-decoration: none; }
 
 /* the phrases worth landing on — the display italic, in the accent */
 .hi {
-  /* names the face rather than inheriting it — the point of the mark is that
-     it is a different font from the sentence around it */
-  font-family: var(--display);
-  font-style: italic;
+  /* the same face as the sentence, a step heavier and in the accent — weight
+     and colour do the marking, not a second font */
+  font-family: var(--sans);
+  font-style: normal;
   font-weight: 600;
-  font-size: 1.04em;
   color: var(--accent-ink);
 }
 
@@ -1682,20 +1681,6 @@ a { color: inherit; text-decoration: none; }
 .frame--video { aspect-ratio: 16 / 9; background: #0b0d0f; }
 .frame--video iframe,
 .frame--video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.frame--empty {
-  display: grid;
-  gap: 6px;
-  place-content: center;
-  text-align: center;
-  aspect-ratio: 16 / 9;
-  border-style: dashed;
-  border-color: var(--line-strong);
-  color: var(--muted);
-  font-size: 14px;
-  padding: 20px;
-}
-.frame--empty strong { color: var(--text); font-weight: 600; }
-.frame--empty code { font-family: var(--mono); font-size: 12.5px; }
 
 .case__nav-right { display: flex; align-items: center; gap: 8px; }
 .case__link {
