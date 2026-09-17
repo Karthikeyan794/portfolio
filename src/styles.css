@@ -15,7 +15,12 @@
   --glow-3: #1e3a34;
   --text: #14181b;
   --text-mid: #444c52;
-  --muted: #71797f;
+  /* Subtext is a share of the text colour rather than its own hue, so the
+     grey is neutral and tracks the text — the reference site's approach.
+     The reference uses 55%, which is right on a dark ground (5.8:1) but only
+     reaches 3.8:1 on a light one, under the 4.5:1 body-text minimum. 66%
+     carries the same intent here and clears it. Measured, not guessed. */
+  --muted: color-mix(in srgb, var(--text) 66%, var(--bg));
   --primary: #1e3a34;       /* deep green — buttons, feature cards */
   --primary-hover: #26483f;
   --on-primary: #f4f1e8;
@@ -50,7 +55,8 @@
   --glow-3: #3f8f7a;
   --text: #f2f3f4;
   --text-mid: #b9bec2;
-  --muted: #848b90;
+  /* 55%, the reference's ratio: 5.8:1 on this ground */
+  --muted: color-mix(in srgb, var(--text) 55%, var(--bg));
   --primary: #1e3a34;
   --primary-hover: #26483f;
   --on-primary: #f4f1e8;
@@ -1448,7 +1454,7 @@ a { color: inherit; text-decoration: none; }
   /* the marked word in a sentence: the display serif, heavy, and held back
      to grey rather than pushed forward in the accent — the weight and the
      change of face do the marking, and the lower contrast keeps the
-     sentence readable as a sentence. Full contrast on hover. */
+     sentence readable as a sentence. Pays off in the accent on hover. */
   font-family: var(--display);
   font-style: italic;
   font-weight: 700;
@@ -3706,7 +3712,7 @@ a { color: inherit; text-decoration: none; }
 /* the first marked word in a sentence stands upright; the rest are italic,
    so a line with several of them does not read as all one texture */
 .hi:first-of-type { font-style: normal; }
-.hi:hover { color: var(--text); }
+.hi:hover { color: var(--accent-ink); }
 @media (hover: none) {
   /* nothing to reveal on a touch screen, so sit a little brighter */
   .hi { color: color-mix(in srgb, var(--text) 68%, transparent); }
