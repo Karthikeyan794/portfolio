@@ -1143,7 +1143,30 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   align-items: end;
 }
-.case__hero-media { position: absolute; inset: 0; }
+.case__hero-media {
+  position: absolute;
+  inset: 0;
+  /* The picture dissolves before it reaches the foot of the hero, so there is
+     no edge where it stops — the page ground simply takes over. The hero's
+     foot already computes to rgb(8,12,11) against a page of rgb(10,11,12),
+     so once the image is gone the join is invisible.
+     The extra stops approximate an ease-out; a straight two-stop ramp bands
+     visibly across a dark photograph. */
+  --hero-fade: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 42%,
+    rgba(0, 0, 0, 0.94) 55%,
+    rgba(0, 0, 0, 0.82) 66%,
+    rgba(0, 0, 0, 0.62) 76%,
+    rgba(0, 0, 0, 0.38) 85%,
+    rgba(0, 0, 0, 0.18) 92%,
+    rgba(0, 0, 0, 0.06) 97%,
+    transparent 100%
+  );
+  -webkit-mask-image: var(--hero-fade);
+  mask-image: var(--hero-fade);
+}
 .case__hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .case__hero-shade {
   position: absolute;
@@ -1173,9 +1196,19 @@ a { color: inherit; text-decoration: none; }
 .case__hero-blur {
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(5px) saturate(1.04);
-  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 12%, transparent 30%);
-  mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 12%, transparent 30%);
+  /* ramped up and carried further so the softening overlaps the band where
+     the picture is still half there — it goes soft, then goes */
+  backdrop-filter: blur(16px) saturate(1.02);
+  -webkit-mask-image: var(--blur-ramp);
+  mask-image: var(--blur-ramp);
+  --blur-ramp: linear-gradient(
+    to top,
+    #000 0%,
+    rgba(0, 0, 0, 0.92) 14%,
+    rgba(0, 0, 0, 0.66) 26%,
+    rgba(0, 0, 0, 0.34) 38%,
+    transparent 52%
+  );
   pointer-events: none;
 }
 .case__hero-text {
