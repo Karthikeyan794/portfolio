@@ -28,7 +28,7 @@
   --shadow: 0 1px 2px rgba(20, 26, 30, 0.05), 0 14px 40px -18px rgba(20, 26, 30, 0.22);
   --radius: 18px;
   --maxw: 1080px;
-  --sans: 'Roboto', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sans: 'Geist', 'Roboto', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --hud: 'Rajdhani', var(--sans);
@@ -1287,6 +1287,10 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap: clamp(24px, 4vw, 56px);
   align-items: start;
+  /* the section sits back from its own top edge as it arrives and leaves */
+  transform-origin: center top;
+  /* the state a row rests in when no scroll value has arrived yet */
+  opacity: 1;
 }
 @media (max-width: 860px) { .row { grid-template-columns: 1fr; gap: 20px; } }
 
@@ -1408,12 +1412,15 @@ a { color: inherit; text-decoration: none; }
 
 /* the phrases worth landing on — the display italic, in the accent */
 .hi {
-  /* the same face as the sentence, a step heavier and in the accent — weight
-     and colour do the marking, not a second font */
-  font-family: var(--sans);
-  font-style: normal;
-  font-weight: 600;
-  color: var(--accent-ink);
+  /* the marked word in a sentence: the display serif, heavy, and held back
+     to grey rather than pushed forward in the accent — the weight and the
+     change of face do the marking, and the lower contrast keeps the
+     sentence readable as a sentence. Full contrast on hover. */
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+  transition: color 0.3s ease;
 }
 
 /* the app itself, beside the overview: a dimmed still of the cover behind, and
@@ -3661,4 +3668,13 @@ a { color: inherit; text-decoration: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .primer__ghost { display: none; }
+}
+
+/* the first marked word in a sentence stands upright; the rest are italic,
+   so a line with several of them does not read as all one texture */
+.hi:first-of-type { font-style: normal; }
+.hi:hover { color: var(--text); }
+@media (hover: none) {
+  /* nothing to reveal on a touch screen, so sit a little brighter */
+  .hi { color: color-mix(in srgb, var(--text) 68%, transparent); }
 }

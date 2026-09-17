@@ -15,7 +15,9 @@
 
 ## Direction (7 Sep 2026)
 - **2D site only for now.** The 3D lab (`src/three`, `src/components/Lab.tsx`) is parked and hidden via `LAB_ENABLED` in `src/App.tsx` — don't spend time on it unless asked.
-- Fonts: **Roboto** body, **Playfair Display** for display headings. Colours come from the user — apply as tokens in `src/styles.css`.
+- Fonts: **Geist** body, **Playfair Display** for display headings and for a
+  marked word inside a sentence (`*like this*` -> grey serif, 55% contrast).
+  Roboto is kept as the fallback in `--sans`. Colours come from the user — apply as tokens in `src/styles.css`.
 - Main project = **Support Desk** case study (with demo videos). Mini projects = Behance/Figma design work.
 
 ## Stack

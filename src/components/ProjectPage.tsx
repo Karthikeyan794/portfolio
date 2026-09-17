@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring, useTransform } from 'motion/react'
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
@@ -91,6 +91,28 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
   const drift = useTransform(scrollYProgress, [0, 1], [26, -26])
   const float = useSpring(drift, { stiffness: 80, damping: 24, restDelta: 0.4 })
 
+  // The section holds full contrast through the middle of its travel and sits
+  // back as it arrives and leaves, so the page stays alive the whole way down
+  // instead of each block animating once and then going static. Reusing the
+  // scroll progress above — no second listener.
+  //
+  // Deliberately NOT sprung: opacity is a pure function of scroll position, so
+  // no half-finished animation can leave it resting dim.
+  const dim = useTransform(scrollYProgress, [0, 0.22, 0.78, 1], [0.35, 1, 1, 0.35])
+  const back = useTransform(scrollYProgress, [0, 0.22, 0.78, 1], [0.985, 1, 1, 0.985])
+  // dimming is motion; someone who asked for less of it should just read
+  const reduce = useReducedMotion()
+
+  // It has to FAIL SAFE. Scroll-linked values are written by motion's rAF
+  // loop, and rAF is throttled to nothing whenever the document is hidden —
+  // a backgrounded tab, another window focused, battery saver. Applying the
+  // dim before that loop has ever run would render the whole case study at
+  // 35% until it woke up, which for body copy is not readable. So the rows
+  // stay at the full opacity CSS gives them until scroll actually reports a
+  // position, and only then does the scrub take over.
+  const [scrubLive, setScrubLive] = useState(false)
+  useEffect(() => scrollYProgress.on('change', () => setScrubLive(true)), [scrollYProgress])
+
   return (
     <motion.section
       className={hasMedia ? 'row' : 'row row--text'}
@@ -100,6 +122,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
       initial="rest"
       whileInView="in"
       viewport={{ once: true, amount: 0.2 }}
+      style={reduce || !scrubLive ? undefined : { opacity: dim, scale: back }}
     >
       {/* left: the words */}
       <motion.div className="row__text" variants={groupV}>
