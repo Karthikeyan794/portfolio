@@ -1143,8 +1143,8 @@ a { color: inherit; text-decoration: none; }
 /* full screen: the nav is fixed over it, so this starts at the very top */
 .case__hero {
   position: relative;
-  min-height: 50vh;
-  min-height: 50svh;
+  min-height: 68vh;
+  min-height: 68svh; /* svh: excludes mobile browser chrome */
   overflow: hidden;
   display: grid;
   align-items: end;
@@ -1517,22 +1517,9 @@ a { color: inherit; text-decoration: none; }
 .primer__block { display: grid; gap: 14px; }
 .primer__head {
   position: relative;
-  isolation: isolate; /* keeps the ghost behind this block only, not the page */
   display: grid;
   gap: 10px;
   justify-items: start;
-  /* the big word is nowrap, so only sideways overflow needs clipping —
-     clipping both axes cut the accent underline off the heading below */
-  overflow-x: clip;
-  overflow-y: visible;
-  /* one size, used three ways: the big word is set in it, the head clears a
-     band for it, and nothing below has to know it is there. The word is
-     absolutely positioned, so it contributes no height of its own. */
-  --ghost-size: clamp(38px, calc(64vw / (var(--ghost-len, 8) * 0.58)), 106px);
-  /* its glyph box is size x line-height; clearing that much seats the title
-     directly under the big word, then --title-gap sets the space between them */
-  --title-gap: 12px;
-  padding-top: calc(var(--ghost-size) * 0.82 + var(--title-gap));
 }
 .primer__h {
   /* the line itself: the display serif in its italic, light, the way the
@@ -1540,7 +1527,7 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--display);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(27px, 3.2vw, 40px);
+  font-size: clamp(21px, 2.3vw, 29px);
   line-height: 1.04;
   letter-spacing: -0.018em;
   color: var(--text);
@@ -3657,30 +3644,6 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* ── the block's name, said once more as artwork ───────────
-   Sits behind the kicker and the line, big and nearly out of sight. Sized off
-   its own character count (--ghost-len) so a long name shrinks to fit the
-   column rather than running off the end of it. */
-.primer__ghost {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: -0.04em;
-  font-family: var(--display);
-  font-weight: 700;
-  font-style: normal;
-  font-size: var(--ghost-size);
-  line-height: 0.82;
-  letter-spacing: -0.045em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: color-mix(in srgb, var(--text) 7%, transparent);
-  pointer-events: none;
-  user-select: none;
-}
-@media (prefers-reduced-transparency: reduce) {
-  .primer__ghost { display: none; }
-}
 
 /* the first marked word in a sentence stands upright; the rest are italic,
    so a line with several of them does not read as all one texture */

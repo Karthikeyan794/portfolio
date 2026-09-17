@@ -34,24 +34,13 @@ const row = {
 
 
 /**
- * A block's title: the block's name as one big word, with the written line
- * sitting under it, underscored in the accent.
- *
- * `--ghost-len` (the character count) sizes the big word to fit the column
- * rather than run off it, and reserves the head's height: the big word is
- * absolutely positioned, so it contributes none of its own.
+ * A block's title: one line, underscored in the accent. `text` overrides the
+ * block's own name where a different wording reads better.
  */
 function Head({ kick, text }: { kick: string; text?: string }) {
   return (
-    <motion.div
-      className="primer__head"
-      variants={item}
-      style={{ '--ghost-len': kick.length } as React.CSSProperties}
-    >
-      <span className="primer__ghost" aria-hidden="true">
-        {kick}
-      </span>
-      {text && <h3 className="primer__h">{text}</h3>}
+    <motion.div className="primer__head" variants={item}>
+      <h3 className="primer__h">{text ?? kick}</h3>
     </motion.div>
   )
 }
