@@ -261,11 +261,13 @@ The cover starts as an inset card (32px clear of the edges, 32px corners) and op
 ## 2e. Hover, everywhere on the case page (18 Sep 2026)
 
 - **The pointer changes over live copy.** A small lime ring with a dot in it, so the arrow itself says the text answers you. An SVG data-URI cursor on `.hw`, falling back to the text caret where that is not supported.
-- **The numeral hands the row to its emoji.** In the feature list the italic number fades and steps right while the feature's own emoji pops in from the left. Both sit absolutely inside `.fl__mark`, so the swap cannot nudge the sentence beside them. The emoji is a field on each feature in `src/data.ts` (`does[].emoji`) — change it there, it is content, not code.
+- **The numeral hands the row to an arrow.** In the feature list the italic number fades and steps right while a lime arrow slides in from the left. Both sit absolutely inside `.fl__mark`, so the swap cannot nudge the sentence beside them. (Tried an emoji per feature here — the arrow reads better and stays out of the way.)
 - **The product panel zooms as one piece** (scale 1.022) instead of magnifying the screenshot inside its frame, which cropped the app's edges and made it look zoomed in. This one has to live in `src/components/Primer.tsx` as `whileHover`, not in CSS: that element's transform belongs to its entrance animation, and an inline transform beats any `:hover` rule the stylesheet can write. Worth remembering for any motion element — a CSS hover transform on one is silently dead.
 - The sentence under each feature name is 13px, and the first row of each column has no rule above it (the title's own line is right there).
 
 - **The hero line is short now** — "Every request now has …" with four two-word endings, so the phrase never runs at the edge of the banner. It arrives letter by letter: each character rises out of a blur 26ms behind the one before it, which reads as the phrase being written rather than swapped. Copy lives in `detail.hook` in `src/data.ts`; keep the endings short or the slot swings.
+
+**Section spacing (18 Sep 2026).** The bands of the case page sit further apart now — `.case__body` gap, the gap inside `.primer` (overview to the feature list), `.brief`'s top margin and the `.rows` gap all went up by roughly half. Change them together or the page loses its rhythm.
 
 ## 3. Checklist — what's done
 

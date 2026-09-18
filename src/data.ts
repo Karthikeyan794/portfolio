@@ -228,8 +228,7 @@ export type Primer = {
   what: string
   /** the app itself, beside the overview: a still, or a clip once there is one */
   showcase?: { bg?: string; poster: string; clip?: string; title?: string; note?: string }
-  /** emoji: the mark that takes the row when you point at it */
-  does: { title: string; text: string; emoji?: string }[]
+  does: { title: string; text: string }[]
 }
 
 /** the opening spread: what was wrong, what answered it, and what we were aiming at */
@@ -329,18 +328,12 @@ export const projects: Project[] = [
           clip: '',
         },
         does: [
-          { title: 'Shared queue',
-            emoji: '📥', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
-          { title: 'Assignment and Teams alerts',
-            emoji: '🔔', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },
-          { title: 'Reply from the request',
-            emoji: '✍️', text: 'Answer on the customer’s own thread without leaving the desk, with the reply already drafted and the full conversation beside it.' },
-          { title: 'Customer view',
-            emoji: '🏢', text: 'Group every request by company, so your team sees an account’s whole history before they answer the one in front of them.' },
-          { title: 'Response SLA',
-            emoji: '⏱️', text: 'Run a response clock on every request, so your team knows who is still waiting and for how long — before it turns into a complaint.' },
-          { title: 'Insights',
-            emoji: '📊', text: 'Surface volume, repeat problems and your most frequent requesters in one view, so your team fixes causes instead of symptoms.' },
+          { title: 'Shared queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
+          { title: 'Assignment and Teams alerts', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },
+          { title: 'Reply from the request', text: 'Answer on the customer’s own thread without leaving the desk, with the reply already drafted and the full conversation beside it.' },
+          { title: 'Customer view', text: 'Group every request by company, so your team sees an account’s whole history before they answer the one in front of them.' },
+          { title: 'Response SLA', text: 'Run a response clock on every request, so your team knows who is still waiting and for how long — before it turns into a complaint.' },
+          { title: 'Insights', text: 'Surface volume, repeat problems and your most frequent requesters in one view, so your team fixes causes instead of symptoms.' },
         ],
       },
       brief: {

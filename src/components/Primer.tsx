@@ -112,10 +112,14 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         <ol className="flist">
           {primer.does.map((d, i) => (
             <motion.li className="fl" key={d.title} variants={row}>
-              {/* the numeral steps aside on hover and hands the row to its emoji */}
+              {/* the numeral steps aside on hover and hands the row to an arrow */}
               <span className="fl__mark" aria-hidden="true">
                 <span className="fl__no">{String(i + 1).padStart(2, '0')}.</span>
-                {d.emoji && <span className="fl__emo">{d.emoji}</span>}
+                <svg className="fl__arw" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12h16" />
+                  <path d="M13 6l6 6-6 6" />
+                </svg>
               </span>
               <div className="fl__body">
                 <h4 className="fl__title">
