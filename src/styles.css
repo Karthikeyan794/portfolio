@@ -1509,14 +1509,8 @@ a { color: inherit; text-decoration: none; }
   background-size: 200% 100%;
   background-position: 100% 0;
   transition: background-position 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  /* over live copy the system arrow is swapped for a drawn one: cream, brown
-     outline, three sparks coming off the tip. A real image rather than an SVG
-     cursor, which only Chrome handles dependably. The second declaration
-     hands retina screens the 2x file, anything without image-set() keeps the
-     first, and the text caret is the last fallback. The hotspot sits on the
-     drawn tip, not the corner of the picture. */
-  cursor: url('/cursor/pointer.png') 10 9, text;
-  cursor: image-set(url('/cursor/pointer.png') 1x, url('/cursor/pointer@2x.png') 2x) 10 9, text;
+  /* the ordinary hand over live copy — no drawn cursor, no image to load */
+  cursor: pointer;
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hw {
