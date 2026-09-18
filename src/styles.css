@@ -1509,14 +1509,14 @@ a { color: inherit; text-decoration: none; }
   background-size: 200% 100%;
   background-position: 100% 0;
   transition: background-position 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  /* the arrow is replaced over live copy by the mark of the tool that made
-     the part of the page it is over: Figma across the design, Claude across
-     the build. Real images rather than SVG cursors — an SVG cursor is only
-     dependable in Chrome. The second declaration hands retina screens the 2x
-     file; anything without image-set() keeps the first, and the text caret is
-     the last fallback. */
-  cursor: url('/cursor/figma.png') 14 14, text;
-  cursor: image-set(url('/cursor/figma.png') 1x, url('/cursor/figma@2x.png') 2x) 14 14, text;
+  /* over live copy the system arrow is swapped for a drawn one: cream, brown
+     outline, three sparks coming off the tip. A real image rather than an SVG
+     cursor, which only Chrome handles dependably. The second declaration
+     hands retina screens the 2x file, anything without image-set() keeps the
+     first, and the text caret is the last fallback. The hotspot sits on the
+     drawn tip, not the corner of the picture. */
+  cursor: url('/cursor/pointer.png') 10 9, text;
+  cursor: image-set(url('/cursor/pointer.png') 1x, url('/cursor/pointer@2x.png') 2x) 10 9, text;
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hw {
@@ -1526,12 +1526,6 @@ a { color: inherit; text-decoration: none; }
   }
 }
 .hw:hover { background-position: 0 0; }
-/* the story of how it was built is Claude's half of the page */
-.rows .hw,
-.case__end .hw {
-  cursor: url('/cursor/claude.png') 14 14, text;
-  cursor: image-set(url('/cursor/claude.png') 1x, url('/cursor/claude@2x.png') 2x) 14 14, text;
-}
 @media (prefers-reduced-motion: reduce) {
   .hw { transition: none; }
 }
