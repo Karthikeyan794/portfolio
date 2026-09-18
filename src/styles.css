@@ -1509,12 +1509,13 @@ a { color: inherit; text-decoration: none; }
   background-size: 200% 100%;
   background-position: 100% 0;
   transition: background-position 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  /* the arrow is replaced over live copy: a small ring with the accent at its
-     centre, so the pointer says "this text answers you" before you move it.
-     Falls back to the text caret where an SVG cursor is not supported. */
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Ccircle cx='13' cy='13' r='10' fill='none' stroke='%23a6e85b' stroke-width='1.4' opacity='0.75'/%3E%3Ccircle cx='13' cy='13' r='3' fill='%23a6e85b'/%3E%3C/svg%3E")
-      13 13,
-    text;
+  /* the arrow is replaced over live copy: a sparkle, carried as a real image
+     rather than an SVG cursor, because an emoji drawn inside an SVG cursor is
+     unreliable outside Chrome. The second declaration hands retina screens the
+     2x file; browsers without image-set() keep the first. Text caret last, so
+     there is always something sane to fall back to. */
+  cursor: url('/cursor/spark.png') 14 14, text;
+  cursor: image-set(url('/cursor/spark.png') 1x, url('/cursor/spark@2x.png') 2x) 14 14, text;
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hw {
