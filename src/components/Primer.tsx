@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring, useTransform } from 'motion/react'
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import type { Primer as PrimerData } from '../data'
 import Words from './Words'
@@ -39,6 +39,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
   // the picture travels against the page as the section passes, so it and the
   // words beside it never scroll at quite the same rate
   const shotRef = useRef<HTMLDivElement>(null)
+  const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: shotRef, offset: ['start end', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], [46, -46])
   const float = useSpring(drift, { stiffness: 70, damping: 24, restDelta: 0.4 })
@@ -67,6 +68,11 @@ export default function Primer({ primer }: { primer: PrimerData }) {
               className="oshot"
               initial={{ opacity: 0, y: 26, scale: 0.975 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              /* the whole panel comes forward as one thing. It has to live here
+                 rather than in CSS: this element's transform belongs to the
+                 entrance animation, and an inline transform beats any :hover
+                 rule the stylesheet could write. */
+              whileHover={reduce ? undefined : { scale: 1.022 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
             >
@@ -106,8 +112,14 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         <ol className="flist">
           {primer.does.map((d, i) => (
             <motion.li className="fl" key={d.title} variants={row}>
-              <span className="fl__no" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}.
+              {/* the numeral steps aside on hover and hands the row to an arrow */}
+              <span className="fl__mark" aria-hidden="true">
+                <span className="fl__no">{String(i + 1).padStart(2, '0')}.</span>
+                <svg className="fl__arw" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12h16" />
+                  <path d="M13 6l6 6-6 6" />
+                </svg>
               </span>
               <div className="fl__body">
                 <h4 className="fl__title">

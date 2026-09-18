@@ -258,6 +258,13 @@ The cover starts as an inset card (32px clear of the edges, 32px corners) and op
 
 **Two more on the same page.** The overview title now sits in the same sticky box as its paragraph (`.primer__words`), so heading and copy hold together while the screenshot scrolls past — the hold lasts as long as the picture column is taller than the words, about 185px at 1440. And the product panel carries a caption over its foot: name, one line, a scrim under it — `showcase.title` / `showcase.note` in `src/data.ts`.
 
+## 2e. Hover, everywhere on the case page (18 Sep 2026)
+
+- **The pointer changes over live copy.** A small lime ring with a dot in it, so the arrow itself says the text answers you. An SVG data-URI cursor on `.hw`, falling back to the text caret where that is not supported.
+- **The numeral hands the row to an arrow.** In the feature list the italic number fades and steps right while a lime arrow slides in from the left. Both sit absolutely inside `.fl__mark`, so the swap cannot nudge the sentence beside them.
+- **The product panel zooms as one piece** (scale 1.022) instead of magnifying the screenshot inside its frame, which cropped the app's edges and made it look zoomed in. This one has to live in `src/components/Primer.tsx` as `whileHover`, not in CSS: that element's transform belongs to its entrance animation, and an inline transform beats any `:hover` rule the stylesheet can write. Worth remembering for any motion element — a CSS hover transform on one is silently dead.
+- The sentence under each feature name is 13px, and the first row of each column has no rule above it (the title's own line is right there).
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup
