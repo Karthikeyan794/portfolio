@@ -301,9 +301,10 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M19 12H5M11 18l-6-6 6-6" />
           </svg>
-          All work
+          Back
         </button>
         <div className="case__nav-right">
+          {tabs.length > 1 && <CaseTabs tabs={tabs} />}
           {project.behance && (
             <a className="case__link" href={project.behance} target="_blank" rel="noreferrer">
               Behance ↗
@@ -346,8 +347,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
 
       <div className="wrap wrap--wide case__body">
-        {tabs.length > 1 && <CaseTabs tabs={tabs} />}
-
         {detail.primer && <Primer primer={detail.primer} />}
 
 

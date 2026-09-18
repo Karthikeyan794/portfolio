@@ -2,18 +2,17 @@ import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 /**
- * The section nav for a case study: six plain names, sticky under the top bar,
- * that scroll you to the part you asked for. The one you are reading lights up
+ * The section nav for a case study: plain names in the top bar that scroll you
+ * to the part you asked for. The one you are reading lights up
  * on its own — an observer watches each section rather than doing the maths on
  * every scroll frame.
  *
- * It sits at the top of the overview, on the right, and stays with you from
- * there — under the banner rather than on it.
+ * It rides in the top bar, on the right, level with the back button.
  */
 export type Tab = { id: string; label: string }
 
-/** the two floating bars: the top nav (65) and this one (48), plus a little air */
-const BAR = 126
+/** the single top bar the tabs now live in (65), plus a little air */
+const BAR = 92
 
 export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
   const [active, setActive] = useState(tabs[0]?.id ?? '')
@@ -50,9 +49,9 @@ export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
     <motion.nav
       className="ctabs"
       aria-label="Sections"
-      initial={{ opacity: 0, y: -8 }}
+      initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 0.45, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="ctabs__wrap">
         <div className="ctabs__row">
