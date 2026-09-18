@@ -71,7 +71,13 @@ export default function RotatingWord({ lead, words }: { lead: string; words: str
           </span>
         )}
         <span className="rotline__word rotline__word--in" key={`in-${i}`}>
-          {words[i]}
+          {/* letter by letter: each one rises a beat after the one before it,
+              which reads as the phrase being written rather than swapped */}
+          {Array.from(words[i]).map((ch, n) => (
+            <span className="rotline__ch" key={`${i}-${n}`} style={{ '--i': n } as React.CSSProperties}>
+              {ch === ' ' ? '\u00A0' : ch}
+            </span>
+          ))}
         </span>
       </span>
     </span>
