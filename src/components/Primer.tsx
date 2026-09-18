@@ -52,10 +52,14 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         whileInView="in"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <Head kick="Overview" text={primer.heads?.what} />
-        <motion.p className="primer__what" variants={item}>
-          <Words text={primer.what} />
-        </motion.p>
+        {/* title and paragraph travel together, so the heading is still
+            overhead while you are reading under it */}
+        <div className="primer__words">
+          <Head kick="Overview" text={primer.heads?.what} />
+          <motion.p className="primer__what" variants={item}>
+            <Words text={primer.what} />
+          </motion.p>
+        </div>
 
         {primer.showcase && (
           <motion.div className="oshot__track" ref={shotRef} style={{ y: float }}>
@@ -78,6 +82,12 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                 )
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />
+              )}
+              {(primer.showcase.title || primer.showcase.note) && (
+                <figcaption className="oshot__cap">
+                  {primer.showcase.title && <span className="oshot__cap-t">{primer.showcase.title}</span>}
+                  {primer.showcase.note && <span className="oshot__cap-p">{primer.showcase.note}</span>}
+                </figcaption>
               )}
               </div>
             </motion.div>

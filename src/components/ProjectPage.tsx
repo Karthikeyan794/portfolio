@@ -245,6 +245,11 @@ export default function ProjectPage({ slug }: { slug: string }) {
   const heroScale = useTransform(heroProgress, [0, 1], [1, 1.12])
   const heroY = useTransform(heroProgress, [0, 1], ['0%', '16%'])
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, 0.3])
+  // the banner starts as an inset card and opens to the full width of the
+  // screen as you begin to scroll. Driven as a plain 0-1 number the CSS does
+  // the arithmetic with: insets and the corner radius are calc()'d off it, so
+  // nothing here touches layout and nothing reflows on a scroll frame.
+  const heroOpen = useTransform(heroProgress, [0, 0.4], [0, 1])
 
   // the nav floats on the cover, and takes a background the moment the cover
   // leaves — measured off the hero itself, not a guessed share of the screen,
@@ -322,19 +327,21 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
       {/* full screen, and the nav sits on top of it */}
       <div className="case__hero" ref={heroRef}>
-        {project.cover && (
-          <motion.div
-            className="case__hero-media"
-            initial={{ opacity: 0, scale: 1.06 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
-            aria-hidden="true"
-          >
-            <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
-          </motion.div>
-        )}
-        <div className="case__hero-blur" aria-hidden="true" />
-        <div className="case__hero-shade" aria-hidden="true" />
+        <motion.div className="case__hero-frame" style={{ '--grow': heroOpen } as React.CSSProperties}>
+          {project.cover && (
+            <motion.div
+              className="case__hero-media"
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
+            >
+              <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
+            </motion.div>
+          )}
+          <div className="case__hero-blur" aria-hidden="true" />
+          <div className="case__hero-shade" aria-hidden="true" />
+        </motion.div>
         <motion.div className="wrap wrap--wide case__hero-text" variants={heroV} initial="rest" animate="in">
           <span className="case__h1">
             <motion.h1 variants={heroMask}>{project.title}</motion.h1>

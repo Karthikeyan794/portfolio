@@ -227,7 +227,7 @@ export type Primer = {
   heads?: { what?: string; does: string }
   what: string
   /** the app itself, beside the overview: a still, or a clip once there is one */
-  showcase?: { bg?: string; poster: string; clip?: string }
+  showcase?: { bg?: string; poster: string; clip?: string; title?: string; note?: string }
   does: { title: string; text: string }[]
 }
 
@@ -320,6 +320,8 @@ export const projects: Project[] = [
         what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         showcase: {
           bg: '/bento/meadow.jpg',
+          title: 'Support Desk',
+          note: 'Queue, thread, customer and reply — the whole desk on one screen.',
           poster: '/work/support-desk/2-queue.jpg',
           // TODO: record the desk and drop the file in /public/work/support-desk/
           // — an .mp4 or a .gif here plays in place of the still, no other change.

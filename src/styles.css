@@ -1149,16 +1149,29 @@ a { color: inherit; text-decoration: none; }
 /* full screen: the nav is fixed over it, so this starts at the very top */
 .case__hero {
   position: relative;
-  min-height: 68vh;
-  min-height: 68svh; /* svh: excludes mobile browser chrome */
-  overflow: hidden;
+  /* the box runs the full width and holds the words; the picture lives in
+     .case__hero-frame, which starts inset and opens out as you scroll.
+     --grow is set per frame from the scroll position (0 resting, 1 open). */
+  --hero-inset: 32px;
+  --grow: 0;
+  min-height: calc(68vh + var(--hero-inset));
+  min-height: calc(68svh + var(--hero-inset));
   display: grid;
   align-items: end;
-  /* an inset card rather than a full-bleed band: clear of the left, right and
-     top edges, running to the foot as before */
-  margin: 32px 32px 0;
-  border-radius: 32px;
 }
+.case__hero-frame {
+  position: absolute;
+  top: calc(var(--hero-inset) * (1 - var(--grow)));
+  left: calc(var(--hero-inset) * (1 - var(--grow)));
+  right: calc(var(--hero-inset) * (1 - var(--grow)));
+  bottom: 0;
+  overflow: hidden;
+  border-radius: calc(32px * (1 - var(--grow)));
+  /* insets and radius only — no transform, so the picture never softens and
+     nothing around it reflows on a scroll frame */
+  will-change: top, left, right, border-radius;
+}
+@media (max-width: 720px) { .case__hero { --hero-inset: 14px; } }
 .case__hero-media { position: absolute; inset: 0; }
 .case__hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .case__hero-shade {
@@ -1400,21 +1413,24 @@ a { color: inherit; text-decoration: none; }
   row-gap: 16px;
   align-items: start;
 }
-.primer__top > .primer__head { grid-column: 1 / -1; }
-/* The words hold at the top while the screenshot beside them scrolls past.
-   align-self:start is load-bearing: a grid item stretches by default, which
-   would make it as tall as its row and leave sticky nothing to travel in.
-   `top` clears the bar that pins to the top of the viewport. */
-.primer__what {
+/* The words hold at the top while the screenshot beside them scrolls past —
+   title and paragraph in one box, so the heading is still overhead while you
+   read the last line under it. align-self:start is load-bearing: a grid item
+   stretches by default, which would make it as tall as its row and leave
+   sticky nothing to travel in. `top` clears the bar pinned to the viewport. */
+.primer__words {
   position: sticky;
   top: 92px;
   align-self: start;
+  display: grid;
+  gap: 16px;
+  justify-items: start;
 }
 /* Below the two-column break (1000px, where .primer__top collapses to one
    column) the image sits under the words, so there is no second column to
    scroll against and pinning would just feel stuck. */
 @media (max-width: 1000px) {
-  .primer__what { position: static; }
+  .primer__words { position: static; }
 }
 .primer__what {
   /* the sans, at a size that still leads the page — a paragraph this long in
@@ -1478,25 +1494,24 @@ a { color: inherit; text-decoration: none; }
    lifts a hair, comes up to full contrast and pulls a lime rule under itself.
    Transform and colour only — no JS, nothing that reflows the line. */
 .hw {
-  /* no lift, no rule: a soft band of the accent washes in behind the word,
-     left to right, and the word comes up to full contrast. Nothing moves, so
-     a sentence stays perfectly still while you read across it. */
-  background-image: linear-gradient(
-    color-mix(in srgb, var(--accent) 13%, transparent),
-    color-mix(in srgb, var(--accent) 13%, transparent)
-  );
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 0% 1.12em;
-  border-radius: 2px;
-  transition: background-size 0.34s cubic-bezier(0.16, 1, 0.3, 1), color 0.28s ease;
+  /* the word's own ink is what moves now: a two-stop gradient clipped to the
+     glyphs, parked so the normal colour shows, then slid across so the accent
+     fills the word left to right. No box, no rule, no lift — the letters
+     themselves colour in. currentColor is the right half, so every block of
+     copy keeps its own resting colour without being named here. */
+  background-image: linear-gradient(to right, var(--accent) 50%, currentColor 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.hw:hover {
-  background-size: 100% 1.12em;
-  color: var(--text);
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hw {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
-/* a marked phrase keeps its own colour when you touch it */
-.hi .hw:hover { color: inherit; }
+.hw:hover { background-position: 0 0; }
 @media (prefers-reduced-motion: reduce) {
   .hw { transition: none; }
 }
@@ -1544,6 +1559,28 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(90% 70% at 0% 0%, rgba(166, 232, 91, 0.12), transparent 62%),
     linear-gradient(140deg, rgba(8, 12, 11, 0.12) 0%, rgba(8, 12, 11, 0.42) 82%);
 }
+.oshot__cap {
+  /* the app's name and one line about it, sitting on the picture — a scrim
+     under it so the words hold whatever the screenshot is doing */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: grid;
+  gap: 5px;
+  padding: clamp(26px, 4.5vw, 44px) clamp(16px, 2vw, 26px) clamp(13px, 1.6vw, 18px);
+  color: #fff;
+  background: linear-gradient(to top, rgba(6, 10, 9, 0.92) 0%, rgba(6, 10, 9, 0.72) 42%, transparent 100%);
+  pointer-events: none;
+}
+.oshot__cap-t { font-size: clamp(15px, 1.35vw, 18px); font-weight: 600; letter-spacing: -0.012em; }
+.oshot__cap-p {
+  font-size: clamp(12.5px, 1.05vw, 14px);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 52ch;
+}
 .oshot__frame {
   position: relative;
   z-index: 1;
@@ -1558,6 +1595,7 @@ a { color: inherit; text-decoration: none; }
   height: auto;
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 /* point at it and the desk leans in a little */
 .oshot { transition: border-color 0.4s ease, box-shadow 0.5s ease; }
 .oshot:hover { border-color: color-mix(in srgb, var(--accent) 36%, var(--line)); box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.7); }
