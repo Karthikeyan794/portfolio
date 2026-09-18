@@ -5,6 +5,8 @@ import { closeProject } from '../router'
 import Diagram from './Diagrams'
 import GridBg from './GridBg'
 import Brief from './Brief'
+import Credits from './Credits'
+import Words from './Words'
 import Primer from './Primer'
 import CaseTabs, { type Tab } from './CaseTabs'
 import RotatingWord from './RotatingWord'
@@ -131,12 +133,12 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
         </motion.span>
         {slice.heading && (
           <motion.h2 className="row__h" variants={lineV}>
-            {slice.heading}
+            <Words text={slice.heading} />
           </motion.h2>
         )}
         {slice.body && (
           <motion.p className="row__p" variants={lineV}>
-            {slice.body}
+            <Words text={slice.body} />
           </motion.p>
         )}
       </motion.div>
@@ -347,6 +349,8 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
 
       <div className="wrap wrap--wide case__body">
+        {detail.facts.length > 0 && <Credits facts={detail.facts} />}
+
         {detail.primer && <Primer primer={detail.primer} />}
 
 
@@ -380,8 +384,12 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </div>
 
         <motion.div className="case__end" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7 }}>
-          <h2>Want the full story?</h2>
-          <p>Happy to walk through the decisions, the dead ends and what I'd change.</p>
+          <h2>
+            <Words text="Want the full story?" />
+          </h2>
+          <p>
+            <Words text="Happy to walk through the decisions, the dead ends and what I'd change." />
+          </p>
           <div className="case__end-actions">
             <a className="btn btn--primary" href={`mailto:${profile.email}?subject=${encodeURIComponent(project.title)}`}>
               Get in touch

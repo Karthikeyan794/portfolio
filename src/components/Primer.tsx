@@ -1,25 +1,13 @@
 import { motion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import type { Primer as PrimerData } from '../data'
+import Words from './Words'
 
 /**
  * The plain-English layer, before any of the process: what this app is and
  * what it does. Somebody who has never heard of the desk should understand it
  * from this block alone.
  */
-
-/** `*like this*` in the copy comes out in the display italic, in the accent */
-function marked(text: string) {
-  return text.split(/(\*[^*]+\*)/g).map((part, i) =>
-    part.length > 2 && part.startsWith('*') && part.endsWith('*') ? (
-      <em className="hi" key={i}>
-        {part.slice(1, -1)}
-      </em>
-    ) : (
-      <span key={i}>{part}</span>
-    ),
-  )
-}
 
 const group = { rest: {}, in: { transition: { staggerChildren: 0.07 } } }
 const item = {
@@ -40,7 +28,9 @@ const row = {
 function Head({ kick, text }: { kick: string; text?: string }) {
   return (
     <motion.div className="primer__head" variants={item}>
-      <h3 className="primer__h">{text ?? kick}</h3>
+      <h3 className="primer__h">
+        <Words text={text ?? kick} />
+      </h3>
     </motion.div>
   )
 }
@@ -64,7 +54,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
       >
         <Head kick="Overview" text={primer.heads?.what} />
         <motion.p className="primer__what" variants={item}>
-          {marked(primer.what)}
+          <Words text={primer.what} />
         </motion.p>
 
         {primer.showcase && (
@@ -110,8 +100,12 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                 {String(i + 1).padStart(2, '0')}.
               </span>
               <div className="fl__body">
-                <h4 className="fl__title">{d.title}</h4>
-                <p className="fl__text">{d.text}</p>
+                <h4 className="fl__title">
+                  <Words text={d.title} />
+                </h4>
+                <p className="fl__text">
+                  <Words text={d.text} />
+                </p>
               </div>
             </motion.li>
           ))}

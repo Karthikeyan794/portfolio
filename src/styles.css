@@ -1431,6 +1431,78 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* the phrases worth landing on — the display italic, in the accent */
+/* ── the intro band under the banner ──────────────────────────────────────
+   Role, time, stack, where it stands. Not a row of labels penned between two
+   rules: each fact stands behind its own vertical hairline, and the hairline
+   is the thing that answers the cursor. */
+.credits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+  gap: clamp(16px, 2.4vw, 38px);
+  margin: clamp(26px, 4.5vh, 52px) 0 clamp(2px, 1vh, 10px);
+}
+.credit { position: relative; padding-left: 18px; }
+.credit__rule {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 1px;
+  width: 1px;
+  background: var(--line);
+  transform-origin: top center;
+  transition: background 0.3s ease;
+}
+.credit__k {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 9px;
+  transition: color 0.3s ease;
+}
+.credit__v {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 30ch;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.credit:hover .credit__rule { background: var(--accent); }
+.credit:hover .credit__k { color: var(--accent-ink); }
+.credit:hover .credit__v { transform: translateX(3px); }
+
+/* ── the copy answers the cursor ──────────────────────────────────────────
+   Every word in the case copy is its own span. The one under the pointer
+   lifts a hair, comes up to full contrast and pulls a lime rule under itself.
+   Transform and colour only — no JS, nothing that reflows the line. */
+.hw {
+  display: inline-block;
+  position: relative;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+.hw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.04em;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hw:hover { color: var(--text); transform: translateY(-2px); }
+.hw:hover::after { transform: scaleX(1); transform-origin: left center; }
+/* a marked phrase keeps its own colour when you touch it */
+.hi .hw:hover { color: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .hw, .hw::after { transition: none; }
+  .hw:hover { transform: none; }
+}
+
 .hi {
   /* the marked word in a sentence: the display serif, heavy, and in the accent
      — the change of face and the colour both do the marking */

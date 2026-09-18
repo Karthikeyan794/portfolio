@@ -244,6 +244,12 @@
 
 Only five projects get a tile: **Support Desk · Atom · Clickly · TNPSC · POS**, in that order, then a sixth tile sending the rest to Behance. Membership *and* order are one field — `featured: 1…5` on a project in `src/data.ts`; swap a number to reorder, delete it to drop a tile. Every other project stays in the file and its page still opens at `#/project/<slug>`, it just has no tile on the home grid.
 
+## 2c. The case page: intro band + live copy (18 Sep 2026)
+
+**Intro band.** Under the banner, before the overview: `Role · Built · Stack · Status`, pulled straight from `facts` on the project in `src/data.ts` — edit, reorder or add a fact there and the band follows. Every project that has facts gets one. The styling is deliberately not the usual strip penned between two rules: each fact stands behind its own vertical hairline (`.credit__rule`), the hairline grows top-down as the band arrives, and on hover it turns lime while the value slides 3px right. Component: `src/components/Credits.tsx`.
+
+**Copy answers the cursor.** Every word of case-study copy is its own `<span class="hw">` — the word under the pointer lifts 2px, comes up to full contrast and pulls a lime rule under itself. Pure CSS (transform + colour), no JS, and off under `prefers-reduced-motion`. Wrapping lives in `src/components/Words.tsx`; it also handles `*marked*` runs, so the marked phrase keeps its own colour when you touch it. Applied to the overview paragraph, the six feature rows, problems/solutions, every story row and the closing block. To add it anywhere else: `<Words text={...} />` instead of `{...}`.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup

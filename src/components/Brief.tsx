@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import type { Brief as BriefData } from '../data'
+import Words from './Words'
 
 /**
  * Problems beside solutions — the opening spread, before the story starts.
@@ -29,16 +30,18 @@ function Column({ title, lead, items, good }: { title: string; lead: string; ite
   return (
     <motion.div className={good ? 'brief__col brief__col--good' : 'brief__col'} variants={group}>
       <motion.h3 className="brief__h" variants={item}>
-        {title}
+        <Words text={title} />
       </motion.h3>
       <motion.p className="brief__lead" variants={item}>
-        {lead}
+        <Words text={lead} />
       </motion.p>
       <ul className="brief__list">
         {items.map((t) => (
           <motion.li key={t} variants={item}>
             <Bullet good={good} />
-            <span>{t}</span>
+            <span>
+              <Words text={t} />
+            </span>
           </motion.li>
         ))}
       </ul>
