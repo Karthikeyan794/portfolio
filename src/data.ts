@@ -258,6 +258,8 @@ export type Project = {
   tone?: 'cream' | 'sage' | 'mist' | 'blush' | 'sand' | 'lime'
   /** 'work' = real/client · 'practice' = course or self-set exercise */
   kind?: 'work' | 'practice'
+  /** a short row of tools on the tile — keys from src/logos.ts `marks` */
+  tools?: string[]
   /** which bento block this belongs to */
   group: 'product' | 'craft'
   /** its place on the home grid, 1 first — everything else lives on Behance */
@@ -293,6 +295,7 @@ export const projects: Project[] = [
     year: '2025',
     role: 'Product owner / designer',
     tags: ['Product', 'React', 'Microsoft Graph', 'Teams bot'],
+    tools: ['microsoft', 'figma', 'claude'],
     emoji: '🎧',
     cover: '/bento/support-desk.jpg',
     featured: 1,
@@ -325,7 +328,7 @@ export const projects: Project[] = [
           poster: '/work/support-desk/2-queue.jpg',
           // TODO: record the desk and drop the file in /public/work/support-desk/
           // — an .mp4 or a .gif here plays in place of the still, no other change.
-          clip: '',
+          clip: '/work/support-desk/clips/overview.webm',
         },
         does: [
           { title: 'Shared queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
@@ -541,6 +544,7 @@ export const projects: Project[] = [
     year: '2025',
     role: 'Design + Frontend',
     tags: ['AI', 'Platform', 'Dashboard'],
+    tools: ['claude', 'figma'],
     emoji: '⚛️',
     cover: '/bento/atom.jpg',
     featured: 2,

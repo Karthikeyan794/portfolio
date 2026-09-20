@@ -1,3 +1,13 @@
+# Clips for the Support Desk case study
+
+**In place now:** `overview.webm` — the walkthrough that plays in the panel beside the Overview
+(home, the queue, a thread, a reply going out, the detail panel). It came from the 50 MB screen
+recording on the Desktop (`Support desk videos/Google Chrome.gif`, 1748x1080, 26s) and was
+re-encoded to 1200x742 VP9 WebM at 2.3 MB — the GIF itself was twenty times too heavy to ship.
+The still at `../2-queue.jpg` stays as the video's poster, so the panel is never empty while it loads.
+There is no ffmpeg on this machine; the encode was done by playing the GIF into a canvas in
+headless Chrome and recording it with MediaRecorder. Replace the file at the same path to swap it.
+
 # Flow clips
 
 One short screen recording per flow, played under the diagram that explains it.

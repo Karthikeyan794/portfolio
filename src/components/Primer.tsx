@@ -84,7 +84,15 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                 /\.gif$/.test(primer.showcase.clip) ? (
                   <img src={primer.showcase.clip} alt="Support Desk in use" loading="lazy" decoding="async" />
                 ) : (
-                  <video src={primer.showcase.clip} autoPlay loop muted playsInline preload="metadata" />
+                  <video
+                    src={primer.showcase.clip}
+                    poster={primer.showcase.poster}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                  />
                 )
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />

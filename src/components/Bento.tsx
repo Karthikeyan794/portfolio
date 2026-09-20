@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { projects, socials, type Project } from '../data'
+import { marks } from '../logos'
 import { openProject } from '../router'
 
 /**
@@ -77,20 +78,33 @@ function Box({ project, slot, index, onHot }: BoxProps) {
         {project.cover && <img className="box__img" src={project.cover} alt="" loading="lazy" decoding="async" />}
         <span className="box__veil" aria-hidden="true" />
 
+        {/* both corners stay empty until you point at the tile: what it was
+            built with on the left, the way in on the right */}
+        {project.tools && project.tools.length > 0 && (
+          <span className="box__tools" aria-hidden="true">
+            {project.tools.map((t) => (
+              <span className="box__tool" key={t}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d={marks[t]} />
+                </svg>
+              </span>
+            ))}
+          </span>
+        )}
+
+        <span className="box__open" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 17 17 7M9 7h8v8" />
+          </svg>
+        </span>
+
         <span className="box__label">
           <span className="box__kicker">
             {project.year}
-            {project.detail && <span className="box__tag">Case study</span>}
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
           </span>
           <span className="box__title">{project.title}</span>
           <span className="box__tagline">{project.tagline}</span>
-          <span className="box__cta">
-            {project.detail ? 'Read case study' : 'Open project'}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
-              <path d="M7 17 17 7M9 7h8v8" />
-            </svg>
-          </span>
         </span>
       </motion.button>
       </div>
