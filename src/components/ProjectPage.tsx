@@ -156,7 +156,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
                     allowFullScreen
                   />
                 ) : (
-                  <video src={slice.video} controls playsInline preload="metadata" />
+                  <video src={slice.video} controls loop playsInline preload="metadata" />
                 )}
             </motion.div>
           ) : slice.diagram ? (
