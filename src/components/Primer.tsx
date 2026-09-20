@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import type { Primer as PrimerData } from '../data'
 import Words from './Words'
 
@@ -39,7 +39,30 @@ export default function Primer({ primer }: { primer: PrimerData }) {
   // the picture travels against the page as the section passes, so it and the
   // words beside it never scroll at quite the same rate
   const shotRef = useRef<HTMLDivElement>(null)
+  const clipRef = useRef<HTMLVideoElement>(null)
   const reduce = useReducedMotion()
+
+  /**
+   * Autoplay needs `muted` to be true on the element itself — React sets it as
+   * a property, and a browser that has not seen the attribute treats the video
+   * as sound-on and refuses to start it. So mute it here, ask it to play, and
+   * ask again whenever it comes back into view (a paused-by-policy video shows
+   * its first frame and looks simply broken). It pauses off-screen, because
+   * decoding a clip nobody is looking at is wasted battery.
+   */
+  useEffect(() => {
+    const v = clipRef.current
+    if (!v) return
+    v.muted = true
+    const play = () => { void v.play().catch(() => {}) }
+    play()
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? play() : v.pause()),
+      { threshold: 0.15 },
+    )
+    io.observe(v)
+    return () => io.disconnect()
+  }, [])
   const { scrollYProgress } = useScroll({ target: shotRef, offset: ['start end', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], [46, -46])
   const float = useSpring(drift, { stiffness: 70, damping: 24, restDelta: 0.4 })
@@ -76,8 +99,13 @@ export default function Primer({ primer }: { primer: PrimerData }) {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
             >
-            {primer.showcase.bg && <img className="oshot__bg" src={primer.showcase.bg} alt="" aria-hidden="true" />}
-            <span className="oshot__wash" aria-hidden="true" />
+            {primer.showcase.bg && (
+              <>
+                <img className="oshot__bg" src={primer.showcase.bg} alt="" aria-hidden="true" />
+                {/* the wash only exists to settle a picture behind the app */}
+                <span className="oshot__wash" aria-hidden="true" />
+              </>
+            )}
             <div className="oshot__frame">
               <span className="oshot__sheen" aria-hidden="true" />
               {primer.showcase.clip ? (
@@ -85,6 +113,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                   <img src={primer.showcase.clip} alt="Support Desk in use" loading="lazy" decoding="async" />
                 ) : (
                   <video
+                    ref={clipRef}
                     src={primer.showcase.clip}
                     poster={primer.showcase.poster}
                     autoPlay

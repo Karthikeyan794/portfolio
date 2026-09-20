@@ -1,12 +1,25 @@
 # Clips for the Support Desk case study
 
-**In place now:** `overview.webm` — the walkthrough that plays in the panel beside the Overview
+**In place now:** `overview.mp4` — the walkthrough that plays in the panel beside the Overview
 (home, the queue, a thread, a reply going out, the detail panel). It came from the 50 MB screen
-recording on the Desktop (`Support desk videos/Google Chrome.gif`, 1748x1080, 26s) and was
-re-encoded to 1200x742 VP9 WebM at 2.3 MB — the GIF itself was twenty times too heavy to ship.
-The still at `../2-queue.jpg` stays as the video's poster, so the panel is never empty while it loads.
-There is no ffmpeg on this machine; the encode was done by playing the GIF into a canvas in
-headless Chrome and recording it with MediaRecorder. Replace the file at the same path to swap it.
+recording on the Desktop (`Support desk videos/Google Chrome.gif`, 1748x1080, 26s).
+
+**Always ship video, never the GIF.** The same 26 seconds:
+
+| format | size |
+| --- | --- |
+| GIF, as recorded | 50 MB |
+| WebM / VP9 | 2.3 MB |
+| **MP4 / H.264 (shipped)** | **0.27 MB** |
+
+A GIF is capped at 256 colours, cannot be paused when it scrolls out of view, and here was ~180x
+heavier than the MP4 for worse pictures. MP4 also plays everywhere, including Safari and iOS,
+which WebM does not reliably do. The still at `../2-queue.jpg` is the video's poster, so the panel is
+never empty while it loads.
+
+There is no ffmpeg on this machine. The encode was done by playing the GIF into a canvas in
+headless Chrome and recording that canvas with MediaRecorder (`video/mp4;codecs=avc1.4D401F`,
+1200x742, 15fps). Replace the file at the same path to swap the clip.
 
 # Flow clips
 
