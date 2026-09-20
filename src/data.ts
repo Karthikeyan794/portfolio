@@ -322,7 +322,7 @@ export const projects: Project[] = [
       },
       primer: {
         heads: { what: 'Overview' },
-        what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
+        what: 'Support Desk lets you *manage every customer request in one place*, on your own or as a team. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         showcase: {
           title: 'Support Desk',
           note: 'Queue, thread, customer and reply — the whole desk on one screen.',
@@ -334,7 +334,7 @@ export const projects: Project[] = [
       },
       brief: {
         problem: {
-          lead: 'Most support teams answer customers out of a shared inbox — and an email on its own carries nothing with it.',
+          lead: 'One person answering, or a whole team sharing it — support runs out of a shared inbox, and an email on its own carries nothing with it.',
           items: [
             'No owner — nobody can tell whose request it is',
             'No status, so “is anyone on this?” gets asked out loud',
@@ -342,10 +342,11 @@ export const projects: Project[] = [
             'Nothing counts whether the customer was answered in the time you promised',
             'No way to see everything one customer has raised, or who raises the most',
             'A helpdesk you pay for that still leaves the mail sitting in the inbox',
+            'Two people answer the same mail, and the customer hears twice',
           ],
         },
         solution: {
-          lead: 'Support Desk puts a real desk around that inbox, so your team can answer quickly and keep answering.',
+          lead: 'Support Desk puts a real desk around that inbox — for one person or a whole team — so you can answer quickly and keep answering.',
           items: [
           { title: 'Every request in one queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
           { title: 'Assignment and Teams alerts', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },

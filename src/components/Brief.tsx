@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { motion } from 'motion/react'
 import { useRef, useState } from 'react'
 import type { Brief as BriefData } from '../data'
 import Words from './Words'
@@ -103,9 +103,11 @@ export default function Brief({ brief }: { brief: BriefData }) {
         ))}
       </div>
 
-      {/* mode="wait" so the outgoing panel is gone before the next measures —
-          without it the two overlap and the block jumps as it settles */}
-      <AnimatePresence mode="wait" initial={false}>
+      {/* Deliberately NOT wrapped in AnimatePresence. mode="wait" holds the
+          outgoing panel until its exit animation finishes, and an exit
+          animation needs frames — in a throttled tab the panel would never
+          swap at all. Keying on `open` replaces it outright, so the click
+          always lands; the stagger below is decoration on top of that. */}
         <motion.div
           key={open}
           className="bpanel"
@@ -115,7 +117,6 @@ export default function Brief({ brief }: { brief: BriefData }) {
           variants={group}
           initial="rest"
           animate="in"
-          exit={{ opacity: 0, y: -6, transition: { duration: 0.16 } }}
         >
           {open === 'problem' && <Points lead={brief.problem.lead} items={brief.problem.items} />}
 
@@ -151,7 +152,6 @@ export default function Brief({ brief }: { brief: BriefData }) {
             </>
           )}
         </motion.div>
-      </AnimatePresence>
     </section>
   )
 }
