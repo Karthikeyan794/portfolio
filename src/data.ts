@@ -224,17 +224,19 @@ export type Slice = {
 export type Primer = {
   /** the line over each block; the block's own name sits above it as a small kicker */
   /** `what` is optional: the overview's big word says it already */
-  heads?: { what?: string; does: string }
+  heads?: { what?: string }
   what: string
   /** the app itself, beside the overview: a still, or a clip once there is one */
   showcase?: { bg?: string; poster: string; clip?: string; title?: string; note?: string }
-  does: { title: string; text: string }[]
 }
 
-/** the opening spread: what was wrong, what answered it, and what we were aiming at */
+/** the three panels under the overview: what was wrong, what answers it, and
+ *  what the team actually gets out of it. One at a time, on a tab. */
 export type Brief = {
-  problems: { lead: string; items: string[] }
-  solutions: { lead: string; items: string[] }
+  problem: { lead: string; items: string[] }
+  /** the old "what your team gets" list lives here now — it IS the solution */
+  solution: { lead: string; items: { title: string; text: string }[] }
+  benefits: { lead: string; items: string[] }
 }
 
 export type Project = {
@@ -319,7 +321,7 @@ export const projects: Project[] = [
         words: ['an owner.', 'a status.', 'a clock.', 'a reply.'],
       },
       primer: {
-        heads: { what: 'Overview', does: 'What your team gets' },
+        heads: { what: 'Overview' },
         what: 'Support Desk lets your team *manage every customer request in one place*. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         showcase: {
           title: 'Support Desk',
@@ -329,17 +331,9 @@ export const projects: Project[] = [
           // — an .mp4 or a .gif here plays in place of the still, no other change.
           clip: '/work/support-desk/clips/overview.mp4',
         },
-        does: [
-          { title: 'Shared queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
-          { title: 'Assignment and Teams alerts', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },
-          { title: 'Reply from the request', text: 'Answer on the customer’s own thread without leaving the desk, with the reply already drafted and the full conversation beside it.' },
-          { title: 'Customer view', text: 'Group every request by company, so your team sees an account’s whole history before they answer the one in front of them.' },
-          { title: 'Response SLA', text: 'Run a response clock on every request, so your team knows who is still waiting and for how long — before it turns into a complaint.' },
-          { title: 'Insights', text: 'Surface volume, repeat problems and your most frequent requesters in one view, so your team fixes causes instead of symptoms.' },
-        ],
       },
       brief: {
-        problems: {
+        problem: {
           lead: 'Most support teams answer customers out of a shared inbox — and an email on its own carries nothing with it.',
           items: [
             'No owner — nobody can tell whose request it is',
@@ -350,21 +344,33 @@ export const projects: Project[] = [
             'A helpdesk you pay for that still leaves the mail sitting in the inbox',
           ],
         },
-        solutions: {
+        solution: {
           lead: 'Support Desk puts a real desk around that inbox, so your team can answer quickly and keep answering.',
           items: [
-            'Assign a request and its owner hears about it in Teams',
-            'Status, priority and owner on one row the whole team can see',
-            'The customer’s conversation beside the request — reply without leaving',
-            'A response clock, with the target measured rather than guessed',
-            'A customer directory that builds itself out of the requests',
-            'Roles and saved views — and no new licence for anybody',
+          { title: 'Every request in one queue', text: 'Centralise every customer request in one queue your team can filter, search and sort — so nothing sits forgotten in somebody’s inbox.' },
+          { title: 'Assignment and Teams alerts', text: 'Hand a request to the right person and notify them in Teams instantly, with the customer, the question and a link straight back to it.' },
+          { title: 'Reply from the request', text: 'Answer on the customer’s own thread without leaving the desk, with the reply already drafted and the full conversation beside it.' },
+          { title: 'Customer view', text: 'Group every request by company, so your team sees an account’s whole history before they answer the one in front of them.' },
+          { title: 'Response SLA', text: 'Run a response clock on every request, so your team knows who is still waiting and for how long — before it turns into a complaint.' },
+          { title: 'Insights', text: 'Surface volume, repeat problems and your most frequent requesters in one view, so your team fixes causes instead of symptoms.' },
+          ],
+        },
+        benefits: {
+          lead: 'What the team actually gets out of it.',
+          items: [
+            'Nothing gets lost — every request has an owner and a status',
+            'No more “who is on this?” — the queue already answers it',
+            'Faster first replies — the clock is measured, not guessed',
+            'Nobody repeats themselves — the customer’s history sits beside the request',
+            'Causes get fixed, not symptoms — repeat problems surface in one view',
+            'No new licences — it runs on the access the team already has',
           ],
         },
       },
       slices: [
         {
           span: 'full',
+          chapter: 'How it works',
           heading: 'The queue you land on',
           body: 'One list, thirteen filters, search, sort, and a split you can drag. This is the screen the team lives in all day, so it loads fast, keeps your place, and never buries a ticket behind a tab.',
           image: '/work/support-desk/2-queue.jpg',

@@ -14,11 +14,6 @@ const item = {
   rest: { opacity: 0, y: 16 },
   in: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 90, damping: 18 } },
 } as const
-/* each row slides in from the left a beat after the one before it */
-const row = {
-  rest: { opacity: 0, x: -14 },
-  in: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 80, damping: 18 } },
-} as const
 
 
 /**
@@ -138,38 +133,6 @@ export default function Primer({ primer }: { primer: PrimerData }) {
         )}
       </motion.div>
 
-      <motion.div
-        className="primer__block"
-        variants={group}
-        initial="rest"
-        whileInView="in"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <Head kick="What it does" text={primer.heads?.does} />
-        <ol className="flist">
-          {primer.does.map((d, i) => (
-            <motion.li className="fl" key={d.title} variants={row}>
-              {/* the numeral steps aside on hover and hands the row to an arrow */}
-              <span className="fl__mark" aria-hidden="true">
-                <span className="fl__no">{String(i + 1).padStart(2, '0')}.</span>
-                <svg className="fl__arw" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 12h16" />
-                  <path d="M13 6l6 6-6 6" />
-                </svg>
-              </span>
-              <div className="fl__body">
-                <h4 className="fl__title">
-                  <Words text={d.title} />
-                </h4>
-                <p className="fl__text">
-                  <Words text={d.text} />
-                </p>
-              </div>
-            </motion.li>
-          ))}
-        </ol>
-      </motion.div>
 
     </section>
   )

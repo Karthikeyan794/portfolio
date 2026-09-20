@@ -10,7 +10,7 @@ recording on the Desktop (`Support desk videos/Google Chrome.gif`, 1748x1080, 26
 | --- | --- |
 | GIF, as recorded | 50 MB |
 | WebM / VP9 | 2.3 MB |
-| **MP4 / H.264 (shipped)** | **0.27 MB** |
+| **MP4 / H.264, full 1748x1080 (shipped)** | **0.44 MB** |
 
 A GIF is capped at 256 colours, cannot be paused when it scrolls out of view, and here was ~180x
 heavier than the MP4 for worse pictures. MP4 also plays everywhere, including Safari and iOS,
@@ -19,7 +19,7 @@ never empty while it loads.
 
 There is no ffmpeg on this machine. The encode was done by playing the GIF into a canvas in
 headless Chrome and recording that canvas with MediaRecorder (`video/mp4;codecs=avc1.4D401F`,
-1200x742, 15fps). Replace the file at the same path to swap the clip.
+1748x1080 — the recording's own size, never downscaled — 15fps, 9 Mbps ceiling). Replace the file at the same path to swap the clip.
 
 # Flow clips
 
