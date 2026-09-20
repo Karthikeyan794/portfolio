@@ -121,14 +121,13 @@ export default function Primer({ primer }: { primer: PrimerData }) {
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />
               )}
-              {(primer.showcase.title || primer.showcase.note) && (
-                <figcaption className="oshot__cap">
-                  {primer.showcase.title && <span className="oshot__cap-t">{primer.showcase.title}</span>}
-                  {primer.showcase.note && <span className="oshot__cap-p">{primer.showcase.note}</span>}
-                </figcaption>
-              )}
               </div>
             </motion.div>
+            {primer.showcase.note && (
+              /* the line about the screen sits under it, not over it — nothing
+                 is laid on top of the app itself */
+              <p className="oshot__note">{primer.showcase.note}</p>
+            )}
           </motion.div>
         )}
       </motion.div>

@@ -227,7 +227,7 @@ export type Primer = {
   heads?: { what?: string }
   what: string
   /** the app itself, beside the overview: a still, or a clip once there is one */
-  showcase?: { bg?: string; poster: string; clip?: string; title?: string; note?: string }
+  showcase?: { bg?: string; poster: string; clip?: string; note?: string }
 }
 
 /** the three panels under the overview: what was wrong, what answers it, and
@@ -325,7 +325,6 @@ export const projects: Project[] = [
         heads: { what: 'Overview' },
         what: 'Support Desk lets you *manage every customer request in one place*, on your own or as a team. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
         showcase: {
-          title: 'Support Desk',
           note: 'Queue, thread, customer and reply — the whole desk on one screen.',
           poster: '/work/support-desk/2-queue.jpg',
           // TODO: record the desk and drop the file in /public/work/support-desk/

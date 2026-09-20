@@ -1564,27 +1564,13 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(90% 70% at 0% 0%, rgba(166, 232, 91, 0.12), transparent 62%),
     linear-gradient(140deg, rgba(8, 12, 11, 0.12) 0%, rgba(8, 12, 11, 0.42) 82%);
 }
-.oshot__cap {
-  /* the app's name and one line about it, sitting on the picture — a scrim
-     under it so the words hold whatever the screenshot is doing */
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  display: grid;
-  gap: 5px;
-  padding: clamp(26px, 4.5vw, 44px) clamp(16px, 2vw, 26px) clamp(13px, 1.6vw, 18px);
-  color: #fff;
-  background: linear-gradient(to top, rgba(6, 10, 9, 0.92) 0%, rgba(6, 10, 9, 0.72) 42%, transparent 100%);
-  pointer-events: none;
-}
-.oshot__cap-t { font-size: clamp(15px, 1.35vw, 18px); font-weight: 600; letter-spacing: -0.012em; }
-.oshot__cap-p {
-  font-size: clamp(12.5px, 1.05vw, 14px);
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.78);
-  max-width: 52ch;
+.oshot__note {
+  /* under the screen, in the page's own voice — small, quiet, off to the left */
+  margin: 12px 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-mid);
+  max-width: 54ch;
 }
 .oshot__frame {
   position: relative;
