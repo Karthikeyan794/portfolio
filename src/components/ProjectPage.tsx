@@ -214,6 +214,11 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
   )
 }
 
+/** a chapter name as an id the top bar can scroll to: 'How it works' -> 'how-it-works' */
+export function chapterId(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
 /** Slices carry a chapter label; this turns them into chapters that number from 01. */
 function chaptered(slices: Slice[]) {
   let current = ''
@@ -291,9 +296,13 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
   const detail = detailFor(project)
   // only the sections this project really has get a tab
+  // the walk through the page, in the order you meet it
+  const chapters = [...new Set(detail.slices.map((s) => s.chapter).filter(Boolean) as string[])]
   const tabs: Tab[] = [
     detail.primer && { id: 'overview', label: 'Overview' },
     detail.brief && { id: 'why', label: 'Why' },
+    detail.brief && { id: 'benefits', label: 'Benefits' },
+    chapters.includes('How it works') && { id: chapterId('How it works'), label: 'How it works' },
     detail.slices.some((s) => s.anchor === 'demo') && { id: 'demo', label: 'Demo' },
   ].filter(Boolean) as Tab[]
 
@@ -369,6 +378,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
               {item.opens && (
                 <motion.h2
                   className="chapter"
+                  id={chapterId(item.opens)}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.7 }}
