@@ -76,6 +76,11 @@ export default function Brief({ brief }: { brief: BriefData }) {
             <Words text={brief.problem.lead} />
           </motion.p>
           <Points items={brief.problem.items} />
+          {brief.problem.close && (
+            <motion.p className="bclose" variants={item}>
+              <Words text={brief.problem.close} />
+            </motion.p>
+          )}
         </div>
 
         <div className="bblock">
@@ -105,6 +110,11 @@ export default function Brief({ brief }: { brief: BriefData }) {
               </motion.li>
             ))}
           </ol>
+          {brief.solution.close && (
+            <motion.p className="bclose" variants={item}>
+              <Words text={brief.solution.close} />
+            </motion.p>
+          )}
         </div>
       </motion.section>
 

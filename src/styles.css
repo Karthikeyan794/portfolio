@@ -1810,6 +1810,17 @@ a { color: inherit; text-decoration: none; }
 }
 .bpoints svg { flex: none; margin-top: 3px; color: var(--muted); }
 .bpoints--good svg { color: var(--accent-ink); }
+/* the line a section lands on once the list is done — set apart from the
+   points above it, and a step quieter than the lead that opened it */
+.bclose {
+  margin-top: clamp(22px, 3vh, 32px);
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  max-width: 62ch;
+  color: var(--text-mid);
+  font-size: 15.5px;
+  line-height: 1.65;
+}
 
 /* a chapter title between groups of rows — Research, The build, What broke … */
 .chapter {
