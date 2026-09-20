@@ -75,7 +75,9 @@ export default function Brief({ brief }: { brief: BriefData }) {
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.problem.lead} />
           </motion.p>
-          <Points items={brief.problem.items} />
+          <div className="bpanel-card">
+            <Points items={brief.problem.items} />
+          </div>
           {brief.problem.close && (
             <motion.p className="bclose" variants={item}>
               <Words text={brief.problem.close} />
@@ -88,22 +90,22 @@ export default function Brief({ brief }: { brief: BriefData }) {
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.solution.lead} />
           </motion.p>
-          <ol className="flist">
+          {/* a line walked top to bottom: it is one request moving through the
+              desk, so the steps are joined rather than listed */}
+          <ol className="steps">
             {brief.solution.items.map((d, i) => (
-              <motion.li className="fl" key={d.title} variants={item}>
-                {/* the numeral steps aside on hover and hands the row to an arrow */}
-                <span className="fl__mark" aria-hidden="true">
-                  <span className="fl__no">{String(i + 1).padStart(2, '0')}.</span>
-                  <svg className="fl__arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 12h16" />
-                    <path d="M13 6l6 6-6 6" />
-                  </svg>
+              <motion.li className="step2" key={d.title} variants={item}>
+                <span className="step2__rail" aria-hidden="true">
+                  <span className="step2__dot">{String(i + 1).padStart(2, '0')}</span>
                 </span>
-                <div className="fl__body">
-                  <h4 className="fl__title">
-                    <Words text={d.title} />
-                  </h4>
-                  <p className="fl__text">
+                <div className="step2__body">
+                  <div className="step2__head">
+                    <h4 className="step2__title">
+                      <Words text={d.title} />
+                    </h4>
+                    {d.tag && <span className="step2__tag">{d.tag}</span>}
+                  </div>
+                  <p className="step2__text">
                     <Words text={d.text} />
                   </p>
                 </div>

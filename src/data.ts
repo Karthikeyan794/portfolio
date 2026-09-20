@@ -235,8 +235,10 @@ export type Primer = {
 export type Brief = {
   /** `close` is the line the section lands on after the list */
   problem: { lead: string; items: string[]; close?: string }
-  /** told as a story: one request followed through the desk, beat by beat */
-  solution: { lead: string; items: { title: string; text: string }[]; close?: string }
+  /** told as a story: one request followed through the desk, beat by beat.
+   *  `tag` names the capability doing the work at that moment, so the story
+   *  still says what the thing is called. */
+  solution: { lead: string; items: { tag?: string; title: string; text: string }[]; close?: string }
   benefits: { lead: string; items: string[] }
 }
 
@@ -334,26 +336,28 @@ export const projects: Project[] = [
       },
       brief: {
         problem: {
-          lead: 'A customer emails. It lands in a shared mailbox — and from that moment nobody can say what happened to it.',
+          lead: 'Support arrives as email. It lands in a shared mailbox in Outlook, and from the moment it lands nobody can say what became of it.',
           items: [
-            'Has anyone replied? The mailbox does not say',
+            'Has anyone replied yet? The shared mailbox does not say',
             'Is it closed, or still open with the customer waiting?',
-            'Who answered it — and did somebody else answer it too?',
-            'What was the customer’s actual problem? You reread the whole thread to find out',
-            'How long have they been waiting? Nothing is counting',
+            'Who owns it — and has somebody else already answered the same mail?',
+            'What was the customer actually asking? You reread the whole thread to find out',
+            'Replies go out from personal inboxes, so the next person picking it up sees no history',
+            'How long has the customer been waiting? Nothing counts it against what you promised',
             'Which customers raise the most, and what about? No way to look',
+            'A helpdesk tool only adds another place to check — the mail still sits in the mailbox',
           ],
           close: 'For a handful of mails a week, a shared mailbox is fine. At scale it stops working — more customers, more threads, more people touching them — and what breaks is the thing a customer actually judges you on: a fast, accurate answer, inside the time you promised.',
         },
         solution: {
           lead: 'Support Desk gives that mail somewhere to live. Follow one request through it.',
           items: [
-            { title: 'It arrives', text: 'The customer sends the same mail to the same address as always. The desk reads the mailbox and opens a ticket from it — a number, a status, a clock, and the customer it came from.' },
-            { title: 'It gets an owner', text: 'Somebody takes it, or it is handed to them, and they are told straight away where they already work. Their name is on the row, so nobody wonders whether it is theirs — and nobody answers it twice.' },
-            { title: 'It gets answered', text: 'The reply is written on the customer’s own thread, from inside the desk, with the whole conversation beside it. The customer receives a normal email. Nobody on your side goes looking for one.' },
-            { title: 'The clock has been running', text: 'From the moment it arrived the desk has been counting. You can see who is still waiting and for how long — before the customer has to ask a second time.' },
-            { title: 'The history is already there', text: 'Every request that customer has raised sits beside the one in front of you, so you answer knowing what they asked last month and who handled it.' },
-            { title: 'The pattern shows up', text: 'Volume, repeat problems and the people who raise the most, in one view — so the same question stops coming back next month.' },
+            { tag: 'Shared queue', title: 'It arrives', text: 'The customer sends the same mail to the same address as always. The desk reads the shared mailbox and opens a ticket from it — a number, a status, a clock, and the customer it came from. One queue you can filter, search and sort, instead of a mailbox you scroll.' },
+            { tag: 'Assignment and alerts', title: 'It gets an owner', text: 'Somebody takes it, or it is handed to them, and they are told straight away where they already work. Their name is on the row, so nobody wonders whether it is theirs — and nobody answers the same mail twice.' },
+            { tag: 'Reply in place', title: 'It gets answered', text: 'The reply is written on the customer’s own thread, from inside the desk, with the whole conversation beside it. The customer receives a normal email. Nobody on your side goes hunting through a personal inbox for the history.' },
+            { tag: 'Response SLA', title: 'The clock has been running', text: 'From the moment it arrived the desk has been counting against the time you promised. You can see who is still waiting and for how long — before the customer has to ask a second time.' },
+            { tag: 'Customer view', title: 'The history is already there', text: 'Every request that customer has raised sits beside the one in front of you, grouped by company — so you answer knowing what they asked last month and who handled it.' },
+            { tag: 'Insights', title: 'The pattern shows up', text: 'Volume, repeat problems and the people who raise the most, in one view — so the same question stops coming back next month.' },
           ],
           close: 'Nothing is lost, nobody repeats themselves, and the answer arrives inside the time you promised.',
         },

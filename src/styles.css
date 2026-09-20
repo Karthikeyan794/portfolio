@@ -1539,10 +1539,11 @@ a { color: inherit; text-decoration: none; }
    Named .oshot, not .shot: .shot is already the media box on the project cards
    further up this file, and sharing it let those rules into this one. */
 .oshot {
-  /* no card around the picture: no border, no padding, no panel behind it.
-     The screen is the whole thing, corner to corner. */
+  /* no card around the picture — the screen runs corner to corner — but a
+     hairline of white around it, so the app has an edge against the page */
   position: relative;
   align-self: start;
+  border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 14px;
   overflow: hidden;
 }
@@ -1796,6 +1797,106 @@ a { color: inherit; text-decoration: none; }
 }
 .bpoints svg { flex: none; margin-top: 3px; color: var(--muted); }
 .bpoints--good svg { color: var(--accent-ink); }
+
+/* the problem sits in its own panel — the list is long, and a plain column of
+   eight complaints reads as a wall. Two columns once there is room for them. */
+.bpanel-card {
+  padding: clamp(20px, 3vw, 30px);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg-elev) 62%, transparent);
+  box-shadow: inset 0 0 0 1px var(--card-ring);
+}
+.bpanel-card .bpoints { max-width: none; }
+@media (min-width: 860px) {
+  .bpanel-card .bpoints {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(24px, 3vw, 44px);
+  }
+}
+
+/* ── the solution, walked as one line ──────────────────────
+   It is a single request moving through the desk, so the beats are joined by
+   a rail instead of listed. The rail is drawn on the item, not the list, so
+   the last one can stop it short of the floor. */
+.steps { display: grid; }
+.step2 {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  column-gap: clamp(14px, 2vw, 22px);
+  padding-bottom: clamp(22px, 3.4vh, 34px);
+}
+.step2:last-child { padding-bottom: 0; }
+.step2__rail { position: relative; display: block; }
+/* the line down to the next beat */
+.step2:not(:last-child) .step2__rail::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  bottom: calc(-1 * clamp(22px, 3.4vh, 34px));
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, var(--line-strong), color-mix(in srgb, var(--line) 40%, transparent));
+}
+.step2__dot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  transition: color 0.25s ease, box-shadow 0.25s ease;
+}
+.step2:hover .step2__dot {
+  color: var(--accent-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.step2__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+.step2__title {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(18px, 1.9vw, 23px);
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+/* the capability doing the work at this moment, named */
+.step2__tag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 34%, transparent);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+.step2__text {
+  color: var(--text-mid);
+  font-size: 15px;
+  line-height: 1.62;
+  max-width: 62ch;
+}
+@media (max-width: 560px) {
+  .step2 { grid-template-columns: 28px minmax(0, 1fr); }
+  .step2__dot { width: 28px; height: 28px; font-size: 10.5px; }
+  .step2:not(:last-child) .step2__rail::after { top: 28px; }
+}
 /* the line a section lands on once the list is done — set apart from the
    points above it, and a step quieter than the lead that opened it */
 .bclose {
