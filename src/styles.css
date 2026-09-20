@@ -1401,7 +1401,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--accent);
 }
 /* room for the one floating bar when we jump to a section */
-#overview, #why, #demo { scroll-margin-top: 96px; }
+#overview, #why, #benefits, #how-it-works, #demo { scroll-margin-top: 96px; }
 
 @media (max-width: 700px) {
   .ctabs__row { margin-right: 0; }
@@ -1763,49 +1763,35 @@ a { color: inherit; text-decoration: none; }
    The opening spread: two columns, then the two goals side by side. */
 .brief { margin: clamp(50px, 8vh, 104px) 0 0; }
 
-/* ── problem / solution / benefits, one at a time ──────────
-   The row of tabs, then the panel it opens. Same pill idiom as the section
-   nav at the top of the page, so the two read as the same control. */
-.btabs {
-  display: inline-flex;
-  gap: 2px;
-  align-items: center;
-  max-width: 100%;
-  margin-bottom: clamp(20px, 3vh, 30px);
-  padding: 5px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg-elev) 82%, transparent);
-  backdrop-filter: blur(14px) saturate(1.1);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.btabs::-webkit-scrollbar { display: none; }
-.btab {
+/* ── problem, solution and benefits ────────────────────────
+   Plain sections now, each one a stop on the top bar. The inline tab row that
+   used to sit here competed with that bar; there is one way around the page. */
+.bblock + .bblock { margin-top: clamp(40px, 6vh, 76px); }
+/* set like the overview's title, so the page speaks with one voice */
+.bhead {
   position: relative;
-  flex: none;
-  appearance: none;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  padding: 9px 18px;
-  border-radius: 999px;
-  font-family: var(--sans);
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--muted);
-  white-space: nowrap;
-  transition: color 0.2s ease;
+  display: inline-block;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(21px, 2.3vw, 29px);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  color: var(--text);
+  --rule-gap: 10px;
+  padding-bottom: calc(var(--rule-gap) + 1px);
+  margin-bottom: 18px;
 }
-.btab:hover { color: var(--text); }
-.btab--on { color: #10221c; }
-.btab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.btab__label { position: relative; z-index: 1; }
-.btab__pill { position: absolute; inset: 0; border-radius: 999px; background: var(--accent); }
-
-/* the panel underneath. min-height keeps the page from jumping as the three
-   panels swap, since they are not the same length */
-.bpanel { min-height: 340px; }
+.bhead::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent);
+}
+.bhead::after { content: '.'; color: var(--accent); font-style: normal; }
 .bpanel__lead {
   color: var(--text-mid);
   font-size: 15.5px;
@@ -1824,11 +1810,6 @@ a { color: inherit; text-decoration: none; }
 }
 .bpoints svg { flex: none; margin-top: 3px; color: var(--muted); }
 .bpoints--good svg { color: var(--accent-ink); }
-
-@media (max-width: 560px) {
-  .btab { padding: 8px 13px; font-size: 12.5px; }
-  .bpanel { min-height: 420px; }
-}
 
 /* a chapter title between groups of rows — Research, The build, What broke … */
 .chapter {
