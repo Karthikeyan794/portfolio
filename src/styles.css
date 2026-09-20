@@ -40,6 +40,10 @@
   color-scheme: light;
 }
 
+/* the hairline around the product screen: barely-there white on dark, the
+   page's own line on light, where white would simply vanish */
+:root { --shot-edge: rgba(23, 28, 26, 0.14); }
+:root[data-theme='dark'] { --shot-edge: rgba(255, 255, 255, 0.22); }
 :root[data-theme='dark'] {
   --bg: #0a0b0c;            /* near-black */
   --bg-elev: #141618;
@@ -1543,7 +1547,7 @@ a { color: inherit; text-decoration: none; }
      hairline of white around it, so the app has an edge against the page */
   position: relative;
   align-self: start;
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--shot-edge);
   border-radius: 14px;
   overflow: hidden;
 }
@@ -1566,12 +1570,30 @@ a { color: inherit; text-decoration: none; }
     linear-gradient(140deg, rgba(8, 12, 11, 0.12) 0%, rgba(8, 12, 11, 0.42) 82%);
 }
 .oshot__note {
-  /* under the screen, in the page's own voice — small, quiet, off to the left */
-  margin: 12px 2px 0;
-  font-size: 13px;
-  line-height: 1.5;
+  /* under the screen: a short accent rule, then the line — the same grammar as
+     the kickers elsewhere on the page, so it reads as a caption and not as
+     another paragraph that wandered out of the column */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+  margin: 16px 2px 0;
+  max-width: 58ch;
+  font-size: 13.5px;
+  line-height: 1.55;
   color: var(--text-mid);
-  max-width: 54ch;
+}
+.oshot__note::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--accent);
+  transform: translateY(-4px);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.oshot__track:hover .oshot__note::before { width: 40px; }
+@media (prefers-reduced-motion: reduce) {
+  .oshot__note::before { transition: none; }
 }
 .oshot__frame {
   position: relative;
