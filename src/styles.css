@@ -1891,16 +1891,22 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 20px;
   max-width: 52ch;
 }
-.bpoints { display: grid; gap: 12px; max-width: 74ch; }
+.bpoints { display: grid; max-width: 74ch; }
+/* a row of a list, not a chip in a stack: a hairline under each one gives
+   the column its rhythm, which the filled discs were faking with weight */
 .bpoints li {
   display: flex;
-  gap: 11px;
+  gap: 13px;
   align-items: flex-start;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
   font-size: 15px;
   line-height: 1.55;
   color: var(--text);
 }
-.bpoints svg { flex: none; margin-top: 3px; color: var(--muted); }
+.bpoints li:first-child { padding-top: 2px; }
+.bpoints li:last-child { border-bottom: 0; padding-bottom: 0; }
+.bpoints svg { flex: none; color: var(--muted); }
 .bpoints--good svg { color: var(--accent-ink); }
 
 /* ── the two sides, each in its own card ───────────────────
@@ -1922,25 +1928,19 @@ a { color: inherit; text-decoration: none; }
 }
 /* straight after the paragraph — the spare room belongs at the foot of the
    shorter card, not in a gap halfway down it */
-.bcol .bpoints { max-width: none; padding-top: 2px; gap: 14px; }
-.bcol .bpoints li { gap: 12px; align-items: flex-start; }
+.bcol .bpoints { max-width: none; padding-top: 2px; }
 
-/* the mark gets a badge, the way the benefit cards do */
+/* no disc behind it — the glyph on its own, set on the first line of text */
 .bpoints__mark {
   flex: none;
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
-  margin-top: -1px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--text) 7%, transparent);
+  width: 15px;
+  height: 15px;
+  margin-top: 3px;
   color: var(--muted);
 }
-.bpoints--good .bpoints__mark {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent-ink);
-}
+.bpoints--good .bpoints__mark { color: var(--accent-ink); }
 .bpoints__mark svg { margin-top: 0; }
 
 @media (max-width: 1000px) {
