@@ -184,8 +184,10 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
                 </motion.div>
               ))}
             </motion.div>
-          ) : (
-            /* point at the image and its note slides up over it */
+          ) : slice.image ? (
+            /* point at the image and its note slides up over it. Guarded: a
+               slice can carry only a clip, and an <img> with no src renders as
+               a broken-picture icon with the heading as its alt text. */
             <motion.figure className="frame frame--shot" variants={frameV}>
               <motion.img
                 src={slice.image}
@@ -197,7 +199,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
               <motion.span className="frame__sheen" variants={sheenV} aria-hidden="true" />
               {slice.caption && <figcaption>{slice.caption}</figcaption>}
             </motion.figure>
-          )}
+          ) : null}
 
           {/* the flow, recorded — sits under whatever explains it */}
           {slice.clip && (
