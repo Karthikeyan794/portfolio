@@ -428,9 +428,9 @@ export const projects: Project[] = [
         {
           span: 'full',
           heading: 'The customer view it produces',
-          body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody keeps it current — a new address creates its person the first time they write.',
-          image: '/work/support-desk/6-customers.jpg',
-          caption: 'Accounts → people → their tickets.',
+          body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody keeps it current — a new address creates its person the first time they write, so the directory builds itself out of the mail that was already arriving.',
+          clip: '/work/support-desk/clips/customers.mp4',
+          caption: 'Accounts → people → their tickets, all of it derived from the sender’s address.',
         },
         {
           span: 'full',
