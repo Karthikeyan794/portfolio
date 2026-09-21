@@ -1451,7 +1451,9 @@ a { color: inherit; text-decoration: none; }
   font-size: clamp(14.5px, 1.3vw, 17.5px);
   line-height: 1.62;
   letter-spacing: -0.005em;
-  color: var(--text);
+  /* a step off full white: the marked phrase and the headings keep the top of
+     the contrast range, and this paragraph sits just under them */
+  color: color-mix(in srgb, var(--text) 60%, var(--text-mid));
   /* the column sets the measure now that the picture has the width */
   max-width: 56ch;
 }
