@@ -1749,13 +1749,20 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   gap: 10px;
   justify-items: start;
+  /* full width, so the heading's rule reaches the edge of the column */
+  justify-self: stretch;
 }
 /* the overview keeps its own register: not the serif titles the other
    sections use, and not another hairline — a small tag in the accent, sized
    to its own word */
 .primer__h {
   /* no container — the words carry it */
-  align-self: start;
+  /* full width, so its rule has somewhere to run */
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-self: stretch;
+  width: 100%;
   font-family: var(--label-face);
   font-size: 26px;
   font-weight: 400;
@@ -1865,8 +1872,11 @@ a { color: inherit; text-decoration: none; }
 .bblock + .bblock { margin-top: clamp(40px, 6vh, 76px); }
 /* set like the overview's title, so the page speaks with one voice */
 .bhead {
-  position: relative;
-  display: inline-block;
+  /* a row, like the chapter openings: the words, then a line to the edge */
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
   /* the same small-caps label the overview wears, so the stops on the top bar
      are all titled in one voice */
   font-family: var(--label-face);
@@ -1878,7 +1888,13 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent-ink);
   margin-bottom: 16px;
 }
-.bhead::after { content: '.'; color: var(--accent); font-style: normal; }
+.bhead::after,
+.primer__h::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
 .bpanel__lead {
   color: var(--text-mid);
   font-size: 15.5px;
@@ -1961,10 +1977,9 @@ a { color: inherit; text-decoration: none; }
 .wcol .bpanel__lead,
 .wcol .bpoints { max-width: none; }
 .wblock + .wblock {
-  /* problem and solution are two stops as well, so they take the same rule */
-  margin-top: clamp(34px, 5vh, 62px);
-  border-top: 1px solid var(--line);
-  padding-top: clamp(34px, 5vh, 62px);
+  /* no rule between these two: they are halves of one section, and the line
+     landed right under the problem's picture where it read as part of it */
+  margin-top: clamp(44px, 7vh, 96px);
 }
 .wshot { margin: 0; }
 .wshot img {
