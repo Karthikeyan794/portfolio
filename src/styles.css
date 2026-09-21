@@ -2020,11 +2020,15 @@ a { color: inherit; text-decoration: none; }
   margin: clamp(16px, 3vh, 44px) 0 -14px;
 }
 .chapter__name {
+  /* titled like the overview and the two sides of the argument: the same
+     small-caps face, the same size, the same accent — a chapter opening is a
+     heading, not a caption */
   font-family: var(--label-face);
   font-weight: 400;
-  font-size: 13px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 26px;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  color: var(--accent-ink);
   white-space: nowrap;
 }
 .chapter__rule { flex: 1; height: 1px; background: var(--line); transform-origin: left center; }
