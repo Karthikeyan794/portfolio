@@ -459,76 +459,13 @@ export const projects: Project[] = [
           diagram: 'teams',
         },
         {
-          chapter: 'What broke',
-          span: 'full',
-          heading: 'The join that nearly duplicated a production list',
-          body: 'I caught it because a customer I knew perfectly well rendered as “not saved”. One mismatched key, and the feature meant to keep two systems in step would have doubled a production list instead.',
-          pair: {
-            problem: 'The app keyed accounts by full domain, the list stored the bare label, so every lookup silently missed. The sync button compared those same two forms — it would have written 62 duplicate rows into a 145-row production list.',
-            solution: 'Both sides normalise to one key before they compare or write. Nothing silently misses now, because a miss and a match are measured against the same string.',
-          },
-        },
-        {
-          span: 'full',
-          heading: 'Left 248 tickets blank on purpose',
-          body: 'The backfill wrote a type to 399 tickets. It could have written one to all 647.',
-          pair: {
-            problem: 'On 248 tickets no rule matched confidently. Filling them anyway would have made the column look complete, and a guess is indistinguishable from a fact once it is written — somebody reports on it a month later.',
-            solution: 'Skip them. Blank is honest, wrong is expensive, and a visible gap is the thing that gets a rule written properly later.',
-          },
-        },
-        {
-          span: 'full',
-          heading: 'An afternoon lost to one word',
-          body: 'The kind of bug that is invisible in the code and obvious in the documentation.',
-          pair: {
-            problem: 'Every call to Freshdesk came back 401 invalid_credentials. The key was right and the account was right, so I read the client code again and again.',
-            solution: 'Freshdesk wants Basic auth, and the credential had been saved as Bearer. One word in a settings page, an afternoon to find. The key itself never belonged in the bundle either — it stays server-side behind a proxy, because a key a browser can read is a key every signed-in tab can use.',
-          },
-        },
-        {
-          span: 'full',
-          heading: 'A misdiagnosis I corrected',
-          body: 'Worth writing down because the evidence was there the whole time and I read it backwards.',
-          pair: {
-            problem: 'A deploy started failing with a generic fetch error — nothing in the console, the page rendering fine. I concluded the browser had lost networking and looked in the wrong place for an afternoon.',
-            solution: 'The API was answering with a redirect to the Microsoft login page, and a cross-origin redirect on fetch surfaces as exactly that generic error. The session had expired. I had read a 302 from the shell as “the site is up” instead of “the session is gone”.',
-          },
-        },
-        {
-          chapter: 'Where it landed',
-          span: 'full',
-          heading: 'What changed',
-          body: 'A ticket now has an owner, a status, a clock and a customer — and the person who owns it finds out in Teams without opening anything. Replies leave from the desk on the same thread. And the team learned two things about its own data that nobody had seen before: most of the list was system noise, and mail to some of its own addresses had never been arriving at all.',
-          stats: [
-            { value: '6/6', label: 'of the asks from that first meeting are in daily use' },
-            { value: '609', label: 'tickets classified in a single backfill — from 8 · 1 · 0 before' },
-            { value: '62', label: 'customer accounts derived from the mail, with no data entry' },
-            { value: '0', label: 'new licences, and no ticket data left the tenant' },
-          ],
-        },
-        {
-          span: 'full',
-          heading: 'What I would do next',
-          body: 'Get a resolution time actually written — the column exists and is writable, and filling it revives six dead metrics and half the intake chart. Finish the customer portal, so a customer can see their own tickets without mailing to ask. Put the Teams bot on a real identity instead of a stub. Fix sender attribution on forwarded threads, where a support reply is credited to the customer and skews the who-answers data. And make it responsive: it is desktop-only today, and the queue is the obvious phone screen.',
-        },
-        {
+          chapter: 'Demo',
           span: 'full',
           anchor: 'demo',
           heading: 'Try it yourself',
           body: 'There is a runnable demo of the desk on generated data — the same layout, volumes and behaviour as production, with fictional companies, people and email bodies. No customer information appears in it, and it needs no sign-in and no internet.',
           // TODO: paste the hosted demo URL into `demo.href` above and it appears in
           // the page header too. Until then this reads as a description only.
-        },
-        {
-          span: 'full',
-          heading: 'Walkthrough',
-          body: 'A run through the desk end to end — the gate, an approval, an assignment landing in Teams, then a reply going out on the same thread.',
-          // TODO: record this and drop the file in /public/work/support-desk/,
-          // or paste a YouTube/Loom URL. Shot list is in the demo package's
-          // HELP-MAILBOX-ACCESS-FLOW.md, section 7. Per-flow clips go on each
-          // flow slice as `clip: '/work/support-desk/clips/<name>.mp4'`.
-          video: '',
         },
       ],
     },
