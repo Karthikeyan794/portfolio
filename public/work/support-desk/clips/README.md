@@ -100,6 +100,9 @@ same 3640x2160 and the same 55 seconds, re-encoded to **34 MB**; frames compared
 1:1 are indistinguishable. If you ever want the original bytes served, put it on storage outside
 git (Vercel Blob, S3, anything with a URL) and point `clip` at that URL instead of a local path.
 
+`assign.mp4` — auto-assign picking an owner, changing it by hand in the detail panel, the fields
+on that panel, and what moving a ticket to Closed asks for. Byte for byte: 1592x1080, 72 MB.
+
 ## The rest of the shot list
 
 One clip per flow still to come — the flows are numbered in the case study, and each slice in

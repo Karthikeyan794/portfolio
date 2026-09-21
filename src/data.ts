@@ -404,6 +404,13 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'Auto-assign, and the fields it insists on',
+          body: 'A ticket can arrive already owned — an auto-assign rule picks the person, and the panel beside the thread is where you change it when the rule gets it wrong. The rest of that panel is the record: status, priority, ticket type, categories, the customer and the dates. The ones marked required are enforced rather than suggested, so moving a ticket to Closed asks for them first and nothing is shut with its type or its category still empty.',
+          clip: '/work/support-desk/clips/assign.mp4',
+          caption: 'Auto-assign, the panel beside the thread, and the fields Closed asks for.',
+        },
+        {
+          span: 'full',
           heading: 'A reply that starts written',
           body: 'The composer opens on a template: greeting, the signature with its logo travelling as an inline attachment rather than a link, and the quoted thread underneath. Where the AI assistant has read the ticket, its suggestion sits beside that — read straight out of the ticket’s own SharePoint columns, in one of three honest states: answered, needs input, or no reading yet. No reading yet is the common case, not an error, so it never looks like one. The person edits, and the person sends: the suggestion is a starting point, never the last word. Unsent drafts live in SharePoint rather than the browser, so a reply started on a laptop is there on the desktop, with item permissions and an author filter on top, because half-written words are the most private thing this app holds.',
           diagram: 'aireply',
