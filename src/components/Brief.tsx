@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Brief as BriefData } from '../data'
 import Words from './Words'
 
@@ -63,11 +63,42 @@ function Points({ items, good }: { items: string[]; good?: boolean }) {
  * The picture beside a block. It removes itself if the file is not there, so a
  * slot can be wired up before the artwork lands without leaving a broken frame
  * on the page.
+ *
+ * Both pictures are particle fields on black, so pointing at one lights it:
+ * a second copy of the same image, brighter, shown only through a soft circle
+ * that follows the cursor — a torch over a starfield rather than a glow laid
+ * on top of it. The position is written straight onto the element as CSS
+ * custom properties inside one rAF, so a moving cursor never re-renders React.
  */
 function Shot({ src, alt, onFail }: { src: string; alt: string; onFail: () => void }) {
+  const ref = useRef<HTMLElement>(null)
+  const raf = useRef(0)
+  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+
+  const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width) * 100
+    const y = ((e.clientY - r.top) / r.height) * 100
+    if (raf.current) return
+    raf.current = requestAnimationFrame(() => {
+      raf.current = 0
+      el.style.setProperty('--gx', `${x.toFixed(1)}%`)
+      el.style.setProperty('--gy', `${y.toFixed(1)}%`)
+    })
+  }
+
   return (
-    <motion.figure className="wshot" variants={item}>
+    <motion.figure
+      className="wshot"
+      variants={item}
+      ref={ref}
+      onPointerMove={onPointerMove}
+      style={{ '--shot-src': `url("${src}")` } as React.CSSProperties}
+    >
       <img src={src} alt={alt} loading="lazy" decoding="async" onError={onFail} />
+      <span className="wshot__lens" aria-hidden="true" />
     </motion.figure>
   )
 }
