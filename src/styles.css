@@ -1923,10 +1923,10 @@ a { color: inherit; text-decoration: none; }
    it. The children carried their own caps (52ch on the lead, 74ch on the
    points), so three things in one column wrapped at three different widths. */
 .wcol { max-width: 56ch; }
-.wcol .bpanel__lead,
-.wcol .wblock + .wblock {
-  /* no rule between these two: they are halves of one section, and the line
-     landed right under the problem's picture where it read as part of it */
+/* space between the two halves of the section. No rule between them: they
+   are halves of one argument, and a line landed right under the problem's
+   picture where it read as part of it. */
+.wblock + .wblock {
   margin-top: clamp(44px, 7vh, 96px);
 }
 .wshot { margin: 0; }
