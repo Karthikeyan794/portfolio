@@ -112,6 +112,31 @@ the widgets that read zero because nothing in the list was ever marked resolved.
 rejects anything over 100 MB outright, so the original cannot go in the repo. 1080p still came out
 at 137 MB, also over. The shipped file is **1280x720, 80 MB**, faststart on, the same 76 seconds.
 
+## Still to record
+
+Seven of the seventeen flows under **How it works** have a recording. These ten do not — each one
+currently carries a diagram instead. Wiring one up is one line: add
+`clip: '/work/support-desk/clips/<name>.mp4'` to that slice in `src/data.ts`, beside its heading.
+A slice can keep its diagram as well; the clip goes under it.
+
+Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command`. Setup and
+export settings are under **Recording the walkthrough** above.
+
+| # | Slice | Suggested file | What to film | ~sec |
+|---|-------|----------------|--------------|------|
+| 1 | Who gets in | `gate.mp4` | The access gate standing where the desk would be: pick read or read-and-reply, add a note, request. Then the desk open, with the role showing | 20 |
+| 2 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then cut to the card landing in Teams with the number, customer and link | 20 |
+| 3 | Why a reply starts as a draft | `draft.mp4` | Open the composer on a ticket, show the draft already written, edit a line, then send | 15 |
+| 4 | The view each person works in | `views.mp4` | Switch between saved views; show one filtered to *my tickets* and the list changing under it | 15 |
+| 5 | Customers, built from the mail | `derive.mp4` | The customer list with no one having typed it: open a company and show the people under it, then the mail address that produced it | 20 |
+| 6 | The response clock | `sla.mp4` | A ticket's first-response and resolution counters, one of them overdue, and the same clock in the list column | 15 |
+| 7 | How a ticket gets its type | `classify.mp4` | A ticket opening with its type and categories already set, then the subject it was read from | 15 |
+| 8 | Did every mail become a ticket? | `reconcile.mp4` | The count in the mailbox against the count in the desk, and whatever surfaces the difference | 15 |
+| 9 | The desk inside Teams | `teams-tab.mp4` | The desk running as a tab inside Teams — the same queue, in the other window | 20 |
+
+**Leave this one as a diagram.** *What the dashboard reads* is the column-by-column audit of 670
+rows — a finding, not a screen. There is nothing on it to film, and the diagram says it better.
+
 ## The rest of the shot list
 
 One clip per flow still to come — the flows are numbered in the case study, and each slice in
