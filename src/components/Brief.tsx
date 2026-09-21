@@ -62,7 +62,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
   return (
     <>
       <motion.section
-        className="brief"
+        className="brief brief--split"
         id="why"
         aria-label="Problem and solution"
         variants={group}
@@ -70,14 +70,12 @@ export default function Brief({ brief }: { brief: BriefData }) {
         whileInView="in"
         viewport={{ once: true, amount: 0.15 }}
       >
-        <div className="bblock">
+        <div className="bcol">
           <Title>Problem</Title>
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.problem.lead} />
           </motion.p>
-          <div className="bpanel-card">
-            <Points items={brief.problem.items} />
-          </div>
+          <Points items={brief.problem.items} />
           {brief.problem.close && (
             <motion.p className="bclose" variants={item}>
               <Words text={brief.problem.close} />
@@ -85,7 +83,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
           )}
         </div>
 
-        <div className="bblock">
+        <div className="bcol">
           <Title>Solution</Title>
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.solution.lead} />
@@ -134,7 +132,31 @@ export default function Brief({ brief }: { brief: BriefData }) {
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.benefits.lead} />
           </motion.p>
-          <Points items={brief.benefits.items} good />
+
+          <div className="bgrid">
+            <ul className="bcards">
+              {brief.benefits.items.map((b) => (
+                <motion.li className="bcard" key={b.title} variants={item}>
+                  <span className="bcard__tick" aria-hidden="true">
+                    <Check />
+                  </span>
+                  <h4 className="bcard__title">
+                    <Words text={b.title} />
+                  </h4>
+                  <p className="bcard__text">
+                    <Words text={b.text} />
+                  </p>
+                </motion.li>
+              ))}
+            </ul>
+
+            {brief.benefits.image && (
+              <motion.figure className="bshot" variants={item}>
+                <img src={brief.benefits.image} alt="The Support Desk dashboard" loading="lazy" decoding="async" />
+                <figcaption>All of it, on one screen.</figcaption>
+              </motion.figure>
+            )}
+          </div>
         </div>
       </motion.section>
     </>

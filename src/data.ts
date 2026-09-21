@@ -233,13 +233,14 @@ export type Primer = {
 /** the three panels under the overview: what was wrong, what answers it, and
  *  what the team actually gets out of it. One at a time, on a tab. */
 export type Brief = {
-  /** `close` is the line the section lands on after the list */
+  /** one paragraph, then the points under it */
   problem: { lead: string; items: string[]; close?: string }
   /** told as a story: one request followed through the desk, beat by beat.
    *  `tag` names the capability doing the work at that moment, so the story
    *  still says what the thing is called. */
   solution: { lead: string; items: { tag?: string; title: string; text: string }[]; close?: string }
-  benefits: { lead: string; items: string[] }
+  /** a card each, and a shot of the thing beside them */
+  benefits: { lead: string; image?: string; items: { title: string; text: string }[] }
 }
 
 export type Project = {
@@ -336,7 +337,7 @@ export const projects: Project[] = [
       },
       brief: {
         problem: {
-          lead: 'Support arrives as email. It lands in a shared mailbox in Outlook, and from the moment it lands nobody can say what became of it.',
+          lead: 'Support arrives as email. It lands in a shared mailbox in Outlook, and from the moment it lands nobody can say what became of it. For a handful of mails a week that is fine. At scale it stops working — more customers, more threads, more people touching them — and what breaks is the thing a customer actually judges you on: a fast, accurate answer, inside the time you promised.',
           items: [
             'Has anyone replied yet? The shared mailbox does not say',
             'Is it closed, or still open with the customer waiting?',
@@ -347,7 +348,6 @@ export const projects: Project[] = [
             'Which customers raise the most, and what about? No way to look',
             'A helpdesk tool only adds another place to check — the mail still sits in the mailbox',
           ],
-          close: 'For a handful of mails a week, a shared mailbox is fine. At scale it stops working — more customers, more threads, more people touching them — and what breaks is the thing a customer actually judges you on: a fast, accurate answer, inside the time you promised.',
         },
         solution: {
           lead: 'Support Desk gives that mail somewhere to live. Follow one request through it.',
@@ -363,13 +363,14 @@ export const projects: Project[] = [
         },
         benefits: {
           lead: 'What you get out of it, whether you are one person or twenty.',
+          image: '/work/support-desk/1-dashboard.jpg',
           items: [
-            'Nothing gets lost — every request has an owner and a status',
-            'No more “who is on this?” — the queue already answers it',
-            'Faster first replies — the clock is measured, not guessed',
-            'Nobody repeats themselves — the customer’s history sits beside the request',
-            'Causes get fixed, not symptoms — repeat problems surface in one view',
-            'Nothing new to buy — it works on the mailbox you already have',
+            { title: 'Nothing gets lost', text: 'Every request has an owner, a status and a place it lives.' },
+            { title: 'No more “who is on this?”', text: 'The queue already answers it, so nobody asks across the room.' },
+            { title: 'Faster first replies', text: 'The clock is measured against what you promised, not guessed at.' },
+            { title: 'Nobody repeats themselves', text: 'The customer’s whole history sits beside the request.' },
+            { title: 'Causes get fixed, not symptoms', text: 'Repeat problems and frequent requesters surface in one view.' },
+            { title: 'Nothing new to buy', text: 'It runs on the mailbox and the accounts you already have.' },
           ],
         },
       },
