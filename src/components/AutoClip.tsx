@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { isScrolling, onScrollState } from '../scrollIdle'
 
 /**
@@ -10,9 +10,34 @@ import { isScrolling, onScrollState } from '../scrollIdle'
  * simply broken. So mute it here, ask it to play, and ask again whenever it
  * comes back into view. It pauses off-screen: decoding a clip nobody is
  * looking at is wasted battery.
+ *
+ * `fallback` is the second address to try. The largest recordings are served
+ * from a GitHub release rather than from /public, because they are over the
+ * 100 MB a file may be in a repository — and anything off this deploy can be
+ * absent or served with a content type the browser will not play. So a failure
+ * is a normal event here, not an exception: drop to the smaller copy, and if
+ * that fails too say so, rather than leaving a dead frame on the page.
  */
-export default function AutoClip({ src, poster, label }: { src: string; poster?: string; label?: string }) {
+export default function AutoClip({
+  src,
+  poster,
+  label,
+  fallback,
+  onFail,
+  onFallback,
+}: {
+  src: string
+  poster?: string
+  label?: string
+  fallback?: string
+  onFail?: () => void
+  /** told which address was settled on, when the first one did not work */
+  onFallback?: (src: string) => void
+}) {
   const ref = useRef<HTMLVideoElement>(null)
+  // which address is in the element right now; starts at the good one
+  const [using, setUsing] = useState(src)
+  useEffect(() => setUsing(src), [src])
 
   useEffect(() => {
     const v = ref.current
@@ -46,9 +71,24 @@ export default function AutoClip({ src, poster, label }: { src: string; poster?:
       io.disconnect()
       off()
     }
-  }, [src])
+  }, [using])
 
   return (
-    <video ref={ref} src={src} poster={poster} aria-label={label} loop muted playsInline preload="metadata" />
+    <video
+      ref={ref}
+      src={using}
+      poster={poster}
+      aria-label={label}
+      loop
+      muted
+      playsInline
+      preload="metadata"
+      onError={() => {
+        if (fallback && using !== fallback) {
+          setUsing(fallback)
+          onFallback?.(fallback)
+        } else onFail?.()
+      }}
+    />
   )
 }

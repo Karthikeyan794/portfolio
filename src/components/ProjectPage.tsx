@@ -211,24 +211,56 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
           ) : null}
 
           {/* the flow, recorded — sits under whatever explains it */}
-          {slice.clip && (
-            <motion.figure className="shotfig" variants={frameV}>
-              <motion.div className="frame frame--clip">
-                {/\.gif$/.test(slice.clip) ? (
-                  <img src={slice.clip} alt={slice.heading ?? ''} loading="lazy" decoding="async" />
-                ) : (
-                  <AutoClip src={slice.clip} poster={slice.poster} label={slice.heading} />
-                )}
-                <ZoomButton onOpen={() => setZoom({ src: slice.clip!, alt: slice.heading, video: !/\.gif$/.test(slice.clip!) })} label={slice.heading} />
-              </motion.div>
-              {/* a clip carries its line the same way a still does */}
-              {slice.caption && !slice.image && <figcaption className="frame__cap">{slice.caption}</figcaption>}
-            </motion.figure>
-          )}
+          {slice.clip && <ClipFigure slice={slice} onZoom={setZoom} />}
         </motion.div>
       )}
       <Lightbox shot={zoom} onClose={() => setZoom(null)} />
     </motion.section>
+  )
+}
+
+/**
+ * A recorded flow, and its own opinion about whether it can be shown.
+ *
+ * The biggest recordings are served from a GitHub release rather than from
+ * /public — they are over the 100 MB a repository allows a single file — so
+ * this address can legitimately be missing: not uploaded yet, or served with a
+ * content type the browser refuses. AutoClip drops to the smaller copy in
+ * /public on its own; if there is no copy to drop to, the whole figure removes
+ * itself, because an empty frame with a caption under it reads as a bug.
+ */
+function ClipFigure({
+  slice,
+  onZoom,
+}: {
+  slice: Slice
+  onZoom: (s: { src: string; alt?: string; video?: boolean }) => void
+}) {
+  const [dead, setDead] = useState(false)
+  // the address that actually loaded, so zooming opens the same thing the page is showing
+  const [live, setLive] = useState(slice.clip!)
+  if (dead) return null
+  const isGif = /\.gif$/.test(live)
+  return (
+    <motion.figure className="shotfig" variants={frameV}>
+      <motion.div className="frame frame--clip">
+        {isGif ? (
+          <img src={live} alt={slice.heading ?? ''} loading="lazy" decoding="async" onError={() => setDead(true)} />
+        ) : (
+          <AutoClip
+            src={slice.clip!}
+            fallback={slice.clipFallback}
+            poster={slice.poster}
+            label={slice.heading}
+            onFail={() => setDead(true)}
+            onFallback={setLive}
+          />
+        )}
+        <ZoomButton onOpen={() => onZoom({ src: live, alt: slice.heading, video: !isGif })} label={slice.heading} />
+      </motion.div>
+      {/* a clip carries its line the same way a still does */}
+      {slice.caption && !slice.image && <figcaption className="frame__cap">{slice.caption}</figcaption>}
+    </motion.figure>
   )
 }
 

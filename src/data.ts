@@ -200,6 +200,22 @@ export const about = [
   'Most of my time goes into three things — component libraries that stay consistent without slowing anyone down, data-heavy screens that stay responsive at scale, and the unglamorous internal tooling that quietly saves a team hours a week.',
 ]
 
+/**
+ * The four biggest recordings, plus the AI one, are served from a GitHub
+ * release rather than from /public.
+ *
+ * Why: they are 146–268 MB each as exported, and GitHub rejects any file over
+ * 100 MB outright, so they cannot be committed. Release assets allow 2 GB per
+ * file, ride GitHub's CDN, answer byte-range requests (so a browser starts
+ * playing before the file finishes) and — the point — do not count toward
+ * repository size or the site's deploy. So the exports go up untouched.
+ *
+ * Until they are uploaded these URLs 404 and every clip falls back to the
+ * smaller copy already in /public, so the page is never broken by their
+ * absence. See ROADMAP.md 2g.
+ */
+const HD = 'https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1'
+
 export type Slice = {
   /** starts a new chapter above this slice — 'Research', 'The build', … */
   chapter?: string
@@ -215,6 +231,13 @@ export type Slice = {
   diagram?: string
   /** a short screen recording of this flow — an mp4 or gif in /public, shown under the diagram */
   clip?: string
+  /** the copy to fall back to if `clip` will not load or will not play.
+   *  Four of these recordings are 150–270 MB — over GitHub's 100 MB per-file
+   *  limit — so the untouched exports live on a release and `clip` points out
+   *  there. That URL is off this repo's deploy, so it can be missing (not
+   *  uploaded yet) or served with a content type a browser refuses. Either way
+   *  the page must not show a dead frame, so it drops to the copy in /public. */
+  clipFallback?: string
   /** the still a clip shows while it loads — without one it is a black box */
   poster?: string
   /** an id, so the section nav can scroll to this slice */
@@ -369,7 +392,8 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'Merging duplicates, and marking spam',
           body: 'Two tickets for the same request — the customer wrote twice, or two people reported the same thing — merge into one, so there is a single thread and a single owner instead of two people each answering half of it. And junk that arrived in the shared mailbox is marked spam, which takes it out of the queue without anybody having to answer it first.',
-          clip: '/work/support-desk/clips/merge.mp4',
+          clip: `${HD}/merge.mp4`,
+          clipFallback: '/work/support-desk/clips/merge.mp4',
           caption: 'Two tickets merged into one, and junk marked spam out of the queue.',
         },
         {
@@ -395,14 +419,23 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'A reply that starts written',
           body: 'The composer opens on a template: greeting, the signature with its logo travelling as an inline attachment rather than a link, and the quoted thread underneath. Where the AI assistant has read the ticket, its suggestion sits beside that — read straight out of the ticket’s own SharePoint columns, in one of three honest states: answered, needs input, or no reading yet. No reading yet is the common case, not an error, so it never looks like one. The person edits, and the person sends: the suggestion is a starting point, never the last word. Unsent drafts live in SharePoint rather than the browser, so a reply started on a laptop is there on the desktop, with item permissions and an author filter on top, because half-written words are the most private thing this app holds.',
-          clip: '/work/support-desk/clips/reply.mp4',
+          clip: `${HD}/reply.mp4`,
+          clipFallback: '/work/support-desk/clips/reply.mp4',
           caption: 'The whole reply, start to finish: the template already in the box, the AI reading beside it, the edit, and the send.'
+        },
+        {
+          span: 'full',
+          heading: 'What the AI suggests, and the three answers it gives',
+          body: 'The assistant reads the ticket and proposes an answer beside the composer, never in place of it. What it proposes is read out of the ticket\u2019s own SharePoint columns rather than generated fresh each time somebody opens the reply, so two people looking at the same ticket see the same suggestion, and a reply never waits on a model being reachable. It reports one of three things: *answered*, where it has a reading it stands behind; *needs input*, where the ticket does not carry enough to answer; and *no reading yet*, where nothing has looked at it. No reading yet is the common case rather than a failure, so it is drawn as a plain state and not as an error. Then the person edits, and the person sends \u2014 the suggestion is where a reply starts, not what goes out.',
+          clip: `${HD}/ai-suggestions.mp4`,
+          caption: 'The suggestion beside the composer, the state it reports, and the edit before it goes.',
         },
         {
           span: 'full',
           heading: 'The thread, its recipients, and what came attached',
           body: 'Open a ticket and the real conversation is there, not a copy of it: SharePoint stores a deeplink rather than a mail, so the app pulls the message id out of it and asks Graph for the thread itself. Every message carries who it came from and who it went to — the whole to and cc line, not just the sender — so you can see at a glance whether the customer was actually on the last reply or whether it went round the team. Attachments come with it, listed on the message they arrived on, and inline images render where they were written instead of being dumped at the foot of the mail. The whole thread sits in a sandboxed frame, so nobody’s email HTML can reach the page around it. Reply, reply-all and forward are right there, with recipient chips you can read before you send.',
-          clip: '/work/support-desk/clips/thread.mp4',
+          clip: `${HD}/thread.mp4`,
+          clipFallback: '/work/support-desk/clips/thread.mp4',
           caption: 'Every message with its from, its to, and whatever came attached.',
         },
         {
@@ -446,7 +479,8 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'A dashboard that reads zero',
           body: 'Volume, intake trend, recurring problem types, who reports the most and who answers — all of that works, because it is computed from the ticket text and dates in the browser. Resolved-this-week, escalations and my-performance could only ever show zero. I shipped those widgets showing zero, with a line on the page saying nothing here is marked resolved, and took the finding to the team as a process problem rather than a UI one. Hiding them would have made the desk look finished and left the team blind.',
-          clip: '/work/support-desk/clips/home.mp4',
+          clip: `${HD}/home.mp4`,
+          clipFallback: '/work/support-desk/clips/home.mp4',
           caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
         },
         {
