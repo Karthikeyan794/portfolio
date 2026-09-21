@@ -17,7 +17,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
   const [name, setName] = useState('')
   const [from, setFrom] = useState('')
   const [message, setMessage] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState<'email' | 'phone' | null>(null)
   const firstField = useRef<HTMLInputElement>(null)
 
   // the picture leans towards the pointer — a little life, no layout cost
@@ -46,13 +46,39 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
     `?subject=${encodeURIComponent(`Portfolio — ${name.trim() || 'hello'}`)}` +
     `&body=${encodeURIComponent(`${message}\n\n— ${name} (${from})`)}`
 
-  async function copy() {
+  /**
+   * Copy any of the contact rows; the row that was copied says so itself.
+   *
+   * The async clipboard API is refused outright in plenty of places — an
+   * insecure origin, an embedded frame, a browser with the permission off —
+   * and a copy button that silently does nothing is worse than no button.
+   * So it falls back to the old execCommand path, and only gives up if that
+   * fails too.
+   */
+  async function copy(what: 'email' | 'phone', value: string) {
+    const done = () => {
+      setCopied(what)
+      window.setTimeout(() => setCopied(null), 1600)
+    }
     try {
-      await navigator.clipboard.writeText(profile.email)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1800)
+      await navigator.clipboard.writeText(value)
+      done()
+      return
     } catch {
-      /* a browser that will not copy is not worth an error message */
+      /* fall through to the older way */
+    }
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = value
+      ta.setAttribute('readonly', '')
+      ta.style.cssText = 'position:fixed;top:-1000px;opacity:0'
+      document.body.appendChild(ta)
+      ta.select()
+      const ok = document.execCommand('copy')
+      ta.remove()
+      if (ok) done()
+    } catch {
+      /* genuinely cannot copy — the address is on screen to read */
     }
   }
 
@@ -128,18 +154,38 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                 <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="What are you building?" rows={5} />
               </label>
 
-              <div className="cmod__send">
-                <a className={ready ? 'cbtn' : 'cbtn cbtn--wait'} href={ready ? href : undefined} aria-disabled={!ready}>
-                  {ready ? 'Send it' : 'Fill the three fields'}
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M4 12h15M13 5l7 7-7 7" />
-                  </svg>
-                </a>
-                <button className="cmod__copy" type="button" onClick={copy}>
-                  {copied ? 'Copied' : profile.email}
-                </button>
-              </div>
-              <p className="cmod__note">It opens your own mail app, so the reply goes straight back to you.</p>
+              <a className={ready ? 'cbtn' : 'cbtn cbtn--wait'} href={ready ? href : undefined} aria-disabled={!ready}>
+                Send it
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M4 12h15M13 5l7 7-7 7" />
+                </svg>
+              </a>
+
+              {/* or just take the details. Each row opens the right app on a
+                  tap and copies on the button beside it — the phone row is
+                  only here once there is a number to put in it. */}
+              <ul className="reach">
+                <li className="reach__row">
+                  <a className="reach__to" href={`mailto:${profile.email}`}>
+                    <span className="reach__k">Email</span>
+                    <span className="reach__v">{profile.email}</span>
+                  </a>
+                  <button className="reach__copy" type="button" onClick={() => copy('email', profile.email)} aria-label="Copy email address">
+                    {copied === 'email' ? 'Copied' : 'Copy'}
+                  </button>
+                </li>
+                {profile.phone && (
+                  <li className="reach__row">
+                    <a className="reach__to" href={`tel:${profile.phone.replace(/[^+\d]/g, '')}`}>
+                      <span className="reach__k">Phone</span>
+                      <span className="reach__v">{profile.phone}</span>
+                    </a>
+                    <button className="reach__copy" type="button" onClick={() => copy('phone', profile.phone)} aria-label="Copy phone number">
+                      {copied === 'phone' ? 'Copied' : 'Copy'}
+                    </button>
+                  </li>
+                )}
+              </ul>
             </div>
           </motion.div>
         </motion.div>

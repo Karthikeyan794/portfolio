@@ -11,6 +11,9 @@ export const profile = {
   availableNote: 'Open to Product Designer & Design Engineer roles',
   tagline: 'Turning user problems into working products.',
   email: 'karthikeyan.design09@gmail.com',
+  // paste your number here and the contact dialog shows it; empty hides the
+  // row entirely. Keep it in the form you want read aloud: '+91 98765 43210'.
+  phone: '',
   resumeUrl: '', // e.g. '/resume.pdf' — drop the file in /public
   photo: '', // e.g. '/me.jpg' — drop the file in /public. Empty = initials placeholder.
 }
