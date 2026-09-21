@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { useState } from 'react'
 import type { Brief as BriefData } from '../data'
 import Words from './Words'
 
@@ -58,43 +59,62 @@ function Points({ items, good }: { items: string[]; good?: boolean }) {
   )
 }
 
+/**
+ * The picture beside a block. It removes itself if the file is not there, so a
+ * slot can be wired up before the artwork lands without leaving a broken frame
+ * on the page.
+ */
+function Shot({ src, alt, onFail }: { src: string; alt: string; onFail: () => void }) {
+  return (
+    <motion.figure className="wshot" variants={item}>
+      <img src={src} alt={alt} loading="lazy" decoding="async" onError={onFail} />
+    </motion.figure>
+  )
+}
+
+/** one side of the argument: the words, and the picture that sits with them */
+function Block({ title, lead, items, image, good }: {
+  title: string; lead: string; items: string[]; image?: string; good?: boolean
+}) {
+  // the second column exists only while a picture is actually in it: a path
+  // whose file is not there yet collapses the block back to one column rather
+  // than holding an empty half open
+  const [shot, setShot] = useState(image)
+  return (
+    <div className={shot ? 'wblock' : 'wblock wblock--solo'}>
+      <div className="wcol">
+        <Title>{title}</Title>
+        <motion.p className="bpanel__lead" variants={item}>
+          <Words text={lead} />
+        </motion.p>
+        <Points items={items} good={good} />
+      </div>
+      {shot && <Shot src={shot} alt={`${title} — illustration`} onFail={() => setShot(undefined)} />}
+    </div>
+  )
+}
+
 export default function Brief({ brief }: { brief: BriefData }) {
   return (
     <>
       <motion.section
-        className="brief brief--split"
+        className="brief brief--why"
         id="why"
         aria-label="Problem and solution"
         variants={group}
         initial="rest"
         whileInView="in"
-        viewport={{ amount: 0.15 }}
+        viewport={{ amount: 0.12 }}
       >
-        <div className="bcol bcol--problem">
-          <Title>Problem</Title>
-          <motion.p className="bpanel__lead" variants={item}>
-            <Words text={brief.problem.lead} />
+        <header className="why__head">
+          <Title>Why</Title>
+          <motion.p className="why__sub" variants={item}>
+            <Words text={brief.why} />
           </motion.p>
-          <Points items={brief.problem.items} />
-          {brief.problem.close && (
-            <motion.p className="bclose" variants={item}>
-              <Words text={brief.problem.close} />
-            </motion.p>
-          )}
-        </div>
+        </header>
 
-        <div className="bcol bcol--solution">
-          <Title>Solution</Title>
-          <motion.p className="bpanel__lead" variants={item}>
-            <Words text={brief.solution.lead} />
-          </motion.p>
-          <Points items={brief.solution.items} good />
-          {brief.solution.close && (
-            <motion.p className="bclose" variants={item}>
-              <Words text={brief.solution.close} />
-            </motion.p>
-          )}
-        </div>
+        <Block title="Problem" lead={brief.problem.lead} items={brief.problem.items} image={brief.problem.image} />
+        <Block title="Solution" lead={brief.solution.lead} items={brief.solution.items} image={brief.solution.image} good />
       </motion.section>
 
       <motion.section

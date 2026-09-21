@@ -235,11 +235,15 @@ export type Primer = {
 /** the three panels under the overview: what was wrong, what answers it, and
  *  what the team actually gets out of it. One at a time, on a tab. */
 export type Brief = {
-  /** one paragraph, then the points under it */
-  problem: { lead: string; items: string[]; close?: string }
+  /** the line under the section title, before either side of the argument */
+  why: string
+  /** one paragraph, the points under it, and the picture that sits beside them.
+   *  `image` is optional and fails quietly: wire the path first, drop the file
+   *  in later, and it appears on its own. */
+  problem: { lead: string; items: string[]; close?: string; image?: string }
   /** the same shape as the problem: one paragraph, then the points. Each
    *  point leads with the capability so the answer lines up with the complaint. */
-  solution: { lead: string; items: string[]; close?: string }
+  solution: { lead: string; items: string[]; close?: string; image?: string }
   /** a card each, and a shot of the thing beside them */
   benefits: { lead: string; items: { title: string; text: string }[] }
 }
@@ -337,7 +341,9 @@ export const projects: Project[] = [
         },
       },
       brief: {
+        why: 'Support arrives as email — and an email on its own cannot say who owns it, whether anyone has answered, or how long the customer has been waiting. Here is what that costs a team, and what the desk puts in its place.',
         problem: {
+          image: '/work/support-desk/why-problem.jpg',
           lead: 'Support arrives as email and lands in a shared mailbox. From that moment nobody can say what became of it — and at scale, what breaks is the fast, accurate answer the customer judges you on.',
           items: [
             'Has anyone replied yet? The shared mailbox does not say',
@@ -350,6 +356,7 @@ export const projects: Project[] = [
           ],
         },
         solution: {
+          image: '/work/support-desk/why-solution.jpg',
           lead: 'Support Desk keeps the mailbox and puts a desk around it. Same address, same inbox — except every mail becomes a request with an owner, a status, a clock and that customer’s history beside it.',
           items: [
             'Shared queue — every mail becomes a ticket with a number, an owner, a status and a clock',
