@@ -348,7 +348,7 @@ export const projects: Project[] = [
           ],
         },
         solution: {
-          lead: 'Support Desk gives that mail somewhere to live. The same address, the same inbox — with everything the email was missing attached to it.',
+          lead: 'Support Desk keeps the mailbox and puts a desk around it. The same address, the same inbox — except every mail that arrives becomes a request with a number, an owner, a status and a clock, and that customer’s history sits beside it. Nobody asks who is on it, nobody reads a thread twice to find the question, and the time you promised is measured instead of remembered.',
           items: [
             'Shared queue — every mail becomes a ticket with a number, an owner, a status and a clock',
             'Assignment and alerts — hand it to someone and they hear about it where they already work',

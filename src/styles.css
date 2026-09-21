@@ -1774,7 +1774,9 @@ a { color: inherit; text-decoration: none; }
    nature, so it scrolls sideways rather than shrinking below ~900px. */
 /* ── problems · solutions · goals ─────────────────────────────────────────
    The opening spread: two columns, then the two goals side by side. */
-.brief { margin: clamp(50px, 8vh, 104px) 0 0; }
+/* no top margin of its own: .case__body is a grid and its row gap already
+   sets the distance between sections. Both together read as a hole. */
+.brief { margin: 0; }
 
 /* ── problem, solution and benefits ────────────────────────
    Plain sections now, each one a stop on the top bar. The inline tab row that
