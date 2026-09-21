@@ -1413,7 +1413,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--accent);
 }
 /* room for the one floating bar when we jump to a section */
-#overview, #why, #benefits, #how-it-works, #demo { scroll-margin-top: 96px; }
+#overview, #problem, #solution, #benefits, #how-it-works, #demo { scroll-margin-top: 96px; }
 
 @media (max-width: 700px) {
   .ctabs__row { margin-right: 0; }
@@ -1940,13 +1940,6 @@ a { color: inherit; text-decoration: none; }
    A title and a line of its own, then the problem and the answer one under
    the other, each with its picture on the right. Side by side they competed
    for the same glance; stacked, each is read before the next begins. */
-.why__head { margin-bottom: clamp(24px, 4vh, 44px); }
-.why__sub {
-  color: var(--text-mid);
-  font-size: clamp(14.5px, 1.2vw, 16px);
-  line-height: 1.6;
-  max-width: 64ch;
-}
 .wblock {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);

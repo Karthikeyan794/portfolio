@@ -73,15 +73,15 @@ function Shot({ src, alt, onFail }: { src: string; alt: string; onFail: () => vo
 }
 
 /** one side of the argument: the words, and the picture that sits with them */
-function Block({ title, lead, items, image, good }: {
-  title: string; lead: string; items: string[]; image?: string; good?: boolean
+function Block({ id, title, lead, items, image, good }: {
+  id: string; title: string; lead: string; items: string[]; image?: string; good?: boolean
 }) {
   // the second column exists only while a picture is actually in it: a path
   // whose file is not there yet collapses the block back to one column rather
   // than holding an empty half open
   const [shot, setShot] = useState(image)
   return (
-    <div className={shot ? 'wblock' : 'wblock wblock--solo'}>
+    <div className={shot ? 'wblock' : 'wblock wblock--solo'} id={id}>
       <div className="wcol">
         <Title>{title}</Title>
         <motion.p className="bpanel__lead" variants={item}>
@@ -99,22 +99,14 @@ export default function Brief({ brief }: { brief: BriefData }) {
     <>
       <motion.section
         className="brief brief--why"
-        id="why"
         aria-label="Problem and solution"
         variants={group}
         initial="rest"
         whileInView="in"
         viewport={{ amount: 0.12 }}
       >
-        <header className="why__head">
-          <Title>Why</Title>
-          <motion.p className="why__sub" variants={item}>
-            <Words text={brief.why} />
-          </motion.p>
-        </header>
-
-        <Block title="Problem" lead={brief.problem.lead} items={brief.problem.items} image={brief.problem.image} />
-        <Block title="Solution" lead={brief.solution.lead} items={brief.solution.items} image={brief.solution.image} good />
+        <Block id="problem" title="Problem" lead={brief.problem.lead} items={brief.problem.items} image={brief.problem.image} />
+        <Block id="solution" title="Solution" lead={brief.solution.lead} items={brief.solution.items} image={brief.solution.image} good />
       </motion.section>
 
       <motion.section

@@ -235,8 +235,6 @@ export type Primer = {
 /** the three panels under the overview: what was wrong, what answers it, and
  *  what the team actually gets out of it. One at a time, on a tab. */
 export type Brief = {
-  /** the line under the section title, before either side of the argument */
-  why: string
   /** one paragraph, the points under it, and the picture that sits beside them.
    *  `image` is optional and fails quietly: wire the path first, drop the file
    *  in later, and it appears on its own. */
@@ -341,7 +339,6 @@ export const projects: Project[] = [
         },
       },
       brief: {
-        why: 'Support arrives as email. Here is what that costs a team, and what the desk puts in its place.',
         problem: {
           image: '/work/support-desk/why-problem.png',
           lead: 'Support arrives as email. From the moment it lands in the shared mailbox, nobody can say what became of it — and what breaks is the thing a customer judges you on: a fast, accurate answer.',
