@@ -71,22 +71,23 @@ ffmpeg -i input.mov -vf scale=1280:-2 -c:v libx264 -crf 26 -preset slow -an -mov
 
 ## Also in place
 
-`queue.mp4` — the shared queue, and the reload beside the list: press it and the desk reads the
+`queue.mp4` — the shared queue and the reload beside the list: press it and the desk reads the
 mailbox again, so whatever arrived since comes in as a new ticket at the top. This is `que 2`,
-re-encoded from the 86 MB / 3692x2160 original down to **35 MB at 1280x720** with `avconvert`
-(faststart on), because 3692px wide is four times what the page renders and nothing on screen
-needed it.
-
-**35 MB is still roughly ten times what it should be.** avconvert only offers fixed presets, so it
-cannot go lower without dropping resolution. With ffmpeg the same 42 seconds lands near 3-4 MB at
-the same 1280x720, and it is one command — see **Export settings** above.
-
-Worth knowing before re-exporting again: every version committed stays in the repository's history
-for good. `.git` is already 210 MB from these clips. Getting the encode right once is cheaper than
-committing three attempts.
+**your export copied byte for byte**: 3692x2160, 86 MB, untouched.
 
 `filter.mp4` — the thirteen filters over the queue: a status applied, then a customer, the two
-stacking to narrow the list. Re-encoded the same way, 59 MB down to **18 MB at 1280x720**.
+stacking to narrow the list. Also **byte for byte**: 3604x2160, 59 MB.
+
+These are deliberately uncompressed — the originals go up as they are. Worth knowing what that
+costs, so it is a choice rather than a surprise:
+
+- **86 MB is close to GitHub's 100 MB hard limit** for a single file. Anything larger is rejected
+  outright, so a longer or higher-resolution recording will not push.
+- Every version committed stays in the repository's history for good; `.git` is past 300 MB now.
+- The page renders these around 1100px wide, so a visitor downloads roughly three times the pixels
+  their screen can show, and the clips autoplay, so it happens whether they watch or not.
+
+If that ever needs undoing, **Export settings** above has the one-line ffmpeg command.
 
 ## The rest of the shot list
 
