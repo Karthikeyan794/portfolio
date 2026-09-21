@@ -76,10 +76,12 @@ export default function ParticleShot({ src, alt, onFail }: { src: string; alt: s
       dpr = Math.min(window.devicePixelRatio || 1, 2)
       w = Math.round(box.width)
       h = Math.round(box.height)
+      // only the backing buffer is set here. Its CSS size stays with the
+      // stylesheet (inset: 0), because an inline width/height beats a
+      // stylesheet rule and would freeze the canvas at whatever the column
+      // measured the moment the image happened to load.
       canvas.width = Math.round(w * dpr)
       canvas.height = Math.round(h * dpr)
-      canvas.style.width = `${w}px`
-      canvas.style.height = `${h}px`
 
       // contain the image in the box, the way object-fit: contain would
       const scale = Math.min(w / img.naturalWidth, h / img.naturalHeight)
@@ -206,7 +208,11 @@ export default function ParticleShot({ src, alt, onFail }: { src: string; alt: s
     img.onerror = () => onFail?.()
     img.src = src
 
-    const onResize = () => {
+    // Watch the BOX, not the window. The column this sits in can change width
+    // without the window moving at all — a gutter edit, a font landing, a
+    // sibling wrapping — and a window-resize listener sleeps through all of
+    // it, leaving the field built for a width that no longer exists.
+    const rebuild = () => {
       if (!particles.length) return
       pause()
       if (build()) {
@@ -214,7 +220,14 @@ export default function ParticleShot({ src, alt, onFail }: { src: string; alt: s
         start()
       }
     }
-    window.addEventListener('resize', onResize)
+    let last = 0
+    const ro = new ResizeObserver(() => {
+      const w2 = Math.round(wrap.getBoundingClientRect().width)
+      if (w2 === last) return
+      last = w2
+      rebuild()
+    })
+    ro.observe(wrap)
 
     return () => {
       stopped = true
@@ -222,7 +235,7 @@ export default function ParticleShot({ src, alt, onFail }: { src: string; alt: s
       io?.disconnect()
       wrap.removeEventListener('pointermove', onMove)
       wrap.removeEventListener('pointerleave', onLeave)
-      window.removeEventListener('resize', onResize)
+      ro.disconnect()
     }
   }, [src, onFail])
 

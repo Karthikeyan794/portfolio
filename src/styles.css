@@ -1352,7 +1352,7 @@ a { color: inherit; text-decoration: none; }
   padding-top: clamp(40px, 6vh, 72px);
 }
 /* ── case-study rows: words on the left, screens on the right ───── */
-.rows { display: grid; gap: clamp(66px, 9vh, 124px); }
+.rows { --rows-gap: clamp(66px, 9vh, 124px); display: grid; gap: var(--rows-gap); }
 .row {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
@@ -2041,7 +2041,10 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   gap: 18px;
-  margin: clamp(16px, 3vh, 44px) 0 -14px;
+  /* the row after a chapter opening sits 16px under it: the grid's own gap is
+     cancelled and 16px given back, so the heading belongs to what follows it
+     rather than floating between two rows */
+  margin: clamp(16px, 3vh, 44px) 0 calc(16px - var(--rows-gap));
 }
 .chapter__name {
   /* titled like the overview and the two sides of the argument: the same
