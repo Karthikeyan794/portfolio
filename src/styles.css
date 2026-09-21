@@ -1926,8 +1926,10 @@ a { color: inherit; text-decoration: none; }
    for the same glance; stacked, each is read before the next begins. */
 .wblock {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  gap: clamp(26px, 4vw, 66px);
+  /* the same split the story rows use, so the two illustrations come out the
+     width of the screens further down the page */
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(24px, 4vw, 56px);
   align-items: start;
 }
 /* no picture yet: the words take the width rather than leaving a hole */
