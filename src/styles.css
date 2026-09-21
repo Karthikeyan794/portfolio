@@ -1858,16 +1858,15 @@ a { color: inherit; text-decoration: none; }
 .bhead {
   position: relative;
   display: inline-block;
-  /* the display serif, the same face the flow headings use. Plain text colour
-     rather than the accent — the rule and the full stop under it already say
-     "accent", and the words read better carrying none of it. */
-  font-family: var(--display);
+  /* the same small-caps label the overview wears, so the stops on the top bar
+     are all titled in one voice */
+  font-family: var(--label-face);
   font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
+  font-weight: 400;
+  font-size: 26px;
   line-height: 1.15;
-  letter-spacing: -0.012em;
-  color: var(--text);
+  letter-spacing: 0.02em;
+  color: var(--accent-ink);
   margin-bottom: 16px;
 }
 .bhead::after { content: '.'; color: var(--accent); font-style: normal; }
