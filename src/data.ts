@@ -436,8 +436,8 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'A dashboard that reads zero',
           body: 'Volume, intake trend, recurring problem types, who reports the most and who answers — all of that works, because it is computed from the ticket text and dates in the browser. Resolved-this-week, escalations and my-performance could only ever show zero. I shipped those widgets showing zero, with a line on the page saying nothing here is marked resolved, and took the finding to the team as a process problem rather than a UI one. Hiding them would have made the desk look finished and left the team blind.',
-          image: '/work/support-desk/1-dashboard.jpg',
-          caption: 'Volume, intake trend, recurring problems and repeat reporters.',
+          clip: '/work/support-desk/clips/home.mp4',
+          caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
         },
         {
           span: 'full',

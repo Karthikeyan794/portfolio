@@ -103,6 +103,15 @@ git (Vercel Blob, S3, anything with a URL) and point `clip` at that URL instead 
 `assign.mp4` — auto-assign picking an owner, changing it by hand in the detail panel, the fields
 on that panel, and what moving a ticket to Closed asks for. Byte for byte: 1592x1080, 72 MB.
 
+## home.mp4
+
+The home dashboard: volume, the intake trend, recurring problem types, who reports the most — and
+the widgets that read zero because nothing in the list was ever marked resolved.
+
+**Re-encoded, like thread.mp4, and for the same reason.** `home page.mp4` is 269 MB and GitHub
+rejects anything over 100 MB outright, so the original cannot go in the repo. 1080p still came out
+at 137 MB, also over. The shipped file is **1280x720, 80 MB**, faststart on, the same 76 seconds.
+
 ## The rest of the shot list
 
 One clip per flow still to come — the flows are numbered in the case study, and each slice in
