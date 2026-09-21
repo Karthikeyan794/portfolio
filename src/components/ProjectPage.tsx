@@ -210,7 +210,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
               {/\.gif$/.test(slice.clip) ? (
                 <img src={slice.clip} alt={slice.heading ?? ''} loading="lazy" decoding="async" />
               ) : (
-                <AutoClip src={slice.clip} label={slice.heading} />
+                <AutoClip src={slice.clip} poster={slice.poster} label={slice.heading} />
               )}
               <ZoomButton onOpen={() => setZoom({ src: slice.clip!, alt: slice.heading, video: !/\.gif$/.test(slice.clip!) })} label={slice.heading} />
             </motion.figure>

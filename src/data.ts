@@ -212,6 +212,8 @@ export type Slice = {
   diagram?: string
   /** a short screen recording of this flow — an mp4 or gif in /public, shown under the diagram */
   clip?: string
+  /** the still a clip shows while it loads — without one it is a black box */
+  poster?: string
   /** an id, so the section nav can scroll to this slice */
   anchor?: string
   /** a problem → what I did pair, the way my Behance case studies read */
@@ -377,56 +379,58 @@ export const projects: Project[] = [
         {
           span: 'full',
           chapter: 'How it works',
-          heading: 'The queue you land on',
-          body: 'One list, thirteen filters, search, sort, and a split you can drag — the screen the team lives in all day. Watch the reload beside the list: press it and the desk reads the mailbox again, and whatever has arrived since comes in as a new ticket at the top of the queue, numbered, unassigned and already on the clock. Nobody has to reopen Outlook to find out whether something new landed.',
+          heading: 'The queue',
+          body: 'The ticket list the team works in. Press reload and the desk reads the mailbox again — anything that arrived since comes in at the top as a new ticket: numbered, unassigned, already on the clock.',
           clip: '/work/support-desk/clips/queue.mp4',
+          poster: '/work/support-desk/2-queue.jpg',
         },
         {
           span: 'full',
-          heading: 'Narrowing it to the one you want',
-          body: 'Thirteen filters over the same list. Pick a status and the queue narrows to what is still open; add a customer and it narrows again to theirs. They stack, so “everything still open for this company” is two clicks rather than a search somebody retypes every morning — and the split beside it keeps the ticket you were reading.',
+          heading: 'Filtering the queue',
+          body: 'Filtering the same list. Pick a status, then a customer — the two stack, so the queue narrows to that company’s open tickets. The ticket you were reading stays open beside it.',
           clip: '/work/support-desk/clips/filter.mp4',
+          poster: '/work/support-desk/2-queue.jpg',
         },
         {
           span: 'full',
-          heading: 'Flow 1 — who gets in, and what they can do',
+          heading: 'Who gets in',
           body: 'On load the app reads the shared inbox with your own token. A 403 or 404 is a genuine no, and a full-screen gate stands where the desk would be: pick read or read-and-reply, add a note, request. The desk opens on its own the moment real access exists. Any other failure — a timeout, a throttle, a dropped connection — is treated as access, because a blip must never lock out somebody who can actually work. Inside, there are three roles: admin reads, edits and manages who else has access; support reads, replies, assigns and changes status; viewer reads. Only admin can change the list, or the distinction would be decorative — and a few standing admins are hard-coded so the app can never lock every one of its owners out.',
           diagram: 'gate',
         },
         {
           span: 'full',
-          heading: 'Flow 2 — assign it, and the person hears about it in Teams',
+          heading: 'Assigning a ticket',
           body: 'Pick a person from a roster that Graph keeps honest — enabled, licensed members only, with a presence dot so you can see who is free before you hand a ticket over. Assigning writes the row; a Power Automate flow watching that list posts the card the app built, verbatim, into Teams. The card carries the ticket number, the customer, the subject and a link straight back into the desk, so the person knows whether it is theirs before they click. Their photo on it is the real Teams one, pulled from Graph and embedded in the card, with an initials badge when there is none.',
           diagram: 'assign',
         },
         {
           span: 'full',
-          heading: 'Flow 3 — a reply that starts written',
+          heading: 'A reply that starts written',
           body: 'The composer opens on a template: greeting, the signature with its logo travelling as an inline attachment rather than a link, and the quoted thread underneath. Where the AI assistant has read the ticket, its suggestion sits beside that — read straight out of the ticket’s own SharePoint columns, in one of three honest states: answered, needs input, or no reading yet. No reading yet is the common case, not an error, so it never looks like one. The person edits, and the person sends: the suggestion is a starting point, never the last word. Unsent drafts live in SharePoint rather than the browser, so a reply started on a laptop is there on the desktop, with item permissions and an author filter on top, because half-written words are the most private thing this app holds.',
           diagram: 'aireply',
         },
         {
           span: 'full',
-          heading: 'The thread, and the composer',
+          heading: 'The thread and the composer',
           body: 'SharePoint stores a deeplink, not a mail, so the app pulls the message id out of it and asks Graph for the real conversation — every message, recipients, inline images and attachments — rendered in a sandboxed iframe so nobody’s email HTML can reach the page around it. Reply, reply-all and forward sit right there, with recipient chips you can check before you send.',
           image: '/work/support-desk/3-thread.jpg',
           caption: 'The thread beside the record — the core of the app.',
         },
         {
           span: 'full',
-          heading: 'Flow 4 — why a reply has to start as a draft',
+          heading: 'Why a reply starts as a draft',
           body: 'A reply is not a fresh mail. The app asks Graph to create a reply draft, which already carries the conversation id, the threading headers and the quoted history; the typed reply goes on top of that draft, and the draft is what gets sent. A plain send would start a new conversation — and the intake flow underneath would file it as a second ticket for the same problem. When somebody is missing Send As, Graph refuses with a send-as error and the app shows it rather than swallowing it.',
           diagram: 'reply',
         },
         {
           span: 'full',
-          heading: 'Flow 5 — the view each person works in',
+          heading: 'The view each person works in',
           body: 'Thirteen filters are powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
           diagram: 'views',
         },
         {
           span: 'full',
-          heading: 'Flow 6 — the customer, derived from the mail itself',
+          heading: 'Customers, built from the mail',
           body: 'No customer table existed and I could not create one. So the app derives it from the only thing the list already had: the sender’s address. The domain becomes the account, the local part becomes the person, and both sides normalise to one key so the same customer never lands twice. That is what makes “which customer raises the most” answerable at all — it was one of the six asks, and it needed no data entry from anybody.',
           diagram: 'derive',
         },
@@ -439,19 +443,19 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Flow 7 — the clock we actually promise',
+          heading: 'The response clock',
           body: 'Two clocks, because a ticket owes two different things: an answer, and a finish. Both start when the mail arrived and neither restarts. Targets live on the customer’s own row, one column per clock, so giving a customer an SLA is a data edit rather than a release — and a blank column means no promise of that kind, which is silence rather than zero. Response defaults to three hours because I measured it: across the 96 tickets belonging to customers with an SLA, a three-hour first reply was met 39 times out of 61, and a three-hour close was met zero times out of 58, with a median close of 504 hours. One of those is a target and the other is a wish, so resolution is left blank for somebody to set honestly.',
           diagram: 'sla',
         },
         {
           span: 'full',
-          heading: 'Flow 8 — first, what the dashboard had to read',
+          heading: 'What the dashboard reads',
           body: 'Before building a single chart I checked every column against all 670 rows rather than trusting the schema. Received date, description and mail link were filled on all 670. Assigned-to was filled on two. Escalated had been written 670 times and was true none. Sentiment, root cause, agent and both resolution timestamps had never been written at all. So the columns a dashboard would want to read were exactly the columns nobody was filling. The same pass found that 59% of what sat in the ticket list was the system’s own notifications, not customers.',
           diagram: 'audit',
         },
         {
           span: 'full',
-          heading: 'So I shipped a dashboard that reads zero',
+          heading: 'A dashboard that reads zero',
           body: 'Volume, intake trend, recurring problem types, who reports the most and who answers — all of that works, because it is computed from the ticket text and dates in the browser. Resolved-this-week, escalations and my-performance could only ever show zero. I shipped those widgets showing zero, with a line on the page saying nothing here is marked resolved, and took the finding to the team as a process problem rather than a UI one. Hiding them would have made the desk look finished and left the team blind.',
           image: '/work/support-desk/1-dashboard.jpg',
           caption: 'Volume, intake trend, recurring problems and repeat reporters.',
@@ -465,13 +469,13 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Flow 9 — did every mail actually become a ticket?',
+          heading: 'Did every mail become a ticket?',
           body: 'This one exists because the answer was no for months and nothing said so. Mail sent to the customer-specific aliases was being ignored by the intake flow, and a missed mail leaves no trace — the only evidence would be a ticket that was never created. So the check counts both sides per address and puts them next to each other, because one broken alias disappears inside a healthy total. It counts conversations rather than messages: one customer conversation should be one ticket, and the mailbox holds around 21,000 messages behind roughly 900 tickets, so comparing raw totals would show a vast gap every day and mean nothing.',
           diagram: 'intake',
         },
         {
           span: 'full',
-          heading: 'Flow 10 — the desk, from inside Teams',
+          heading: 'The desk inside Teams',
           body: 'The last piece is a Teams bot, so the people who report problems never have to open the desk at all. @mention it in a chat or a channel and you can raise a ticket, ask for its status, comment, close it, reassign it to somebody you @mention, or ping a person without raising a ticket at all. Answers come back as Adaptive Cards with real profile photos from Graph and an initials badge when there is none. It runs end to end against a stubbed desk API today: the six calls it needs are marked in one file, and going live needs a tenant admin to register the identity and approve the photo permission.',
           diagram: 'teams',
         },
