@@ -269,6 +269,22 @@ The cover starts as an inset card (32px clear of the edges, 32px corners) and op
 
 **Section spacing (18 Sep 2026).** The bands of the case page sit further apart now — `.case__body` gap, the gap inside `.primer` (overview to the feature list), `.brief`'s top margin and the `.rows` gap all went up by roughly half. Change them together or the page loses its rhythm.
 
+## 2f. Contact is a dialog (21 Sep 2026)
+
+The page keeps one line and one button; the form lives in a modal (`src/components/ContactModal.tsx`).
+Picture on the left leaning towards the pointer, three fields on the right, and the send button is a
+real `mailto:` link built from what you type — it stays greyed and inert until all three fields have
+something in them, then opens your own mail app so the reply goes back to your address. Escape, the
+backdrop and the ✕ all close it; the page behind cannot scroll while it is open. The address chip
+copies to the clipboard and says so. The nav's Contact button fires an `open-contact` event that
+opens the same dialog instead of scrolling you to a button you then have to press.
+
+**Mail goes to `karthikeyan.design09@gmail.com`** — one field, `profile.email` in `src/data.ts`.
+Everything (the dialog, the copy chip, the parked 3D panel) reads from it.
+
+Still a `mailto:`, not a server. Sending straight from the page needs an endpoint — Formspree or
+Resend are the two-minute versions; say the word and it becomes a real POST.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup

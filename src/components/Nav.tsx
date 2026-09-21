@@ -58,6 +58,13 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
           <motion.a
             href="#contact"
             className="nav__cta"
+            onClick={(e) => {
+              // the contact section is a button and a dialog now: open it from
+              // here rather than scrolling somebody to a button they then have
+              // to press. The href stays, so it still works without JS.
+              e.preventDefault()
+              window.dispatchEvent(new CustomEvent('open-contact'))
+            }}
             initial={{ opacity: 0, scale: 0.6, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: delay + 0.45, type: 'spring', stiffness: 240, damping: 15 }}

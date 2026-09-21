@@ -10,7 +10,7 @@ export const profile = {
   available: true,
   availableNote: 'Open to Product Designer & Design Engineer roles',
   tagline: 'Turning user problems into working products.',
-  email: 'babubkarthikeyan@gmail.com',
+  email: 'karthikeyan.design09@gmail.com',
   resumeUrl: '', // e.g. '/resume.pdf' — drop the file in /public
   photo: '', // e.g. '/me.jpg' — drop the file in /public. Empty = initials placeholder.
 }

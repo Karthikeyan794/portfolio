@@ -1,6 +1,5 @@
 import { about, awards, experience, profile, projects, skills, socials } from '../data'
 import { PANEL_TITLE, type PanelId } from '../three/views'
-import ContactForm from './ContactForm'
 import MiniBot from './MiniBot'
 
 type Props = { id: PanelId | null; onClose: () => void }
@@ -94,7 +93,6 @@ function Body({ id }: { id: PanelId }) {
           <p className="panel__lead">
             Fastest: <a className="mailto" href={`mailto:${profile.email}`}>{profile.email}</a>
           </p>
-          <ContactForm />
           <div className="chips">
             {socials.map((s) => (
               <a key={s.label} className="chip chip--btn" href={s.href} target="_blank" rel="noreferrer">
