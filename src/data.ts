@@ -235,13 +235,11 @@ export type Primer = {
 /** the three panels under the overview: what was wrong, what answers it, and
  *  what the team actually gets out of it. One at a time, on a tab. */
 export type Brief = {
-  /** one paragraph, the points under it, and the picture that sits beside them.
-   *  `image` is optional and fails quietly: wire the path first, drop the file
-   *  in later, and it appears on its own. */
-  problem: { lead: string; items: string[]; close?: string; image?: string }
-  /** the same shape as the problem: one paragraph, then the points. Each
-   *  point leads with the capability so the answer lines up with the complaint. */
-  solution: { lead: string; items: string[]; close?: string; image?: string }
+  /** two paragraphs and the picture beside them. `image` is optional and
+   *  fails quietly: wire the path first, drop the file in later. */
+  problem: { lead: string; body: string; close?: string; image?: string }
+  /** the same shape as the problem: two paragraphs, and a picture beside them */
+  solution: { lead: string; body: string; close?: string; image?: string }
   /** a card each, and a shot of the thing beside them */
   benefits: { lead: string; items: { title: string; text: string }[] }
 }
@@ -340,27 +338,14 @@ export const projects: Project[] = [
       },
       brief: {
         problem: {
-          image: '/work/support-desk/why-problem.png',
           lead: 'Support arrives as email. From the moment it lands in the shared mailbox, nobody can say what became of it — and what breaks is the thing a customer judges you on: a fast, accurate answer.',
-          items: [
-            'Has anyone replied yet? The mailbox does not say',
-            'Who owns it — or has somebody already answered the same mail?',
-            'Replies leave from personal inboxes, so the next person sees no history',
-            'How long has the customer waited? Nothing counts it against what you promised',
-            'Which customers raise the most, and what about? No way to look',
-          ],
+          body: 'Has anyone replied yet? Is it closed, or still open with the customer waiting? Who owns it, and has somebody already answered the same mail? The mailbox answers none of that. Replies leave from personal inboxes, so whoever picks it up next sees no history; nothing counts how long the customer has waited against the time you promised; and there is no way to look at which customers raise the most, or what about.',
+          image: '/work/support-desk/why-problem.png',
         },
         solution: {
-          image: '/work/support-desk/why-solution.png',
           lead: 'Support Desk puts a desk around that mailbox. The same address, the same inbox — and no new licence for anybody.',
-          items: [
-            'Shared queue — every mail becomes a ticket with a number, an owner, a status and a clock',
-            'One owner per mail — assign it and they are told in Teams and by mail',
-            'Reply in place — the customer’s own thread, with the template already written',
-            'Response SLA — the clock runs from the moment it arrived, against the time you promised',
-            'Customer view — everything that company has raised, beside the one in front of you',
-            'Insights — volume, repeat problems and your most frequent requesters in one view',
-          ],
+          body: 'Every mail becomes a ticket with a number, an owner, a status and a clock. Hand it to somebody and they hear about it where they already work, and because the owner is on the row two people never answer the same mail. The reply is written on the customer’s own thread, from the desk, with the template already filled in and the conversation beside it. The clock runs from the moment it arrived, against the time you promised. Everything that company has raised sits beside the one in front of you, and volume, repeat problems and your most frequent requesters show up in one view.',
+          image: '/work/support-desk/why-solution.png',
         },
         benefits: {
           lead: 'What you get out of it, whether you are one person or twenty.',
@@ -407,7 +392,7 @@ export const projects: Project[] = [
           heading: 'Auto-assign, and the fields it insists on',
           body: 'A ticket can arrive already owned — an auto-assign rule picks the person, and the panel beside the thread is where you change it when the rule gets it wrong. The rest of that panel is the record: status, priority, ticket type, categories, the customer and the dates. The ones marked required are enforced rather than suggested, so moving a ticket to Closed asks for them first and nothing is shut with its type or its category still empty.',
           clip: '/work/support-desk/clips/assign.mp4',
-          caption: 'Auto-assign, the panel beside the thread, and the fields Closed asks for.',
+          caption: 'Auto-assign, the detail panel, and what Closed asks for.',
         },
         {
           span: 'full',
@@ -420,7 +405,7 @@ export const projects: Project[] = [
           heading: 'The thread, its recipients, and what came attached',
           body: 'Open a ticket and the real conversation is there, not a copy of it: SharePoint stores a deeplink rather than a mail, so the app pulls the message id out of it and asks Graph for the thread itself. Every message carries who it came from and who it went to — the whole to and cc line, not just the sender — so you can see at a glance whether the customer was actually on the last reply or whether it went round the team. Attachments come with it, listed on the message they arrived on, and inline images render where they were written instead of being dumped at the foot of the mail. The whole thread sits in a sandboxed frame, so nobody’s email HTML can reach the page around it. Reply, reply-all and forward are right there, with recipient chips you can read before you send.',
           clip: '/work/support-desk/clips/thread.mp4',
-          caption: 'The thread beside the record — every message with its from, its to and whatever came attached.',
+          caption: 'Every message with its from, its to, and whatever came attached.',
         },
         {
           span: 'full',

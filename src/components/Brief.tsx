@@ -17,46 +17,12 @@ const item = {
   in: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 18 } },
 } as const
 
-function Minus() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9 12h6" />
-    </svg>
-  )
-}
-
-function Check() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M8.5 12.2l2.4 2.4 4.6-4.8" />
-    </svg>
-  )
-}
-
 /** the section title, set like the overview's so the page has one voice */
 function Title({ children }: { children: string }) {
   return (
     <motion.h3 className="bhead" variants={item}>
       <Words text={children} />
     </motion.h3>
-  )
-}
-
-/** a list of one-liners — the problem and the benefits both read this way */
-function Points({ items, good }: { items: string[]; good?: boolean }) {
-  return (
-    <ul className={good ? 'bpoints bpoints--good' : 'bpoints'}>
-      {items.map((t) => (
-        <motion.li key={t} variants={item}>
-          <span className="bpoints__mark" aria-hidden="true">{good ? <Check /> : <Minus />}</span>
-          <span>
-            <Words text={t} />
-          </span>
-        </motion.li>
-      ))}
-    </ul>
   )
 }
 
@@ -73,9 +39,9 @@ function Shot({ src, alt, onFail }: { src: string; alt: string; onFail: () => vo
   )
 }
 
-/** one side of the argument: the words, and the picture that sits with them */
-function Block({ id, title, lead, items, image, good }: {
-  id: string; title: string; lead: string; items: string[]; image?: string; good?: boolean
+/** one side of the argument: two paragraphs, and the picture that sits with them */
+function Block({ id, title, lead, body, image }: {
+  id: string; title: string; lead: string; body: string; image?: string
 }) {
   // the second column exists only while a picture is actually in it: a path
   // whose file is not there yet collapses the block back to one column rather
@@ -88,7 +54,9 @@ function Block({ id, title, lead, items, image, good }: {
         <motion.p className="bpanel__lead" variants={item}>
           <Words text={lead} />
         </motion.p>
-        <Points items={items} good={good} />
+        <motion.p className="bpanel__body" variants={item}>
+          <Words text={body} />
+        </motion.p>
       </div>
       {shot && <Shot src={shot} alt={`${title} — illustration`} onFail={() => setShot(undefined)} />}
     </div>
@@ -106,8 +74,8 @@ export default function Brief({ brief }: { brief: BriefData }) {
         whileInView="in"
         viewport={{ amount: 0.12 }}
       >
-        <Block id="problem" title="Problem" lead={brief.problem.lead} items={brief.problem.items} image={brief.problem.image} />
-        <Block id="solution" title="Solution" lead={brief.solution.lead} items={brief.solution.items} image={brief.solution.image} good />
+        <Block id="problem" title="Problem" lead={brief.problem.lead} body={brief.problem.body} image={brief.problem.image} />
+        <Block id="solution" title="Solution" lead={brief.solution.lead} body={brief.solution.body} image={brief.solution.image} />
       </motion.section>
 
       <motion.section

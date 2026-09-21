@@ -1877,17 +1877,14 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 20px;
   max-width: 52ch;
 }
-.bpoints { display: grid; gap: 14px; max-width: 74ch; }
-.bpoints li {
-  display: flex;
-  gap: 13px;
-  align-items: flex-start;
+/* the second paragraph: the points, written out. Same measure and rhythm as
+   the lead above it so the two read as one column of prose. */
+.bpanel__body {
+  margin-top: 14px;
+  color: var(--text-mid);
   font-size: 15px;
-  line-height: 1.55;
-  color: var(--text);
+  line-height: 1.72;
 }
-.bpoints svg { flex: none; color: var(--muted); }
-.bpoints--good svg { color: var(--accent-ink); }
 
 /* ── the two sides, each in its own card ───────────────────
    They read as a pair: same shape, same rhythm, told apart by weight of
@@ -1906,23 +1903,6 @@ a { color: inherit; text-decoration: none; }
   background: color-mix(in srgb, var(--accent) 5%, color-mix(in srgb, var(--bg-elev) 55%, transparent));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, var(--card-ring));
 }
-/* straight after the paragraph — the spare room belongs at the foot of the
-   shorter card, not in a gap halfway down it */
-.bcol .bpoints { max-width: none; padding-top: 2px; }
-
-/* no disc behind it — the glyph on its own, set on the first line of text */
-.bpoints__mark {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 15px;
-  height: 15px;
-  margin-top: 3px;
-  color: var(--muted);
-}
-.bpoints--good .bpoints__mark { color: var(--accent-ink); }
-.bpoints__mark svg { margin-top: 0; }
-
 @media (max-width: 1000px) {
   .bcol { padding: clamp(18px, 5vw, 26px); }
 }
@@ -1944,8 +1924,7 @@ a { color: inherit; text-decoration: none; }
    points), so three things in one column wrapped at three different widths. */
 .wcol { max-width: 56ch; }
 .wcol .bpanel__lead,
-.wcol .bpoints { max-width: none; }
-.wblock + .wblock {
+.wcol .wblock + .wblock {
   /* no rule between these two: they are halves of one section, and the line
      landed right under the problem's picture where it read as part of it */
   margin-top: clamp(44px, 7vh, 96px);
@@ -2138,7 +2117,6 @@ a { color: inherit; text-decoration: none; }
 .frame__cap {
   padding: 1px 0 1px 13px;
   border-left: 2px solid var(--accent);
-  max-width: 62ch;
   font-size: 13px;
   line-height: 1.6;
   color: var(--text-mid);
