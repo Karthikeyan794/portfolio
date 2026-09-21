@@ -279,9 +279,11 @@ in Chennai (`Asia/Kolkata`, ticks every 30s), and every way to reach me as a row
 (only if `profile.phone` is set), LinkedIn, Behance. Email and phone rows have a copy button that
 turns into a tick for a moment; it falls back to `execCommand` where the clipboard API is refused.
 
-**Right — the message.** First *what it is about*: A role · A project · Just hello, a sliding lime
-pill, and the choice sets the subject line and the grey prompt inside the message box. Then name,
-email and message with labels that live inside the field and lift out of the way. A real-looking
+**Right — the message, in three numbered steps.** `01 What is it about` — A role · A project · Just
+hello, a sliding lime pill; the choice sets the subject line and the grey prompt inside the message
+box. `02 Who you are` — name and email, labels living inside the field and lifting out of the way.
+`03 The message` — a plain box. Fields draw no border until you touch them. The send button is an
+outline in the accent until the three are filled, then fills in — "nearly", not "off". A real-looking
 email is required (`@` and a dot) — a wrong one shows a small red hint and keeps the button grey.
 The grey button is not dead: pressing it focuses the first thing that is missing.
 
@@ -303,9 +305,11 @@ Contact button fires `open-contact`, which opens the same dialog. One column und
 Still a `mailto:`, not a server. Sending straight from the page needs an endpoint — Formspree or
 Resend are the two-minute versions; say the word and it becomes a real POST.
 
-Gotcha that bit once: the sliding pill is a `<span>` inside the chip `<button>`, and a rule written
-as `.intent__opt > span` outranked the pill's own class and pinned it in flow at zero width. Name
-every child; never style a bare element under a class.
+Two gotchas that bit on the same night. The sliding pill is a `<span>` inside the chip `<button>`,
+and a rule written as `.intent__opt > span` outranked the pill's own class and pinned it in flow at
+zero width — name every child, never style a bare element under a class. And the step labels were
+first called `.step`, which already exists in this sheet for the timeline and draws a rule down its
+left side; they are `.cstep` now — grep the sheet before naming anything.
 
 ## 3. Checklist — what's done
 

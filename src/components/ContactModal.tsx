@@ -193,6 +193,9 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                 <motion.h3 className="cdlg__h" id="cdlg-title" variants={rise}>
                   Tell me what you’re building.
                 </motion.h3>
+                <motion.p className="cdlg__sub" variants={rise}>
+                  A line is enough. I reply to anything that isn’t a template.
+                </motion.p>
               </div>
 
               <div className="cdlg__facts">
@@ -261,7 +264,9 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                     exit={{ opacity: 0, y: reduce ? 0 : -8, transition: { duration: 0.18 } }}
                     onSubmit={(e) => { e.preventDefault() }}
                   >
-                    <motion.div className="intent" role="radiogroup" aria-label="What is this about" variants={rise}>
+                    <motion.div className="cstep" variants={rise}>
+                      <span className="cstep__k"><b>01</b> What is it about</span>
+                    <div className="intent" role="radiogroup" aria-label="What is this about">
                       {INTENTS.map((i) => (
                         <button
                           key={i.id}
@@ -277,9 +282,12 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                           <span className="intent__txt">{i.label}</span>
                         </button>
                       ))}
+                    </div>
                     </motion.div>
 
-                    <motion.div className="cdlg__row" variants={rise}>
+                    <motion.div className="cstep" variants={rise}>
+                      <span className="cstep__k"><b>02</b> Who you are</span>
+                    <div className="cdlg__row">
                       <label className={name ? 'ff ff--filled' : 'ff'}>
                         <input ref={firstField} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder=" " />
                         <span className="ff__label">Your name</span>
@@ -289,11 +297,13 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                         <span className="ff__label">Your email</span>
                         {from && !emailOk && <span className="ff__hint">Needs an @ and a dot</span>}
                       </label>
+                    </div>
                     </motion.div>
 
-                    <motion.label className={message ? 'ff ff--area ff--filled' : 'ff ff--area'} variants={rise}>
-                      <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={6} placeholder=" " />
-                      <span className="ff__label">Message</span>
+                    <motion.div className="cstep" variants={rise}>
+                      <span className="cstep__k"><b>03</b> The message</span>
+                    <label className={message ? 'ff ff--area ff--filled' : 'ff ff--area'}>
+                      <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} placeholder=" " aria-label="Message" />
                       <AnimatePresence mode="wait" initial={false}>
                         {!message && (
                           <motion.span className="ff__ghost" key={current.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }} aria-hidden="true">
@@ -301,7 +311,8 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                           </motion.span>
                         )}
                       </AnimatePresence>
-                    </motion.label>
+                    </label>
+                    </motion.div>
 
                     <motion.div className="cdlg__foot" variants={rise}>
                       <a
