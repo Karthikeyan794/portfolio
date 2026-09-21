@@ -69,6 +69,14 @@ With ffmpeg (`brew install ffmpeg`), that is one command:
 ffmpeg -i input.mov -vf scale=1280:-2 -c:v libx264 -crf 26 -preset slow -an -movflags +faststart overview.mp4
 ```
 
+## Also in place
+
+`queue.mp4` — the shared queue, and the reload beside the list: press it and the desk reads the
+mailbox again, so whatever arrived since comes in as a new ticket at the top. Your own export,
+3692x2160, **94 MB** — which is heavy for a web page and close to GitHub's 100 MB per-file limit.
+A same-resolution H.264 re-encode would be roughly a tenth of that with no visible difference;
+worth doing before this page gets much traffic.
+
 ## The rest of the shot list
 
 One clip per flow still to come — the flows are numbered in the case study, and each slice in

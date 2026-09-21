@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import type { Primer as PrimerData } from '../data'
+import AutoClip from './AutoClip'
 import Words from './Words'
 
 /**
@@ -34,30 +35,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
   // the picture travels against the page as the section passes, so it and the
   // words beside it never scroll at quite the same rate
   const shotRef = useRef<HTMLDivElement>(null)
-  const clipRef = useRef<HTMLVideoElement>(null)
   const reduce = useReducedMotion()
-
-  /**
-   * Autoplay needs `muted` to be true on the element itself — React sets it as
-   * a property, and a browser that has not seen the attribute treats the video
-   * as sound-on and refuses to start it. So mute it here, ask it to play, and
-   * ask again whenever it comes back into view (a paused-by-policy video shows
-   * its first frame and looks simply broken). It pauses off-screen, because
-   * decoding a clip nobody is looking at is wasted battery.
-   */
-  useEffect(() => {
-    const v = clipRef.current
-    if (!v) return
-    v.muted = true
-    const play = () => { void v.play().catch(() => {}) }
-    play()
-    const io = new IntersectionObserver(
-      ([entry]) => (entry.isIntersecting ? play() : v.pause()),
-      { threshold: 0.15 },
-    )
-    io.observe(v)
-    return () => io.disconnect()
-  }, [])
   const { scrollYProgress } = useScroll({ target: shotRef, offset: ['start end', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], [46, -46])
   const float = useSpring(drift, { stiffness: 70, damping: 24, restDelta: 0.4 })
@@ -107,16 +85,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                 /\.gif$/.test(primer.showcase.clip) ? (
                   <img src={primer.showcase.clip} alt="Support Desk in use" loading="lazy" decoding="async" />
                 ) : (
-                  <video
-                    ref={clipRef}
-                    src={primer.showcase.clip}
-                    poster={primer.showcase.poster}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                  />
+                  <AutoClip src={primer.showcase.clip} poster={primer.showcase.poster} label="Support Desk in use" />
                 )
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />

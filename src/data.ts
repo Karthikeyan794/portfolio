@@ -379,9 +379,8 @@ export const projects: Project[] = [
           span: 'full',
           chapter: 'How it works',
           heading: 'The queue you land on',
-          body: 'One list, thirteen filters, search, sort, and a split you can drag. This is the screen the team lives in all day, so it loads fast, keeps your place, and never buries a ticket behind a tab.',
-          image: '/work/support-desk/2-queue.jpg',
-          caption: 'The queue: filters, search and a resizable list/detail split.',
+          body: 'One list, thirteen filters, search, sort, and a split you can drag — the screen the team lives in all day. Watch the reload beside the list: press it and the desk reads the mailbox again, and whatever has arrived since comes in as a new ticket at the top of the queue, numbered, unassigned and already on the clock. Nobody has to reopen Outlook to find out whether something new landed.',
+          clip: '/work/support-desk/clips/queue.mp4',
         },
         {
           span: 'full',

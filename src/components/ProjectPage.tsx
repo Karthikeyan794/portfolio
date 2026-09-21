@@ -5,6 +5,7 @@ import { closeProject } from '../router'
 import Diagram from './Diagrams'
 import GridBg from './GridBg'
 import Brief from './Brief'
+import AutoClip from './AutoClip'
 import Credits from './Credits'
 import Words from './Words'
 import Primer from './Primer'
@@ -204,7 +205,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
               {/\.gif$/.test(slice.clip) ? (
                 <img src={slice.clip} alt={slice.heading ?? ''} loading="lazy" decoding="async" />
               ) : (
-                <video src={slice.clip} autoPlay loop muted playsInline preload="metadata" />
+                <AutoClip src={slice.clip} label={slice.heading} />
               )}
             </motion.figure>
           )}
