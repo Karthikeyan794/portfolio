@@ -235,10 +235,9 @@ export type Primer = {
 export type Brief = {
   /** one paragraph, then the points under it */
   problem: { lead: string; items: string[]; close?: string }
-  /** told as a story: one request followed through the desk, beat by beat.
-   *  `tag` names the capability doing the work at that moment, so the story
-   *  still says what the thing is called. */
-  solution: { lead: string; items: { tag?: string; title: string; text: string }[]; close?: string }
+  /** the same shape as the problem: one paragraph, then the points. Each
+   *  point leads with the capability so the answer lines up with the complaint. */
+  solution: { lead: string; items: string[]; close?: string }
   /** a card each, and a shot of the thing beside them */
   benefits: { lead: string; image?: string; items: { title: string; text: string }[] }
 }
@@ -350,14 +349,16 @@ export const projects: Project[] = [
           ],
         },
         solution: {
-          lead: 'Support Desk gives that mail somewhere to live. Follow one request through it.',
+          lead: 'Support Desk gives that mail somewhere to live. The same address, the same inbox — with everything the email was missing attached to it.',
           items: [
-            { tag: 'Shared queue', title: 'It arrives', text: 'The customer sends the same mail to the same address as always. The desk reads the shared mailbox and opens a ticket from it — a number, a status, a clock, and the customer it came from. One queue you can filter, search and sort, instead of a mailbox you scroll.' },
-            { tag: 'Assignment and alerts', title: 'It gets an owner', text: 'Somebody takes it, or it is handed to them, and they are told straight away where they already work. Their name is on the row, so nobody wonders whether it is theirs — and nobody answers the same mail twice.' },
-            { tag: 'Reply in place', title: 'It gets answered', text: 'The reply is written on the customer’s own thread, from inside the desk, with the whole conversation beside it. The customer receives a normal email. Nobody on your side goes hunting through a personal inbox for the history.' },
-            { tag: 'Response SLA', title: 'The clock has been running', text: 'From the moment it arrived the desk has been counting against the time you promised. You can see who is still waiting and for how long — before the customer has to ask a second time.' },
-            { tag: 'Customer view', title: 'The history is already there', text: 'Every request that customer has raised sits beside the one in front of you, grouped by company — so you answer knowing what they asked last month and who handled it.' },
-            { tag: 'Insights', title: 'The pattern shows up', text: 'Volume, repeat problems and the people who raise the most, in one view — so the same question stops coming back next month.' },
+            'Shared queue — every mail becomes a ticket with a number, an owner, a status and a clock',
+            'Assignment and alerts — hand it to someone and they hear about it where they already work',
+            'Reply in place — answer on the customer’s own thread, from the desk, with the conversation beside it',
+            'No double answers — the owner is on the row, so two people never reply to the same mail',
+            'Response SLA — the clock runs from the moment it arrived, against the time you promised',
+            'Customer view — every request that company has raised, sitting beside the one in front of you',
+            'Insights — volume, repeat problems and your most frequent requesters in one view',
+            'Nothing new to buy — it reads the mailbox and the accounts you already have',
           ],
           close: 'Nothing is lost, nobody repeats themselves, and the answer arrives inside the time you promised.',
         },

@@ -88,28 +88,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.solution.lead} />
           </motion.p>
-          {/* a line walked top to bottom: it is one request moving through the
-              desk, so the steps are joined rather than listed */}
-          <ol className="steps">
-            {brief.solution.items.map((d, i) => (
-              <motion.li className="step2" key={d.title} variants={item}>
-                <span className="step2__rail" aria-hidden="true">
-                  <span className="step2__dot">{String(i + 1).padStart(2, '0')}</span>
-                </span>
-                <div className="step2__body">
-                  <div className="step2__head">
-                    <h4 className="step2__title">
-                      <Words text={d.title} />
-                    </h4>
-                    {d.tag && <span className="step2__tag">{d.tag}</span>}
-                  </div>
-                  <p className="step2__text">
-                    <Words text={d.text} />
-                  </p>
-                </div>
-              </motion.li>
-            ))}
-          </ol>
+          <Points items={brief.solution.items} good />
           {brief.solution.close && (
             <motion.p className="bclose" variants={item}>
               <Words text={brief.solution.close} />
