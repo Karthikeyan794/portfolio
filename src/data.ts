@@ -341,7 +341,7 @@ export const projects: Project[] = [
         },
       },
       brief: {
-        why: 'Support arrives as email — and an email on its own cannot say who owns it, whether anyone has answered, or how long the customer has been waiting. Here is what that costs a team, and what the desk puts in its place.',
+        why: 'Support arrives as email. Here is what that costs a team, and what the desk puts in its place.',
         problem: {
           image: '/work/support-desk/why-problem.png',
           lead: 'Support arrives as email. From the moment it lands in the shared mailbox, nobody can say what became of it — and what breaks is the thing a customer judges you on: a fast, accurate answer.',

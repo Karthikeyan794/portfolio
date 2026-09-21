@@ -1858,14 +1858,14 @@ a { color: inherit; text-decoration: none; }
 .bhead {
   position: relative;
   display: inline-block;
-  /* the same small-caps label the overview uses, so every stop on the top
-     bar is titled the same way */
-  font-family: var(--label-face);
+  /* the display serif, the same face the flow headings use — a size up from
+     them, because these title a whole stop on the top bar */
+  font-family: var(--display);
   font-style: normal;
-  font-weight: 400;
-  font-size: 26px;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
   color: var(--accent-ink);
   --rule-gap: 10px;
   padding-bottom: calc(var(--rule-gap) + 1px);
