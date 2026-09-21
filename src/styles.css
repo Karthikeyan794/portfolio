@@ -1970,52 +1970,36 @@ a { color: inherit; text-decoration: none; }
      landed right under the problem's picture where it read as part of it */
   margin-top: clamp(44px, 7vh, 96px);
 }
-.wshot {
-  margin: 0;
+.wshot { margin: 0; }
+/* ── the artwork as a field of points ─────────────────────
+   The canvas sits exactly where the picture would: same box, same contain
+   fit. Until the points are built the <img> is what you see, so there is
+   never an empty frame — and if the canvas never starts (reduced motion, a
+   touch screen, pixels the browser will not hand over) the <img> stays. */
+.pshot {
   position: relative;
-  /* where the cursor is, in the picture's own box. Centre until it moves, so
-     the lens never starts in a corner. */
-  --gx: 50%;
-  --gy: 50%;
-}
-/* the torch: the same artwork again, brighter, shown only through a soft
-   circle at the cursor. Sized and positioned to match the img underneath,
-   which is object-fit: contain — so the two line up exactly. */
-.wshot__lens {
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  background-image: var(--shot-src);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  /* the artwork is white dots on black: lifting brightness makes the dots
-     near the cursor burn in without greying the black around them */
-  filter: brightness(2.1) contrast(1.05);
-  opacity: 0;
-  transition: opacity 0.32s ease;
-  pointer-events: none;
-  -webkit-mask-image: radial-gradient(circle 130px at var(--gx) var(--gy), #000 0%, rgba(0, 0, 0, 0.55) 52%, transparent 74%);
-  mask-image: radial-gradient(circle 130px at var(--gx) var(--gy), #000 0%, rgba(0, 0, 0, 0.55) 52%, transparent 74%);
-}
-.wshot:hover .wshot__lens { opacity: 1; }
-/* no hover to follow on a touch screen, and nothing worth animating for
-   somebody who asked for less movement */
-@media (hover: none), (prefers-reduced-motion: reduce) {
-  .wshot__lens { display: none; }
-}
-.wshot img {
-  /* both pictures take the same frame whatever their own proportions — and
-     they are contained rather than cropped, on black, which is the ground the
-     artwork already sits on, so the fit is invisible and nothing is cut */
-  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: contain;
   background: #000;
   border: 1px solid var(--shot-edge);
   border-radius: 14px;
+  overflow: hidden;
+  /* the field reads the pointer, but a finger still scrolls the page */
+  touch-action: pan-y;
 }
+.pshot img,
+.pshot canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pshot img { object-fit: contain; transition: opacity 0.3s ease; }
+/* the canvas has taken over — hand the picture off without a flicker */
+.pshot img[data-hidden='true'] { opacity: 0; }
+.pshot canvas { opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+.pshot canvas[data-on='true'] { opacity: 1; }
 @media (max-width: 900px) {
   .wblock { grid-template-columns: minmax(0, 1fr); }
 }

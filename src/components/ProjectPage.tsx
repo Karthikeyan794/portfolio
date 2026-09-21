@@ -213,6 +213,8 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
                 <AutoClip src={slice.clip} poster={slice.poster} label={slice.heading} />
               )}
               <ZoomButton onOpen={() => setZoom({ src: slice.clip!, alt: slice.heading, video: !/\.gif$/.test(slice.clip!) })} label={slice.heading} />
+              {/* a clip carries its line the same way a still does */}
+              {slice.caption && !slice.image && <figcaption>{slice.caption}</figcaption>}
             </motion.figure>
           )}
         </motion.div>

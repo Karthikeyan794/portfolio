@@ -411,9 +411,9 @@ export const projects: Project[] = [
         {
           span: 'full',
           heading: 'The thread and the composer',
-          body: 'SharePoint stores a deeplink, not a mail, so the app pulls the message id out of it and asks Graph for the real conversation — every message, recipients, inline images and attachments — rendered in a sandboxed iframe so nobody’s email HTML can reach the page around it. Reply, reply-all and forward sit right there, with recipient chips you can check before you send.',
-          image: '/work/support-desk/3-thread.jpg',
-          caption: 'The thread beside the record — the core of the app.',
+          body: 'Open a ticket and the real conversation is there, not a copy of it: SharePoint stores a deeplink rather than a mail, so the app pulls the message id out of it and asks Graph for the thread itself. Every message carries who it came from and who it went to — the whole to and cc line, not just the sender — so you can see at a glance whether the customer was actually on the last reply or whether it went round the team. Attachments come with it, listed on the message they arrived on, and inline images render where they were written instead of being dumped at the foot of the mail. The whole thread sits in a sandboxed frame, so nobody’s email HTML can reach the page around it. Reply, reply-all and forward are right there, with recipient chips you can read before you send.',
+          clip: '/work/support-desk/clips/thread.mp4',
+          caption: 'The thread beside the record — every message with its from, its to and whatever came attached.',
         },
         {
           span: 'full',
