@@ -39,6 +39,9 @@
      loaded from Google Fonts, so everyone gets Calibri's shapes either way.
      Carlito has 400 and 700 only — no 600. */
   --calibri: 'Calibri', 'Carlito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  /* the section label: a small-caps face, so OVERVIEW is drawn as small caps
+     rather than faked by uppercasing it. 400 and 700 only. */
+  --label-face: 'Arsenal SC', 'Calibri', 'Carlito', Georgia, serif;
   --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --hud: 'Rajdhani', var(--sans);
@@ -1744,12 +1747,11 @@ a { color: inherit; text-decoration: none; }
 .primer__h {
   /* no container — the words carry it */
   align-self: start;
-  font-family: var(--calibri);
-  font-size: clamp(15px, 1.5vw, 18px);
-  font-weight: 700;
+  font-family: var(--label-face);
+  font-size: 26px;
+  font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--accent-ink);
-  margin-bottom: 14px;
 }
 
 
