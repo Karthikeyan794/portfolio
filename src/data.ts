@@ -345,7 +345,6 @@ export const projects: Project[] = [
             'Replies go out from personal inboxes, so the next person picking it up sees no history',
             'How long has the customer been waiting? Nothing counts it against what you promised',
             'Which customers raise the most, and what about? No way to look',
-            'A helpdesk tool only adds another place to check — the mail still sits in the mailbox',
           ],
         },
         solution: {
@@ -354,13 +353,13 @@ export const projects: Project[] = [
             'Shared queue — every mail becomes a ticket with a number, an owner, a status and a clock',
             'Assignment and alerts — hand it to someone and they hear about it where they already work',
             'Reply in place — answer on the customer’s own thread, from the desk, with the conversation beside it',
-            'No double answers — the owner is on the row, so two people never reply to the same mail',
+            'A reply already written — a ticket opens with its template filled in, ready to read over and send',
+            'One owner per mail — pick the person who answers it, and they are told the moment it becomes theirs, in Teams and by mail',
             'Response SLA — the clock runs from the moment it arrived, against the time you promised',
             'Customer view — every request that company has raised, sitting beside the one in front of you',
             'Insights — volume, repeat problems and your most frequent requesters in one view',
             'Nothing new to buy — it reads the mailbox and the accounts you already have',
           ],
-          close: 'Nothing is lost, nobody repeats themselves, and the answer arrives inside the time you promised.',
         },
         benefits: {
           lead: 'What you get out of it, whether you are one person or twenty.',
