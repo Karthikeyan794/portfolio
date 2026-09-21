@@ -1731,44 +1731,26 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   display: grid;
   gap: 10px;
-  /* stretched, not start-aligned: the heading's trailing rule runs to the end
-     of the column, and it can only do that if this box is as wide as it */
-  width: 100%;
-  justify-items: stretch;
+  justify-items: start;
 }
 /* the overview keeps its own register: not the serif titles the other
-   sections use, but a small typed label with a lit dot, and a hairline that
-   runs from the words to the end of the column */
+   sections use, and not another hairline — a small tag in the accent, sized
+   to its own word */
 .primer__h {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  /* the column places its children at the start, so the heading has to claim
-     the width itself — otherwise the trailing rule has nothing to grow into */
-  width: 100%;
+  align-self: start;
+  padding: 5px 11px 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
   font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-mid);
+  color: var(--accent-ink);
 }
-.primer__h-t { flex: none; }
-.primer__h::before {
-  content: '';
-  flex: none;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
-}
-.primer__h::after {
-  content: '';
-  flex: 1 1 auto;
-  height: 1px;
-  background: var(--line);
-}
+
 
 /* six features as a numbered list, two columns: a display numeral, the
    name, one sentence, a hairline over each. Point at one and the numeral
