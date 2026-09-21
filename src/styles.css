@@ -600,11 +600,12 @@ a { color: inherit; text-decoration: none; }
   transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 .cfield textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
+/* one stroke when a field takes focus. The 3px ring around it read as a
+   blurred container rather than a border. */
 .cfield input:focus,
 .cfield textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 .cbtn {
   display: inline-flex;
@@ -622,7 +623,10 @@ a { color: inherit; text-decoration: none; }
 .cbtn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -18px var(--accent); }
 .cbtn:hover svg { transform: translateX(4px); }
 /* nothing to send yet: it says so, and does nothing */
-.cbtn--wait { background: color-mix(in srgb, var(--text) 10%, transparent); color: var(--muted); pointer-events: none; }
+/* not filled in yet: still the primary button, just holding back. It keeps
+   its pointer events, because the click focuses the first empty field. */
+.cbtn[aria-disabled='true'] { opacity: 0.62; }
+.cbtn[aria-disabled='true']:hover { transform: none; box-shadow: none; }
 /* ── the details themselves, under the form ───────────────
    A row per way of reaching me. The whole row is the link, so a tap opens
    mail or the dialler; the button beside it copies instead, for a desktop

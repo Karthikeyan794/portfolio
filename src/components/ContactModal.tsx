@@ -19,6 +19,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
   const [message, setMessage] = useState('')
   const [copied, setCopied] = useState<'email' | 'phone' | null>(null)
   const firstField = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLDivElement>(null)
 
   // the picture leans towards the pointer — a little life, no layout cost
   const px = useMotionValue(0)
@@ -135,12 +136,42 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                       </a>
                     </li>
                   ))}
+                  {/* the two direct ways, wearing the same chip as the profiles */}
+                  <li>
+                    <a href={`mailto:${profile.email}`} title={profile.email}>
+                      <span className="cmod__mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+                          <path d="M3 7l9 6 9-6" />
+                        </svg>
+                      </span>
+                      Email
+                    </a>
+                  </li>
+                  {profile.phone && (
+                    <li>
+                      {/* tel: raises the dialler on a phone; on a desktop where
+                          it raises nothing, the click has still copied it */}
+                      <a
+                        href={`tel:${profile.phone.replace(/[^+\d]/g, '')}`}
+                        title={profile.phone}
+                        onClick={() => copy('phone', profile.phone)}
+                      >
+                        <span className="cmod__mark" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16.5 16.5 0 014.5 5.7 2 2 0 016.5 3.5z" />
+                          </svg>
+                        </span>
+                        {copied === 'phone' ? 'Copied' : 'Phone'}
+                      </a>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
 
             {/* right: the message itself */}
-            <div className="cmod__form">
+            <div className="cmod__form" ref={formRef}>
               <label className="cfield">
                 <span>Your name</span>
                 <input ref={firstField} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Karthikeyan" />
@@ -154,7 +185,22 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                 <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="What are you building?" rows={5} />
               </label>
 
-              <a className={ready ? 'cbtn' : 'cbtn cbtn--wait'} href={ready ? href : undefined} aria-disabled={!ready}>
+              {/* always the primary button. Pressing it before the fields are
+                  filled does not do nothing — it focuses the first empty one,
+                  which is the answer to 'why is this not working'. */}
+              <a
+                className="cbtn"
+                href={ready ? href : undefined}
+                aria-disabled={!ready}
+                onClick={(e) => {
+                  if (ready) return
+                  e.preventDefault()
+                  const empty = formRef.current?.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+                    'input:placeholder-shown, textarea:placeholder-shown',
+                  )
+                  empty?.focus()
+                }}
+              >
                 Send it
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M4 12h15M13 5l7 7-7 7" />
