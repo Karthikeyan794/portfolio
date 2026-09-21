@@ -399,6 +399,8 @@ export const projects: Project[] = [
           heading: 'A reply that starts written',
           body: 'The composer opens on a template: greeting, the signature with its logo travelling as an inline attachment rather than a link, and the quoted thread underneath. Where the AI assistant has read the ticket, its suggestion sits beside that — read straight out of the ticket’s own SharePoint columns, in one of three honest states: answered, needs input, or no reading yet. No reading yet is the common case, not an error, so it never looks like one. The person edits, and the person sends: the suggestion is a starting point, never the last word. Unsent drafts live in SharePoint rather than the browser, so a reply started on a laptop is there on the desktop, with item permissions and an author filter on top, because half-written words are the most private thing this app holds.',
           diagram: 'aireply',
+          clip: '/work/support-desk/clips/reply.mp4',
+          caption: 'The whole reply, start to finish: the template already in the box, the AI reading beside it, the edit, and the send.'
         },
         {
           span: 'full',

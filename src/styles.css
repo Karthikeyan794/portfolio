@@ -1964,10 +1964,12 @@ a { color: inherit; text-decoration: none; }
 .pshot {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  /* the recordings run about 1.67; matching it puts every piece of media on
+     this page at the same size and shape */
+  aspect-ratio: 5 / 3;
   background: #000;
-  border: 1px solid var(--shot-edge);
-  border-radius: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
   overflow: hidden;
   /* the field reads the pointer, but a finger still scrolls the page */
   touch-action: pan-y;
