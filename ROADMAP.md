@@ -498,7 +498,7 @@ originals take over with no code change.
 - [ ] **Support Desk + Atom**: demo URLs (`demo.href` in `src/data.ts`), walkthrough videos (`video` on the Walkthrough slice — MP4 in `public/` or a YouTube/Loom link), and 4–6 real screenshots to replace the placeholder banners
 - [x] **One thumbnail set** — every project now uses a `/bento/*.jpg` image from the labs-client repo so the grid reads as one theme (Behance covers retired). Swap any file for your own generated art later, same path
 - [x] **Graph-paper canvas** — faint grid over the grey/black background whose lines brighten in a soft circle that follows the cursor
-- [ ] **Your own banner images** → `public/bento/*.jpg` (placeholders are borrowed from the labs-client repo — replace before publishing)
+- [x] ~~**Your own banner images**~~ → drawn instead, 18 of them, in `scripts/make-covers.mjs`. The borrowed labs-client placeholders are deleted (see 2h). Swap any one for a real screenshot by pointing that project's `cover` at it in `src/data.ts`.
 - [ ] Awards (photos + one line each)
 - [ ] Profile photo
 - [ ] Social links (GitHub, LinkedIn, Behance)
