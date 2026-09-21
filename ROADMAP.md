@@ -311,6 +311,82 @@ zero width — name every child, never style a bare element under a class. And t
 first called `.step`, which already exists in this sheet for the timeline and draws a rule down its
 left side; they are `.cstep` now — grep the sheet before naming anything.
 
+## 2g. Where the video files should live (21 Sep 2026)
+
+**The question: keep full quality, so a database, or what?**
+
+**Not a database.** A DB stores video as one big blob of bytes, and to play it something has to
+read the whole row out and hand it over. That breaks the one thing video needs: a **range
+request** — the browser asking for "just bytes 0 to 500,000" so it can start playing after a
+second instead of after the whole file. Object storage does range requests for free. A DB does
+not. It also costs more per GB than storage built for files.
+
+So: **object storage + CDN**, or a **video host**. They solve different halves.
+
+### Two separate problems
+
+| Problem | What causes it | Fixed by |
+|---|---|---|
+| Four clips cannot go in git | GitHub rejects any file over 100 MB | any storage with a URL |
+| Scroll stutters | a 3692x2160 frame is decoded to fill a 1100px box — 20x the pixels, nine times over | only a smaller **rendition** |
+
+Storage alone fixes the first and does nothing for the second. This matters: moving the files off
+git and expecting smooth scroll is the mistake to avoid.
+
+### "Without decreasing quality" — the part worth understanding
+
+Nothing has to be thrown away. The **master stays exactly as exported**, untouched, at full
+resolution. What changes is what gets *sent*: a video host keeps the original and makes copies at
+360p / 720p / 1080p / 4K, then the browser picks the one that fits the box it is painting into.
+That is **adaptive streaming** (HLS).
+
+A visitor on a 1440px laptop sees the case study at ~1100px wide. Their screen physically cannot
+show 2160 rows of pixels in that box. Sending 4K there is not extra quality, it is extra bytes and
+extra decode — the stutter. Sending 720p to a 1100px box looks identical and decodes in a fifth of
+the work. The 4K copy still exists, and a visitor on a 4K monitor gets it.
+
+So adaptive streaming is the only option that fixes both problems **and** keeps the master intact.
+
+### Options, best fit first
+
+1. **Cloudflare Stream** — upload the original, it makes the renditions. Recommended.
+   - Pricing is per minute, not per GB, so a 520 MB 4K file and a 50 MB one cost the same.
+   - Playback: Safari plays the `.m3u8` in a plain `<video>`; Chrome and Firefox need
+     [hls.js](https://github.com/video-dev/hls.js) (~30 KB). That is a real change to
+     `AutoClip.tsx` — about 15 lines — not a one-line swap.
+   - URL shape: `https://customer-<CODE>.cloudflarestream.com/<VIDEO_ID>/manifest/video.m3u8`
+2. **Bunny Stream** — same idea, usually cheaper, same hls.js caveat.
+3. **Mux** — the same again, developer-friendly, priciest of the three.
+4. **Cloudflare R2** — plain storage, **no renditions**. No egress fees, which suits big files
+   served often. Fixes git, not the stutter.
+5. **Vercel Blob** — plain storage, least setup since the site already deploys to Vercel. Fixes
+   git, not the stutter. Watch the bandwidth allowance against 520 MB of autoplaying clips.
+
+**Git LFS is a bad fit.** Free tier is 1 GB storage and 1 GB/month bandwidth, against 520 MB of
+clips. Roughly two visitors a month exhausts it, then pushes and pulls start failing.
+
+### What it takes in the code
+
+For plain storage (options 4–5) the change is genuinely one line per clip in `src/data.ts` —
+`clip` goes straight into `<video src>`, so a full URL works with no code change at all:
+
+```ts
+clip: 'https://<bucket>.example.com/thread.mp4',
+```
+
+For a video host (1–3) it is that plus hls.js in `AutoClip.tsx`.
+
+**Not started — every one of these needs an account and a token I do not have.** Nothing has been
+uploaded anywhere. Pick a host and I will wire it up.
+
+### Already shipped, no host needed
+
+`src/scrollIdle.ts` + `AutoClip.tsx` (commit `c86322f`): one shared scroll listener, and a clip
+plays only while properly on screen **and** the page is at rest. The visibility threshold went
+0.15 -> 0.55 so a clip no longer starts while barely in view, and nothing plays on mount, which
+had been starting all nine decoding at page load. No video file was touched. This is the cheap
+80% — it stops decode competing with scrolling, but a 4K frame is still a 4K frame once it plays.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup
