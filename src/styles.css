@@ -1967,41 +1967,42 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── benefits: a card each, with the product beside them ───── */
-/* three across, with room to breathe — no filled panels and no picture
-   beside them, so the six things you get read as one run */
-.bcards {
-  list-style: none;
+/* ── benefits: the title on the left, the run of them on the right ───────
+   A wide left column for the heading and a narrow measure for the words, so
+   the six of them read down one edge instead of across a grid of panels. */
+.bsplit {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(18px, 2.2vw, 34px) clamp(24px, 3vw, 48px);
+  grid-template-columns: minmax(0, 0.32fr) minmax(0, 0.68fr);
+  gap: clamp(20px, 5vw, 76px);
+  align-items: start;
 }
-.bcard {
-  padding: 20px 0 0;
-  border-top: 1px solid var(--line);
-  transition: border-color 0.3s ease;
-}
-.bcard:hover { border-top-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
-@media (max-width: 900px) { .bcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 600px) { .bcards { grid-template-columns: minmax(0, 1fr); } }
-.bcard__tick {
+.bsplit__head .bhead { margin-bottom: 0; }
+.bsplit__body { display: grid; gap: clamp(18px, 2.4vh, 26px); }
+.bsplit__body .bpanel__lead { margin-bottom: 0; max-width: 58ch; }
+.brun { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.brun__row {
   display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  margin-bottom: 11px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent-ink);
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
 }
-.bcard__title {
-  margin-bottom: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--text);
+.brun__no {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
 }
-.bcard__text { font-size: 13.5px; line-height: 1.6; color: var(--text-mid); max-width: 34ch; }
-
+.brun__line {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-mid);
+  max-width: 62ch;
+}
+.brun__t { font-weight: 600; color: var(--text); }
+@media (max-width: 900px) {
+  .bsplit { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .brun__row { grid-template-columns: 26px minmax(0, 1fr); }
+}
 .bclose {
   margin-top: clamp(22px, 3vh, 32px);
   padding-top: 18px;

@@ -118,27 +118,32 @@ export default function Brief({ brief }: { brief: BriefData }) {
         whileInView="in"
         viewport={{ amount: 0.2 }}
       >
-        <div className="bblock">
-          <Title>Benefits</Title>
-          <motion.p className="bpanel__lead" variants={item}>
-            <Words text={brief.benefits.lead} />
-          </motion.p>
+        {/* title on the left, the run of benefits on the right */}
+        <div className="bsplit">
+          <div className="bsplit__head">
+            <Title>Benefits</Title>
+          </div>
 
-          <ul className="bcards">
-              {brief.benefits.items.map((b) => (
-                <motion.li className="bcard" key={b.title} variants={item}>
-                  <span className="bcard__tick" aria-hidden="true">
-                    <Check />
-                  </span>
-                  <h4 className="bcard__title">
-                    <Words text={b.title} />
-                  </h4>
-                  <p className="bcard__text">
+          <div className="bsplit__body">
+            <motion.p className="bpanel__lead" variants={item}>
+              <Words text={brief.benefits.lead} />
+            </motion.p>
+
+            <ol className="brun">
+              {brief.benefits.items.map((b, i) => (
+                <motion.li className="brun__row" key={b.title} variants={item}>
+                  <span className="brun__no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="brun__line">
+                    <strong className="brun__t">
+                      {/* a title that already ends in punctuation does not take a second stop */}
+                      <Words text={/[.?!”"]$/.test(b.title) ? b.title : `${b.title}.`} />
+                    </strong>{' '}
                     <Words text={b.text} />
                   </p>
                 </motion.li>
               ))}
-          </ul>
+            </ol>
+          </div>
         </div>
       </motion.section>
     </>
