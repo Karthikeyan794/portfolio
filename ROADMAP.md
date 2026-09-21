@@ -421,6 +421,66 @@ plays only while properly on screen **and** the page is at rest. The visibility 
 had been starting all nine decoding at page load. No video file was touched. This is the cheap
 80% — it stops decode competing with scrolling, but a 4K frame is still a 4K frame once it plays.
 
+## 2h. Covers, and the release the clips live on (21–22 Sep 2026)
+
+### The covers are ours now
+
+The bento tiles were carrying painted illustrations **copied out of the labs-client repo** as
+placeholders (the commit that added them says so in as many words). That is an employer's artwork
+on a personal job-hunting site, so they are gone.
+
+Eighteen replacements are drawn in **`scripts/make-covers.mjs`** — one per project, each an
+abstraction of the thing itself rather than a picture of it. Re-run any time:
+
+```
+node scripts/make-covers.mjs
+```
+
+**56 KB in total, against 2.5 MB of jpg**, and vector, so they stay sharp at any size.
+
+The constraint that shapes them: the grid runs from about 4:1 to nearly square, `object-fit: cover`
+crops whatever does not fit, and `.box__veil` then darkens the bottom so a title can sit on it.
+Intersect those and **y 325–600** is the only band reliably visible *and* reliably light. So the
+shell scales every motif into that band (`SAFE`), with a per-cover `zoom` for sparse motifs that
+went thin when shrunk. The contact banner is not a tile — it is a **tall** panel, cropped at the
+sides — so that one is built around a single centre and survives a crop from any direction.
+
+**One thing left over:** the old jpgs are gone from the working tree, but they are still in git
+history, and this repository is public. Removing them for good means rewriting history
+(`git filter-repo`), which changes every commit hash. Worth doing before the repo is shown to
+anyone; say the word.
+
+### The clips: originals on a release
+
+`clip` now points at `https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1/…`
+(the `HD` constant in `src/data.ts`) for the five recordings that cannot be committed.
+
+**Nothing is uploaded yet**, and the upload needs a GitHub login — there is no `gh` CLI on this
+machine and no token here, so this part is yours:
+
+1. Open **github.com/Karthikeyan794/portfolio/releases/new**
+2. Tag: **`clips-v1`** (type it; it will offer to create it)
+3. Drag in everything from **`~/Desktop/portfolio-clips-to-upload/`** — already renamed URL-safe
+4. **Publish release** — not *Save draft*: a draft's assets need a login to fetch
+
+| file | size | what it is |
+|---|---|---|
+| `home.mp4` | 268 MB | the dashboard that reads zero |
+| `thread.mp4` | 177 MB | the thread, its recipients, its attachments |
+| `merge.mp4` | 170 MB | merging duplicates, marking spam |
+| `reply.mp4` | 159 MB | the reply, start to finish |
+| `ai-suggestions.mp4` | 146 MB | the AI suggestion and its three states |
+
+Verified about release assets: they answer **byte-range requests** (`206`), so a browser starts
+playing before the file finishes, and they allow 2 GB per file and do not count toward repository
+size. Content type is recorded at upload; a browser upload of an `.mp4` sends `video/mp4`.
+
+**The page does not depend on any of it.** Each of those slices carries a `clipFallback`, so until
+the release exists every clip quietly serves the smaller copy in `/public` — verified with the
+release missing: all four fall back and the page is whole. `ai-suggestions` has no local copy, so
+that figure removes itself rather than leaving an empty frame under a caption. Upload and the
+originals take over with no code change.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup
