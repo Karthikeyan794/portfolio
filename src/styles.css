@@ -1872,11 +1872,7 @@ a { color: inherit; text-decoration: none; }
 .bblock + .bblock { margin-top: clamp(40px, 6vh, 76px); }
 /* set like the overview's title, so the page speaks with one voice */
 .bhead {
-  /* a row, like the chapter openings: the words, then a line to the edge */
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  width: 100%;
+  display: inline-block;
   /* the same small-caps label the overview wears, so the stops on the top bar
      are all titled in one voice */
   font-family: var(--label-face);
@@ -1887,13 +1883,6 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.02em;
   color: var(--accent-ink);
   margin-bottom: 16px;
-}
-.bhead::after,
-.primer__h::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--line);
 }
 .bpanel__lead {
   color: var(--text-mid);
