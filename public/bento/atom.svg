@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-atom" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#1b2a44"/>
+      <stop offset="1" stop-color="#0a0f1a"/>
+    </linearGradient>
+    <radialGradient id="glow-atom" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#5a7fd6" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#5a7fd6" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#5a7fd6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-atom" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-atom" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-atom" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-atom)"/>
+  <rect width="1400" height="1000" fill="url(#glow-atom)"/>
+  <g transform="translate(700 455) scale(0.806) translate(-700 -410)">
+  <circle cx="700" cy="400" r="300" fill="#a6e85b" opacity="0.05" filter="url(#soft-atom)"/>
+  <ellipse cx="700" cy="400" rx="92" ry="39" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.300" transform="rotate(0 700 400)"/>
+  <ellipse cx="700" cy="400" rx="144" ry="60" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.255" transform="rotate(36 700 400)"/>
+  <ellipse cx="700" cy="400" rx="196" ry="82" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.210" transform="rotate(72 700 400)"/>
+  <ellipse cx="700" cy="400" rx="248" ry="104" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.165" transform="rotate(108 700 400)"/>
+  <ellipse cx="700" cy="400" rx="300" ry="126" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.120" transform="rotate(144 700 400)"/>
+  <circle cx="597" cy="327" r="4.5" fill="#fff" opacity="0.5"/>
+  <circle cx="624" cy="482" r="4.0" fill="#fff" opacity="0.5"/>
+  <circle cx="786" cy="290" r="2.2" fill="#fff" opacity="0.5"/>
+  <circle cx="507" cy="316" r="3.0" fill="#fff" opacity="0.5"/>
+  <circle cx="749" cy="342" r="4.2" fill="#fff" opacity="0.5"/>
+  <circle cx="626" cy="357" r="4.8" fill="#fff" opacity="0.5"/>
+  <circle cx="445" cy="450" r="4.4" fill="#fff" opacity="0.5"/>
+  <circle cx="700" cy="400" r="46" fill="#a6e85b" opacity="0.16"/>
+  <circle cx="700" cy="400" r="17" fill="#a6e85b"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-atom)"/>
+  <rect width="1400" height="1000" filter="url(#grain-atom)" opacity="0.06"/>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-form-design" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#1a2733"/>
+      <stop offset="1" stop-color="#080e13"/>
+    </linearGradient>
+    <radialGradient id="glow-form-design" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#4b86b8" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#4b86b8" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#4b86b8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-form-design" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-form-design" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-form-design" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-form-design)"/>
+  <rect width="1400" height="1000" fill="url(#glow-form-design)"/>
+  <g transform="translate(700 455) scale(0.620) translate(-700 -410)">
+  <rect x="330" y="208" width="740" height="58" rx="14" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+  <rect x="356" y="199" width="76" height="18" rx="9" fill="#fff" opacity="0.1"/>
+  <rect x="362" y="230" width="150" height="14" rx="7" fill="#fff" opacity="0.2"/>
+  <rect x="330" y="300" width="740" height="58" rx="14" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+  <rect x="356" y="291" width="110" height="18" rx="9" fill="#fff" opacity="0.1"/>
+  <rect x="362" y="322" width="197" height="14" rx="7" fill="#fff" opacity="0.2"/>
+  <rect x="330" y="392" width="740" height="58" rx="14" fill="none" stroke="#a6e85b" stroke-width="2.5" opacity="0.9"/>
+  <rect x="356" y="383" width="144" height="18" rx="9" fill="#a6e85b" opacity="0.22"/>
+  <rect x="362" y="414" width="244" height="14" rx="7" fill="#fff" opacity="0.5"/>
+  <rect x="330" y="484" width="740" height="58" rx="14" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+  <rect x="356" y="475" width="76" height="18" rx="9" fill="#fff" opacity="0.1"/>
+  <rect x="362" y="506" width="291" height="14" rx="7" fill="#fff" opacity="0.2"/>
+  <rect x="330" y="576" width="340" height="58" rx="14" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+  <rect x="356" y="567" width="110" height="18" rx="9" fill="#fff" opacity="0.1"/>
+  <rect x="362" y="598" width="338" height="14" rx="7" fill="#fff" opacity="0.2"/>
+  <rect x="744" y="576" width="326" height="58" rx="14" fill="#a6e85b" opacity="0.85"/>
+  <rect x="614" y="410" width="3" height="22" fill="#a6e85b"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-form-design)"/>
+  <rect width="1400" height="1000" filter="url(#grain-form-design)" opacity="0.06"/>
+</svg>

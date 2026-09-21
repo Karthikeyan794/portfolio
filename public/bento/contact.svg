@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-contact" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#14262e"/>
+      <stop offset="1" stop-color="#080f13"/>
+    </linearGradient>
+    <radialGradient id="glow-contact" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#3a9fb0" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#3a9fb0" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#3a9fb0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-contact" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-contact" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-contact" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-contact)"/>
+  <rect width="1400" height="1000" fill="url(#glow-contact)"/>
+  <g transform="translate(700 455) scale(0.713) translate(-700 -410)">
+  <circle cx="700" cy="410" r="54" fill="none" stroke="#fff" stroke-width="2.60" opacity="0.420"/>
+  <circle cx="700" cy="410" r="100" fill="none" stroke="#fff" stroke-width="2.32" opacity="0.365"/>
+  <circle cx="700" cy="410" r="146" fill="none" stroke="#fff" stroke-width="2.04" opacity="0.310"/>
+  <circle cx="700" cy="410" r="192" fill="none" stroke="#fff" stroke-width="1.76" opacity="0.255"/>
+  <circle cx="700" cy="410" r="238" fill="none" stroke="#fff" stroke-width="1.48" opacity="0.200"/>
+  <circle cx="700" cy="410" r="284" fill="none" stroke="#fff" stroke-width="1.20" opacity="0.145"/>
+  <line x1="700" y1="410" x2="700" y2="158" stroke="#a6e85b" stroke-width="2" opacity="0.5" stroke-dasharray="3 10"/>
+  <circle cx="700" cy="158" r="30" fill="#a6e85b" opacity="0.95"/>
+  <line x1="700" y1="410" x2="486" y2="540" stroke="#fff" stroke-width="2" opacity="0.22" stroke-dasharray="3 10"/>
+  <circle cx="486" cy="540" r="22" fill="#fff" opacity="0.32"/>
+  <line x1="700" y1="410" x2="916" y2="520" stroke="#fff" stroke-width="2" opacity="0.22" stroke-dasharray="3 10"/>
+  <circle cx="916" cy="520" r="22" fill="#fff" opacity="0.32"/>
+  <circle cx="700" cy="292" r="11" fill="#a6e85b"/>
+  <circle cx="700" cy="410" r="40" fill="#0b1418" opacity="0.72"/>
+  <circle cx="700" cy="410" r="27" fill="#fff" opacity="0.95"/>
+  <path d="M686 404 l 14 10 l 14 -10 m -28 0 l 0 14 l 28 0 l 0 -14 z" fill="none" stroke="#0b1418" stroke-width="2.4" stroke-linejoin="round"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-contact)"/>
+  <rect width="1400" height="1000" filter="url(#grain-contact)" opacity="0.06"/>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-support-desk" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#16323a"/>
+      <stop offset="1" stop-color="#0a1417"/>
+    </linearGradient>
+    <radialGradient id="glow-support-desk" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#3fb6a8" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#3fb6a8" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#3fb6a8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-support-desk" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-support-desk" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-support-desk" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-support-desk)"/>
+  <rect width="1400" height="1000" fill="url(#glow-support-desk)"/>
+  <g transform="translate(700 455) scale(0.620) translate(-700 -410)">
+  <rect x="330" y="250" width="620" height="34" rx="17" fill="#fff" opacity="0.300"/>
+  <circle cx="292" cy="267" r="7" fill="#fff" opacity="0.420"/>
+  <rect x="330" y="312" width="550" height="34" rx="17" fill="#fff" opacity="0.270"/>
+  <circle cx="292" cy="329" r="7" fill="#fff" opacity="0.390"/>
+  <rect x="330" y="374" width="480" height="34" rx="17" fill="#fff" opacity="0.240"/>
+  <circle cx="292" cy="391" r="7" fill="#fff" opacity="0.360"/>
+  <rect x="330" y="436" width="620" height="34" rx="17" fill="#fff" opacity="0.210"/>
+  <circle cx="292" cy="453" r="7" fill="#fff" opacity="0.330"/>
+  <rect x="330" y="498" width="550" height="34" rx="17" fill="#fff" opacity="0.180"/>
+  <circle cx="292" cy="515" r="7" fill="#fff" opacity="0.300"/>
+  <rect x="330" y="560" width="480" height="34" rx="17" fill="#fff" opacity="0.150"/>
+  <circle cx="292" cy="577" r="7" fill="#fff" opacity="0.270"/>
+  <rect x="330" y="622" width="620" height="34" rx="17" fill="#fff" opacity="0.120"/>
+  <circle cx="292" cy="639" r="7" fill="#fff" opacity="0.240"/>
+  <rect x="318" y="298" width="700" height="50" rx="25" fill="#a6e85b" opacity="0.14"/>
+  <rect x="330" y="312" width="560" height="34" rx="17" fill="#a6e85b" opacity="0.85"/>
+  <circle cx="292" cy="329" r="9" fill="#a6e85b"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-support-desk)"/>
+  <rect width="1400" height="1000" filter="url(#grain-support-desk)" opacity="0.06"/>
+</svg>

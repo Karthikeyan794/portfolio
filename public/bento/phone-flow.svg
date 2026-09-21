@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-phone-flow" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#2a2036"/>
+      <stop offset="1" stop-color="#0f0b14"/>
+    </linearGradient>
+    <radialGradient id="glow-phone-flow" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#8f72c4" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#8f72c4" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#8f72c4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-phone-flow" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-phone-flow" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-phone-flow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-phone-flow)"/>
+  <rect width="1400" height="1000" fill="url(#glow-phone-flow)"/>
+  <g transform="translate(700 455) scale(0.694) translate(-700 -410)">
+  <rect x="330" y="325" width="8" height="149" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="352" y="302" width="8" height="195" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="374" y="284" width="8" height="231" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="396" y="286" width="8" height="229" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="418" y="278" width="8" height="244" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="440" y="286" width="8" height="228" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="462" y="296" width="8" height="207" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="484" y="318" width="8" height="164" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="506" y="341" width="8" height="118" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="528" y="360" width="8" height="80" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="550" y="359" width="8" height="83" rx="4" fill="#a6e85b" opacity="0.576"/>
+  <rect x="572" y="365" width="8" height="70" rx="4" fill="#a6e85b" opacity="0.551"/>
+  <rect x="594" y="379" width="8" height="41" rx="4" fill="#a6e85b" opacity="0.561"/>
+  <rect x="616" y="360" width="8" height="80" rx="4" fill="#a6e85b" opacity="0.603"/>
+  <rect x="638" y="338" width="8" height="124" rx="4" fill="#a6e85b" opacity="0.672"/>
+  <rect x="660" y="316" width="8" height="167" rx="4" fill="#a6e85b" opacity="0.753"/>
+  <rect x="682" y="298" width="8" height="204" rx="4" fill="#a6e85b" opacity="0.835"/>
+  <rect x="704" y="295" width="8" height="210" rx="4" fill="#a6e85b" opacity="0.901"/>
+  <rect x="726" y="275" width="8" height="251" rx="4" fill="#a6e85b" opacity="0.941"/>
+  <rect x="748" y="275" width="8" height="249" rx="4" fill="#a6e85b" opacity="0.948"/>
+  <rect x="770" y="291" width="8" height="217" rx="4" fill="#a6e85b" opacity="0.921"/>
+  <rect x="792" y="302" width="8" height="197" rx="4" fill="#a6e85b" opacity="0.864"/>
+  <rect x="814" y="320" width="8" height="160" rx="4" fill="#a6e85b" opacity="0.787"/>
+  <rect x="836" y="328" width="8" height="145" rx="4" fill="#a6e85b" opacity="0.703"/>
+  <rect x="858" y="363" width="8" height="75" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="880" y="372" width="8" height="55" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="902" y="379" width="8" height="41" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="924" y="370" width="8" height="60" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="946" y="351" width="8" height="98" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="968" y="339" width="8" height="122" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="990" y="331" width="8" height="138" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="1012" y="304" width="8" height="192" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="1034" y="295" width="8" height="210" rx="4" fill="#fff" opacity="0.18"/>
+  <rect x="1056" y="284" width="8" height="232" rx="4" fill="#fff" opacity="0.18"/>
+  <circle cx="700" cy="400" r="286" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.08"/>
+  <circle cx="700" cy="400" r="352" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.05"/>
+  <rect x="560" y="556" width="280" height="64" rx="32" fill="#a6e85b" opacity="0.16"/>
+  <path d="M652 588 a 84 84 0 0 1 96 0" fill="none" stroke="#a6e85b" stroke-width="4" opacity="0.8" stroke-linecap="round"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-phone-flow)"/>
+  <rect width="1400" height="1000" filter="url(#grain-phone-flow)" opacity="0.06"/>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-neomorphism" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#23262c"/>
+      <stop offset="1" stop-color="#0c0e11"/>
+    </linearGradient>
+    <radialGradient id="glow-neomorphism" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#8590a0" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#8590a0" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#8590a0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-neomorphism" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-neomorphism" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-neomorphism" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-neomorphism)"/>
+  <rect width="1400" height="1000" fill="url(#glow-neomorphism)"/>
+  <g transform="translate(700 455) scale(0.620) translate(-700 -410)">
+  <rect x="434" y="216" width="560" height="410" rx="70" fill="#000" opacity="0.3" filter="url(#soft-neomorphism)"/>
+  <rect x="412" y="191" width="560" height="410" rx="70" fill="#fff" opacity="0.12" filter="url(#soft-neomorphism)"/>
+  <rect x="420" y="200" width="560" height="410" rx="70" fill="#2a2e35"/>
+  <path d="M490 610 a 70 70 0 0 1 -70 -70 l 0 -270 a 70 70 0 0 1 70 -70 l 420 0" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.2"/>
+  <path d="M910 200 a 70 70 0 0 1 70 70 l 0 270 a 70 70 0 0 1 -70 70 l -420 0" fill="none" stroke="#000" stroke-width="2.5" opacity="0.32"/>
+  <circle cx="588" cy="368" r="78" fill="#23272d"/>
+  <circle cx="588" cy="368" r="78" fill="none" stroke="#000" stroke-width="3" opacity="0.34"/>
+  <path d="M588 290 a 78 78 0 0 1 55 23" fill="none" stroke="#fff" stroke-width="3" opacity="0.22"/>
+  <circle cx="588" cy="368" r="30" fill="#a6e85b" opacity="0.9"/>
+  <circle cx="588" cy="368" r="46" fill="none" stroke="#a6e85b" stroke-width="2" opacity="0.35"/>
+  <rect x="700" y="336" width="214" height="18" rx="9" fill="#fff" opacity="0.26"/>
+  <rect x="700" y="372" width="150" height="18" rx="9" fill="#fff" opacity="0.14"/>
+  <rect x="514" y="484" width="400" height="74" rx="37" fill="#000" opacity="0.3" filter="url(#soft-neomorphism)"/>
+  <rect x="492" y="459" width="400" height="74" rx="37" fill="#fff" opacity="0.12" filter="url(#soft-neomorphism)"/>
+  <rect x="500" y="468" width="400" height="74" rx="37" fill="#2a2e35"/>
+  <path d="M537 542 a 37 37 0 0 1 -37 -37 l 0 0 a 37 37 0 0 1 37 -37 l 326 0" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.2"/>
+  <path d="M863 468 a 37 37 0 0 1 37 37 l 0 0 a 37 37 0 0 1 -37 37 l -326 0" fill="none" stroke="#000" stroke-width="2.5" opacity="0.32"/>
+  <rect x="528" y="494" width="196" height="20" rx="10" fill="#a6e85b" opacity="0.6"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-neomorphism)"/>
+  <rect width="1400" height="1000" filter="url(#grain-neomorphism)" opacity="0.06"/>
+</svg>

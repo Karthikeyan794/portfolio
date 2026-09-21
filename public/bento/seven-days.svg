@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-seven-days" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#1d2a3c"/>
+      <stop offset="1" stop-color="#0a0f16"/>
+    </linearGradient>
+    <radialGradient id="glow-seven-days" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#5588c0" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#5588c0" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#5588c0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-seven-days" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-seven-days" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-seven-days" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-seven-days)"/>
+  <rect width="1400" height="1000" fill="url(#glow-seven-days)"/>
+  <g transform="translate(700 455) scale(0.620) translate(-700 -410)">
+  <rect x="316" y="240" width="76" height="76" rx="20" fill="#fff" opacity="0.16"/>
+  <rect x="316" y="422" width="76" height="44" rx="7" fill="#fff" opacity="0.185"/>
+  <rect x="316" y="488" width="76" height="24" rx="7" fill="#fff" opacity="0.150"/>
+  <rect x="426" y="240" width="76" height="76" rx="20" fill="#fff" opacity="0.16"/>
+  <rect x="426" y="356" width="76" height="34" rx="7" fill="#fff" opacity="0.220"/>
+  <rect x="426" y="422" width="76" height="14" rx="7" fill="#fff" opacity="0.185"/>
+  <rect x="426" y="554" width="76" height="24" rx="7" fill="#fff" opacity="0.115"/>
+  <rect x="536" y="240" width="76" height="76" rx="20" fill="#fff" opacity="0.16"/>
+  <rect x="536" y="356" width="76" height="54" rx="7" fill="#fff" opacity="0.220"/>
+  <rect x="536" y="488" width="76" height="14" rx="7" fill="#fff" opacity="0.150"/>
+  <rect x="536" y="554" width="76" height="44" rx="7" fill="#fff" opacity="0.115"/>
+  <rect x="646" y="240" width="76" height="76" rx="20" fill="#a6e85b" opacity="0.9"/>
+  <rect x="646" y="422" width="76" height="54" rx="7" fill="#fff" opacity="0.185"/>
+  <rect x="646" y="488" width="76" height="34" rx="7" fill="#fff" opacity="0.150"/>
+  <rect x="756" y="240" width="76" height="76" rx="20" fill="#fff" opacity="0.16"/>
+  <rect x="756" y="356" width="76" height="44" rx="7" fill="#fff" opacity="0.220"/>
+  <rect x="756" y="422" width="76" height="24" rx="7" fill="#fff" opacity="0.185"/>
+  <rect x="756" y="554" width="76" height="34" rx="7" fill="#fff" opacity="0.115"/>
+  <rect x="866" y="240" width="76" height="76" rx="20" fill="#fff" opacity="0.16"/>
+  <rect x="866" y="356" width="76" height="14" rx="7" fill="#fff" opacity="0.220"/>
+  <rect x="866" y="488" width="76" height="24" rx="7" fill="#fff" opacity="0.150"/>
+  <rect x="866" y="554" width="76" height="54" rx="7" fill="#fff" opacity="0.115"/>
+  <rect x="976" y="240" width="76" height="76" rx="20" fill="#fff" opacity="0.16"/>
+  <rect x="976" y="422" width="76" height="14" rx="7" fill="#fff" opacity="0.185"/>
+  <rect x="976" y="488" width="76" height="44" rx="7" fill="#fff" opacity="0.150"/>
+  <rect x="632" y="226" width="104" height="400" rx="26" fill="#a6e85b" opacity="0.08"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-seven-days)"/>
+  <rect width="1400" height="1000" filter="url(#grain-seven-days)" opacity="0.06"/>
+</svg>

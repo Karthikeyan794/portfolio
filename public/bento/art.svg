@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-art" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#33212c"/>
+      <stop offset="1" stop-color="#120a0f"/>
+    </linearGradient>
+    <radialGradient id="glow-art" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#bd6f92" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#bd6f92" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#bd6f92" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-art" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-art" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-art" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-art)"/>
+  <rect width="1400" height="1000" fill="url(#glow-art)"/>
+  <g transform="translate(700 455) scale(0.620) translate(-700 -410)">
+  <path d="M314 210 C 514 146, 865 303, 1085 210" fill="none" stroke="#fff" stroke-width="2.2" opacity="0.238" stroke-linecap="round"/>
+  <path d="M342 256 C 542 173, 832 332, 1052 256" fill="none" stroke="#fff" stroke-width="2.1" opacity="0.161" stroke-linecap="round"/>
+  <path d="M355 302 C 555 194, 879 364, 1099 302" fill="none" stroke="#fff" stroke-width="3.3" opacity="0.219" stroke-linecap="round"/>
+  <path d="M339 348 C 539 287, 878 425, 1098 348" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.259" stroke-linecap="round"/>
+  <path d="M355 394 C 555 321, 856 487, 1076 394" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.288" stroke-linecap="round"/>
+  <path d="M341 440 C 541 374, 877 540, 1097 440" fill="none" stroke="#fff" stroke-width="3.9" opacity="0.152" stroke-linecap="round"/>
+  <path d="M314 486 C 514 395, 823 589, 1043 486" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.190" stroke-linecap="round"/>
+  <path d="M342 532 C 542 464, 867 628, 1087 532" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.223" stroke-linecap="round"/>
+  <path d="M317 578 C 517 483, 850 649, 1070 578" fill="none" stroke="#fff" stroke-width="3.3" opacity="0.155" stroke-linecap="round"/>
+  <path d="M340 430 C 520 250, 760 560, 1060 330" fill="none" stroke="#a6e85b" stroke-width="5" opacity="0.92" stroke-linecap="round"/>
+  <circle cx="1060" cy="330" r="10" fill="#a6e85b"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-art)"/>
+  <rect width="1400" height="1000" filter="url(#grain-art)" opacity="0.06"/>
+</svg>

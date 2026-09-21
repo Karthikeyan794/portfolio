@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg-clickly" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#0f2c26"/>
+      <stop offset="1" stop-color="#060f0d"/>
+    </linearGradient>
+    <radialGradient id="glow-clickly" cx="0.5" cy="0.34" r="0.62">
+      <stop offset="0" stop-color="#3cb488" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#3cb488" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#3cb488" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig-clickly" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <filter id="grain-clickly" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="soft-clickly" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="1000" fill="url(#bg-clickly)"/>
+  <rect width="1400" height="1000" fill="url(#glow-clickly)"/>
+  <g transform="translate(700 455) scale(0.732) translate(-700 -410)">
+  <circle cx="700" cy="390" r="72" fill="none" stroke="#a6e85b" stroke-width="2.5" opacity="0.500"/>
+  <circle cx="700" cy="390" r="150" fill="none" stroke="#a6e85b" stroke-width="2.05" opacity="0.390"/>
+  <circle cx="700" cy="390" r="228" fill="none" stroke="#a6e85b" stroke-width="1.6" opacity="0.280"/>
+  <circle cx="700" cy="390" r="306" fill="none" stroke="#a6e85b" stroke-width="1.15" opacity="0.170"/>
+  <circle cx="700" cy="390" r="30" fill="#a6e85b" opacity="0.2"/>
+  <circle cx="700" cy="390" r="11" fill="#a6e85b"/>
+  <path d="M700 390 l 0 118 l 30 -32 l 23 51 l 25 -12 l -23 -50 l 43 -6 z" fill="#fff"/>
+  <path d="M700 390 l 0 118 l 30 -32 l 23 51 l 25 -12 l -23 -50 l 43 -6 z" fill="none" stroke="#000" stroke-width="2" opacity="0.2"/>
+  </g>
+  <rect width="1400" height="1000" fill="url(#vig-clickly)"/>
+  <rect width="1400" height="1000" filter="url(#grain-clickly)" opacity="0.06"/>
+</svg>
