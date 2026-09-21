@@ -1332,13 +1332,14 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   gap: clamp(40px, 6vh, 72px);
   padding-top: clamp(48px, 7vh, 84px);
-  /* 60px of air down each side, measured from the edge of the screen. .wrap
+  /* 120px of air down each side, measured from the edge of the screen. .wrap
      centres itself at 95vw and pads 40px, which stacked to 91px; this
-     replaces both with one number. The clamp keeps a 20px floor so a phone
-     is not squeezed to nothing. */
+     replaces both with one number. 10vw so the cap is actually reached on a
+     desktop while a phone stays on the 20px floor: 375 -> 20, 700 -> 48,
+     1240 -> 120. */
   width: auto;
   max-width: none;
-  margin-inline: clamp(20px, 5vw, 60px);
+  margin-inline: clamp(20px, 14vw - 50px, 120px);
   padding-inline: 0;
 }
 /* space between one stop on the top bar and the next. No hairline: each
