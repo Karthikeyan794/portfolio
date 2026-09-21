@@ -1969,9 +1969,14 @@ a { color: inherit; text-decoration: none; }
 .wblock + .wblock { margin-top: clamp(38px, 6vh, 80px); }
 .wshot { margin: 0; }
 .wshot img {
+  /* both pictures take the same frame whatever their own proportions — and
+     they are contained rather than cropped, on black, which is the ground the
+     artwork already sits on, so the fit is invisible and nothing is cut */
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: #000;
   border: 1px solid var(--shot-edge);
   border-radius: 14px;
 }
