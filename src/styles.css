@@ -1329,13 +1329,13 @@ a { color: inherit; text-decoration: none; }
 
 
 .case__body { display: grid; gap: clamp(40px, 6vh, 72px); padding-top: clamp(48px, 7vh, 84px); }
-/* a hairline between one stop on the top bar and the next — half the space
-   above it, half below, so the line sits in the middle of the gap */
+/* space between one stop on the top bar and the next. No hairline: each
+   heading carries its own rule now, and a second line just above it read as
+   a mistake. */
 .case__body > .primer,
 .case__body > .brief,
 .case__body > .rows,
 .case__body > .case__end {
-  border-top: 1px solid var(--line);
   padding-top: clamp(40px, 6vh, 72px);
 }
 /* ── case-study rows: words on the left, screens on the right ───── */
