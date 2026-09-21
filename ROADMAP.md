@@ -365,6 +365,40 @@ So adaptive streaming is the only option that fixes both problems **and** keeps 
 **Git LFS is a bad fit.** Free tier is 1 GB storage and 1 GB/month bandwidth, against 520 MB of
 clips. Roughly two visitors a month exhausts it, then pushes and pulls start failing.
 
+### The free / open-source route
+
+Cloudflare Stream is three jobs bundled together. Each has a free, open-source equivalent, so the
+whole thing can be done for **$0** — the work moves to you instead of the invoice.
+
+| What Stream does | Free equivalent | Licence |
+|---|---|---|
+| Makes the smaller copies | **ffmpeg** (`brew install ffmpeg`) | LGPL/GPL |
+| Plays HLS in Chrome | **hls.js** | Apache 2.0 |
+| Hosts the files | **R2 free tier** or **GitHub Releases** | free tier |
+
+**R2 free tier, confirmed in their docs:** 10 GB-month storage, 1M Class A ops, 10M Class B ops,
+and **egress free**. Against 520 MB of clips that is comfortable. One caveat worth knowing: the
+free `r2.dev` URL is explicitly *not for production* and is rate-limited and throughput-throttled;
+the documented fix is a custom domain on Cloudflare, which means owning a domain.
+
+**GitHub Releases** is the quietly good one. Release assets allow **2 GB per file**, are served
+over GitHub's CDN, and — the point — **do not count toward repository size**. So the four clips
+that cannot be committed can be attached to a release **byte for byte, exactly as exported**, on
+the account that already exists. No signup, no card, no re-encode.
+
+`gh release create clips-v1 public/work/support-desk/clips/*.mp4`
+
+Then each `clip` becomes that asset's URL. It fixes the 100 MB limit and nothing else — the
+browser still receives a 4K file for an 1100px box, so the stutter stays.
+
+**Self-hosting is not free.** PeerTube and MinIO are both genuinely open source and both need a
+server to run on, which costs more per month than Stream does.
+
+**On re-encoding, since the rule here has been to ship the exports untouched:** making the smaller
+copies does not touch the original. The export stays as the top rung of the ladder and is what a
+4K screen receives; the smaller rungs are *added* beside it for screens that cannot show 4K
+anyway. That is precisely what Stream does internally — ffmpeg just does it on this laptop.
+
 ### What it takes in the code
 
 For plain storage (options 4–5) the change is genuinely one line per clip in `src/data.ts` —
