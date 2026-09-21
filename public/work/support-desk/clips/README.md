@@ -89,6 +89,17 @@ costs, so it is a choice rather than a surprise:
 
 If that ever needs undoing, **Export settings** above has the one-line ffmpeg command.
 
+## thread.mp4
+
+The ticket thread: every message with its from and its whole to line, attachments listed on the
+message they came on, inline images rendered in place, and reply / reply-all / forward under it.
+
+**This one had to be re-encoded.** Your export is 186 MB, and GitHub refuses any file over 100 MB —
+the push is rejected outright, so the original cannot live in the repo. The shipped file is the
+same 3640x2160 and the same 55 seconds, re-encoded to **34 MB**; frames compared side by side at
+1:1 are indistinguishable. If you ever want the original bytes served, put it on storage outside
+git (Vercel Blob, S3, anything with a URL) and point `clip` at that URL instead of a local path.
+
 ## The rest of the shot list
 
 One clip per flow still to come — the flows are numbered in the case study, and each slice in
