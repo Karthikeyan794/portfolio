@@ -48,7 +48,7 @@ function Points({ items, good }: { items: string[]; good?: boolean }) {
     <ul className={good ? 'bpoints bpoints--good' : 'bpoints'}>
       {items.map((t) => (
         <motion.li key={t} variants={item}>
-          {good ? <Check /> : <Minus />}
+          <span className="bpoints__mark" aria-hidden="true">{good ? <Check /> : <Minus />}</span>
           <span>
             <Words text={t} />
           </span>
@@ -70,7 +70,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
         whileInView="in"
         viewport={{ amount: 0.15 }}
       >
-        <div className="bcol">
+        <div className="bcol bcol--problem">
           <Title>Problem</Title>
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.problem.lead} />
@@ -83,7 +83,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
           )}
         </div>
 
-        <div className="bcol">
+        <div className="bcol bcol--solution">
           <Title>Solution</Title>
           <motion.p className="bpanel__lead" variants={item}>
             <Words text={brief.solution.lead} />
