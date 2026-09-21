@@ -85,6 +85,9 @@ Worth knowing before re-exporting again: every version committed stays in the re
 for good. `.git` is already 210 MB from these clips. Getting the encode right once is cheaper than
 committing three attempts.
 
+`filter.mp4` — the thirteen filters over the queue: a status applied, then a customer, the two
+stacking to narrow the list. Re-encoded the same way, 59 MB down to **18 MB at 1280x720**.
+
 ## The rest of the shot list
 
 One clip per flow still to come — the flows are numbered in the case study, and each slice in

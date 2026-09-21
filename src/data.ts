@@ -336,7 +336,7 @@ export const projects: Project[] = [
       },
       brief: {
         problem: {
-          lead: 'Support arrives as email. It lands in a shared mailbox in Outlook, and from the moment it lands nobody can say what became of it. For a handful of mails a week that is fine. At scale it stops working — more customers, more threads, more people touching them — and what breaks is the thing a customer actually judges you on: a fast, accurate answer, inside the time you promised.',
+          lead: 'Support arrives as email and lands in a shared mailbox. From that moment nobody can say what became of it — and at scale, what breaks is the fast, accurate answer the customer judges you on.',
           items: [
             'Has anyone replied yet? The shared mailbox does not say',
             'Is it closed, or still open with the customer waiting?',
@@ -348,7 +348,7 @@ export const projects: Project[] = [
           ],
         },
         solution: {
-          lead: 'Support Desk keeps the mailbox and puts a desk around it. The same address, the same inbox — except every mail that arrives becomes a request with a number, an owner, a status and a clock, and that customer’s history sits beside it. Nobody asks who is on it, nobody reads a thread twice to find the question, and the time you promised is measured instead of remembered.',
+          lead: 'Support Desk keeps the mailbox and puts a desk around it. Same address, same inbox — except every mail becomes a request with an owner, a status, a clock and that customer’s history beside it.',
           items: [
             'Shared queue — every mail becomes a ticket with a number, an owner, a status and a clock',
             'Assignment and alerts — hand it to someone and they hear about it where they already work',
@@ -380,6 +380,12 @@ export const projects: Project[] = [
           heading: 'The queue you land on',
           body: 'One list, thirteen filters, search, sort, and a split you can drag — the screen the team lives in all day. Watch the reload beside the list: press it and the desk reads the mailbox again, and whatever has arrived since comes in as a new ticket at the top of the queue, numbered, unassigned and already on the clock. Nobody has to reopen Outlook to find out whether something new landed.',
           clip: '/work/support-desk/clips/queue.mp4',
+        },
+        {
+          span: 'full',
+          heading: 'Narrowing it to the one you want',
+          body: 'Thirteen filters over the same list. Pick a status and the queue narrows to what is still open; add a customer and it narrows again to theirs. They stack, so “everything still open for this company” is two clicks rather than a search somebody retypes every morning — and the split beside it keeps the ticket you were reading.',
+          clip: '/work/support-desk/clips/filter.mp4',
         },
         {
           span: 'full',
