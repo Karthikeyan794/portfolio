@@ -122,13 +122,13 @@ export default function Brief({ brief }: { brief: BriefData }) {
         <div className="bsplit">
           <div className="bsplit__head">
             <Title>Benefits</Title>
+            {/* the line belongs to the title, not to the list */}
+            <motion.p className="bsplit__sub" variants={item}>
+              <Words text={brief.benefits.lead} />
+            </motion.p>
           </div>
 
           <div className="bsplit__body">
-            <motion.p className="bpanel__lead" variants={item}>
-              <Words text={brief.benefits.lead} />
-            </motion.p>
-
             <ol className="brun">
               {brief.benefits.items.map((b, i) => (
                 <motion.li className="brun__row" key={b.title} variants={item}>
