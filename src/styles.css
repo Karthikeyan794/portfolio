@@ -1532,11 +1532,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hi {
-  /* the marked word in a sentence: the display serif, heavy, and in the accent
-     — the change of face and the colour both do the marking */
-  font-family: var(--display);
-  font-style: italic;
-  font-weight: 700;
+  /* the marked phrase in a sentence: the same face as the copy around it, a
+     step heavier and at full strength — weight and contrast do the marking,
+     not a second typeface */
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -4005,6 +4006,3 @@ a { color: inherit; text-decoration: none; }
 }
 
 
-/* the first marked word in a sentence stands upright; the rest are italic,
-   so a line with several of them does not read as all one texture */
-.hi:first-of-type { font-style: normal; }
