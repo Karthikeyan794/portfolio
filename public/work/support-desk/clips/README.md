@@ -112,6 +112,14 @@ the widgets that read zero because nothing in the list was ever marked resolved.
 rejects anything over 100 MB outright, so the original cannot go in the repo. 1080p still came out
 at 137 MB, also over. The shipped file is **1280x720, 80 MB**, faststart on, the same 76 seconds.
 
+## merge.mp4
+
+Two tickets for one request merged into a single thread with a single owner, and junk from the
+shared mailbox marked spam so it leaves the queue unanswered.
+
+**Re-encoded.** `Merage and spam.mp4` is 171 MB, over GitHub's 100 MB hard limit. Shipped at
+**1280x720, 50 MB**, faststart on, the same 46 seconds.
+
 ## Still to record
 
 Seven of the seventeen flows under **How it works** have a recording. These ten do not — each one

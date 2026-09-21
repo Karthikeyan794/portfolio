@@ -367,6 +367,13 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'Merging duplicates, and marking spam',
+          body: 'Two tickets for the same request — the customer wrote twice, or two people reported the same thing — merge into one, so there is a single thread and a single owner instead of two people each answering half of it. And junk that arrived in the shared mailbox is marked spam, which takes it out of the queue without anybody having to answer it first.',
+          clip: '/work/support-desk/clips/merge.mp4',
+          caption: 'Two tickets merged into one, and junk marked spam out of the queue.',
+        },
+        {
+          span: 'full',
           heading: 'Who gets in',
           body: 'On load the app reads the shared inbox with your own token. A 403 or 404 is a genuine no, and a full-screen gate stands where the desk would be: pick read or read-and-reply, add a note, request. The desk opens on its own the moment real access exists. Any other failure — a timeout, a throttle, a dropped connection — is treated as access, because a blip must never lock out somebody who can actually work. Inside, there are three roles: admin reads, edits and manages who else has access; support reads, replies, assigns and changes status; viewer reads. Only admin can change the list, or the distinction would be decorative — and a few standing admins are hard-coded so the app can never lock every one of its owners out.',
           diagram: 'gate',
