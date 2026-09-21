@@ -320,7 +320,6 @@ export default function ProjectPage({ slug }: { slug: string }) {
     detail.primer && { id: 'overview', label: 'Overview' },
     detail.brief && { id: 'problem', label: 'Problem' },
     detail.brief && { id: 'solution', label: 'Solution' },
-    detail.brief && { id: 'benefits', label: 'Benefits' },
     chapters.includes('How it works') && { id: chapterId('How it works'), label: 'How it works' },
     detail.slices.some((s) => s.anchor === 'demo') && { id: 'demo', label: 'Demo' },
   ].filter(Boolean) as Tab[]

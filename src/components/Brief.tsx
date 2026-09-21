@@ -69,9 +69,12 @@ function Block({ id, title, lead, body, image }: {
         <motion.p className="bpanel__lead" variants={item}>
           <Words text={lead} />
         </motion.p>
-        <motion.p className="bpanel__body" variants={item}>
-          <Words text={body} />
-        </motion.p>
+        {/* a blank line in the copy starts a new paragraph */}
+        {body.split('\n\n').map((para) => (
+          <motion.p className="bpanel__body" variants={item} key={para.slice(0, 24)}>
+            <Words text={para} />
+          </motion.p>
+        ))}
       </div>
       {shot && <Shot src={shot} alt={`${title} — illustration`} onFail={() => setShot(undefined)} />}
     </div>
@@ -93,43 +96,6 @@ export default function Brief({ brief }: { brief: BriefData }) {
         <Block id="solution" title="Solution" lead={brief.solution.lead} body={brief.solution.body} image={brief.solution.image} />
       </motion.section>
 
-      <motion.section
-        className="brief"
-        id="benefits"
-        aria-label="Benefits"
-        variants={group}
-        initial="rest"
-        whileInView="in"
-        viewport={{ amount: 0.2 }}
-      >
-        {/* title on the left, the run of benefits on the right */}
-        <div className="bsplit">
-          <div className="bsplit__head">
-            <Title>Benefits</Title>
-            {/* the line belongs to the title, not to the list */}
-            <motion.p className="bsplit__sub" variants={item}>
-              <Words text={brief.benefits.lead} />
-            </motion.p>
-          </div>
-
-          <div className="bsplit__body">
-            <ol className="brun">
-              {brief.benefits.items.map((b, i) => (
-                <motion.li className="brun__row" key={b.title} variants={item}>
-                  <span className="brun__no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="brun__line">
-                    <strong className="brun__t">
-                      {/* a title that already ends in punctuation does not take a second stop */}
-                      <Words text={/[.?!”"]$/.test(b.title) ? b.title : `${b.title}.`} />
-                    </strong>{' '}
-                    <Words text={b.text} />
-                  </p>
-                </motion.li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </motion.section>
     </>
   )
 }
