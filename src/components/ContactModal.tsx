@@ -24,8 +24,10 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
   // the picture leans towards the pointer — a little life, no layout cost
   const px = useMotionValue(0)
   const py = useMotionValue(0)
-  const rx = useSpring(useTransform(py, [-0.5, 0.5], ['6deg', '-6deg']), { stiffness: 120, damping: 20 })
-  const ry = useSpring(useTransform(px, [-0.5, 0.5], ['-7deg', '7deg']), { stiffness: 120, damping: 20 })
+  // the banner pans a little against the pointer — the image is scaled past
+  // its frame so there is something to pan into, and nothing ever shows an edge
+  const ax = useSpring(useTransform(px, [-0.5, 0.5], [14, -14]), { stiffness: 110, damping: 20 })
+  const ay = useSpring(useTransform(py, [-0.5, 0.5], [10, -10]), { stiffness: 110, damping: 20 })
 
   useEffect(() => {
     if (!open) return
@@ -117,56 +119,15 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
               </svg>
             </button>
 
-            {/* left: the picture, and the reason to write */}
-            <div className="cmod__side">
-              <motion.img className="cmod__art" src="/bento/contact.jpg" alt="" style={{ rotateX: rx, rotateY: ry }} aria-hidden="true" />
+            {/* the picture across the top, fading into the form under it */}
+            <div className="cmod__banner">
+              <motion.img className="cmod__art" src="/bento/contact.jpg" alt="" style={{ x: ax, y: ay, scale: 1.06 }} aria-hidden="true" />
               <span className="cmod__wash" aria-hidden="true" />
+              <span className="cmod__fade" aria-hidden="true" />
               <div className="cmod__pitch">
                 <span className="cmod__kick">Say hello</span>
                 <h3>I read everything.</h3>
-                <p>A line about what you are building is enough — I answer anything that isn’t a template.</p>
-                <ul className="cmod__links">
-                  {aboutLinks.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href} target="_blank" rel="noreferrer" title={l.handle}>
-                        <span className="cmod__mark" aria-hidden="true">
-                          {l.mark ? <svg viewBox="0 0 24 24"><path d={marks[l.mark]} /></svg> : <b>{l.mono}</b>}
-                        </span>
-                        {l.label}
-                      </a>
-                    </li>
-                  ))}
-                  {/* the two direct ways, wearing the same chip as the profiles */}
-                  <li>
-                    <a href={`mailto:${profile.email}`} title={profile.email}>
-                      <span className="cmod__mark" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
-                          <path d="M3 7l9 6 9-6" />
-                        </svg>
-                      </span>
-                      Email
-                    </a>
-                  </li>
-                  {profile.phone && (
-                    <li>
-                      {/* tel: raises the dialler on a phone; on a desktop where
-                          it raises nothing, the click has still copied it */}
-                      <a
-                        href={`tel:${profile.phone.replace(/[^+\d]/g, '')}`}
-                        title={profile.phone}
-                        onClick={() => copy('phone', profile.phone)}
-                      >
-                        <span className="cmod__mark" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16.5 16.5 0 014.5 5.7 2 2 0 016.5 3.5z" />
-                          </svg>
-                        </span>
-                        {copied === 'phone' ? 'Copied' : 'Phone'}
-                      </a>
-                    </li>
-                  )}
-                </ul>
+                <p>A line about what you are building is enough.</p>
               </div>
             </div>
 
@@ -207,20 +168,56 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                 </svg>
               </a>
 
-              {/* or just take the details. Each row opens the right app on a
-                  tap and copies on the button beside it — the phone row is
-                  only here once there is a number to put in it. */}
-              <ul className="reach">
-                <li className="reach__row">
-                  <a className="reach__to" href={`mailto:${profile.email}`}>
-                    <span className="reach__k">Email</span>
-                    <span className="reach__v">{profile.email}</span>
-                  </a>
-                  <button className="reach__copy" type="button" onClick={() => copy('email', profile.email)} aria-label="Copy email address">
-                    {copied === 'email' ? 'Copied' : 'Copy'}
-                  </button>
-                </li>
-                {profile.phone && (
+              {/* the other ways, under the button that is the main one */}
+              <div className="cmod__ways">
+                <span className="cmod__ways-k">or reach me at</span>
+                <ul className="cmod__links">
+                  {aboutLinks.map((l) => (
+                    <li key={l.label}>
+                      <a href={l.href} target="_blank" rel="noreferrer" title={l.handle}>
+                        <span className="cmod__mark" aria-hidden="true">
+                          {l.mark ? <svg viewBox="0 0 24 24"><path d={marks[l.mark]} /></svg> : <b>{l.mono}</b>}
+                        </span>
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                  {/* the two direct ways, wearing the same chip as the profiles */}
+                  <li>
+                    <a href={`mailto:${profile.email}`} target="_blank" rel="noreferrer" title={profile.email}>
+                      <span className="cmod__mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+                          <path d="M3 7l9 6 9-6" />
+                        </svg>
+                      </span>
+                      Email
+                    </a>
+                  </li>
+                  {profile.phone && (
+                    <li>
+                      {/* tel: raises the dialler on a phone; on a desktop where
+                          it raises nothing, the click has still copied it */}
+                      <a
+                        href={`tel:${profile.phone.replace(/[^+\d]/g, '')}`}
+                        title={profile.phone}
+                        onClick={() => copy('phone', profile.phone)}
+                      >
+                        <span className="cmod__mark" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16.5 16.5 0 014.5 5.7 2 2 0 016.5 3.5z" />
+                          </svg>
+                        </span>
+                        {copied === 'phone' ? 'Copied' : 'Phone'}
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+
+              {/* the number, only once there is one to put here */}
+              {profile.phone && (
+                <ul className="reach">
                   <li className="reach__row">
                     <a className="reach__to" href={`tel:${profile.phone.replace(/[^+\d]/g, '')}`}>
                       <span className="reach__k">Phone</span>
@@ -230,8 +227,8 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                       {copied === 'phone' ? 'Copied' : 'Copy'}
                     </button>
                   </li>
-                )}
-              </ul>
+                </ul>
+              )}
             </div>
           </motion.div>
         </motion.div>

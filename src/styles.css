@@ -510,8 +510,8 @@ a { color: inherit; text-decoration: none; }
 .cmod__box {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  width: min(960px, 100%);
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(560px, 100%);
   max-height: 90vh;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -540,23 +540,48 @@ a { color: inherit; text-decoration: none; }
 .cmod__x:hover { background: rgba(10, 14, 13, 0.8); }
 
 /* the picture side */
-.cmod__side { position: relative; overflow: hidden; display: grid; align-items: end; min-height: 320px; }
+/* the picture across the top. It is shorter than the old side panel and ends
+   in a fade rather than an edge, so the form reads as the same sheet.
+   The words sit at the TOP of it, over the picture: bottom-aligned they
+   landed inside the fade, where the ground is already sheet-coloured and
+   white text disappears. */
+.cmod__banner {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  align-items: start;
+  height: clamp(150px, 26vh, 210px);
+}
 .cmod__art {
   position: absolute;
-  inset: -6%;
-  width: 112%;
-  height: 112%;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
   object-fit: cover;
-  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* the bottom of the picture dissolves into the sheet under it */
+.cmod__fade {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 58%;
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--bg-elev) 62%, transparent) 46%, var(--bg-elev) 100%);
+  pointer-events: none;
 }
 .cmod__wash {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(90% 70% at 10% 0%, rgba(166, 232, 91, 0.16), transparent 60%),
-    linear-gradient(180deg, rgba(6, 10, 9, 0.35) 0%, rgba(6, 10, 9, 0.9) 78%);
+    linear-gradient(180deg, rgba(6, 10, 9, 0.62) 0%, rgba(6, 10, 9, 0.28) 52%, transparent 78%);
 }
-.cmod__pitch { position: relative; display: grid; gap: 10px; padding: clamp(20px, 3vw, 30px); color: #fff; }
+.cmod__pitch {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: clamp(18px, 2.6vw, 26px) clamp(54px, 8vw, 64px) 0 clamp(20px, 3vw, 30px);
+  color: #fff;
+}
 .cmod__kick {
   font-family: var(--mono);
   font-size: 10.5px;
@@ -572,19 +597,33 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 7px;
   padding: 7px 12px 7px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  color: var(--text-mid);
   font-size: 12.5px;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.3s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.cmod__links a:hover { background: rgba(255, 255, 255, 0.14); border-color: var(--accent); transform: translateY(-1px); }
+.cmod__links a:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
+  color: var(--text);
+  transform: translateY(-2px);
+}
 .cmod__mark { display: grid; place-items: center; width: 16px; height: 16px; }
 .cmod__mark svg { width: 15px; height: 15px; fill: currentColor; }
 
 /* the writing side */
 .cmod__form { display: grid; align-content: start; gap: 12px; padding: clamp(20px, 3vw, 32px); overflow: auto; }
+/* the other ways, under the primary button */
+.cmod__ways { display: grid; gap: 9px; margin-top: 2px; padding-top: 14px; border-top: 1px solid var(--line); }
+.cmod__ways-k {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 .cfield { display: grid; gap: 6px; }
 .cfield > span { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .cfield input,
@@ -601,11 +640,12 @@ a { color: inherit; text-decoration: none; }
 }
 .cfield textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
 /* one stroke when a field takes focus. The 3px ring around it read as a
-   blurred container rather than a border. */
+   blurred container rather than a border, and the lime was louder than the
+   thing you are typing — a half-strength white says "here" and stops. */
 .cfield input:focus,
 .cfield textarea:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 .cbtn {
   display: inline-flex;
@@ -622,10 +662,10 @@ a { color: inherit; text-decoration: none; }
 .cbtn svg { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
 .cbtn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -18px var(--accent); }
 .cbtn:hover svg { transform: translateX(4px); }
-/* nothing to send yet: it says so, and does nothing */
-/* not filled in yet: still the primary button, just holding back. It keeps
-   its pointer events, because the click focuses the first empty field. */
-.cbtn[aria-disabled='true'] { opacity: 0.62; }
+/* not filled in yet: the full primary colour either way — washing it out to
+   62% turned the lime olive. What it holds back is the lift and the glow on
+   hover, and it keeps its pointer events, because the click focuses the first
+   empty field. */
 .cbtn[aria-disabled='true']:hover { transform: none; box-shadow: none; }
 /* ── the details themselves, under the form ───────────────
    A row per way of reaching me. The whole row is the link, so a tap opens
@@ -680,8 +720,8 @@ a { color: inherit; text-decoration: none; }
 .reach__copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 @media (max-width: 860px) {
-  .cmod__box { grid-template-columns: minmax(0, 1fr); max-height: 92vh; }
-  .cmod__side { min-height: 200px; }
+  .cmod__box { max-height: 92vh; }
+  .cmod__banner { height: clamp(130px, 22vh, 170px); }
 }
 
 .footer {
