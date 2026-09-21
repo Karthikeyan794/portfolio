@@ -190,31 +190,39 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
             /* point at the image and its note slides up over it. Guarded: a
                slice can carry only a clip, and an <img> with no src renders as
                a broken-picture icon with the heading as its alt text. */
-            <motion.figure className="frame frame--shot" variants={frameV}>
-              <motion.img
-                src={slice.image}
-                alt={slice.caption ?? slice.heading ?? ''}
-                loading="lazy"
-                decoding="async"
-                variants={shotV}
-              />
-              <motion.span className="frame__sheen" variants={sheenV} aria-hidden="true" />
-              <ZoomButton onOpen={() => setZoom({ src: slice.image!, alt: slice.caption ?? slice.heading })} label={slice.heading} />
-              {slice.caption && <figcaption>{slice.caption}</figcaption>}
+            /* the line sits UNDER the picture, not over it. The inner wrapper
+               is a motion.div and not a plain one on purpose: variants only
+               travel through motion components, and the image's own reveal
+               rides down this chain. */
+            <motion.figure className="shotfig" variants={frameV}>
+              <motion.div className="frame frame--shot">
+                <motion.img
+                  src={slice.image}
+                  alt={slice.caption ?? slice.heading ?? ''}
+                  loading="lazy"
+                  decoding="async"
+                  variants={shotV}
+                />
+                <motion.span className="frame__sheen" variants={sheenV} aria-hidden="true" />
+                <ZoomButton onOpen={() => setZoom({ src: slice.image!, alt: slice.caption ?? slice.heading })} label={slice.heading} />
+              </motion.div>
+              {slice.caption && <figcaption className="frame__cap">{slice.caption}</figcaption>}
             </motion.figure>
           ) : null}
 
           {/* the flow, recorded — sits under whatever explains it */}
           {slice.clip && (
-            <motion.figure className="frame frame--clip" variants={frameV}>
-              {/\.gif$/.test(slice.clip) ? (
-                <img src={slice.clip} alt={slice.heading ?? ''} loading="lazy" decoding="async" />
-              ) : (
-                <AutoClip src={slice.clip} poster={slice.poster} label={slice.heading} />
-              )}
-              <ZoomButton onOpen={() => setZoom({ src: slice.clip!, alt: slice.heading, video: !/\.gif$/.test(slice.clip!) })} label={slice.heading} />
+            <motion.figure className="shotfig" variants={frameV}>
+              <motion.div className="frame frame--clip">
+                {/\.gif$/.test(slice.clip) ? (
+                  <img src={slice.clip} alt={slice.heading ?? ''} loading="lazy" decoding="async" />
+                ) : (
+                  <AutoClip src={slice.clip} poster={slice.poster} label={slice.heading} />
+                )}
+                <ZoomButton onOpen={() => setZoom({ src: slice.clip!, alt: slice.heading, video: !/\.gif$/.test(slice.clip!) })} label={slice.heading} />
+              </motion.div>
               {/* a clip carries its line the same way a still does */}
-              {slice.caption && !slice.image && <figcaption>{slice.caption}</figcaption>}
+              {slice.caption && !slice.image && <figcaption className="frame__cap">{slice.caption}</figcaption>}
             </motion.figure>
           )}
         </motion.div>

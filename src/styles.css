@@ -1668,31 +1668,17 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(90% 70% at 0% 0%, rgba(166, 232, 91, 0.12), transparent 62%),
     linear-gradient(140deg, rgba(8, 12, 11, 0.12) 0%, rgba(8, 12, 11, 0.42) 82%);
 }
+/* under the screen, marked as a caption by a bar down its left edge rather
+   than a dash floating beside it — the bar holds the full height of the line,
+   so a caption that wraps still reads as one thing */
 .oshot__note {
-  /* under the screen: a short accent rule, then the line — the same grammar as
-     the kickers elsewhere on the page, so it reads as a caption and not as
-     another paragraph that wandered out of the column */
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: baseline;
-  gap: 12px;
-  margin: 16px 2px 0;
+  margin: 14px 2px 0;
+  padding: 1px 0 1px 13px;
+  border-left: 2px solid var(--accent);
   max-width: 58ch;
-  font-size: 13.5px;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.6;
   color: var(--text-mid);
-}
-.oshot__note::before {
-  content: '';
-  width: 22px;
-  height: 1px;
-  background: var(--accent);
-  transform: translateY(-4px);
-  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.oshot__track:hover .oshot__note::before { width: 40px; }
-@media (prefers-reduced-motion: reduce) {
-  .oshot__note::before { transition: none; }
 }
 .oshot__frame {
   position: relative;
@@ -2081,7 +2067,8 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent-ink);
   white-space: nowrap;
 }
-.chapter__rule { flex: 1; height: 1px; background: var(--line); transform-origin: left center; }
+/* the chapter opening stands on its own — no rule running off it */
+.chapter__rule { display: none; }
 
 /* prose-only slices — the research — run the full width instead of leaving a hole */
 .row--text { grid-template-columns: minmax(0, 1fr); }
@@ -2148,19 +2135,20 @@ a { color: inherit; text-decoration: none; }
 }
 .frame--shot img { display: block; width: 100%; height: auto; }
 /* the note slides up over the image when you point at it */
-.frame--shot figcaption {
-  position: absolute;
-  inset: auto 0 0 0;
-  padding: 22px 20px 16px;
-  font-size: 13.5px;
-  color: #fff;
-  background: linear-gradient(180deg, rgba(6, 8, 10, 0) 0%, rgba(6, 8, 10, 0.82) 55%, rgba(6, 8, 10, 0.94) 100%);
-  transform: translateY(101%);
-  opacity: 0;
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+/* the media and the line about it, as one figure. The line sits under the
+   picture rather than sliding up over it: it was covering the bottom of the
+   screenshot to say what the screenshot was. */
+.shotfig { margin: 0; display: grid; gap: 12px; }
+/* same caption grammar as the overview's — a bar down the left edge, holding
+   the full height so a caption that wraps still reads as one thing */
+.frame__cap {
+  padding: 1px 0 1px 13px;
+  border-left: 2px solid var(--accent);
+  max-width: 62ch;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-mid);
 }
-.frame--shot:hover figcaption,
-.frame--shot:focus-within figcaption { transform: none; opacity: 1; }
 .frame--video { aspect-ratio: 16 / 9; background: #0b0d0f; }
 .frame--video iframe,
 .frame--video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
