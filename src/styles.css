@@ -1877,21 +1877,15 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 20px;
   max-width: 52ch;
 }
-.bpoints { display: grid; max-width: 74ch; }
-/* a row of a list, not a chip in a stack: a hairline under each one gives
-   the column its rhythm, which the filled discs were faking with weight */
+.bpoints { display: grid; gap: 14px; max-width: 74ch; }
 .bpoints li {
   display: flex;
   gap: 13px;
   align-items: flex-start;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--line);
   font-size: 15px;
   line-height: 1.55;
   color: var(--text);
 }
-.bpoints li:first-child { padding-top: 2px; }
-.bpoints li:last-child { border-bottom: 0; padding-bottom: 0; }
 .bpoints svg { flex: none; color: var(--muted); }
 .bpoints--good svg { color: var(--accent-ink); }
 
