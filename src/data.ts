@@ -239,7 +239,7 @@ export type Brief = {
    *  point leads with the capability so the answer lines up with the complaint. */
   solution: { lead: string; items: string[]; close?: string }
   /** a card each, and a shot of the thing beside them */
-  benefits: { lead: string; image?: string; items: { title: string; text: string }[] }
+  benefits: { lead: string; items: { title: string; text: string }[] }
 }
 
 export type Project = {
@@ -363,7 +363,6 @@ export const projects: Project[] = [
         },
         benefits: {
           lead: 'What you get out of it, whether you are one person or twenty.',
-          image: '/work/support-desk/1-dashboard.jpg',
           items: [
             { title: 'Nothing gets lost', text: 'Every request has an owner, a status and a place it lives.' },
             { title: 'No more “who is on this?”', text: 'The queue already answers it, so nobody asks across the room.' },

@@ -72,10 +72,18 @@ ffmpeg -i input.mov -vf scale=1280:-2 -c:v libx264 -crf 26 -preset slow -an -mov
 ## Also in place
 
 `queue.mp4` — the shared queue, and the reload beside the list: press it and the desk reads the
-mailbox again, so whatever arrived since comes in as a new ticket at the top. Your own export,
-3692x2160, **94 MB** — which is heavy for a web page and close to GitHub's 100 MB per-file limit.
-A same-resolution H.264 re-encode would be roughly a tenth of that with no visible difference;
-worth doing before this page gets much traffic.
+mailbox again, so whatever arrived since comes in as a new ticket at the top. This is `que 2`,
+re-encoded from the 86 MB / 3692x2160 original down to **35 MB at 1280x720** with `avconvert`
+(faststart on), because 3692px wide is four times what the page renders and nothing on screen
+needed it.
+
+**35 MB is still roughly ten times what it should be.** avconvert only offers fixed presets, so it
+cannot go lower without dropping resolution. With ffmpeg the same 42 seconds lands near 3-4 MB at
+the same 1280x720, and it is one command — see **Export settings** above.
+
+Worth knowing before re-exporting again: every version committed stays in the repository's history
+for good. `.git` is already 210 MB from these clips. Getting the encode right once is cheaper than
+committing three attempts.
 
 ## The rest of the shot list
 

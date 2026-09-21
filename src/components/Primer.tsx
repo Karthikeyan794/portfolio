@@ -1,7 +1,8 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import type { Primer as PrimerData } from '../data'
 import AutoClip from './AutoClip'
+import { Lightbox, ZoomButton, type Zoomed } from './Zoom'
 import Words from './Words'
 
 /**
@@ -36,6 +37,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
   // words beside it never scroll at quite the same rate
   const shotRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
+  const [zoom, setZoom] = useState<Zoomed>(null)
   const { scrollYProgress } = useScroll({ target: shotRef, offset: ['start end', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], [46, -46])
   const float = useSpring(drift, { stiffness: 70, damping: 24, restDelta: 0.4 })
@@ -90,6 +92,16 @@ export default function Primer({ primer }: { primer: PrimerData }) {
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />
               )}
+              <ZoomButton
+                onOpen={() =>
+                  setZoom(
+                    primer.showcase?.clip
+                      ? { src: primer.showcase.clip, alt: 'Support Desk in use', video: !/\.gif$/.test(primer.showcase.clip) }
+                      : { src: primer.showcase!.poster, alt: 'The Support Desk queue' },
+                  )
+                }
+                label="Support Desk"
+              />
               </div>
             </motion.div>
             {primer.showcase.note && (
@@ -102,6 +114,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
       </motion.div>
 
 
+      <Lightbox shot={zoom} onClose={() => setZoom(null)} />
     </section>
   )
 }

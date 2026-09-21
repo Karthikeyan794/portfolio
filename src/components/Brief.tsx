@@ -68,7 +68,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
         variants={group}
         initial="rest"
         whileInView="in"
-        viewport={{ once: true, amount: 0.15 }}
+        viewport={{ amount: 0.15 }}
       >
         <div className="bcol">
           <Title>Problem</Title>
@@ -104,7 +104,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
         variants={group}
         initial="rest"
         whileInView="in"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ amount: 0.2 }}
       >
         <div className="bblock">
           <Title>Benefits</Title>
@@ -112,8 +112,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
             <Words text={brief.benefits.lead} />
           </motion.p>
 
-          <div className="bgrid">
-            <ul className="bcards">
+          <ul className="bcards">
               {brief.benefits.items.map((b) => (
                 <motion.li className="bcard" key={b.title} variants={item}>
                   <span className="bcard__tick" aria-hidden="true">
@@ -127,15 +126,7 @@ export default function Brief({ brief }: { brief: BriefData }) {
                   </p>
                 </motion.li>
               ))}
-            </ul>
-
-            {brief.benefits.image && (
-              <motion.figure className="bshot" variants={item}>
-                <img src={brief.benefits.image} alt="The Support Desk dashboard" loading="lazy" decoding="async" />
-                <figcaption>All of it, on one screen.</figcaption>
-              </motion.figure>
-            )}
-          </div>
+          </ul>
         </div>
       </motion.section>
     </>

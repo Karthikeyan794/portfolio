@@ -7,6 +7,7 @@ import GridBg from './GridBg'
 import Brief from './Brief'
 import AutoClip from './AutoClip'
 import Credits from './Credits'
+import { Lightbox, ZoomButton, type Zoomed } from './Zoom'
 import Words from './Words'
 import Primer from './Primer'
 import CaseTabs, { type Tab } from './CaseTabs'
@@ -86,6 +87,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
   const ref = useRef<HTMLDivElement>(null)
   // a slice with no image and no video field is prose — it gets the full width
   const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats || slice.clip || slice.video)
+  const [zoom, setZoom] = useState<Zoomed>(null)
 
   // the screen drifts a few pixels against the page as it passes, so a still
   // screenshot still moves. It is the frame that travels, never the image
@@ -197,6 +199,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
                 variants={shotV}
               />
               <motion.span className="frame__sheen" variants={sheenV} aria-hidden="true" />
+              <ZoomButton onOpen={() => setZoom({ src: slice.image!, alt: slice.caption ?? slice.heading })} label={slice.heading} />
               {slice.caption && <figcaption>{slice.caption}</figcaption>}
             </motion.figure>
           ) : null}
@@ -209,10 +212,12 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
               ) : (
                 <AutoClip src={slice.clip} label={slice.heading} />
               )}
+              <ZoomButton onOpen={() => setZoom({ src: slice.clip!, alt: slice.heading, video: !/\.gif$/.test(slice.clip!) })} label={slice.heading} />
             </motion.figure>
           )}
         </motion.div>
       )}
+      <Lightbox shot={zoom} onClose={() => setZoom(null)} />
     </motion.section>
   )
 }

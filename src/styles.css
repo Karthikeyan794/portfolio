@@ -1502,6 +1502,84 @@ a { color: inherit; text-decoration: none; }
 .credit:hover .credit__k { color: var(--accent-ink); }
 .credit:hover .credit__v { transform: translateX(3px); }
 
+/* ── open any picture full screen ─────────────────────────────────────────
+   A round control in the corner of every screenshot and clip. It keeps out of
+   the way until you point at the picture — except where there is no pointer to
+   point with, on touch, where it simply stays. */
+.zoomb {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(10, 14, 13, 0.55);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.28s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+}
+.zoomb:hover { background: rgba(10, 14, 13, 0.78); transform: scale(1.06); }
+@media (hover: hover) {
+  .zoomb { opacity: 0; transform: scale(0.92); }
+  .frame:hover .zoomb,
+  .oshot:hover .zoomb,
+  .zoomb:focus-visible { opacity: 1; transform: none; }
+}
+
+/* the picture, filling the screen */
+.zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 56px);
+  background: rgba(6, 9, 8, 0.86);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  cursor: zoom-out;
+}
+.zoom__stage {
+  max-width: min(1400px, 94vw);
+  max-height: 88vh;
+  cursor: default;
+  line-height: 0;
+}
+.zoom__stage img,
+.zoom__stage video {
+  display: block;
+  max-width: 100%;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9);
+}
+.zoom__x {
+  position: absolute;
+  top: clamp(12px, 2.4vw, 26px);
+  right: clamp(12px, 2.4vw, 26px);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.zoom__x:hover { background: rgba(255, 255, 255, 0.18); }
+
 /* ── the copy answers the cursor ──────────────────────────────────────────
    Every word in the case copy is its own span. The one under the pointer
    lifts a hair, comes up to full contrast and pulls a lime rule under itself.
@@ -1653,34 +1731,43 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   display: grid;
   gap: 10px;
-  justify-items: start;
+  /* stretched, not start-aligned: the heading's trailing rule runs to the end
+     of the column, and it can only do that if this box is as wide as it */
+  width: 100%;
+  justify-items: stretch;
 }
+/* the overview keeps its own register: not the serif titles the other
+   sections use, but a small typed label with a lit dot, and a hairline that
+   runs from the words to the end of the column */
 .primer__h {
-  /* the line itself: the display serif in its italic, light, the way the
-     hero's rotating words are set — one voice for the page's titles */
-  font-family: var(--display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(21px, 2.3vw, 29px);
-  line-height: 1.04;
-  letter-spacing: -0.018em;
-  color: var(--text);
-  /* the rule under the title is drawn, not a text-decoration: the decoration's
-     offset is measured off the baseline, so the gap never matched the number.
-     --rule-gap is the real distance from the bottom of the text. */
-  position: relative;
-  --rule-gap: 10px;
-  padding-bottom: calc(var(--rule-gap) + 1px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* the column places its children at the start, so the heading has to claim
+     the width itself — otherwise the trailing rule has nothing to grow into */
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mid);
 }
-.primer__h::after { content: '.'; color: var(--accent); font-style: normal; }
+.primer__h-t { flex: none; }
 .primer__h::before {
   content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.primer__h::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--line);
 }
 
 /* six features as a numbered list, two columns: a display numeral, the
@@ -1841,28 +1928,22 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── benefits: a card each, with the product beside them ───── */
-.bgrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(24px, 3vw, 44px);
-  align-items: start;
-}
+/* three across, with room to breathe — no filled panels and no picture
+   beside them, so the six things you get read as one run */
 .bcards {
+  list-style: none;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.2vw, 34px) clamp(24px, 3vw, 48px);
 }
 .bcard {
-  padding: 16px 16px 18px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--bg-elev) 62%, transparent);
-  box-shadow: inset 0 0 0 1px var(--card-ring);
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--line);
+  transition: border-color 0.3s ease;
 }
-.bcard:hover {
-  transform: translateY(-2px);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--card-ring));
-}
+.bcard:hover { border-top-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+@media (max-width: 900px) { .bcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .bcards { grid-template-columns: minmax(0, 1fr); } }
 .bcard__tick {
   display: grid;
   place-items: center;
@@ -1874,40 +1955,14 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent-ink);
 }
 .bcard__title {
-  margin-bottom: 5px;
-  font-size: 14.5px;
+  margin-bottom: 6px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.35;
   color: var(--text);
 }
-.bcard__text { font-size: 13.5px; line-height: 1.55; color: var(--muted); }
+.bcard__text { font-size: 13.5px; line-height: 1.6; color: var(--text-mid); max-width: 34ch; }
 
-/* the shot that shows all of it at once */
-.bshot { display: grid; gap: 10px; }
-.bshot img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 16px;
-  box-shadow: inset 0 0 0 1px var(--card-ring), 0 26px 60px -34px rgba(0, 0, 0, 0.6);
-}
-.bshot figcaption {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-@media (max-width: 1000px) {
-  .bgrid { grid-template-columns: minmax(0, 1fr); }
-}
-@media (max-width: 620px) {
-  .bcards { grid-template-columns: minmax(0, 1fr); }
-}
-
-
-/* the line a section lands on once the list is done — set apart from the
-   points above it, and a step quieter than the lead that opened it */
 .bclose {
   margin-top: clamp(22px, 3vh, 32px);
   padding-top: 18px;
