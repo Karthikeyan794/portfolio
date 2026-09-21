@@ -85,6 +85,15 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
     try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ name, from, message, intent })) } catch { /* same */ }
   }, [open, sent, name, from, message, intent])
 
+  // ── closing after a send starts clean next time; closing mid-draft keeps it ──
+  useEffect(() => {
+    if (open || !sent) return
+    setSent(false)
+    setName('')
+    setFrom('')
+    setMessage('')
+  }, [open, sent])
+
   // ── open: freeze the page, remember where focus was, take it; Escape closes ──
   useEffect(() => {
     if (!open) return
@@ -265,7 +274,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                           {intent === i.id && (
                             <motion.span className="intent__pill" layoutId="intent-pill" transition={{ type: 'spring', stiffness: 380, damping: 32 }} aria-hidden="true" />
                           )}
-                          <span>{i.label}</span>
+                          <span className="intent__txt">{i.label}</span>
                         </button>
                       ))}
                     </motion.div>

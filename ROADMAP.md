@@ -269,21 +269,43 @@ The cover starts as an inset card (32px clear of the edges, 32px corners) and op
 
 **Section spacing (18 Sep 2026).** The bands of the case page sit further apart now — `.case__body` gap, the gap inside `.primer` (overview to the feature list), `.brief`'s top margin and the `.rows` gap all went up by roughly half. Change them together or the page loses its rhythm.
 
-## 2f. Contact is a dialog (21 Sep 2026)
+## 2f. Contact is a dialog (21 Sep 2026, rebuilt the same night)
 
-The page keeps one line and one button; the form lives in a modal (`src/components/ContactModal.tsx`).
-Picture on the left leaning towards the pointer, three fields on the right, and the send button is a
-real `mailto:` link built from what you type — it stays greyed and inert until all three fields have
-something in them, then opens your own mail app so the reply goes back to your address. Escape, the
-backdrop and the ✕ all close it; the page behind cannot scroll while it is open. The address chip
-copies to the clipboard and says so. The nav's Contact button fires an `open-contact` event that
-opens the same dialog instead of scrolling you to a button you then have to press.
+`src/components/ContactModal.tsx`. Two panels on one sheet.
 
-**Mail goes to `karthikeyan.design09@gmail.com`** — one field, `profile.email` in `src/data.ts`.
-Everything (the dialog, the copy chip, the parked 3D panel) reads from it.
+**Left — the person.** The picture under a dark wash; a lime kicker and one line; then the facts:
+a pulsing dot with `profile.availableNote` (only while `profile.available` is true), the live time
+in Chennai (`Asia/Kolkata`, ticks every 30s), and every way to reach me as a row — email, phone
+(only if `profile.phone` is set), LinkedIn, Behance. Email and phone rows have a copy button that
+turns into a tick for a moment; it falls back to `execCommand` where the clipboard API is refused.
+
+**Right — the message.** First *what it is about*: A role · A project · Just hello, a sliding lime
+pill, and the choice sets the subject line and the grey prompt inside the message box. Then name,
+email and message with labels that live inside the field and lift out of the way. A real-looking
+email is required (`@` and a dot) — a wrong one shows a small red hint and keeps the button grey.
+The grey button is not dead: pressing it focuses the first thing that is missing.
+
+**Sending.** The button is a real `mailto:` link built from what you typed — subject
+`Portfolio · <intent> — <name>`, body with your name and address signed underneath — so it opens
+your own mail app and the reply lands with you. Then the dialog shows a done state with the whole
+message in a box and **Copy the message**, because a desktop with no mail app configured opens
+nothing and says nothing. **Edit it** brings the form back.
+
+**Draft.** What you type is kept in `localStorage` (`contact-draft`) until you send, so closing the
+dialog loses nothing; sending clears it, and closing after a send starts clean next time.
+
+**Keyboard and focus.** Escape, the backdrop and the ✕ close it. Tab stays inside the sheet. The
+first field takes focus on open; focus goes back to whatever opened it on close. The nav's
+Contact button fires `open-contact`, which opens the same dialog. One column under 860px.
+
+**Mail goes to `karthikeyan.design09@gmail.com`** — `profile.email` in `src/data.ts`.
 
 Still a `mailto:`, not a server. Sending straight from the page needs an endpoint — Formspree or
 Resend are the two-minute versions; say the word and it becomes a real POST.
+
+Gotcha that bit once: the sliding pill is a `<span>` inside the chip `<button>`, and a rule written
+as `.intent__opt > span` outranked the pill's own class and pinned it in flow at zero width. Name
+every child; never style a bare element under a class.
 
 ## 3. Checklist — what's done
 
