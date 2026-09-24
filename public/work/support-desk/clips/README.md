@@ -1,6 +1,7 @@
 # Clips for the Support Desk case study
 
-Checked 24 Sep 2026. **Eleven of the fifteen flows under *How it works* have a recording.**
+Checked 24 Sep 2026. **Ten of the eleven flows under *How it works* have a recording.** Only *Assigning a ticket*
+does not.
 
 Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command` (serves on
 :8899). The demo runs on generated data (`support@demodesk.io`, `redgateretail.com`, fictional
@@ -23,7 +24,6 @@ release instead, so the untouched exports are what visitors get.
 | 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original, live on the release** |
 | 8 | What the assistant suggests, and how to check it | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original, live on the release** |
 | 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original, live on the release** |
-| 4 | Who gets in, and who can change that | release `access.mp4` | 128 MB · 3636×2160 | **original** — upload pending |
 | 11 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 12 | The response clock, and taking the record out | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
 | 14 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
@@ -46,7 +46,7 @@ lower bitrate.
 
 ### The release
 
-The eight over 100 MB live at
+The seven over 100 MB live at
 `https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1/` — the `HD` constant in
 `src/data.ts`. Release assets allow 2 GB per file, answer byte-range requests (so playback starts
 before the download finishes) and do not count toward repository size.
@@ -67,7 +67,7 @@ row would show its words and diagram alone, which is by design — a hidden fram
 
 ## Still to record
 
-Four flows carry a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
+One flow carries a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
 heading — a slice can keep its diagram as well, the clip goes under it:
 
 ```ts
@@ -76,12 +76,13 @@ clip: '/work/support-desk/clips/<name>.mp4',
 
 | # | Flow | Suggested file | What to film | ~sec |
 |---|------|----------------|--------------|------|
-| 5 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then the card landing in Teams with the number, customer and link | 20 |
-| 10 | Customers, built from the mail | `derive.mp4` | The customer list nobody typed: open a company, the people under it, then the mail address that produced it | 20 |
-| 15 | The desk inside Teams | `teams-tab.mp4` | The desk running as a tab inside Teams — the same queue, in the other window | 20 |
+| 4 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then the card landing in Teams with the number, customer and link | 20 |
 
-**#13, *What the dashboard reads*, stays a diagram.** It is the column-by-column audit of 670 rows
-— a finding, not a screen. There is nothing on it to film and the diagram says it better.
+**This one has to be shot on the demo.** The version recorded on the real desk cannot be used: it
+carries live customer subjects and addresses, a colleague's mail address, the internal desk URL and
+a dozen real names down the Teams sidebar. If the demo cannot post to a test Teams chat, film only
+the assigning half and leave the Teams card as the diagram — a drawing of the card gives nothing
+away.
 
 ---
 

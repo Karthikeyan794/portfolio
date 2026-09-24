@@ -399,14 +399,6 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Who gets in, and who can change that',
-          body: 'On load the app reads the shared inbox with your own token. A 403 or 404 is a genuine no, and a full-screen gate stands where the desk would be: pick read or read-and-reply, add a note, request. The desk opens on its own the moment real access exists. Any other failure — a timeout, a throttle, a dropped connection — is treated as access, because a blip must never lock out somebody who can actually work.\n\nInside there are three roles: *admin* reads, edits and manages who else has access; *support* reads, replies, assigns and changes status; *view only* reads. Only an admin can change the list, or the distinction would be decorative — and a few standing admins are hard-coded so the app can never lock every one of its owners out. The screen that does it answers three questions in one table: who can open the desk, what they may do, and when they last signed in. That last column earns its place — *never signed in* beside a name is how you find access somebody asked for and never needed — and the requests still waiting sit on their own tab beside the list, with a count on it.\n\nIt lives under your own avatar, alongside *Spam & drafts*: the things that are about the desk itself rather than about any one ticket, in one menu instead of scattered through settings.',
-          diagram: 'gate',
-          clip: `${HD}/access.mp4`,
-          caption: 'The profile menu, then who can open the desk, what they may do, and when they last signed in.',
-        },
-        {
-          span: 'full',
           heading: 'Assigning a ticket',
           body: 'Pick a person from a roster that Graph keeps honest — enabled, licensed members only, with a presence dot so you can see who is free before you hand a ticket over. Assigning writes the row; a Power Automate flow watching that list posts the card the app built, verbatim, into Teams. The card carries the ticket number, the customer, the subject and a link straight back into the desk, so the person knows whether it is theirs before they click. Their photo on it is the real Teams one, pulled from Graph and embedded in the card, with an initials badge when there is none.',
           diagram: 'assign',
@@ -443,12 +435,6 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Customers, built from the mail',
-          body: 'No customer table existed and I could not create one. So the app derives it from the only thing the list already had: the sender’s address. The domain becomes the account, the local part becomes the person, and both sides normalise to one key so the same customer never lands twice. That is what makes “which customer raises the most” answerable at all — it was one of the six asks, and it needed no data entry from anybody.',
-          diagram: 'derive',
-        },
-        {
-          span: 'full',
           heading: 'The customer view it produces',
           body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody keeps it current — a new address creates its person the first time they write, so the directory builds itself out of the mail that was already arriving.',
           clip: '/work/support-desk/clips/customers.mp4',
@@ -463,23 +449,11 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'What the dashboard reads',
-          body: 'Before building a single chart I checked every column against all 670 rows rather than trusting the schema. Received date, description and mail link were filled on all 670. Assigned-to was filled on two. Escalated had been written 670 times and was true none. Sentiment, root cause, agent and both resolution timestamps had never been written at all. So the columns a dashboard would want to read were exactly the columns nobody was filling. The same pass found that 59% of what sat in the ticket list was the system’s own notifications, not customers.',
-          diagram: 'audit',
-        },
-        {
-          span: 'full',
           heading: 'A dashboard that reads zero',
           body: 'Volume, intake trend, recurring problem types, who reports the most and who answers — all of that works, because it is computed from the ticket text and dates in the browser. Resolved-this-week, escalations and my-performance could only ever show zero. I shipped those widgets showing zero, with a line on the page saying nothing here is marked resolved, and took the finding to the team as a process problem rather than a UI one. Hiding them would have made the desk look finished and left the team blind.',
           clip: `${HD}/home.mp4`,
           clipFallback: '/work/support-desk/clips/home.mp4',
           caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
-        },
-        {
-          span: 'full',
-          heading: 'The desk inside Teams',
-          body: 'The last piece is a Teams bot, so the people who report problems never have to open the desk at all. @mention it in a chat or a channel and you can raise a ticket, ask for its status, comment, close it, reassign it to somebody you @mention, or ping a person without raising a ticket at all. Answers come back as Adaptive Cards with real profile photos from Graph and an initials badge when there is none. It runs end to end against a stubbed desk API today: the six calls it needs are marked in one file, and going live needs a tenant admin to register the identity and approve the photo permission.',
-          diagram: 'teams',
         },
         {
           chapter: 'Demo',
