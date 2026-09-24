@@ -27,19 +27,24 @@ release instead, so the untouched exports are what visitors get.
 | 11 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 12 | The response clock, and taking the record out | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
 | 14 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
-| 15 | Milo — the desk, from inside Teams | release `milo.mp4` | 79 MB · 3636×2160 · 46s | **original — NOT uploaded yet: the recording shows real customer and colleague names, see the note under the table** |
+| 15 | Milo — the desk, from inside Teams | release `Milio.workflow.chat.bot.in.term.mp4` | 79 MB · 3636×2160 · 46s | **original, live on the release** — uploaded by hand under the name GitHub gave the file; the page's address matches it |
 
-**`milo.mp4` is held back on purpose.** It was recorded against the real desk, not the demo: the
-table in it lists real customers and subjects, and the status card names a real colleague. This
-README's own rule is *record the demo, never the real desk*, and the rule exists because this
-repository and its release are public. The slice is wired to `${HD}/milo.mp4` and hides its frame
-until the file exists, so the words and the diagram show and nothing is broken. Either re-record it
-against the demo (`start-demo.command`, the bot pointed at demo data) and upload that, or — only if
-you are sure the names in it may be public — upload the file as it is:
+**The Milo recording went up under its raw name** (`Milio.workflow.chat.bot.in.term.mp4`, dots
+where the spaces were) on 24 Sep, and the page's address is matched to it. It was recorded against
+the real desk rather than the demo, so the table in it shows real customers and subjects and the
+status card names a colleague; putting it on a public release was your call. Renaming the asset to
+`milo.mp4` is a one-click edit on the release page if you want the tidy address back — then change
+the one line in `src/data.ts` to match.
 
-```
-cp "$HOME/Desktop/Support desk videos/Milio(workflow chat bot in term).mp4" /tmp/milo.mp4 && gh release upload clips-v1 /tmp/milo.mp4
-```
+**Two more recordings are on the release and on no row yet:**
+
+| file | size | where it belongs |
+|---|---|---|
+| `Team.notified.with.assigned.mp4` | 90 MB | *Assigning a ticket* — the row still carries only a diagram; wiring it is one `clip:` line and a caption |
+| `Profile.menu.+.manage.access.mp4` | 128 MB | the access gate and roles — that flow was pruned from the story, so it needs a row written from the recording. Rename it first: the `+` in the name will not survive every URL |
+
+`SLA+.download.mp4` is also there (89 MB) — it is byte for byte the `sla.mp4` already in the repo,
+which the page uses; nothing to do.
 
 **`filter.mp4` is gone.** It showed a status and a customer stacking over the queue — which is the
 first half of what `views.mp4` shows, at higher quality and for longer. Two sections covering the

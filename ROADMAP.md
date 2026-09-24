@@ -464,9 +464,15 @@ scope), so the release was created from the terminal and **`views.mp4` is up** �
 byte for byte the export, range requests answered. The other five are one command away:
 `gh release upload clips-v1 ~/Desktop/portfolio-clips-to-upload/{home,thread,merge,reply,ai-suggestions}.mp4`.
 The Teams bot flow is back as the last row of *How it works* (25 Sep 2026), written from the
-recording of Milo — but **that recording shows real customer and colleague names and is not
-uploaded**; the row hides its frame until a demo re-record (or an explicit go-ahead) puts
-`milo.mp4` on the release. Details and the upload command are in the clips README.
+recording of Milo. The recording shows real customer and colleague names; you uploaded it to the
+release yourself under its raw filename, and the row points at that name. Two further recordings
+sit on the release unwired (the Teams notification on assign, and profile menu + manage access) —
+the clips README says where each belongs.
+
+**Checked 25 Sep 2026, every clip on the page:** the overview and all eleven flow recordings load
+over the real network and play, each one the export byte for byte (sizes matched against the
+Desktop originals). The four smaller copies still in `/public` (home, merge, reply, thread —
+214 MB) are the `clipFallback` for the release-hosted ones, so they stay.
 The manual steps below are kept in case that login ever goes:
 
 1. Open **github.com/Karthikeyan794/portfolio/releases/new**
