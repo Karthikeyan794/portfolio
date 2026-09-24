@@ -385,7 +385,6 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'All thirteen filters, and the view you save them as',
           body: 'The full set: thirteen filters over the queue — status, owner, customer, type, the clock, the rest — and they stack, so each one you add narrows what is left rather than replacing it. Which is powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
-          diagram: 'views',
           clip: `${HD}/views.mp4`,
           caption: 'The thirteen filters stacking over the queue, then saved as a named view — and who else can see it.',
         },
@@ -434,16 +433,10 @@ export const projects: Project[] = [
         {
           span: 'full',
           heading: 'The thread, its recipients, and what came attached',
-          body: 'Open a ticket and the real conversation is there, not a copy of it: SharePoint stores a deeplink rather than a mail, so the app pulls the message id out of it and asks Graph for the thread itself. Every message carries who it came from and who it went to — the whole to and cc line, not just the sender — so you can see at a glance whether the customer was actually on the last reply or whether it went round the team. Attachments come with it, listed on the message they arrived on, and inline images render where they were written instead of being dumped at the foot of the mail. The whole thread sits in a sandboxed frame, so nobody’s email HTML can reach the page around it. Reply, reply-all and forward are right there, with recipient chips you can read before you send.',
+          body: 'Open a ticket and the real conversation is there, not a copy of it: SharePoint stores a deeplink rather than a mail, so the app pulls the message id out of it and asks Graph for the thread itself. Every message carries who it came from and who it went to — the whole to and cc line, not just the sender — so you can see at a glance whether the customer was actually on the last reply or whether it went round the team. Attachments come with it, listed on the message they arrived on, and inline images render where they were written instead of being dumped at the foot of the mail. The whole thread sits in a sandboxed frame, so nobody’s email HTML can reach the page around it. Reply, reply-all and forward are right there, with recipient chips you can read before you send — and each one opens a real reply draft rather than a new mail, so the answer carries the conversation id and the threading headers with it. Send it as a fresh message instead and the intake flow underneath files it as a second ticket for the same problem.',
           clip: `${HD}/thread.mp4`,
           clipFallback: '/work/support-desk/clips/thread.mp4',
           caption: 'Every message with its from, its to, and whatever came attached.',
-        },
-        {
-          span: 'full',
-          heading: 'Why a reply starts as a draft',
-          body: 'A reply is not a fresh mail. The app asks Graph to create a reply draft, which already carries the conversation id, the threading headers and the quoted history; the typed reply goes on top of that draft, and the draft is what gets sent. A plain send would start a new conversation — and the intake flow underneath would file it as a second ticket for the same problem. When somebody is missing Send As, Graph refuses with a send-as error and the app shows it rather than swallowing it.',
-          diagram: 'reply',
         },
         {
           span: 'full',
@@ -477,19 +470,6 @@ export const projects: Project[] = [
           clip: `${HD}/home.mp4`,
           clipFallback: '/work/support-desk/clips/home.mp4',
           caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
-        },
-        {
-          span: 'full',
-          heading: 'How a ticket gets its type',
-          body: 'My first classifier read the whole email and labelled almost everything an implementation request — because these mails come from an implementation team and the phrase sits in every signature and quoted wrapper. Matching the subject first and treating the body only as a fallback fixed it. In email the signal is in the subject; the body is mostly other people’s text. It runs in the browser over tickets already loaded, so every number on the dashboard can be traced back to the tickets that produced it.',
-          image: '/work/support-desk/5-requester.jpg',
-          caption: 'Classification: ticket type, categories and product modules.',
-        },
-        {
-          span: 'full',
-          heading: 'Did every mail become a ticket?',
-          body: 'This one exists because the answer was no for months and nothing said so. Mail sent to the customer-specific aliases was being ignored by the intake flow, and a missed mail leaves no trace — the only evidence would be a ticket that was never created. So the check counts both sides per address and puts them next to each other, because one broken alias disappears inside a healthy total. It counts conversations rather than messages: one customer conversation should be one ticket, and the mailbox holds around 21,000 messages behind roughly 900 tickets, so comparing raw totals would show a vast gap every day and mean nothing.',
-          diagram: 'intake',
         },
         {
           span: 'full',

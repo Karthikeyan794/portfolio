@@ -1,6 +1,6 @@
 # Clips for the Support Desk case study
 
-Checked 24 Sep 2026. **Nine of the eighteen flows under *How it works* have a recording.**
+Checked 24 Sep 2026. **Nine of the fifteen flows under *How it works* have a recording.**
 
 Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command` (serves on
 :8899). The demo runs on generated data (`support@demodesk.io`, `redgateretail.com`, fictional
@@ -23,8 +23,8 @@ release instead, so the untouched exports are what visitors get.
 | 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original, live on the release** |
 | 8 | What the assistant suggests, and how to check it | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original, live on the release** |
 | 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original, live on the release** |
-| 12 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
-| 15 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
+| 11 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
+| 14 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
 
 **`filter.mp4` is gone.** It showed a status and a customer stacking over the queue — which is the
 first half of what `views.mp4` shows, at higher quality and for longer. Two sections covering the
@@ -56,7 +56,7 @@ row would show its words and diagram alone, which is by design — a hidden fram
 
 ## Still to record
 
-Eight flows carry a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
+Six flows carry a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
 heading — a slice can keep its diagram as well, the clip goes under it:
 
 ```ts
@@ -67,14 +67,11 @@ clip: '/work/support-desk/clips/<name>.mp4',
 |---|------|----------------|--------------|------|
 | 4 | Who gets in | `gate.mp4` | The access gate where the desk would be: pick read or read-and-reply, add a note, request. Then the desk open, with the role showing | 20 |
 | 5 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then the card landing in Teams with the number, customer and link | 20 |
-| 10 | Why a reply starts as a draft | `draft.mp4` | The composer on a ticket, the draft already written, edit a line, send | 15 |
-| 11 | Customers, built from the mail | `derive.mp4` | The customer list nobody typed: open a company, the people under it, then the mail address that produced it | 20 |
-| 13 | The response clock | `sla.mp4` | A ticket's first-response and resolution counters, one overdue, and the same clock in the list column | 15 |
-| 16 | How a ticket gets its type | `classify.mp4` | A ticket opening with its type and categories already set, then the subject it was read from | 15 |
-| 17 | Did every mail become a ticket? | `reconcile.mp4` | The count in the mailbox against the count in the desk, and whatever surfaces the difference | 15 |
-| 18 | The desk inside Teams | `teams-tab.mp4` | The desk running as a tab inside Teams — the same queue, in the other window | 20 |
+| 10 | Customers, built from the mail | `derive.mp4` | The customer list nobody typed: open a company, the people under it, then the mail address that produced it | 20 |
+| 12 | The response clock | `sla.mp4` | A ticket's first-response and resolution counters, one overdue, and the same clock in the list column | 15 |
+| 15 | The desk inside Teams | `teams-tab.mp4` | The desk running as a tab inside Teams — the same queue, in the other window | 20 |
 
-**#14, *What the dashboard reads*, stays a diagram.** It is the column-by-column audit of 670 rows
+**#13, *What the dashboard reads*, stays a diagram.** It is the column-by-column audit of 670 rows
 — a finding, not a screen. There is nothing on it to film and the diagram says it better.
 
 ---
