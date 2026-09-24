@@ -399,9 +399,11 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Who gets in',
-          body: 'On load the app reads the shared inbox with your own token. A 403 or 404 is a genuine no, and a full-screen gate stands where the desk would be: pick read or read-and-reply, add a note, request. The desk opens on its own the moment real access exists. Any other failure — a timeout, a throttle, a dropped connection — is treated as access, because a blip must never lock out somebody who can actually work. Inside, there are three roles: admin reads, edits and manages who else has access; support reads, replies, assigns and changes status; viewer reads. Only admin can change the list, or the distinction would be decorative — and a few standing admins are hard-coded so the app can never lock every one of its owners out.',
+          heading: 'Who gets in, and who can change that',
+          body: 'On load the app reads the shared inbox with your own token. A 403 or 404 is a genuine no, and a full-screen gate stands where the desk would be: pick read or read-and-reply, add a note, request. The desk opens on its own the moment real access exists. Any other failure — a timeout, a throttle, a dropped connection — is treated as access, because a blip must never lock out somebody who can actually work.\n\nInside there are three roles: *admin* reads, edits and manages who else has access; *support* reads, replies, assigns and changes status; *view only* reads. Only an admin can change the list, or the distinction would be decorative — and a few standing admins are hard-coded so the app can never lock every one of its owners out. The screen that does it answers three questions in one table: who can open the desk, what they may do, and when they last signed in. That last column earns its place — *never signed in* beside a name is how you find access somebody asked for and never needed — and the requests still waiting sit on their own tab beside the list, with a count on it.\n\nIt lives under your own avatar, alongside *Spam & drafts*: the things that are about the desk itself rather than about any one ticket, in one menu instead of scattered through settings.',
           diagram: 'gate',
+          clip: `${HD}/access.mp4`,
+          caption: 'The profile menu, then who can open the desk, what they may do, and when they last signed in.',
         },
         {
           span: 'full',
@@ -454,9 +456,10 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'The response clock',
-          body: 'Two clocks, because a ticket owes two different things: an answer, and a finish. Both start when the mail arrived and neither restarts. Targets live on the customer’s own row, one column per clock, so giving a customer an SLA is a data edit rather than a release — and a blank column means no promise of that kind, which is silence rather than zero. Response defaults to three hours because I measured it: across the 96 tickets belonging to customers with an SLA, a three-hour first reply was met 39 times out of 61, and a three-hour close was met zero times out of 58, with a median close of 504 hours. One of those is a target and the other is a wish, so resolution is left blank for somebody to set honestly.',
-          diagram: 'sla',
+          heading: 'The response clock, and taking the record out',
+          body: 'Two clocks, because a ticket owes two different things: an answer, and a finish. Both start when the mail arrived and neither restarts. The targets sit on the customer’s own account — first response from the mail arriving to our first reply, resolution from the mail arriving to the ticket being closed — so giving somebody an SLA is a data edit rather than a release, and a blank means no promise of that kind, which is silence rather than zero. A third field earns more than it looks: *the zone their deadlines land in*. Kestrel is on two hours and one working day, in London — so a mail that arrives at six in the evening their time is not quietly overdue before anyone here has opened it.\n\nOn the ticket it reads as met or missed rather than as a percentage: *met with 2h 0m to spare*, or *+31h overdue* in the same red the queue row already uses, so the list and the ticket never disagree about the same ticket. The numbers behind the defaults came from measuring rather than guessing — across the 96 tickets belonging to customers with an SLA, a three-hour first reply was met 39 times out of 61, and a three-hour close was met zero times out of 58, with a median close of 504 hours. One of those is a target and the other is a wish, so resolution starts blank for somebody to set honestly.\n\nThe same page hands the whole record over. Pick a date range and the count moves with it — *58 tickets in this range* — then take it as CSV, Excel or PDF, read from the ticket records themselves rather than from anything cached. It is the answer to *send me everything you have on us*, which was previously somebody’s afternoon.',
+          clip: '/work/support-desk/clips/sla.mp4',
+          caption: 'The two clocks on a ticket, the targets and time zone behind them, and the whole record out as a file.',
         },
         {
           span: 'full',
