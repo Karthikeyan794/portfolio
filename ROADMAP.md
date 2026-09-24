@@ -459,8 +459,11 @@ borrowed pictures nor the drawn ones are needed.
 `clip` now points at `https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1/…`
 (the `HD` constant in `src/data.ts`) for the five recordings that cannot be committed.
 
-**Nothing is uploaded yet**, and the upload needs a GitHub login — there is no `gh` CLI on this
-machine and no token here, so this part is yours:
+**Update, 24 Sep 2026:** `gh` is installed and logged in here now (account Karthikeyan794, `repo`
+scope), so the release was created from the terminal and **`views.mp4` is up** — 236,273,045 bytes,
+byte for byte the export, range requests answered. The other five are one command away:
+`gh release upload clips-v1 ~/Desktop/portfolio-clips-to-upload/{home,thread,merge,reply,ai-suggestions}.mp4`.
+The manual steps below are kept in case that login ever goes:
 
 1. Open **github.com/Karthikeyan794/portfolio/releases/new**
 2. Tag: **`clips-v1`** (type it; it will offer to create it)

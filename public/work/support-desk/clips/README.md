@@ -17,7 +17,7 @@ release instead, so the untouched exports are what visitors get.
 | # | Flow | File | Size | State |
 |---|------|------|------|-------|
 | 1 | The queue | `queue.mp4` | 85 MB · 3692×2160 | **original, byte for byte** |
-| 2 | All thirteen filters, and the view you save them as | release `views.mp4` | 225 MB · 3644×2160 | **original** — upload pending |
+| 2 | All thirteen filters, and the view you save them as | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
 | 3 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original** — upload pending |
 | 6 | Auto-assign, and the fields | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
 | 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original** — upload pending |
@@ -40,9 +40,17 @@ The six over 100 MB live at
 `src/data.ts`. Release assets allow 2 GB per file, answer byte-range requests (so playback starts
 before the download finishes) and do not count toward repository size.
 
-**Until they are uploaded, each of those slices falls back to the smaller copy in `/public`**, so
-the page is never broken by their absence. Files are staged and renamed ready to drag at
-`~/Desktop/portfolio-clips-to-upload/`. Steps are in `ROADMAP.md` § 2h.
+The release exists now (`clips-v1`, created 24 Sep 2026) and `views.mp4` is on it. **The other five
+are still pending** — staged and renamed at `~/Desktop/portfolio-clips-to-upload/`, and since `gh`
+is logged in on this machine they go up with one command:
+
+```
+gh release upload clips-v1 ~/Desktop/portfolio-clips-to-upload/{home,thread,merge,reply,ai-suggestions}.mp4
+```
+
+Until then each of those five falls back to the smaller copy in `/public`, so the page is never
+broken by their absence. `views.mp4` has no smaller copy: if the release were ever unreachable the
+row would show its words and diagram alone, which is by design — a hidden frame, not a broken one.
 
 ---
 
