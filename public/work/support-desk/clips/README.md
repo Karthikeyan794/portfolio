@@ -1,151 +1,103 @@
 # Clips for the Support Desk case study
 
-**In place now:** `overview.mp4` — the walkthrough that plays in the panel beside the Overview.
-It is **24.8 MB**, and its index (`moov`) sits at the end of the file, which means a visitor's
-browser downloads the whole thing before it can show a single frame. It autoplays, so it downloads
-whether they watch or not. See **Export settings** below — the target is 3–5 MB.
+Checked 24 Sep 2026. **Nine of the nineteen flows under *How it works* have a recording.**
 
-The still at `../2-queue.jpg` is the video's poster, so the panel is never empty while it loads.
-
-**Replacing it:** drop a new file at this path with this name. Keep MP4 (H.264) — it plays
-everywhere including Safari and iPhone, which WebM does not reliably do, and it is the format the
-`<video>` in `src/components/Primer.tsx` points at through `showcase.clip` in `src/data.ts`.
-
-**Never ship the GIF.** The same recording as a GIF is 50 MB, is capped at 256 colours, and cannot
-be paused when it scrolls out of view.
+Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command` (serves on
+:8899). The demo runs on generated data (`support@demodesk.io`, `redgateretail.com`, fictional
+people), so no real customer or colleague appears in any of this.
 
 ---
 
-## Recording the walkthrough — the flow to follow
+## What is in place
 
-Run the demo first: `~/Desktop/support-desk-demo/start-demo.command` (it serves on :8899). Record
-**the demo, never the real desk** — the demo runs on generated data (`support@demodesk.io`,
-`redgateretail.com`, fictional people) and no real customer or colleague appears in it.
+Nothing here is compressed to save space. Where a file was re-encoded it was because GitHub
+**rejects any file over 100 MB outright** — not a quality decision. Those four now point at a
+release instead, so the untouched exports are what visitors get.
 
-### Before you press record
+| # | Flow | File | Size | State |
+|---|------|------|------|-------|
+| 1 | The queue | `queue.mp4` | 85 MB · 3692×2160 | **original, byte for byte** |
+| 2 | Filtering the queue | `filter.mp4` | 59 MB · 3604×2160 | **original, byte for byte** |
+| 3 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original** — upload pending |
+| 6 | Auto-assign, and the fields | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
+| 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original** — upload pending |
+| 8 | What the AI suggests | release `ai-suggestions.mp4` | 146 MB | **original** — upload pending |
+| 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original** — upload pending |
+| 13 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
+| 16 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original** — upload pending |
 
-- Browser at **1440 × 900**, zoom at 100%, full screen — no bookmarks bar, no other tabs
-- Quit anything that shows a notification banner (Teams, Mail, Slack)
-- Dark mode on, to match the page the clip plays in
-- Have the queue already loaded before you start, so shot 1 opens on something
+Plus `overview.mp4` (24 MB · 1836×1080), the walkthrough beside the Overview.
 
-### The shots, in order
+### The release
 
-Around **45–60 seconds total**. Move slowly — a cursor that darts is unreadable at this size.
-Pause ~1s on each screen before clicking, so a viewer's eye lands before the screen changes.
+The five over 100 MB live at
+`https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1/` — the `HD` constant in
+`src/data.ts`. Release assets allow 2 GB per file, answer byte-range requests (so playback starts
+before the download finishes) and do not count toward repository size.
 
-| # | Shot | What to do | ~sec |
-|---|------|-----------|------|
-| 1 | **The queue** | Open on the ticket list. Let it sit a beat, then scroll a few rows | 6 |
-| 2 | **Filter it** | Open a filter, pick one status, let the list narrow | 6 |
-| 3 | **Open a ticket** | Click a row. The thread opens beside the list | 5 |
-| 4 | **The thread** | Scroll the conversation so it reads as a real exchange | 6 |
-| 5 | **Assign it** | Set an owner from the detail panel. Let the row update | 6 |
-| 6 | **Reply** | Open the composer, show the draft already written, edit a word | 8 |
-| 7 | **The clock** | Point at the response SLA — the first-response and resolution numbers | 5 |
-| 8 | **Customer view** | Switch to Customers, open one company, show its history | 8 |
-| 9 | **Dashboard** | End on the dashboard, so the last frame is the whole desk | 6 |
+**Until they are uploaded, each of those slices falls back to the smaller copy in `/public`**, so
+the page is never broken by their absence. Files are staged and renamed ready to drag at
+`~/Desktop/portfolio-clips-to-upload/`. Steps are in `ROADMAP.md` § 2h.
 
-Shot 9 is the last frame people see when the loop restarts, so leave it clean and still.
+### Recorded but not wired up yet
 
-### What NOT to film
+`~/Desktop/Support desk videos/Views and filters.mp4` — 225 MB. Covers **#11, The view each person
+works in**. Say the word and it goes on the release with the others.
 
-- The mailbox-access gate (it is a permissions screen, and it is dull on film)
-- Anything with a real address in it — check the top bar before you start
-- Your own cursor hovering over a menu you then close; cut it, or do not do it
-
-### Export settings
-
-Target **3–5 MB**. The clip is muted and autoplaying, so nobody hears audio and nobody needs 4K.
-
-- **1280 × 800** is plenty — it renders at ~720px wide on the page
-- **H.264**, 30fps, no audio track
-- **Faststart on** (index at the front, so it plays before it finishes downloading)
-- Under 60s
-
-With ffmpeg (`brew install ffmpeg`), that is one command:
-
-```
-ffmpeg -i input.mov -vf scale=1280:-2 -c:v libx264 -crf 26 -preset slow -an -movflags +faststart overview.mp4
-```
-
-## Also in place
-
-`queue.mp4` — the shared queue and the reload beside the list: press it and the desk reads the
-mailbox again, so whatever arrived since comes in as a new ticket at the top. This is `que 2`,
-**your export copied byte for byte**: 3692x2160, 86 MB, untouched.
-
-`filter.mp4` — the thirteen filters over the queue: a status applied, then a customer, the two
-stacking to narrow the list. Also **byte for byte**: 3604x2160, 59 MB.
-
-These are deliberately uncompressed — the originals go up as they are. Worth knowing what that
-costs, so it is a choice rather than a surprise:
-
-- **86 MB is close to GitHub's 100 MB hard limit** for a single file. Anything larger is rejected
-  outright, so a longer or higher-resolution recording will not push.
-- Every version committed stays in the repository's history for good; `.git` is past 300 MB now.
-- The page renders these around 1100px wide, so a visitor downloads roughly three times the pixels
-  their screen can show, and the clips autoplay, so it happens whether they watch or not.
-
-If that ever needs undoing, **Export settings** above has the one-line ffmpeg command.
-
-## thread.mp4
-
-The ticket thread: every message with its from and its whole to line, attachments listed on the
-message they came on, inline images rendered in place, and reply / reply-all / forward under it.
-
-**This one had to be re-encoded.** Your export is 186 MB, and GitHub refuses any file over 100 MB —
-the push is rejected outright, so the original cannot live in the repo. The shipped file is the
-same 3640x2160 and the same 55 seconds, re-encoded to **34 MB**; frames compared side by side at
-1:1 are indistinguishable. If you ever want the original bytes served, put it on storage outside
-git (Vercel Blob, S3, anything with a URL) and point `clip` at that URL instead of a local path.
-
-`assign.mp4` — auto-assign picking an owner, changing it by hand in the detail panel, the fields
-on that panel, and what moving a ticket to Closed asks for. Byte for byte: 1592x1080, 72 MB.
-
-## home.mp4
-
-The home dashboard: volume, the intake trend, recurring problem types, who reports the most — and
-the widgets that read zero because nothing in the list was ever marked resolved.
-
-**Re-encoded, like thread.mp4, and for the same reason.** `home page.mp4` is 269 MB and GitHub
-rejects anything over 100 MB outright, so the original cannot go in the repo. 1080p still came out
-at 137 MB, also over. The shipped file is **1280x720, 80 MB**, faststart on, the same 76 seconds.
-
-## merge.mp4
-
-Two tickets for one request merged into a single thread with a single owner, and junk from the
-shared mailbox marked spam so it leaves the queue unanswered.
-
-**Re-encoded.** `Merage and spam.mp4` is 171 MB, over GitHub's 100 MB hard limit. Shipped at
-**1280x720, 50 MB**, faststart on, the same 46 seconds.
+---
 
 ## Still to record
 
-Seven of the seventeen flows under **How it works** have a recording. These ten do not — each one
-currently carries a diagram instead. Wiring one up is one line: add
-`clip: '/work/support-desk/clips/<name>.mp4'` to that slice in `src/data.ts`, beside its heading.
-A slice can keep its diagram as well; the clip goes under it.
+Nine flows carry a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
+heading — a slice can keep its diagram as well, the clip goes under it:
 
-Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command`. Setup and
-export settings are under **Recording the walkthrough** above.
+```ts
+clip: '/work/support-desk/clips/<name>.mp4',
+```
 
-| # | Slice | Suggested file | What to film | ~sec |
-|---|-------|----------------|--------------|------|
-| 1 | Who gets in | `gate.mp4` | The access gate standing where the desk would be: pick read or read-and-reply, add a note, request. Then the desk open, with the role showing | 20 |
-| 2 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then cut to the card landing in Teams with the number, customer and link | 20 |
-| 3 | Why a reply starts as a draft | `draft.mp4` | Open the composer on a ticket, show the draft already written, edit a line, then send | 15 |
-| 4 | The view each person works in | `views.mp4` | Switch between saved views; show one filtered to *my tickets* and the list changing under it | 15 |
-| 5 | Customers, built from the mail | `derive.mp4` | The customer list with no one having typed it: open a company and show the people under it, then the mail address that produced it | 20 |
-| 6 | The response clock | `sla.mp4` | A ticket's first-response and resolution counters, one of them overdue, and the same clock in the list column | 15 |
-| 7 | How a ticket gets its type | `classify.mp4` | A ticket opening with its type and categories already set, then the subject it was read from | 15 |
-| 8 | Did every mail become a ticket? | `reconcile.mp4` | The count in the mailbox against the count in the desk, and whatever surfaces the difference | 15 |
-| 9 | The desk inside Teams | `teams-tab.mp4` | The desk running as a tab inside Teams — the same queue, in the other window | 20 |
+| # | Flow | Suggested file | What to film | ~sec |
+|---|------|----------------|--------------|------|
+| 4 | Who gets in | `gate.mp4` | The access gate where the desk would be: pick read or read-and-reply, add a note, request. Then the desk open, with the role showing | 20 |
+| 5 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then the card landing in Teams with the number, customer and link | 20 |
+| 10 | Why a reply starts as a draft | `draft.mp4` | The composer on a ticket, the draft already written, edit a line, send | 15 |
+| 11 | The view each person works in | *(already recorded — see above)* | — | — |
+| 12 | Customers, built from the mail | `derive.mp4` | The customer list nobody typed: open a company, the people under it, then the mail address that produced it | 20 |
+| 14 | The response clock | `sla.mp4` | A ticket's first-response and resolution counters, one overdue, and the same clock in the list column | 15 |
+| 17 | How a ticket gets its type | `classify.mp4` | A ticket opening with its type and categories already set, then the subject it was read from | 15 |
+| 18 | Did every mail become a ticket? | `reconcile.mp4` | The count in the mailbox against the count in the desk, and whatever surfaces the difference | 15 |
+| 19 | The desk inside Teams | `teams-tab.mp4` | The desk running as a tab inside Teams — the same queue, in the other window | 20 |
 
-**Leave this one as a diagram.** *What the dashboard reads* is the column-by-column audit of 670
-rows — a finding, not a screen. There is nothing on it to film, and the diagram says it better.
+**#15, *What the dashboard reads*, stays a diagram.** It is the column-by-column audit of 670 rows
+— a finding, not a screen. There is nothing on it to film and the diagram says it better.
 
-## The rest of the shot list
+---
 
-One clip per flow still to come — the flows are numbered in the case study, and each slice in
-`src/data.ts` takes a `clip` field the same way the showcase does.
+## Recording setup
+
+### Before you press record
+
+- Browser at **1440 × 900**, zoom 100%, full screen — no bookmarks bar, no other tabs
+- Quit anything that shows a notification banner (Teams, Mail, Slack)
+- Dark mode on, to match the page the clip plays in
+- Have the screen already loaded before you start, so the first second opens on something
+
+### While recording
+
+Move slowly — a cursor that darts is unreadable at this size. Pause about a second on each screen
+before clicking, so a viewer's eye lands before the screen changes.
+
+### What not to film
+
+- The mailbox-access gate, except for #4 where it is the subject
+- Anything with a real address in it — check the top bar before you start
+- Your own cursor hovering over a menu you then close; cut it, or do not do it
+
+### Export
+
+Export at whatever quality the recording came out at. **Do not compress to fit a size.** If a file
+lands over 100 MB it goes on the release rather than in the repo — that is what the release is for,
+and `clip` takes a full URL with no code change.
+
+Keep **MP4 (H.264)**: it plays everywhere including Safari and iPhone, which WebM does not reliably
+do. **Never ship a GIF** — the same recording is larger, capped at 256 colours, and cannot be
+paused when it scrolls out of view.
