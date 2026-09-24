@@ -542,7 +542,7 @@ export default function About() {
 
           <a className="pcard pcard--shot" href="#/project/drawings" style={{ gridArea: 'd' }} ref={shotGlow.ref} onPointerMove={shotGlow.onPointerMove}>
             <Glow />
-            <img src="/bento/art.svg" alt="" loading="lazy" decoding="async" />
+            <img src="/bento/art.jpg" alt="" loading="lazy" decoding="async" />
             <span className="pcard__label pcard__label--over">Drawings</span>
             <span className="pcard__go" aria-hidden="true">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">

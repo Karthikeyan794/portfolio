@@ -185,7 +185,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
 
             {/* ── the person ─────────────────────────────────── */}
             <motion.aside className="cdlg__side" variants={stagger} initial="rest" animate="in">
-              <img className="cdlg__art" src="/bento/contact.svg" alt="" aria-hidden="true" />
+              <img className="cdlg__art" src="/bento/contact.jpg" alt="" aria-hidden="true" />
               <span className="cdlg__wash" aria-hidden="true" />
 
               <div className="cdlg__top">
