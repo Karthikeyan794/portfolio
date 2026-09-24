@@ -20,6 +20,8 @@ release instead, so the untouched exports are what visitors get.
 | 1 | The queue | `queue.mp4` | 85 MB · 3692×2160 | **original, byte for byte** |
 | 2 | All thirteen filters, and the view you save them as | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
 | 3 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original, live on the release** |
+| 4 | Who gets in, and what they may do | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
+| 5 | Assigning a ticket | release `Team.notified.with.assigned.mp4` | 90 MB · 3188×2160 · 30s | **original, live on the release** — recorded against the real desk: colleagues’ names and work emails in the roster and the Teams sidebar |
 | 6 | Auto-assign, and the fields | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
 | 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original, live on the release** |
 | 8 | What the assistant suggests, and how to check it | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original, live on the release** |
@@ -36,12 +38,10 @@ status card names a colleague; putting it on a public release was your call. Ren
 `milo.mp4` is a one-click edit on the release page if you want the tidy address back — then change
 the one line in `src/data.ts` to match.
 
-**Two more recordings are on the release and on no row yet:**
-
-| file | size | where it belongs |
-|---|---|---|
-| `Team.notified.with.assigned.mp4` | 90 MB | *Assigning a ticket* — the row still carries only a diagram; wiring it is one `clip:` line and a caption |
-| `Profile.menu.+.manage.access.mp4` | 128 MB | the access gate and roles — that flow was pruned from the story, so it needs a row written from the recording. Rename it first: the `+` in the name will not survive every URL |
+**Both recordings that were sitting unwired are on the page now** (25 Sep 2026): the Teams
+notification on *Assigning a ticket*, and *Who gets in* as a new row before it, written from the
+manage-access recording. Both keep the names GitHub gave them on upload; the `+` in one of them
+serves fine, literal or encoded, so nothing needed renaming.
 
 `SLA+.download.mp4` is also there (89 MB) — it is byte for byte the `sla.mp4` already in the repo,
 which the page uses; nothing to do.

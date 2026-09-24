@@ -465,9 +465,10 @@ byte for byte the export, range requests answered. The other five are one comman
 `gh release upload clips-v1 ~/Desktop/portfolio-clips-to-upload/{home,thread,merge,reply,ai-suggestions}.mp4`.
 The Teams bot flow is back as the last row of *How it works* (25 Sep 2026), written from the
 recording of Milo. The recording shows real customer and colleague names; you uploaded it to the
-release yourself under its raw filename, and the row points at that name. Two further recordings
-sit on the release unwired (the Teams notification on assign, and profile menu + manage access) —
-the clips README says where each belongs.
+release yourself under its raw filename, and the row points at that name. The two recordings that
+sat on the release unwired are on the page now: the Teams notification on *Assigning a ticket*, and
+*Who gets in, and what they may do* as a new row before it. Like Milo, the assignment recording was
+made against the real desk and shows colleagues’ names and work emails; you uploaded it yourself.
 
 **Checked 25 Sep 2026, every clip on the page:** the overview and all eleven flow recordings load
 over the real network and play, each one the export byte for byte (sizes matched against the
