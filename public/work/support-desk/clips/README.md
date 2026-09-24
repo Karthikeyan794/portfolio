@@ -21,7 +21,7 @@ release instead, so the untouched exports are what visitors get.
 | 3 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original** — upload pending |
 | 6 | Auto-assign, and the fields | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
 | 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original** — upload pending |
-| 8 | What the AI suggests | release `ai-suggestions.mp4` | 146 MB | **original** — upload pending |
+| 8 | What the assistant suggests, and how to check it | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original** — upload pending |
 | 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original** — upload pending |
 | 12 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 15 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original** — upload pending |

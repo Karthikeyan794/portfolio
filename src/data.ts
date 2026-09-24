@@ -426,10 +426,10 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'What the AI suggests, and the three answers it gives',
-          body: 'The assistant reads the ticket and proposes an answer beside the composer, never in place of it. What it proposes is read out of the ticket\u2019s own SharePoint columns rather than generated fresh each time somebody opens the reply, so two people looking at the same ticket see the same suggestion, and a reply never waits on a model being reachable. It reports one of three things: *answered*, where it has a reading it stands behind; *needs input*, where the ticket does not carry enough to answer; and *no reading yet*, where nothing has looked at it. No reading yet is the common case rather than a failure, so it is drawn as a plain state and not as an error. Then the person edits, and the person sends \u2014 the suggestion is where a reply starts, not what goes out.',
+          heading: 'What the assistant suggests, and how to check it',
+          body: 'Open a ticket and the assistant has already read the thread — and it does not paraphrase it, it takes a position. *I can reproduce this on their account, so it is a fault rather than a misunderstanding of the setting*, then where it thinks the cause is, then whether it reproduces anywhere else. The suggested reply underneath is that same finding written as an email, and it is labelled *AI generated — review before sending* rather than dressed up as a colleague. Press Reply and it lands in the composer as a draft that has not been sent, so a reply always starts written and never leaves on its own.\n\nWhat makes it usable is that none of it has to be taken on trust. *How the assistant got here* opens the diagnosis it ran, the email it drafted, and — the part people actually want — what it could not check. You can ask it a follow-up in the same place, and that conversation deliberately does not touch the draft: regenerating is a separate, deliberate act, because a reply that quietly rewrites itself while you are reading it is worse than one that is simply wrong. The feedback under it reads correct, partially, wrong. Partially is the honest answer most of the time, so it is there to give.',
           clip: `${HD}/ai-suggestions.mp4`,
-          caption: 'The suggestion beside the composer, the state it reports, and the edit before it goes.',
+          caption: 'Reply, with the draft already written — then the reading behind it, the diagnosis it ran, and what it could not check.',
         },
         {
           span: 'full',

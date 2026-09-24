@@ -139,11 +139,14 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
             <Words text={slice.heading} />
           </motion.h2>
         )}
-        {slice.body && (
-          <motion.p className="row__p" variants={lineV}>
-            <Words text={slice.body} />
+        {/* a blank line in the copy starts a new paragraph, the same way it
+            does in Brief — the longer flows earn a break, and without this
+            the two halves ran together into one wall */}
+        {slice.body?.split('\n\n').map((para) => (
+          <motion.p className="row__p" variants={lineV} key={para.slice(0, 24)}>
+            <Words text={para} />
           </motion.p>
-        )}
+        ))}
       </motion.div>
 
       {/* right: the screens or the video */}
