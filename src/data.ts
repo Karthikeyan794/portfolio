@@ -383,10 +383,11 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Filtering the queue',
-          body: 'Filtering the same list. Pick a status, then a customer — the two stack, so the queue narrows to that company’s open tickets. The ticket you were reading stays open beside it.',
-          clip: '/work/support-desk/clips/filter.mp4',
-          poster: '/work/support-desk/2-queue.jpg',
+          heading: 'All thirteen filters, and the view you save them as',
+          body: 'The full set: thirteen filters over the queue — status, owner, customer, type, the clock, the rest — and they stack, so each one you add narrows what is left rather than replacing it. Which is powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
+          diagram: 'views',
+          clip: `${HD}/views.mp4`,
+          caption: 'The thirteen filters stacking over the queue, then saved as a named view — and who else can see it.',
         },
         {
           span: 'full',
@@ -443,14 +444,6 @@ export const projects: Project[] = [
           heading: 'Why a reply starts as a draft',
           body: 'A reply is not a fresh mail. The app asks Graph to create a reply draft, which already carries the conversation id, the threading headers and the quoted history; the typed reply goes on top of that draft, and the draft is what gets sent. A plain send would start a new conversation — and the intake flow underneath would file it as a second ticket for the same problem. When somebody is missing Send As, Graph refuses with a send-as error and the app shows it rather than swallowing it.',
           diagram: 'reply',
-        },
-        {
-          span: 'full',
-          heading: 'All thirteen filters, and the view you save them as',
-          body: 'The full set: thirteen filters over the queue — status, owner, customer, type, the clock, the rest — and they stack, so each one you add narrows what is left rather than replacing it. Which is powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
-          diagram: 'views',
-          clip: `${HD}/views.mp4`,
-          caption: 'The thirteen filters stacking over the queue, then saved as a named view — and who else can see it.',
         },
         {
           span: 'full',
