@@ -33,6 +33,11 @@ function Head({ kick, text }: { kick: string; text?: string }) {
 }
 
 export default function Primer({ primer }: { primer: PrimerData }) {
+  // The overview recording is served from a GitHub release, not from this
+  // deploy — it is 636 MB, far past what a repository will hold. So it can be
+  // absent, and this is the first thing on the page: if it will not load, show
+  // the still rather than leaving a dead frame at the top.
+  const [clipDead, setClipDead] = useState(false)
   // the picture travels against the page as the section passes, so it and the
   // words beside it never scroll at quite the same rate
   const shotRef = useRef<HTMLDivElement>(null)
@@ -83,11 +88,22 @@ export default function Primer({ primer }: { primer: PrimerData }) {
             )}
             <div className="oshot__frame">
               <span className="oshot__sheen" aria-hidden="true" />
-              {primer.showcase.clip ? (
+              {primer.showcase.clip && !clipDead ? (
                 /\.gif$/.test(primer.showcase.clip) ? (
-                  <img src={primer.showcase.clip} alt="Support Desk in use" loading="lazy" decoding="async" />
+                  <img
+                    src={primer.showcase.clip}
+                    alt="Support Desk in use"
+                    loading="lazy"
+                    decoding="async"
+                    onError={() => setClipDead(true)}
+                  />
                 ) : (
-                  <AutoClip src={primer.showcase.clip} poster={primer.showcase.poster} label="Support Desk in use" />
+                  <AutoClip
+                    src={primer.showcase.clip}
+                    poster={primer.showcase.poster}
+                    label="Support Desk in use"
+                    onFail={() => setClipDead(true)}
+                  />
                 )
               ) : (
                 <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />

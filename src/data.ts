@@ -355,9 +355,10 @@ export const projects: Project[] = [
         showcase: {
           note: 'Queue, thread, customer and reply — the whole desk on one screen.',
           poster: '/work/support-desk/2-queue.jpg',
-          // TODO: record the desk and drop the file in /public/work/support-desk/
-          // — an .mp4 or a .gif here plays in place of the still, no other change.
-          clip: '/work/support-desk/clips/overview.mp4',
+          // The ticket page end to end. 3636x2160 and 636 MB as exported, so it is
+          // served from the release rather than the repo — far past the 100 MB a
+          // file may be here. The poster above is what shows until it can start.
+          clip: `${HD}/overview.mp4`,
         },
       },
       brief: {

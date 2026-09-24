@@ -31,11 +31,20 @@ first half of what `views.mp4` shows, at higher quality and for longer. Two sect
 same filters, one of them a subset of the other, is a worse case study than one that runs filters
 through to the view you save them as. The 59 MB came out of the deploy with it.
 
-Plus `overview.mp4` (24 MB · 1836×1080), the walkthrough beside the Overview.
+Plus the Overview panel at the top of the case study: **`overview.mp4`, the ticket page end to
+end — 3636×2160, 636 MB, 3m35s**, replacing the 24-second 1836×1080 clip that was there. It is on
+the release like the others. Until it is uploaded the panel shows its poster (`2-queue.jpg`)
+rather than a dead frame.
+
+Worth knowing: it is the largest file here and it sits at the top of the page, so it is the first
+thing a visitor's browser reaches for. Range requests mean it streams rather than downloading
+whole, and it pauses when it scrolls away or while the page is moving — but 3m35s is long for a
+panel that loops. If it ever feels heavy, a shorter cut of the same recording is the fix, not a
+lower bitrate.
 
 ### The release
 
-The six over 100 MB live at
+The seven over 100 MB live at
 `https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1/` — the `HD` constant in
 `src/data.ts`. Release assets allow 2 GB per file, answer byte-range requests (so playback starts
 before the download finishes) and do not count toward repository size.
