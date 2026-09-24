@@ -18,13 +18,13 @@ release instead, so the untouched exports are what visitors get.
 |---|------|------|------|-------|
 | 1 | The queue | `queue.mp4` | 85 MB · 3692×2160 | **original, byte for byte** |
 | 2 | All thirteen filters, and the view you save them as | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
-| 3 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original** — upload pending |
+| 3 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original, live on the release** |
 | 6 | Auto-assign, and the fields | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
-| 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original** — upload pending |
-| 8 | What the assistant suggests, and how to check it | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original** — upload pending |
-| 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original** — upload pending |
+| 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original, live on the release** |
+| 8 | What the assistant suggests, and how to check it | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original, live on the release** |
+| 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original, live on the release** |
 | 12 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
-| 15 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original** — upload pending |
+| 15 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
 
 **`filter.mp4` is gone.** It showed a status and a customer stacking over the queue — which is the
 first half of what `views.mp4` shows, at higher quality and for longer. Two sections covering the

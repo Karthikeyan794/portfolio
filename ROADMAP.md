@@ -482,11 +482,13 @@ Verified about release assets: they answer **byte-range requests** (`206`), so a
 playing before the file finishes, and they allow 2 GB per file and do not count toward repository
 size. Content type is recorded at upload; a browser upload of an `.mp4` sends `video/mp4`.
 
-**The page does not depend on any of it.** Each of those slices carries a `clipFallback`, so until
-the release exists every clip quietly serves the smaller copy in `/public` — verified with the
-release missing: all four fall back and the page is whole. `ai-suggestions` has no local copy, so
-that figure removes itself rather than leaving an empty frame under a caption. Upload and the
-originals take over with no code change.
+**It took over with no code change**, exactly as intended. The `clipFallback` on each slice stays
+anyway: it costs nothing while the release is up, and means a deleted asset or a renamed tag
+degrades to the smaller copy rather than an empty frame.
+
+One wrinkle if it ever needs repeating: re-submitting the edit form after the files have attached
+fails with *release assets name has already been taken*. That error is harmless — the assets are
+already saved. Close the form rather than retrying.
 
 ## 3. Checklist — what's done
 
