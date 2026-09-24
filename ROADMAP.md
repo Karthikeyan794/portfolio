@@ -445,10 +445,14 @@ shell scales every motif into that band (`SAFE`), with a per-cover `zoom` for sp
 went thin when shrunk. The contact banner is not a tile — it is a **tall** panel, cropped at the
 sides — so that one is built around a single centre and survives a crop from any direction.
 
-**One thing left over:** the old jpgs are gone from the working tree, but they are still in git
-history, and this repository is public. Removing them for good means rewriting history
-(`git filter-repo`), which changes every commit hash. Worth doing before the repo is shown to
-anyone; say the word.
+**Reverted 24 Sep 2026.** You asked for the original pictures back, so all 22 jpgs are restored
+and every tile points at them again. The drawn covers and the generator stay in the tree unused
+(92 KB), so switching any single tile back is one line in `src/data.ts` rather than a redraw.
+
+The reason for the swap has not changed and is the thing to fix properly: those files came out of
+the labs-client repo as placeholders, this repository is public, and they are also in git history
+either way. The real answer is your own screenshots on each tile — at which point neither the
+borrowed pictures nor the drawn ones are needed.
 
 ### The clips: originals on a release
 
@@ -498,7 +502,7 @@ originals take over with no code change.
 - [ ] **Support Desk + Atom**: demo URLs (`demo.href` in `src/data.ts`), walkthrough videos (`video` on the Walkthrough slice — MP4 in `public/` or a YouTube/Loom link), and 4–6 real screenshots to replace the placeholder banners
 - [x] **One thumbnail set** — every project now uses a `/bento/*.jpg` image from the labs-client repo so the grid reads as one theme (Behance covers retired). Swap any file for your own generated art later, same path
 - [x] **Graph-paper canvas** — faint grid over the grey/black background whose lines brighten in a soft circle that follows the cursor
-- [x] ~~**Your own banner images**~~ → drawn instead, 18 of them, in `scripts/make-covers.mjs`. The borrowed labs-client placeholders are deleted (see 2h). Swap any one for a real screenshot by pointing that project's `cover` at it in `src/data.ts`.
+- [ ] **Your own banner images** → `public/bento/*.jpg` are back at your request, and they are still the labs-client placeholders on a public repo. Replace with your own screenshots before this goes on a CV. Drawn stand-ins are ready in `scripts/make-covers.mjs` if you want any tile swapped back — one line each in `src/data.ts`.
 - [ ] Awards (photos + one line each)
 - [ ] Profile photo
 - [ ] Social links (GitHub, LinkedIn, Behance)
