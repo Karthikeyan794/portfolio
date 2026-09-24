@@ -1,6 +1,6 @@
 # Clips for the Support Desk case study
 
-Checked 24 Sep 2026. **Nine of the nineteen flows under *How it works* have a recording.**
+Checked 24 Sep 2026. **Ten of the nineteen flows under *How it works* have a recording.**
 
 Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command` (serves on
 :8899). The demo runs on generated data (`support@demodesk.io`, `redgateretail.com`, fictional
@@ -23,6 +23,7 @@ release instead, so the untouched exports are what visitors get.
 | 7 | A reply that starts written | release `reply.mp4` | 159 MB | **original** — upload pending |
 | 8 | What the AI suggests | release `ai-suggestions.mp4` | 146 MB | **original** — upload pending |
 | 9 | The thread and its attachments | release `thread.mp4` | 177 MB | **original** — upload pending |
+| 11 | All thirteen filters, and the view you save them as | release `views.mp4` | 225 MB · 3644×2160 | **original** — upload pending |
 | 13 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 16 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original** — upload pending |
 
@@ -30,7 +31,7 @@ Plus `overview.mp4` (24 MB · 1836×1080), the walkthrough beside the Overview.
 
 ### The release
 
-The five over 100 MB live at
+The six over 100 MB live at
 `https://github.com/Karthikeyan794/portfolio/releases/download/clips-v1/` — the `HD` constant in
 `src/data.ts`. Release assets allow 2 GB per file, answer byte-range requests (so playback starts
 before the download finishes) and do not count toward repository size.
@@ -39,16 +40,11 @@ before the download finishes) and do not count toward repository size.
 the page is never broken by their absence. Files are staged and renamed ready to drag at
 `~/Desktop/portfolio-clips-to-upload/`. Steps are in `ROADMAP.md` § 2h.
 
-### Recorded but not wired up yet
-
-`~/Desktop/Support desk videos/Views and filters.mp4` — 225 MB. Covers **#11, The view each person
-works in**. Say the word and it goes on the release with the others.
-
 ---
 
 ## Still to record
 
-Nine flows carry a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
+Eight flows carry a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
 heading — a slice can keep its diagram as well, the clip goes under it:
 
 ```ts
@@ -60,7 +56,6 @@ clip: '/work/support-desk/clips/<name>.mp4',
 | 4 | Who gets in | `gate.mp4` | The access gate where the desk would be: pick read or read-and-reply, add a note, request. Then the desk open, with the role showing | 20 |
 | 5 | Assigning a ticket | `teams-card.mp4` | Pick a person from the roster — presence dot visible — then the card landing in Teams with the number, customer and link | 20 |
 | 10 | Why a reply starts as a draft | `draft.mp4` | The composer on a ticket, the draft already written, edit a line, send | 15 |
-| 11 | The view each person works in | *(already recorded — see above)* | — | — |
 | 12 | Customers, built from the mail | `derive.mp4` | The customer list nobody typed: open a company, the people under it, then the mail address that produced it | 20 |
 | 14 | The response clock | `sla.mp4` | A ticket's first-response and resolution counters, one overdue, and the same clock in the list column | 15 |
 | 17 | How a ticket gets its type | `classify.mp4` | A ticket opening with its type and categories already set, then the subject it was read from | 15 |
