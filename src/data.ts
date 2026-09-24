@@ -456,6 +456,14 @@ export const projects: Project[] = [
           caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
         },
         {
+          span: 'full',
+          heading: 'Milo — the desk, from inside Teams',
+          body: 'The last piece is a bot called Milo, so the people who report problems never have to open the desk at all. You talk to it in plain words, in a Teams chat, and it reads the desk’s own list. Ask it to list the open tickets and it hands back a table — number, priority, customer, subject — with the count against everything live, and it notices what those rows have in common: every one of them past its clock, so it offers to go deeper. Ask what the status of a ticket is and it answers with a card: status, priority, who owns it, the customer, both SLA clocks with how far over they are, the root cause, the latest note, and a button straight back into the desk. Ask who a ticket is assigned to and you get one line — with “that’s you” when it is.\n\nThe part worth watching is what it will not do. Ask it to assign a ticket to a name it cannot find in the directory and it does not pick the nearest match; it says so and asks for the full name or the email address. A bot that guesses who should own a ticket is worse than no bot, because the wrong person hears about it and the right one never does.',
+          diagram: 'teams',
+          clip: `${HD}/milo.mp4`,
+          caption: 'Milo in a Teams chat: the open queue as a table, a status card for one ticket, a name it refuses to guess at, and who owns what.',
+        },
+        {
           chapter: 'Demo',
           span: 'full',
           anchor: 'demo',

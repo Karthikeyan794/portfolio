@@ -27,6 +27,19 @@ release instead, so the untouched exports are what visitors get.
 | 11 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 12 | The response clock, and taking the record out | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
 | 14 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
+| 15 | Milo — the desk, from inside Teams | release `milo.mp4` | 79 MB · 3636×2160 · 46s | **original — NOT uploaded yet: the recording shows real customer and colleague names, see the note under the table** |
+
+**`milo.mp4` is held back on purpose.** It was recorded against the real desk, not the demo: the
+table in it lists real customers and subjects, and the status card names a real colleague. This
+README's own rule is *record the demo, never the real desk*, and the rule exists because this
+repository and its release are public. The slice is wired to `${HD}/milo.mp4` and hides its frame
+until the file exists, so the words and the diagram show and nothing is broken. Either re-record it
+against the demo (`start-demo.command`, the bot pointed at demo data) and upload that, or — only if
+you are sure the names in it may be public — upload the file as it is:
+
+```
+cp "$HOME/Desktop/Support desk videos/Milio(workflow chat bot in term).mp4" /tmp/milo.mp4 && gh release upload clips-v1 /tmp/milo.mp4
+```
 
 **`filter.mp4` is gone.** It showed a status and a customer stacking over the queue — which is the
 first half of what `views.mp4` shows, at higher quality and for longer. Two sections covering the

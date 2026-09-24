@@ -463,6 +463,10 @@ borrowed pictures nor the drawn ones are needed.
 scope), so the release was created from the terminal and **`views.mp4` is up** — 236,273,045 bytes,
 byte for byte the export, range requests answered. The other five are one command away:
 `gh release upload clips-v1 ~/Desktop/portfolio-clips-to-upload/{home,thread,merge,reply,ai-suggestions}.mp4`.
+The Teams bot flow is back as the last row of *How it works* (25 Sep 2026), written from the
+recording of Milo — but **that recording shows real customer and colleague names and is not
+uploaded**; the row hides its frame until a demo re-record (or an explicit go-ahead) puts
+`milo.mp4` on the release. Details and the upload command are in the clips README.
 The manual steps below are kept in case that login ever goes:
 
 1. Open **github.com/Karthikeyan794/portfolio/releases/new**
