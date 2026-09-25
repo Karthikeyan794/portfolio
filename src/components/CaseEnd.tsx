@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { contact, feedback, profile, projects } from '../data'
+import { endTiles, feedback, profile, projects } from '../data'
 import { sendForm as send } from '../sendForm'
 import { closeProject, openProject } from '../router'
 import ContactModal from './ContactModal'
@@ -170,8 +170,9 @@ function MoreTile({ count, i }: { count: number; i: number }) {
   const reduce = useReducedMotion()
   return (
     <motion.button type="button" className="ctile ctile--more" onClick={closeProject} aria-label={`${count} more projects — back to all work`} {...rise(i, reduce)}>
-      <span className="ctile__beam" aria-hidden="true" />
-      <span className="ctile__bokeh" aria-hidden="true" />
+      {/* the Milky Way behind the count */}
+      <img className="ctile__bg" src={endTiles.more} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      <span className="ctile__tint" aria-hidden="true" />
       <span className="ctile__num">
         {count}
         <span className="ctile__plus">+</span>
@@ -209,9 +210,9 @@ function ReachTile({ onOpen, i }: { onOpen: () => void; i: number }) {
 
   return (
     <motion.div className="ctile ctile--reach ctile--glass ctile--pic" onPointerMove={reduce ? undefined : spot} onClick={onOpen} {...rise(i, reduce)}>
-      {/* the same sky the home page ends on, clear, with the person and
-          the laptop in frame */}
-      <img className="ctile__bg" src={contact.bg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      {/* the same night library the contact dialog sits on, so the tile
+          and the dialog it opens are one place */}
+      <img className="ctile__bg" src={endTiles.contact} alt="" aria-hidden="true" loading="lazy" decoding="async" />
       <span className="ctile__tint" aria-hidden="true" />
       <span className="cend__eye">
         <Sun />

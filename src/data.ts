@@ -18,9 +18,16 @@
 export const feedback = {
   endpoint: 'https://formsubmit.co/ajax/karthikeyan.design09@gmail.com',
   accessKey: '',
-  // behind the "How did this one land?" tile, blurred; your export, exact.
-  // The contact tile beside it uses `contact.bg`, the sky picture.
-  bg: '/night-library-wide.png',
+  // behind the "Share your words about it" tile, sharp, with a glass card on
+  // it; the meadow with the paper plane (the same file the Support Desk demo
+  // sits on). The other two tile pictures are in `endTiles` below.
+  bg: '/work/support-desk/demo-bg.jpg',
+}
+
+/** the other two pictures in the bento at the end of every case study */
+export const endTiles = {
+  more: '/contact-sky.png', // behind "12+ more projects": the Milky Way
+  contact: '/contact/night-library.webp', // behind Contact: the same picture the contact dialog sits on
 }
 
 export const profile = {
