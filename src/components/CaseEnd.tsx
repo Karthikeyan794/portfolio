@@ -325,15 +325,16 @@ function TakeTile({ slug, title, i }: { slug: string; title: string; i: number }
 
   return (
     <motion.div className="ctile ctile--take ctile--glass ctile--pic" onPointerMove={reduce ? undefined : spot} aria-live="polite" {...rise(i, reduce)}>
-      {/* the night library behind it, blurred, so the form reads as glass
-          over a place rather than a box on the page */}
-      <img className="ctile__bg ctile__bg--blur" src={feedback.bg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      {/* the night library behind it, sharp, and one small glass card in
+          the middle of it holding the whole form */}
+      <img className="ctile__bg" src={feedback.bg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
       <span className="ctile__tint" aria-hidden="true" />
       <span className="cend__eye">
         <Sun />
         Your take
       </span>
 
+      <div className="cend__card">
       {phase === 'sent' ? (
         <motion.div
           className="cend__thanks"
@@ -354,55 +355,51 @@ function TakeTile({ slug, title, i }: { slug: string; title: string; i: number }
         </motion.div>
       ) : (
         <form className="cend__form" onSubmit={submit}>
-          <div className="cend__top">
           <div>
-            <p className="cend__q">How did this one land?</p>
+            <p className="cend__q">Share your words about it</p>
             <p className="cend__qsub">Pick one, write a line, or both. None of it is required.</p>
-          </div>
-
-          {/* two small round buttons; the words stay for the tooltip and for
-              screen readers */}
-          <div className="cend__pick" role="group" aria-label="Your reaction to this case study">
-            {(['like', 'dislike'] as const).map((r) => {
-              const on = reaction === r
-              return (
-                <button key={r} type="button" className={`react react--${r}`} aria-pressed={on} onClick={() => pick(r)} title={COPY[r].label}>
-                  <span className="react__icon">
-                    {/* re-keyed when switched on, so the pop replays every time */}
-                    <motion.span
-                      key={on ? 'on' : 'off'}
-                      style={{ display: 'inline-flex' }}
-                      initial={on && !reduce ? { scale: 0.55, rotate: r === 'like' ? -14 : 14 } : false}
-                      animate={{ scale: 1, rotate: 0 }}
-                      transition={{ type: 'spring', stiffness: 560, damping: 13 }}
-                    >
-                      <Thumb down={r === 'dislike'} />
-                    </motion.span>
-                    {on && !reduce && (
-                      <motion.span
-                        className="react__ring"
-                        initial={{ scale: 0.6, opacity: 0.55 }}
-                        animate={{ scale: 1.9, opacity: 0 }}
-                        transition={{ duration: 0.6, ease: 'easeOut' }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </span>
-                  <span className="sr-only">{COPY[r].label}</span>
-                </button>
-              )
-            })}
-          </div>
           </div>
 
           <label className="cend__field">
             <span className="sr-only">Share your thoughts about this project (optional)</span>
-            <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder={say.placeholder} rows={3} maxLength={1200} />
+            <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder={say.placeholder} rows={2} maxLength={1200} />
           </label>
           <input ref={honey} className="cend__honey" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
           <div className="cend__row">
-            <p className="cend__fine">{live ? 'Goes straight to my inbox. Nothing here is published.' : 'Opens your email with it filled in. Nothing is published.'}</p>
+            {/* two small round buttons; the words stay for the tooltip and for
+                screen readers */}
+            <div className="cend__pick" role="group" aria-label="Your reaction to this case study">
+              {(['like', 'dislike'] as const).map((r) => {
+                const on = reaction === r
+                return (
+                  <button key={r} type="button" className={`react react--${r}`} aria-pressed={on} onClick={() => pick(r)} title={COPY[r].label}>
+                    <span className="react__icon">
+                      {/* re-keyed when switched on, so the pop replays every time */}
+                      <motion.span
+                        key={on ? 'on' : 'off'}
+                        style={{ display: 'inline-flex' }}
+                        initial={on && !reduce ? { scale: 0.55, rotate: r === 'like' ? -14 : 14 } : false}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: 'spring', stiffness: 560, damping: 13 }}
+                      >
+                        <Thumb down={r === 'dislike'} />
+                      </motion.span>
+                      {on && !reduce && (
+                        <motion.span
+                          className="react__ring"
+                          initial={{ scale: 0.6, opacity: 0.55 }}
+                          animate={{ scale: 1.9, opacity: 0 }}
+                          transition={{ duration: 0.6, ease: 'easeOut' }}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </span>
+                    <span className="sr-only">{COPY[r].label}</span>
+                  </button>
+                )
+              })}
+            </div>
             <button className="btn btn--primary cend__send" type="submit" disabled={!ready || phase === 'sending'}>
               {phase === 'sending' ? 'Sending…' : 'Send'}
             </button>
@@ -415,6 +412,7 @@ function TakeTile({ slug, title, i }: { slug: string; title: string; i: number }
           )}
         </form>
       )}
+      </div>
     </motion.div>
   )
 }

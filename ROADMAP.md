@@ -340,9 +340,10 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
 
 ## 2f-4. The case study's end: two tiles with pictures (26 Sep 2026)
 
-- **Your take** has the wide night-library picture behind it, blurred (`public/night-library-wide.png`,
-  exact file, path in `feedback.bg`), with the pointer light over it. Like / dislike are two small
-  **round** thumb buttons beside the question; the words stay as a tooltip and for screen readers.
+- **Your take** has the wide night-library picture behind it, sharp (`public/night-library-wide.png`,
+  exact file, path in `feedback.bg`), and one **250px glass card** in its middle holding the form:
+  "Share your words about it", the note, two small **round** thumb buttons and Send in one row (the
+  words stay as a tooltip and for screen readers). The inbox fine print is gone.
 - **Contact** shows the Milky Way picture clear (`contact.bg`, the same one the home page ends on),
   the person and the laptop in frame, the email over a dark base.
 - Both tiles are light on dark in either theme, because both pictures are night.
