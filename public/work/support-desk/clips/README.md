@@ -83,6 +83,19 @@ row would show its words alone, which is by design — a hidden frame, not a bro
 
 ---
 
+## The demo build, and the one patch on it
+
+`public/demo/support-desk/` is a copy of `~/Desktop/support-desk-demo/demo/`, with **one change to
+the bundle**: the demo hard-codes the signed-in role to admin (`useState("admin")` and one
+`f("admin")` on load). Both now read `localStorage.getItem("sd.demoRole") || "admin"`, so the
+window around the demo can show the same desk as an admin, a viewer or a support user. **When the
+build is re-copied, re-apply it** — two string replacements, one occurrence each:
+
+```
+u.useState("admin")  →  u.useState(localStorage.getItem("sd.demoRole")||"admin")
+f("admin")           →  f(localStorage.getItem("sd.demoRole")||"admin")
+```
+
 ## Still to record
 
 The drawn diagrams are gone from the case study (25 Sep 2026) — every flow is words and, where one

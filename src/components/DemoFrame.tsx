@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export type DemoPage = { label: string; hash: string }
+export type DemoPage = { label: string; hash: string; role?: 'admin' | 'support' | 'viewer'; hint?: string }
 
 /**
  * The product itself, running inside the case study.
@@ -15,6 +15,7 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
   src: string; pages?: DemoPage[]; art?: string; title?: string
 }) {
   const [hash, setHash] = useState(pages[0]?.hash ?? '')
+  const [tab, setTab] = useState(0)
   const [live, setLive] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const frame = useRef<HTMLIFrameElement>(null)
@@ -60,11 +61,25 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
     ? { width: `${DESIGN}px`, height: `${fit.height / fit.scale}px`, transform: `scale(${fit.scale})`, transformOrigin: 'top left' }
     : undefined
 
-  function go(h: string) {
-    setHash(h)
+  function go(i: number) {
+    const p = pages[i]
+    if (!p) return
+    setTab(i)
+    setHash(p.hash)
     try {
       const w = frame.current?.contentWindow
-      if (w) w.location.hash = h
+      if (!w) return
+      if (p.role) {
+        // the desk reads its signed-in role once, at start-up, from this key
+        // (a patch on the demo build — see the clips README), so a change of
+        // role is a reload; a change of page alone is just the hash
+        w.localStorage.setItem('sd.demoRole', p.role)
+        setLoaded(false)
+        w.location.hash = p.hash
+        w.location.reload()
+      } else {
+        w.location.hash = p.hash
+      }
     } catch {
       /* not same-origin after all — the src below still carries the hash */
     }
@@ -81,14 +96,15 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
           <span className="dfr__dots" aria-hidden="true"><i /><i /><i /></span>
           {pages.length > 0 && (
             <div className="dfr__tabs" role="tablist" aria-label="Pages of the demo">
-              {pages.map((p) => (
+              {pages.map((p, i) => (
                 <button
-                  key={p.hash}
+                  key={p.label}
                   type="button"
                   role="tab"
-                  aria-selected={hash === p.hash}
-                  className={hash === p.hash ? 'dfr__tab dfr__tab--on' : 'dfr__tab'}
-                  onClick={() => go(p.hash)}
+                  aria-selected={tab === i}
+                  className={tab === i ? 'dfr__tab dfr__tab--on' : 'dfr__tab'}
+                  onClick={() => go(i)}
+                  title={p.hint}
                 >
                   {p.label}
                 </button>
@@ -101,6 +117,7 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
         <div className="dfr__url">
           <span className="dfr__addr" aria-hidden="true">
             support-desk.demo<b>{path}</b>
+            {pages[tab]?.role && <em className="dfr__as">signed in as {pages[tab].role === 'viewer' ? 'view only' : pages[tab].role}</em>}
           </span>
           <a className="dfr__full" href={src + hash} target="_blank" rel="noreferrer">
             <span>Open in full screen</span>

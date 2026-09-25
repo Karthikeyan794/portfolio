@@ -247,7 +247,7 @@ export type Slice = {
   /** the numbers a slice landed on */
   stats?: { value: string; label: string }[]
   /** the product itself, running in a window under the words */
-  embed?: { src: string; pages?: { label: string; hash: string }[]; art?: string }
+  embed?: { src: string; pages?: { label: string; hash: string; role?: 'admin' | 'support' | 'viewer'; hint?: string }[]; art?: string }
 }
 
 /** the plain-English layer: what it is, what it does, how a day on it goes */
@@ -486,10 +486,12 @@ export const projects: Project[] = [
           unnumbered: true,
           embed: {
             src: '/demo/support-desk/index.html',
+            // each tab opens the same desk signed in as a different kind of user,
+            // so the two access flows can be tried, not just read about
             pages: [
-              { label: 'Home', hash: '#/homepage' },
-              { label: 'Tickets', hash: '#/tickets' },
-              { label: 'Customers', hash: '#/contacts' },
+              { label: 'Admin', hash: '#/tickets', role: 'admin', hint: 'Everything: reply, assign, edit fields, and manage who has access' },
+              { label: 'View only access', hash: '#/tickets', role: 'viewer', hint: 'Read everything; press Reply and the desk asks an admin for edit access on your behalf' },
+              { label: 'Reply access', hash: '#/tickets', role: 'support', hint: 'Reply, assign and edit fields — but not manage access' },
             ],
             art: '/work/support-desk/demo-bg.jpg',
           },

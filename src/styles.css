@@ -2082,6 +2082,7 @@ a { color: inherit; text-decoration: none; }
   text-overflow: ellipsis;
 }
 .dfr__addr b { font-weight: 400; color: #fff; }
+.dfr__as { margin-left: 14px; font-style: normal; color: var(--accent); }
 .dfr__full {
   display: inline-flex;
   align-items: center;

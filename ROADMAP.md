@@ -533,6 +533,17 @@ the app. Scroll back up and it returns. The wallpaper behind the window is your 
 plane, `public/work/support-desk/demo-bg.jpg` (2000×1427, 409 KB, as sent), shown sharp under a
 light tint — the `art` field on the slice's `embed`.
 
+**The tabs are roles, not pages (25 Sep 2026).** Admin · View only access · Reply access. Each
+opens the same desk signed in as that kind of user, so the two access flows can be tried rather
+than read about: as *View only*, Reply becomes a "you have view access" prompt that opens the
+*You do not have edit access — Request access* dialog; as *Reply access* (the support role) you
+can reply, assign and edit but not manage access; *Admin* has everything. It works because of
+one patch on our copy of the demo bundle — the build hard-codes the signed-in role to admin at
+start-up, and the two places it does that now read `localStorage.getItem("sd.demoRole") ||
+"admin"` (the clips README has the exact strings, for when the build is re-copied). A tab writes
+that key into the iframe's storage (same origin) and reloads it; the address line says who you
+are signed in as. Home / Tickets / Customers are gone from the strip; the app's own nav does that.
+
 **How the window behaves.** Inert until you press *Click to interact* — the iframe takes no
 pointer events, so scrolling the page past it never gets caught inside the app. Move the pointer
 out of the window and it goes quiet again. The tab strip (Home · Tickets · Customers) drives the
