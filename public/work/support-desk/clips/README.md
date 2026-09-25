@@ -79,14 +79,15 @@ gh release upload clips-v1 ~/Desktop/portfolio-clips-to-upload/{home,thread,merg
 
 Until then each of those five falls back to the smaller copy in `/public`, so the page is never
 broken by their absence. `views.mp4` has no smaller copy: if the release were ever unreachable the
-row would show its words and diagram alone, which is by design — a hidden frame, not a broken one.
+row would show its words alone, which is by design — a hidden frame, not a broken one.
 
 ---
 
 ## Still to record
 
-One flow carries a diagram and no recording. Wiring one up is one line in `src/data.ts` beside its
-heading — a slice can keep its diagram as well, the clip goes under it:
+The drawn diagrams are gone from the case study (25 Sep 2026) — every flow is words and, where one
+exists, its recording. A flow without a recording shows its words alone. Wiring one up is one line
+in `src/data.ts` beside its heading:
 
 ```ts
 clip: '/work/support-desk/clips/<name>.mp4',
@@ -99,7 +100,7 @@ clip: '/work/support-desk/clips/<name>.mp4',
 **This one has to be shot on the demo.** The version recorded on the real desk cannot be used: it
 carries live customer subjects and addresses, a colleague's mail address, the internal desk URL and
 a dozen real names down the Teams sidebar. If the demo cannot post to a test Teams chat, film only
-the assigning half and leave the Teams card as the diagram — a drawing of the card gives nothing
+the assigning half; the Teams card can wait for a test chat — a drawing of it gives nothing
 away.
 
 ---

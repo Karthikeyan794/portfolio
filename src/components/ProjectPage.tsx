@@ -2,7 +2,6 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { profile, projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
-import Diagram from './Diagrams'
 import GridBg from './GridBg'
 import Brief from './Brief'
 import AutoClip from './AutoClip'
@@ -86,7 +85,7 @@ const sheenV = {
 function Row({ slice, no }: { slice: Slice; no: number }) {
   const ref = useRef<HTMLDivElement>(null)
   // a slice with no image and no video field is prose — it gets the full width
-  const hasMedia = Boolean(slice.image || slice.diagram || slice.pair || slice.stats || slice.clip || slice.video)
+  const hasMedia = Boolean(slice.image || slice.pair || slice.stats || slice.clip || slice.video)
   const [zoom, setZoom] = useState<Zoomed>(null)
 
   // the screen drifts a few pixels against the page as it passes, so a still
@@ -164,10 +163,6 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
                 ) : (
                   <video src={slice.video} controls loop playsInline preload="metadata" />
                 )}
-            </motion.div>
-          ) : slice.diagram ? (
-            <motion.div className="frame frame--dia" variants={frameV}>
-              <Diagram id={slice.diagram} />
             </motion.div>
           ) : slice.pair ? (
             <motion.div className="frame frame--pair" variants={frameV}>

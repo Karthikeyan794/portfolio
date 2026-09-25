@@ -227,9 +227,7 @@ export type Slice = {
   caption?: string
   /** an embedded video: an mp4 in /public or a YouTube/Loom embed URL */
   video?: string
-  /** a drawn explanation instead of a screenshot — see components/Diagrams.tsx */
-  diagram?: string
-  /** a short screen recording of this flow — an mp4 or gif in /public, shown under the diagram */
+  /** a short screen recording of this flow — an mp4 or gif in /public, shown beside the words */
   clip?: string
   /** the copy to fall back to if `clip` will not load or will not play.
    *  Four of these recordings are 150–270 MB — over GitHub's 100 MB per-file
@@ -401,7 +399,6 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'Who gets in, and what they may do',
           body: 'The desk has three roles and one place to set them. Under your own name, top right, with the role you hold shown beside it, sits Manage access: everyone who can open the desk, their role on a dropdown, when they last signed in and whether they ever have, and an Invite. Admin edits the list and manages who else has access; support reads, replies, assigns and changes fields; view only reads. Your own row is locked, so an admin cannot demote themselves by accident.\n\nBeside the users sit the requests. Somebody who lands on the gate and asks for access — to the desk, or to the shared mailbox itself — shows up here with what they asked for and when, and Approve says in plain words what it grants before you press it: edit access in the desk, replying, assigning and editing fields. Approve one and the count drops and their role is set. The same menu holds Spam & drafts: a mail flagged as not a ticket is kept there, out of the queue, and nothing in it is deleted.',
-          diagram: 'gate',
           clip: `${HD}/Profile.menu.+.manage.access.mp4`,
           caption: 'Manage access from the profile menu: every user with a role, the requests waiting for a yes, and spam kept out of the queue without deleting anything.',
         },
@@ -409,7 +406,6 @@ export const projects: Project[] = [
           span: 'full',
           heading: 'Assigning a ticket',
           body: 'Pick a person from a roster that Graph keeps honest — enabled, licensed members only, with a presence dot so you can see who is free before you hand a ticket over. Start typing and it narrows. Assigning writes the row, and the person hears about it twice over. A Power Automate flow watching that list posts the card the app built, verbatim, into Teams: who assigned it, the number and the subject, status and priority, the requester, and a button straight back into the desk — with their real Teams photo on it, pulled from Graph, and an initials badge when there is none. And Milo, the desk’s own bot, sends a card of its own — “is now assigned to you”, with the priority, the customer and the status. Either way the person knows whether it is theirs before they click.',
-          diagram: 'assign',
           clip: `${HD}/Team.notified.with.assigned.mp4`,
           caption: 'From the roster to Teams: the flow’s card with the photo, and Milo’s own “now assigned to you”.',
         },
