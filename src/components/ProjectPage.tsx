@@ -131,9 +131,11 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
     >
       {/* left: the words */}
       <motion.div className="row__text" variants={groupV}>
-        <motion.span className="row__no" variants={lineV}>
-          {String(no).padStart(2, '0')}
-        </motion.span>
+        {!slice.unnumbered && (
+          <motion.span className="row__no" variants={lineV}>
+            {String(no).padStart(2, '0')}
+          </motion.span>
+        )}
         {slice.heading && (
           <motion.h2 className="row__h" variants={lineV}>
             <Words text={slice.heading} />

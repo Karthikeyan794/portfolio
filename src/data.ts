@@ -240,6 +240,8 @@ export type Slice = {
   poster?: string
   /** an id, so the section nav can scroll to this slice */
   anchor?: string
+  /** hide the 01 / 02 counter on this row — for a chapter that is one row long */
+  unnumbered?: boolean
   /** a problem → what I did pair, the way my Behance case studies read */
   pair?: { problem: string; solution: string }
   /** the numbers a slice landed on */
@@ -478,8 +480,10 @@ export const projects: Project[] = [
           chapter: 'Demo',
           span: 'full',
           anchor: 'demo',
-          heading: 'Try it yourself',
-          body: 'This is the desk itself, not a video of it — the same build that runs for the team, on generated data: fictional companies, people and email bodies, with the AI readings and the Teams cards written in for every ticket. Nothing here is a real customer. Click into it and use it the way the team does: open a ticket, read the thread, hand it to somebody, reply from the template, ask for the AI summary, save a view, or go and look at a customer. It needs no sign-in, and whatever you do stays in your own browser.',
+          heading: 'Click around, explore the features, and experience how Support Desk works in real time.',
+          // No number on this one: the chapter holds a single row, and 01 above a
+          // one-line invitation reads like the first of a list that never comes.
+          unnumbered: true,
           embed: {
             src: '/demo/support-desk/index.html',
             pages: [
