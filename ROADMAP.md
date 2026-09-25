@@ -501,6 +501,13 @@ One wrinkle if it ever needs repeating: re-submitting the edit form after the fi
 fails with *release assets name has already been taken*. That error is harmless — the assets are
 already saved. Close the form rather than retrying.
 
+## 2h-2. The mobile row (25 Sep 2026)
+
+- Row 14 under *How it works*: **Support Desk on Mobile**, `clips/mobile.mp4` — your export, exact
+  (12 MB, so it lives in the repo, not on the release). It shows the desk at phone width inside a
+  phone mockup on the meadow, so it sits in the media column like every other recording.
+- No new code: it is one more slice in `src/data.ts`, rendered by the same `ClipFigure`.
+
 ## 2i. The demo, embedded (25 Sep 2026)
 
 The case study ends with the desk itself, running in a drawn window — the same build the team

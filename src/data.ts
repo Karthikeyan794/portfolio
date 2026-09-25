@@ -3,6 +3,23 @@
 // Swap the copy, projects and links — the UI adapts.
 // ─────────────────────────────────────────────────────────────
 
+/**
+ * Where the "How did this one land?" answers at the end of each case study go.
+ *
+ * Paste the endpoint of any form service that accepts a JSON POST and every
+ * reaction and note arrives in your inbox. Two free ones that work as-is:
+ *   Web3Forms  endpoint 'https://api.web3forms.com/submit' + accessKey from web3forms.com
+ *   Formspree  endpoint 'https://formspree.io/f/<your-id>'  (accessKey stays empty)
+ *
+ * Left empty, the buttons still work: a reaction is remembered on the visitor's
+ * own device, and a written note opens their email app with it filled in — so
+ * nothing anyone takes the time to write is silently dropped.
+ */
+export const feedback = {
+  endpoint: 'https://example.invalid/submit',
+  accessKey: 'TEST-KEY',
+}
+
 export const profile = {
   name: 'Karthikeyan B',
   role: 'Product Designer · Front-end Developer',
@@ -475,6 +492,12 @@ export const projects: Project[] = [
           body: 'Manage who can access the Support Desk and what they can do. Set roles such as *Admin, Support, and View Only*, and control permissions for replying, assigning tickets, and editing ticket details. You can also review and approve access requests from one place.',
           clip: `${HD}/Profile.menu.+.manage.access.mp4`,
           caption: 'Manage access from the profile menu: every user with a role, the requests waiting for a yes, and spam kept out of the queue without deleting anything.',
+        },
+        {
+          heading: 'Support Desk on Mobile',
+          body: 'The Support Desk is fully responsive, so it works on a phone as well as a laptop. The home screen shows your ticket counts at a glance, Tickets and Customers sit one tap away at the bottom, and a ticket opens with its email, details, AI summary, and comments as tabs. You can *read a thread and send a reply from wherever you are*.',
+          clip: '/work/support-desk/clips/mobile.mp4',
+          caption: 'Recorded at phone width: the home cards, the ticket list, the AI summary inside a ticket, and a reply sent from the same screen.',
         },
         {
           chapter: 'Demo',

@@ -1,7 +1,6 @@
 # Clips for the Support Desk case study
 
-Checked 24 Sep 2026. **Ten of the eleven flows under *How it works* have a recording.** Only *Assigning a ticket*
-does not.
+Checked 25 Sep 2026. **All fourteen rows under *How it works* have a recording.**
 
 Record the demo, never the real desk: `~/Desktop/support-desk-demo/start-demo.command` (serves on
 :8899). The demo runs on generated data (`support@demodesk.io`, `redgateretail.com`, fictional
@@ -30,6 +29,7 @@ release instead, so the untouched exports are what visitors get.
 | 11 | Customer & Contact Management | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 12 | Dashboard | release `home.mp4` | 268 MB | **original, live on the release** |
 | 13 | User Roles & Access | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
+| 14 | Support Desk on Mobile | `mobile.mp4` | 12 MB · 3640×2160 · 36s | **original, byte for byte** — the desk at phone width inside a phone mockup: home, tickets, AI summary, reply |
 
 **The Milo recording went up under its raw name** (`Milio.workflow.chat.bot.in.term.mp4`, dots
 where the spaces were) on 24 Sep, and the page's address is matched to it. It was recorded against
