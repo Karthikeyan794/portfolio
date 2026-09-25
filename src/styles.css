@@ -1745,7 +1745,7 @@ a { color: inherit; text-decoration: none; }
 .row__h {
   font-family: var(--display);
   font-weight: 500;
-  font-size: 32px;
+  font-size: 28px;
   letter-spacing: -0.015em;
   line-height: 1.35;
 }
