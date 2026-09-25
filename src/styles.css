@@ -3171,11 +3171,13 @@ a.ctile__line { cursor: pointer; }
 }
 @media (max-width: 800px) { .work__head { grid-template-columns: 1fr; } }
 .work__head h2 {
-  font-family: var(--display);
+  /* the same small caps as Problem and Solution on a case study */
+  font-family: var(--label-face);
   font-size: clamp(30px, 4.4vw, 52px);
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-weight: 400;
   line-height: 1.04;
+  color: var(--accent-ink);
 }
 
 .bentos { display: grid; gap: clamp(40px, 6vh, 76px); }
