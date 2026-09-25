@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { feedback, profile, projects } from '../data'
+import { contact, feedback, profile, projects } from '../data'
 import { closeProject, openProject } from '../router'
 import ContactModal from './ContactModal'
 import Words from './Words'
@@ -227,7 +227,11 @@ function ReachTile({ onOpen, i }: { onOpen: () => void; i: number }) {
   }
 
   return (
-    <motion.div className="ctile ctile--reach ctile--glass" onPointerMove={reduce ? undefined : spot} onClick={onOpen} {...rise(i, reduce)}>
+    <motion.div className="ctile ctile--reach ctile--glass ctile--pic" onPointerMove={reduce ? undefined : spot} onClick={onOpen} {...rise(i, reduce)}>
+      {/* the same sky the home page ends on, clear, with the person and
+          the laptop in frame */}
+      <img className="ctile__bg" src={contact.bg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      <span className="ctile__tint" aria-hidden="true" />
       <span className="cend__eye">
         <Sun />
         Contact
@@ -320,7 +324,11 @@ function TakeTile({ slug, title, i }: { slug: string; title: string; i: number }
   const say = COPY[reaction ?? 'none']
 
   return (
-    <motion.div className="ctile ctile--take ctile--glass" onPointerMove={reduce ? undefined : spot} aria-live="polite" {...rise(i, reduce)}>
+    <motion.div className="ctile ctile--take ctile--glass ctile--pic" onPointerMove={reduce ? undefined : spot} aria-live="polite" {...rise(i, reduce)}>
+      {/* the night library behind it, blurred, so the form reads as glass
+          over a place rather than a box on the page */}
+      <img className="ctile__bg ctile__bg--blur" src={feedback.bg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      <span className="ctile__tint" aria-hidden="true" />
       <span className="cend__eye">
         <Sun />
         Your take
@@ -346,16 +354,19 @@ function TakeTile({ slug, title, i }: { slug: string; title: string; i: number }
         </motion.div>
       ) : (
         <form className="cend__form" onSubmit={submit}>
+          <div className="cend__top">
           <div>
             <p className="cend__q">How did this one land?</p>
             <p className="cend__qsub">Pick one, write a line, or both. None of it is required.</p>
           </div>
 
+          {/* two small round buttons; the words stay for the tooltip and for
+              screen readers */}
           <div className="cend__pick" role="group" aria-label="Your reaction to this case study">
             {(['like', 'dislike'] as const).map((r) => {
               const on = reaction === r
               return (
-                <button key={r} type="button" className={`react react--${r}`} aria-pressed={on} onClick={() => pick(r)}>
+                <button key={r} type="button" className={`react react--${r}`} aria-pressed={on} onClick={() => pick(r)} title={COPY[r].label}>
                   <span className="react__icon">
                     {/* re-keyed when switched on, so the pop replays every time */}
                     <motion.span
@@ -377,10 +388,11 @@ function TakeTile({ slug, title, i }: { slug: string; title: string; i: number }
                       />
                     )}
                   </span>
-                  {COPY[r].label}
+                  <span className="sr-only">{COPY[r].label}</span>
                 </button>
               )
             })}
+          </div>
           </div>
 
           <label className="cend__field">

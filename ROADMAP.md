@@ -338,6 +338,15 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
 - Tried and dropped the same day: the wide banner version at the foot of both pages.
 - Next idea: the sound is still the mountain ambience (wind + birds). Crickets would suit the night.
 
+## 2f-4. The case study's end: two tiles with pictures (26 Sep 2026)
+
+- **Your take** has the wide night-library picture behind it, blurred (`public/night-library-wide.png`,
+  exact file, path in `feedback.bg`), with the pointer light over it. Like / dislike are two small
+  **round** thumb buttons beside the question; the words stay as a tooltip and for screen readers.
+- **Contact** shows the Milky Way picture clear (`contact.bg`, the same one the home page ends on),
+  the person and the laptop in frame, the email over a dark base.
+- Both tiles are light on dark in either theme, because both pictures are night.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**

@@ -3180,7 +3180,6 @@ a.ctile__line { cursor: pointer; }
   .ctile--reach { min-height: 150px; }
 }
 @media (max-width: 380px) {
-  .cend__pick { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
   .ctile__beam { animation: none; }
@@ -5166,4 +5165,66 @@ a.ctile__line { cursor: pointer; }
   }
 }
 
+/* ── case-study end: the tiles with a picture behind them ──────────────────
+   Your take (the night library, blurred) and Contact (the sky, clear). The
+   picture is night in either theme, so these two tiles are light on dark:
+   the page tokens are swapped locally and every rule underneath keeps
+   working. */
+.ctile--pic {
+  --text: #f4f1e8;
+  --muted: rgba(244, 241, 232, 0.68);
+  --line: rgba(255, 255, 255, 0.14);
+  --line-strong: rgba(255, 255, 255, 0.26);
+  --bg: #0c0f1a;
+  --accent-ink: var(--accent);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #0c0f1a;
+}
+.ctile--pic::after { opacity: 0.05; }
+.ctile__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.ctile__bg--blur { filter: blur(14px) saturate(1.25); transform: scale(1.14); }
+/* the tint carries the pointer light the glass tiles have */
+.ctile__tint {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(420px circle at var(--sx, -30%) var(--sy, -30%), rgba(255, 176, 92, 0.16), transparent 62%),
+    linear-gradient(180deg, rgba(6, 8, 18, 0.5) 0%, rgba(6, 8, 18, 0.66) 100%);
+}
+.ctile--reach .ctile__bg { object-position: 78% 64%; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.ctile--reach:hover .ctile__bg { transform: scale(1.05); }
+.ctile--reach .ctile__tint {
+  background:
+    radial-gradient(360px circle at var(--sx, -30%) var(--sy, -30%), rgba(255, 176, 92, 0.12), transparent 62%),
+    linear-gradient(180deg, rgba(6, 8, 18, 0.35) 0%, rgba(6, 8, 18, 0) 34%, rgba(6, 8, 18, 0) 55%, rgba(6, 8, 18, 0.78) 100%);
+}
+.ctile--pic .ctile__line { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
+.ctile--pic .react--dislike { --react: #f3927a; }
+.ctile--pic .cend__send { background: var(--accent); color: #10221c; }
+.ctile--pic .cend__send:hover { background: #b8f070; }
 
+/* the question on the left, the two round buttons on the right */
+.cend__top { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.cend__pick { display: flex; gap: 8px; flex: none; }
+.cend__pick .react {
+  width: 44px;
+  height: 44px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(10, 12, 24, 0.35);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.cend__pick .react[aria-pressed='true'] { background: color-mix(in srgb, var(--react) 22%, rgba(10, 12, 24, 0.35)); }

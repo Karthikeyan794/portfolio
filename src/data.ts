@@ -18,6 +18,9 @@
 export const feedback = {
   endpoint: 'https://formsubmit.co/ajax/karthikeyan.design09@gmail.com',
   accessKey: '',
+  // behind the "How did this one land?" tile, blurred; your export, exact.
+  // The contact tile beside it uses `contact.bg`, the sky picture.
+  bg: '/night-library-wide.png',
 }
 
 export const profile = {
