@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { contact, feedback, profile, projects } from '../data'
+import { sendForm as send } from '../sendForm'
 import { closeProject, openProject } from '../router'
 import ContactModal from './ContactModal'
 import Words from './Words'
@@ -47,26 +48,6 @@ function remember(slug: string, value: Saved | null) {
     else localStorage.removeItem(keyFor(slug))
   } catch {
     /* private window or blocked storage: the answer simply is not remembered */
-  }
-}
-
-/** one POST to whatever form service is configured; false when none is, or it fails */
-async function send(payload: Record<string, string>): Promise<boolean> {
-  if (!feedback.endpoint) return false
-  try {
-    const body = feedback.accessKey ? { access_key: feedback.accessKey, ...payload } : payload
-    const res = await fetch(feedback.endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(body),
-    })
-    if (!res.ok) return false
-    // A service can answer 200 and still say no — FormSubmit does exactly that
-    // before its one-time activation — so the body has the last word.
-    const data = (await res.json().catch(() => null)) as { success?: boolean | string } | null
-    return !(data && (data.success === false || data.success === 'false'))
-  } catch {
-    return false
   }
 }
 

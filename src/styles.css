@@ -643,10 +643,12 @@ a { color: inherit; text-decoration: none; }
   .reach__w { will-change: auto; }
 }
 
-/* ── the contact dialog ────────────────────────────────────────────────────
-   Two panels on one sheet. Left is the person — looking or not, the time
-   where I am, every way to reach me. Right is the message: what it is about,
-   who you are, the message itself, one button. */
+/* ── the contact dialog ─────────────────────────────────────
+   The night library fills the sheet; one glass card sits over the dark
+   trees on the left, where the landing page puts its words too — so the
+   reader, the shelves and the globe stay in view on the right. The scene is
+   night in either theme, so everything on the glass is set light on dark
+   rather than from the theme tokens. */
 .cdlg {
   position: fixed;
   inset: 0;
@@ -660,355 +662,249 @@ a { color: inherit; text-decoration: none; }
 }
 .cdlg__sheet {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
-  width: min(980px, 100%);
-  max-height: 90vh;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--bg-elev);
-  box-shadow: 0 60px 120px -60px rgba(0, 0, 0, 0.9);
-}
-.cdlg__x {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 4;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
-  color: var(--text);
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.cdlg__x:hover { background: var(--bg-elev); transform: rotate(90deg); }
-
-/* ── the person ── */
-.cdlg__side {
-  position: relative;
   display: flex;
-  flex-direction: column;
-  /* everything stacks from the top; what is left over falls to the foot,
-     where the wash is darkest, rather than opening a hole in the middle */
-  justify-content: flex-start;
-  gap: 26px;
-  min-height: 460px;
-  padding: clamp(22px, 3vw, 32px);
+  align-items: center;
+  width: min(960px, 100%);
+  min-height: min(600px, calc(100svh - 48px));
+  max-height: calc(100svh - 24px);
+  padding: clamp(16px, 3.4vw, 44px);
   overflow: hidden;
+  isolation: isolate;
+  border-radius: 26px;
+  background: #0a0f1c; /* the night sky, while the picture arrives */
   color: #fff;
+  box-shadow: 0 60px 120px -50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
-.cdlg__art {
+/* the picture drifts a few pixels against the pointer (--px/--py, -0.5..0.5) */
+.cdlg__scene {
   position: absolute;
   inset: 0;
+  z-index: -2;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.04);
-  filter: saturate(0.82) brightness(0.86);
+  object-position: 58% 50%;
+  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(1.04);
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.cdlg__wash {
+/* darker on the left where the card sits, so the glass reads as glass over
+   shadow rather than a pale box over a lit shelf */
+.cdlg__veil {
   position: absolute;
   inset: 0;
+  z-index: -1;
   background:
-    radial-gradient(80% 60% at 0% 0%, rgba(166, 232, 91, 0.16), transparent 60%),
-    linear-gradient(180deg, rgba(6, 10, 9, 0.66) 0%, rgba(6, 10, 9, 0.5) 45%, rgba(6, 10, 9, 0.94) 100%);
+    linear-gradient(90deg, rgba(4, 6, 12, 0.62) 0%, rgba(4, 6, 12, 0.28) 44%, rgba(4, 6, 12, 0) 70%),
+    linear-gradient(180deg, rgba(3, 7, 18, 0.35) 0%, rgba(3, 7, 18, 0) 26%, rgba(6, 5, 8, 0) 70%, rgba(6, 5, 8, 0.45) 100%);
 }
-.cdlg__top, .cdlg__facts { position: relative; display: grid; gap: 10px; }
-.cdlg__kick {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
+.cdlg__x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(10, 14, 22, 0.45);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cdlg__x:hover { background: rgba(10, 14, 22, 0.7); transform: rotate(90deg); }
+.cdlg__x:focus-visible { outline: 2px solid #a6e85b; outline-offset: 2px; }
+
+/* the one container: heading, the ways to reach me, the words */
+.cdlg__glass {
+  display: grid;
+  gap: 18px;
+  width: min(430px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: clamp(20px, 2.4vw, 28px);
+  /* restated: backdrop-filter makes its own box and escapes an ancestor clip */
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(12, 16, 24, 0.42);
+  -webkit-backdrop-filter: blur(22px) saturate(1.25);
+  backdrop-filter: blur(22px) saturate(1.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 60px -24px rgba(0, 0, 0, 0.65);
 }
 .cdlg__h {
   font-family: var(--display);
-  font-size: clamp(24px, 2.4vw, 32px);
-  font-weight: 600;
-  line-height: 1.12;
+  font-size: clamp(28px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.05;
   letter-spacing: -0.02em;
-  max-width: 14ch;
 }
-.cdlg__sub { font-size: 13.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.7); max-width: 32ch; }
 .cdlg__status {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  margin-top: 10px;
   font-size: 13.5px;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.78);
 }
 .cdlg__dot {
   flex: none;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent);
-  animation: cdlg-pulse 2.2s ease-out infinite;
+  background: #a6e85b;
+  box-shadow: 0 0 0 0 rgba(166, 232, 91, 0.55);
+  animation: cdlg-pulse 2.4s ease-out infinite;
 }
 @keyframes cdlg-pulse {
   0% { box-shadow: 0 0 0 0 rgba(166, 232, 91, 0.5); }
-  100% { box-shadow: 0 0 0 10px rgba(166, 232, 91, 0); }
+  70%, 100% { box-shadow: 0 0 0 8px rgba(166, 232, 91, 0); }
 }
-.cdlg__time {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.78);
-}
-.cdlg__sep { opacity: 0.5; }
-.cdlg__muted { opacity: 0.55; }
 
-.cdlg__ways { list-style: none; display: grid; gap: 6px; margin-top: 6px; }
-.way {
+/* email (and phone) full width; the profiles two to a row */
+/* a list resets its own indent: the browser's 40px would push the links
+   in from the heading */
+.cdlg__links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cdlg__link {
+  position: relative;
   display: flex;
   align-items: center;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.07);
-  transition: background 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.way:hover { background: rgba(255, 255, 255, 0.13); transform: translateX(2px); }
-.way__go {
-  flex: 1 1 auto;
   min-width: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.cdlg__link:hover { background: rgba(255, 255, 255, 0.11); border-color: rgba(255, 255, 255, 0.22); }
+.cdlg__link--wide { grid-column: 1 / -1; }
+.cdlg__go {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 11px 12px;
   color: #fff;
+  font-size: 14px;
 }
-.way__ic {
+.cdlg__go:focus-visible, .cdlg__copy:focus-visible { outline: 2px solid #a6e85b; outline-offset: -2px; border-radius: 12px; }
+.cdlg__v { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cdlg__mark { display: grid; place-items: center; width: 16px; }
+.cdlg__mark b { font-size: 12px; font-weight: 700; letter-spacing: -0.02em; }
+.cdlg__out { margin-left: auto; display: inline-flex; opacity: 0.55; transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.cdlg__link:hover .cdlg__out { opacity: 1; transform: translate(2px, -2px); }
+.cdlg__copy {
   flex: none;
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-}
-.way__v { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.way__copy {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  margin-right: 6px;
+  width: 40px;
+  align-self: stretch;
   padding: 0;
   border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  background: none;
+  color: rgba(255, 255, 255, 0.72);
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
 }
-.way__copy:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
-.way__copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.cdlg__copy:hover { color: #fff; }
 
-/* ── the message ── */
-.cdlg__main { display: grid; align-content: start; padding: clamp(22px, 3vw, 34px); overflow: auto; }
-.cdlg__form { display: grid; gap: 20px; }
-/* each part of the message is a numbered step, so the form reads in order
-   instead of as a stack of boxes. (Named .cstep: a .step already exists in
-   this sheet, for the timeline, and it draws a rule down its left side.) */
-.cstep { display: grid; gap: 9px; }
-.cstep__k {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
+/* share your words */
+.cdlg__form { display: grid; gap: 10px; }
+.cdlg__label {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.7);
 }
-.cstep__k b { font-weight: 500; color: var(--accent-ink); }
-
-/* what it is about: three options, one sliding pill */
-.intent {
-  display: inline-flex;
-  gap: 2px;
-  padding: 4px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--text) 6%, transparent);
-  justify-self: start;
-}
-.intent__opt {
-  position: relative;
-  padding: 8px 15px;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  color: var(--text-mid);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.25s ease;
-}
-.intent__txt { position: relative; z-index: 1; }
-.intent__opt--on { color: #10221c; }
-.intent__pill { position: absolute; inset: 0; border-radius: 999px; background: var(--accent); }
-
-/* fields whose label lives inside and lifts out of the way */
-.cdlg__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.ff { position: relative; display: block; }
-.ff input,
-.ff textarea {
+.cdlg__area {
   width: 100%;
-  padding: 22px 14px 10px;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--text) 6%, transparent);
-  color: var(--text);
+  min-height: 104px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(4, 7, 12, 0.35);
+  color: #fff;
   font: inherit;
   font-size: 14.5px;
-  line-height: 1.4;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease;
 }
-.ff:hover input, .ff:hover textarea { background: color-mix(in srgb, var(--text) 8%, transparent); }
-/* the message box carries its title in the step above it, so the text starts
-   at the top like any note */
-.ff textarea { min-height: 140px; padding: 14px; resize: vertical; line-height: 1.55; }
-.ff__label {
-  position: absolute;
-  top: 17px;
-  left: 14px;
-  font-size: 14px;
-  color: var(--muted);
-  pointer-events: none;
-  transform-origin: left top;
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.22s ease;
-}
-.ff:focus-within .ff__label,
-.ff--filled .ff__label,
-.ff--area .ff__label { transform: translateY(-9px) scale(0.78); color: var(--text-mid); }
-.ff:focus-within .ff__label { color: var(--accent-ink); }
-.ff:focus-within input,
-.ff:focus-within textarea {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
-}
-/* the prompt for the message, in the intent's own words, until you type */
-.ff__ghost {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted);
-  pointer-events: none;
-}
-.ff__hint {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: #e06c5a;
-}
-.ff--off input { border-color: color-mix(in srgb, #e06c5a 55%, var(--line)); }
-
-.cdlg__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 2px; }
+.cdlg__area::placeholder { color: rgba(255, 255, 255, 0.55); }
+/* one stroke on focus, no glow around it */
+.cdlg__area:focus { outline: none; border-color: #a6e85b; }
+.cdlg__honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.cdlg__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cdlg__fine { font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
 .cdlg__send {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 12px 20px;
+  gap: 8px;
+  padding: 10px 20px;
   border: 0;
   border-radius: 999px;
-  background: var(--accent);
-  color: #10221c;
-  font-family: inherit;
-  font-size: 14.5px;
+  background: #a6e85b;
+  color: #0d1a0a;
+  font: inherit;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, background 0.25s ease, color 0.25s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, opacity 0.2s ease;
 }
-.cdlg__send svg { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
-.cdlg__send:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -18px var(--accent); }
-.cdlg__send:hover svg { transform: translateX(4px); }
-/* not ready: the same shape as an outline in the accent — "nearly", not
-   "off" — and a press focuses whatever is still missing */
-.cdlg__send--wait {
-  background: transparent;
-  color: var(--accent-ink);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.cdlg__send--wait:hover { transform: none; box-shadow: inset 0 0 0 1px var(--accent); }
-.cdlg__send--wait:hover svg { transform: none; }
-.cdlg__note { flex: 1 1 200px; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.cdlg__send svg { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.cdlg__send:hover:not(:disabled) { transform: translateY(-1px); background: #b6f070; }
+.cdlg__send:hover:not(:disabled) svg { transform: translateX(3px); }
+.cdlg__send:disabled { opacity: 0.4; cursor: not-allowed; }
+.cdlg__send:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.cdlg__err { font-size: 13px; color: #f0a591; }
+.cdlg__err a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
-/* after pressing send */
-.cdlg__done { display: grid; gap: 12px; justify-items: start; }
+/* after sending */
+.cdlg__done { display: grid; grid-template-columns: auto 1fr; gap: 12px 14px; align-items: center; }
 .cdlg__tick {
   display: grid;
   place-items: center;
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: var(--accent);
-  color: #10221c;
+  background: #a6e85b;
+  color: #0d1a0a;
 }
 .cdlg__tick svg { width: 20px; height: 20px; }
-.cdlg__done h4 { font-family: var(--display); font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
-.cdlg__done p { font-size: 14px; line-height: 1.6; color: var(--text-mid); max-width: 50ch; }
-.cdlg__pre {
-  width: 100%;
-  max-height: 190px;
-  overflow: auto;
-  padding: 12px 14px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--text) 4%, transparent);
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1.55;
-  color: var(--text-mid);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.cdlg__done-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.cdlg__ghostbtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 18px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
+.cdlg__done-h { font-size: 16px; font-weight: 600; }
+.cdlg__done-p { font-size: 13.5px; color: rgba(255, 255, 255, 0.7); }
+.cdlg__again {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 0;
+  border: 0;
   background: none;
-  color: var(--text-mid);
-  font-family: inherit;
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.78);
+  font: inherit;
+  font-size: 13.5px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
   cursor: pointer;
-  transition: border-color 0.25s ease, color 0.25s ease;
 }
-.cdlg__ghostbtn:hover { border-color: var(--accent); color: var(--text); }
+.cdlg__again:hover { color: #fff; text-decoration-color: currentColor; }
 
 @media (prefers-reduced-motion: reduce) {
   .cdlg__dot { animation: none; }
   .cdlg__x:hover { transform: none; }
+  .cdlg__scene { transform: scale(1.04); transition: none; }
 }
-@media (max-width: 860px) {
-  .cdlg__sheet { grid-template-columns: minmax(0, 1fr); max-height: 92vh; overflow: auto; }
-  .cdlg__side { min-height: 0; gap: 18px; }
-  .cdlg__main { overflow: visible; }
-  .cdlg__row { grid-template-columns: minmax(0, 1fr); }
+/* a phone: the card takes the width, low on the picture, the reader above it */
+@media (max-width: 640px) {
+  .cdlg__sheet { align-items: flex-end; min-height: min(560px, calc(100svh - 24px)); padding: 12px; }
+  .cdlg__scene { object-position: 50% 30%; }
+  .cdlg__veil { background: linear-gradient(180deg, rgba(3, 7, 18, 0.2) 0%, rgba(4, 6, 12, 0) 30%, rgba(4, 6, 12, 0.55) 100%); }
+  .cdlg__glass { width: 100%; }
 }
 
 
