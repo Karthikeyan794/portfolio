@@ -2658,52 +2658,35 @@ a { color: inherit; text-decoration: none; }
    take, how many more there are, and contact. Laid out by named areas so
    the three breakpoints only ever rename, never recompute. */
 .cend {
-  --tile-r: 22px;
+  --tile-r: 18px;
   --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   --glass-a: #eef3ec;
   --glass-b: #e2eadf;
   display: grid;
-  gap: clamp(22px, 3vw, 34px);
-  margin-top: clamp(72px, 11vh, 128px);
+  gap: clamp(16px, 2vw, 24px);
+  margin-top: clamp(56px, 8vh, 96px);
 }
 :root[data-theme='dark'] .cend { --glass-a: #213734; --glass-b: #162523; }
 
 .cend__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
 .cend__h {
   font-family: var(--display);
-  font-size: clamp(30px, 4vw, 50px);
+  font-size: 28px;
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -0.025em;
 }
-.cend__p { margin-top: 12px; max-width: 58ch; color: var(--muted); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.5; }
-.cend__talk {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  background: transparent;
-  color: var(--text);
-  font: inherit;
-  font-size: 14.5px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.cend__talk svg { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-.cend__talk:hover { background: var(--primary); border-color: var(--primary); color: var(--on-primary); transform: translateY(-1px); }
-.cend__talk:hover svg { transform: translate(2px, -2px); }
-:root[data-theme='dark'] .cend__talk:hover { background: var(--accent); border-color: var(--accent); color: #0d1a0a; }
+.cend__p { margin-top: 8px; max-width: 58ch; color: var(--muted); font-size: 15px; line-height: 1.5; }
 
 .cend__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr) minmax(0, 1.28fr);
-  grid-template-rows: minmax(300px, auto) minmax(240px, auto);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.28fr) minmax(0, 0.92fr);
+  grid-template-rows: minmax(210px, auto) minmax(190px, auto);
+  /* read left to right, top to bottom: next, keep going, more, your take,
+     contact — the order the tiles are written in */
   grid-template-areas:
-    'next take other'
-    'next more reach';
+    'next other more'
+    'next take  reach';
   gap: 10px;
 }
 
@@ -2746,7 +2729,7 @@ button.ctile { cursor: pointer; }
 .cend__sun { flex: none; opacity: 0.85; }
 .cend__eye--center {
   position: absolute;
-  top: 22px;
+  top: 16px;
   left: 50%;
   z-index: 2;
   transform: translateX(-50%);
@@ -2757,8 +2740,8 @@ button.ctile { cursor: pointer; }
 
 /* glass tiles: your take and contact. A light follows the pointer. */
 .ctile--glass {
-  gap: 18px;
-  padding: clamp(20px, 2.2vw, 28px);
+  gap: 12px;
+  padding: clamp(16px, 1.7vw, 22px);
   background:
     radial-gradient(420px circle at var(--sx, -30%) var(--sy, -30%), color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
     linear-gradient(160deg, var(--glass-a), var(--glass-b));
@@ -2798,13 +2781,13 @@ button.ctile { cursor: pointer; }
 .ctile--shot:focus-visible .ctile__img { transform: scale(1.05); filter: saturate(1.08) brightness(1.06); }
 .ctile__open {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 12px;
+  right: 12px;
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: #fff;
   color: #0e1614;
@@ -2814,17 +2797,17 @@ button.ctile { cursor: pointer; }
 }
 .ctile--shot:hover .ctile__open,
 .ctile--shot:focus-visible .ctile__open { opacity: 1; transform: none; }
-.ctile__foot { display: grid; gap: 4px; padding: clamp(18px, 2vw, 26px); }
-.ctile__year { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.66); }
-.ctile__title { font-size: clamp(22px, 2.2vw, 30px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
-.ctile__tag { font-size: 14px; color: rgba(255, 255, 255, 0.78); }
-.ctile--next .ctile__title { font-size: clamp(26px, 2.8vw, 38px); }
+.ctile__foot { display: grid; gap: 3px; padding: clamp(14px, 1.5vw, 20px); }
+.ctile__year { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.66); }
+.ctile__title { font-size: clamp(18px, 1.6vw, 22px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+.ctile__tag { font-size: 13px; color: rgba(255, 255, 255, 0.78); }
+.ctile--next .ctile__title { font-size: clamp(22px, 2vw, 28px); }
 
 /* the count: dark and lit whatever the theme, like a picture */
 .ctile--more {
   /* its row is sized by the take tile beside it in two columns; without a
      floor the count gets whatever height is left over */
-  min-height: 230px;
+  min-height: 190px;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -2868,19 +2851,20 @@ button.ctile { cursor: pointer; }
   filter: blur(0.5px);
 }
 .ctile__num {
-  font-size: clamp(68px, 7.4vw, 112px);
+  font-size: clamp(50px, 4.6vw, 72px);
   font-weight: 300;
   line-height: 0.9;
   letter-spacing: -0.05em;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ctile--more:hover .ctile__num { transform: scale(1.04); }
-.ctile__numsub { display: grid; justify-items: center; gap: 6px; font-size: 14px; color: rgba(255, 255, 255, 0.82); }
+.ctile__plus { margin-left: 0.02em; font-weight: 200; opacity: 0.85; }
+.ctile__numsub { display: grid; justify-items: center; gap: 4px; font-size: 13px; color: rgba(255, 255, 255, 0.82); }
 .ctile__back {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.6);
   transition: color 0.2s ease, gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -2890,12 +2874,12 @@ button.ctile { cursor: pointer; }
 .ctile--reach { justify-content: space-between; cursor: pointer; }
 .ctile__arrow {
   position: absolute;
-  top: clamp(16px, 2vw, 22px);
-  right: clamp(16px, 2vw, 22px);
+  top: clamp(10px, 1.4vw, 16px);
+  right: clamp(10px, 1.4vw, 16px);
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -2913,7 +2897,7 @@ button.ctile { cursor: pointer; }
   background: none;
   color: var(--text);
   font: inherit;
-  font-size: 15px;
+  font-size: 14px;
   text-align: left;
   cursor: copy;
   text-decoration: underline;
@@ -2927,9 +2911,9 @@ a.ctile__line { cursor: pointer; }
 :root[data-theme='dark'] .ctile__copied { color: var(--accent); }
 
 /* your take */
-.cend__form { display: grid; gap: 14px; }
-.cend__q { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
-.cend__qsub { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
+.cend__form { display: grid; gap: 10px; }
+.cend__q { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+.cend__qsub { margin-top: 3px; font-size: 12.5px; color: var(--muted); }
 
 .cend__pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .react {
@@ -2938,15 +2922,15 @@ a.ctile__line { cursor: pointer; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 10px 14px;
-  border-radius: 14px;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 12px;
   border: 1px solid var(--line-strong);
   background: color-mix(in srgb, var(--bg) 35%, transparent);
   color: var(--text);
   font: inherit;
-  font-size: 14.5px;
+  font-size: 13.5px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -2974,15 +2958,15 @@ a.ctile__line { cursor: pointer; }
 
 .cend__field textarea {
   width: 100%;
-  min-height: 92px;
-  padding: 12px 14px;
-  border-radius: 12px;
+  min-height: 60px;
+  padding: 10px 12px;
+  border-radius: 10px;
   border: 1px solid var(--line-strong);
   background: color-mix(in srgb, var(--bg) 45%, transparent);
   color: var(--text);
   font: inherit;
-  font-size: 14.5px;
-  line-height: 1.5;
+  font-size: 13.5px;
+  line-height: 1.45;
   resize: vertical;
   transition: border-color 0.2s ease;
 }
@@ -2993,15 +2977,15 @@ a.ctile__line { cursor: pointer; }
 /* the bot trap: present in the form, absent from the page */
 .cend__honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .cend__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.cend__fine { font-size: 12.5px; color: var(--muted); max-width: 30ch; }
-.cend__send { padding: 10px 20px; }
+.cend__fine { font-size: 11.5px; color: var(--muted); max-width: 26ch; }
+.cend__send { padding: 8px 18px; font-size: 13.5px; }
 :root[data-theme='dark'] .cend__send:not(:disabled) { background: var(--accent); color: #0d1a0a; }
 .cend__send:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 .cend__err { font-size: 13px; color: var(--dia-bad); }
 .cend__err a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
 .cend__thanks { display: grid; grid-template-columns: auto 1fr; gap: 14px 16px; align-items: center; margin-top: auto; margin-bottom: auto; }
-.cend__badge { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid currentColor; }
+.cend__badge { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid currentColor; }
 .cend__badge .cend__sun { width: 18px; height: 18px; }
 .cend__badge--like, .cend__badge--none { color: var(--accent-ink); background: var(--accent-soft); }
 :root[data-theme='dark'] .cend__badge--like,
@@ -3029,26 +3013,26 @@ a.ctile__line { cursor: pointer; }
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
-      'next take'
+      'next other'
       'next more'
-      'other reach';
+      'take reach';
   }
-  .ctile--other { min-height: 300px; }
+  .ctile--other { min-height: 220px; }
 }
 /* one column on a phone, the picture first so the section opens on something */
 @media (max-width: 680px) {
-  .cend__grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'next' 'take' 'other' 'more' 'reach'; }
-  .ctile--next { min-height: 440px; }
-  .ctile--other { min-height: 300px; }
-  .ctile--more { min-height: 230px; }
-  .ctile--reach { min-height: 200px; }
+  .cend__grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'next' 'other' 'more' 'take' 'reach'; }
+  .ctile--next { min-height: 340px; }
+  .ctile--other { min-height: 230px; }
+  .ctile--more { min-height: 180px; }
+  .ctile--reach { min-height: 150px; }
 }
 @media (max-width: 380px) {
   .cend__pick { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
   .ctile__beam { animation: none; }
-  .ctile__img, .react, .ctile__num, .ctile__open, .ctile__arrow, .cend__talk, .cend__talk svg { transition: none; }
+  .ctile__img, .react, .ctile__num, .ctile__open, .ctile__arrow { transition: none; }
 }
 
 /* visible to a screen reader, not on screen */

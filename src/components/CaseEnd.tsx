@@ -9,12 +9,12 @@ import Words from './Words'
  * The end of a case study, as a bento — somewhere to go next, and a way to
  * say how this one landed.
  *
- *   ┌──────────┬──────────┬───────────────┐
- *   │          │ your     │  keep going   │
- *   │ up next  │ take     │  (a project)  │
- *   │ (a       ├──────────┼───────────────┤
- *   │ project) │ 12 more  │  contact      │
- *   └──────────┴──────────┴───────────────┘
+ *   ┌──────────┬───────────────┬──────────┐
+ *   │          │  keep going   │  12+     │
+ *   │ up next  │  (a project)  │  more    │
+ *   │ (a       ├───────────────┼──────────┤
+ *   │ project) │  your take    │ contact  │
+ *   └──────────┴───────────────┴──────────┘
  *
  * The two project tiles are the next two on the home grid after this one,
  * wrapping round, so every case study hands on to a different pair and
@@ -191,7 +191,10 @@ function MoreTile({ count, i }: { count: number; i: number }) {
     <motion.button type="button" className="ctile ctile--more" onClick={closeProject} aria-label={`${count} more projects — back to all work`} {...rise(i, reduce)}>
       <span className="ctile__beam" aria-hidden="true" />
       <span className="ctile__bokeh" aria-hidden="true" />
-      <span className="ctile__num">{count}</span>
+      <span className="ctile__num">
+        {count}
+        <span className="ctile__plus">+</span>
+      </span>
       <span className="ctile__numsub">
         more projects
         <span className="ctile__back">
@@ -230,7 +233,7 @@ function ReachTile({ onOpen, i }: { onOpen: () => void; i: number }) {
         Contact
       </span>
       <button type="button" className="ctile__arrow" onClick={(e) => { e.stopPropagation(); onOpen() }} aria-label="Write to me">
-        <ArrowOut size={30} />
+        <ArrowOut size={24} />
       </button>
       <div className="ctile__lines">
         <button type="button" className="ctile__line" onClick={copy} aria-label={`Copy ${profile.email}`}>
@@ -432,17 +435,16 @@ export default function CaseEnd({ slug, title }: { slug: string; title: string }
               <Words text="Happy to walk through the decisions, the dead ends and what I'd change — or pick another project below." />
             </p>
           </div>
-          <button type="button" className="cend__talk" onClick={() => setContact(true)}>
-            Get in touch
-            <ArrowOut size={14} />
-          </button>
         </motion.header>
 
         <div className="cend__grid">
+          {/* source order is reading order — the next project, the one after,
+              how many more, your take, contact — so tab and screen reader
+              follow the same path the eye does */}
           {next && <ProjectTile slug={next.slug} label="Up next" area="next" i={0} />}
-          <TakeTile slug={slug} title={title} i={1} />
-          {other && <ProjectTile slug={other.slug} label="Keep going" area="other" i={2} />}
-          <MoreTile count={more} i={3} />
+          {other && <ProjectTile slug={other.slug} label="Keep going" area="other" i={1} />}
+          <MoreTile count={more} i={2} />
+          <TakeTile slug={slug} title={title} i={3} />
           <ReachTile onOpen={() => setContact(true)} i={4} />
         </div>
       </section>

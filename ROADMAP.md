@@ -570,16 +570,20 @@ seven accounts, Home shows the welcome and the counts — no dialogs, no errors.
 
 ## 2i. The end of each case study is a bento (25 Sep 2026)
 
-`src/components/CaseEnd.tsx`, on every project page. Modelled on the bento reference you sent:
-heading on the left, **Get in touch** as a pill on the right, five tiles underneath.
+`src/components/CaseEnd.tsx`, on every project page. Modelled on the bento reference you sent: a
+28px heading, then five tiles, read in this order — left to right, top to bottom, and the same
+order in the source, so tab and screen reader follow the eye.
 
 | Tile | What it is |
 |---|---|
 | **Up next** (tall picture) | the next project on the home grid after this one |
-| **Your take** | Liked it / Not for me, and one field: *Share your thoughts about this project* |
 | **Keep going** (picture) | the project after that |
-| **12** | how many more there are — takes you back to all work |
+| **12+** | how many more there are — takes you back to all work |
+| **Your take** | Liked it / Not for me, and one field: *Share your thoughts about this project* |
 | **Contact** | your email (click copies it), arrow opens the contact dialog |
+
+There is no separate Get in touch button — the Contact tile is the way in. The grid is about 540px
+tall at desktop width.
 
 The two projects wrap round the home grid, so each case study hands on to a different pair and
 reading them in order visits them all. The project page is keyed by slug now, so moving to the next
