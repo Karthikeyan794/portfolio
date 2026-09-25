@@ -244,6 +244,8 @@ export type Slice = {
   pair?: { problem: string; solution: string }
   /** the numbers a slice landed on */
   stats?: { value: string; label: string }[]
+  /** the product itself, running in a window under the words */
+  embed?: { src: string; pages?: { label: string; hash: string }[]; art?: string }
 }
 
 /** the plain-English layer: what it is, what it does, how a day on it goes */
@@ -333,7 +335,7 @@ export const projects: Project[] = [
     kind: 'work',
     // TODO: paste a hosted demo URL, or leave blank — the demo runs locally
     // from ~/Desktop/support-desk-demo via ./start-demo.command
-    demo: { label: 'Try the demo', href: '' },
+    demo: { label: 'Try the demo', href: '/demo/support-desk/#/tickets' },
     detail: {
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
@@ -375,10 +377,11 @@ export const projects: Project[] = [
         {
           span: 'full',
           chapter: 'How it works',
-          heading: 'The queue',
-          body: 'The ticket list the team works in. Press reload and the desk reads the mailbox again — anything that arrived since comes in at the top as a new ticket: numbered, unassigned, already on the clock.',
+          heading: 'New tickets',
+          body: 'When a customer sends an email to your shared support mailbox, Support Desk fetches it and creates a new ticket. A *1 New Ticket* tag appears when a new request arrives — reload the queue to fetch the latest emails and see the new ticket at the top.',
           clip: '/work/support-desk/clips/queue.mp4',
           poster: '/work/support-desk/2-queue.jpg',
+          caption: 'A new request arrives, the tag appears, and a reload brings it to the top of the queue.',
         },
         {
           span: 'full',
@@ -476,9 +479,16 @@ export const projects: Project[] = [
           span: 'full',
           anchor: 'demo',
           heading: 'Try it yourself',
-          body: 'There is a runnable demo of the desk on generated data — the same layout, volumes and behaviour as production, with fictional companies, people and email bodies. No customer information appears in it, and it needs no sign-in and no internet.',
-          // TODO: paste the hosted demo URL into `demo.href` above and it appears in
-          // the page header too. Until then this reads as a description only.
+          body: 'This is the desk itself, not a video of it — the same build that runs for the team, on generated data: fictional companies, people and email bodies, with the AI readings and the Teams cards written in for every ticket. Nothing here is a real customer. Click into it and use it the way the team does: open a ticket, read the thread, hand it to somebody, reply from the template, ask for the AI summary, save a view, or go and look at a customer. It needs no sign-in, and whatever you do stays in your own browser.',
+          embed: {
+            src: '/demo/support-desk/',
+            pages: [
+              { label: 'Home', hash: '#/homepage' },
+              { label: 'Tickets', hash: '#/tickets' },
+              { label: 'Customers', hash: '#/contacts' },
+            ],
+            art: '/bento/support-desk.jpg',
+          },
         },
       ],
     },

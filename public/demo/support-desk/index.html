@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport-fit=cover is what makes env(safe-area-inset-*) return anything at all.
+       Without it iOS reports every inset as 0, so the eight safe-area rules already in the
+       stylesheet were dead code: the bottom tab bar sat under the home indicator and the
+       composer's Send row sat behind it. `user-scalable` is left alone deliberately —
+       pinch-zoom is how somebody reads a screenshot a customer pasted into a ticket. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- ── installable ───────────────────────────────────────────────────────────────
+       Added on the desk's own request: the people using this are on a phone between
+       buildings, and a browser tab with a URL bar wastes 100px of a 390px screen. -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <!-- iOS ignores the manifest for all of this and wants its own tags. -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <!-- black-translucent, so the web view runs the FULL height of the screen and the
+       header photograph goes up behind the clock.
+       `default` was set first and it is what put a black bar across the top of the app on
+       Karthikeyan's phone: with `default` iOS RESERVES the status bar strip, starts the
+       web view underneath it, and fills the reserved strip with nothing. There is no way
+       to colour that strip — the only way to remove it is to stop reserving it.
+       The clock then lands on top of the app, so .top draws a scrim behind it — see
+       `.top::before` — which is what keeps it readable over a light header. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Support Desk" />
+  <!-- ?v=2 on every icon: the artwork changed on 27 Aug but Safari and the PWA layer
+       cache icons by URL and hold them for a very long time — Karthikeyan's phone was
+       still showing the old mark a week later. A new URL is the only reliable refetch.
+       (An icon already ON a home screen is snapshotted at add time; that one needs the
+       app removed and re-added.) -->
+  <link rel="apple-touch-icon" href="./icon-180.png?v=2" />
+  <!-- Two, so the browser chrome matches the theme instead of framing a dark app in white. -->
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f151d" media="(prefers-color-scheme: dark)" />
+  <title>Support Desk</title>
+  <!-- the app's own mark: the Dispatcher diamond, same as the header logo -->
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=2" />
+  <link rel="mask-icon" href="./favicon.svg?v=2" color="#17202b" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <!-- Theme before first paint. It has to be here, inline and blocking, rather than in the
+       app: React mounts a few hundred milliseconds in, and anything that runs later means a
+       full white page flashes before the dark one arrives — worst on the slow cold boot the
+       splash exists to cover. Same key the store reads, and the same fallback. -->
+  <script>
+    (function () {
+      try {
+        // Light unless dark was chosen — the same rule the store applies, and it has to be
+        // the same or the page paints one theme and then switches to the other.
+        var t = localStorage.getItem('sd.theme') === 'dark' ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', t)
+      } catch (e) { /* private mode: light is the safe default */ }
+    })()
+  </script>
+  <script type="module" crossorigin src="./assets/index-bVt4yguq.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CveMqm8A.css">
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>

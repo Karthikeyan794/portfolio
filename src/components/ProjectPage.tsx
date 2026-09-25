@@ -6,6 +6,7 @@ import GridBg from './GridBg'
 import Brief from './Brief'
 import AutoClip from './AutoClip'
 import Credits from './Credits'
+import DemoFrame from './DemoFrame'
 import { Lightbox, ZoomButton, type Zoomed } from './Zoom'
 import Words from './Words'
 import Primer from './Primer'
@@ -147,6 +148,9 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
           </motion.p>
         ))}
       </motion.div>
+
+      {/* the product itself, under the words and across the whole row */}
+      {slice.embed && <DemoFrame src={slice.embed.src} pages={slice.embed.pages} art={slice.embed.art} title={slice.heading} />}
 
       {/* right: the screens or the video */}
       {hasMedia && (

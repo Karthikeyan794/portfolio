@@ -1982,6 +1982,171 @@ a { color: inherit; text-decoration: none; }
 }
 .zoom__x:hover { background: rgba(255, 255, 255, 0.18); }
 
+/* ── the product, running in a window ─────────────────────────────────────
+   A drawn window on a wallpaper, with the app in an iframe. The iframe takes
+   no pointer events until you click into it, so the page still scrolls past;
+   leave the window and it goes quiet again. */
+.dfr {
+  grid-column: 1 / -1;
+  position: relative;
+  margin-top: clamp(22px, 3vh, 34px);
+  padding: clamp(18px, 3.2vw, 46px);
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0f1a24;
+  isolation: isolate;
+}
+.dfr__desk {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  filter: blur(14px) saturate(1.15);
+  z-index: 0;
+}
+.dfr__tint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(8, 14, 20, 0.35), rgba(8, 14, 20, 0.6));
+}
+.dfr__win {
+  position: relative;
+  z-index: 2;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1b1e24;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.dfr__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 0;
+}
+.dfr__dots { display: inline-flex; gap: 6px; padding: 4px 0 10px; }
+.dfr__dots i { width: 11px; height: 11px; border-radius: 50%; background: #3a3d45; }
+.dfr__dots i:nth-child(1) { background: #ff5f57; }
+.dfr__dots i:nth-child(2) { background: #febc2e; }
+.dfr__dots i:nth-child(3) { background: #28c840; }
+.dfr__tabs { display: flex; gap: 2px; flex: 1 1 auto; min-width: 0; overflow: hidden; }
+.dfr__tab {
+  padding: 9px 16px 11px;
+  border: 0;
+  border-radius: 9px 9px 0 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.dfr__tab:hover { color: #fff; }
+.dfr__tab--on { background: #2a2e36; color: #fff; }
+.dfr__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(166, 232, 91, 0.14);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.dfr__pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.dfr__url {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 10px;
+  background: #2a2e36;
+}
+.dfr__addr {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dfr__addr b { font-weight: 400; color: #fff; }
+.dfr__full {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 12.5px;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+.dfr__full:hover { background: rgba(255, 255, 255, 0.16); }
+.dfr__view {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: #fff;
+}
+.dfr__view iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+/* inert until asked for — the page scrolls past; live, the app has the pointer */
+.dfr__win:not(.dfr__win--live) iframe { pointer-events: none; }
+.dfr__wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 14px;
+  background: #f5f6f7;
+  pointer-events: none;
+}
+.dfr__go {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(14, 16, 20, 0.86);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease;
+}
+.dfr__go:hover { transform: translateX(-50%) translateY(-2px); background: rgba(14, 16, 20, 0.96); }
+@media (max-width: 860px) {
+  .dfr { padding: 10px; border-radius: 16px; }
+  .dfr__view { aspect-ratio: 4 / 5; }
+  .dfr__tabs { display: none; }
+  .dfr__full span { display: none; }
+}
+
 /* ── the copy answers the cursor ──────────────────────────────────────────
    Every word in the case copy is its own span. The one under the pointer
    lifts a hair, comes up to full contrast and pulls a lime rule under itself.
