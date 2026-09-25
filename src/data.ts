@@ -451,18 +451,18 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'Dashboard',
+          body: 'Get a clear overview of your support activity, including ticket status, ticket volume, incoming trends, common issues, top customers, and team performance. Track key metrics in one place to quickly understand what’s happening across your tickets.',
+          clip: `${HD}/home.mp4`,
+          clipFallback: '/work/support-desk/clips/home.mp4',
+          caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
+        },
+        {
+          span: 'full',
           heading: 'The customer view it produces',
           body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody keeps it current — a new address creates its person the first time they write, so the directory builds itself out of the mail that was already arriving.',
           clip: '/work/support-desk/clips/customers.mp4',
           caption: 'Accounts → people → their tickets, all of it derived from the sender’s address.',
-        },
-        {
-          span: 'full',
-          heading: 'A dashboard that reads zero',
-          body: 'Volume, intake trend, recurring problem types, who reports the most and who answers — all of that works, because it is computed from the ticket text and dates in the browser. Resolved-this-week, escalations and my-performance could only ever show zero. I shipped those widgets showing zero, with a line on the page saying nothing here is marked resolved, and took the finding to the team as a process problem rather than a UI one. Hiding them would have made the desk look finished and left the team blind.',
-          clip: `${HD}/home.mp4`,
-          clipFallback: '/work/support-desk/clips/home.mp4',
-          caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
         },
         {
           span: 'full',

@@ -27,8 +27,8 @@ release instead, so the untouched exports are what visitors get.
 | 8 | Merge & Mark as Spam | release `merge.mp4` | 170 MB | **original, live on the release** |
 | 9 | Track Response Time & SLA | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
 | 10 | Who gets in, and what they may do | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
-| 11 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
-| 12 | A dashboard that reads zero | release `home.mp4` | 268 MB | **original, live on the release** |
+| 11 | Dashboard | release `home.mp4` | 268 MB | **original, live on the release** |
+| 12 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 13 | Milo — the desk, from inside Teams | release `Milio.workflow.chat.bot.in.term.mp4` | 79 MB · 3636×2160 · 46s | **original, live on the release** — uploaded by hand under the name GitHub gave the file; the page's address matches it |
 
 **The Milo recording went up under its raw name** (`Milio.workflow.chat.bot.in.term.mp4`, dots
