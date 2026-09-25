@@ -368,8 +368,8 @@ export const projects: Project[] = [
           image: '/work/support-desk/why-problem.png',
         },
         solution: {
-          lead: 'Support Desk puts a desk around that mailbox. The same address, the same inbox — and no new licence for anybody.',
-          body: 'Every mail becomes a ticket with a number, an owner, a status and a clock. Hand it to somebody and they hear about it where they already work, and because the owner is on the row two people never answer the same mail. The reply is written on the customer’s own thread, from the desk, with the template already filled in and the conversation beside it. The clock runs from the moment it arrived, against the time you promised. Everything that company has raised sits beside the one in front of you, and volume, repeat problems and your most frequent requesters show up in one view.\n\nWhat that buys you, whether you are one person or twenty: nothing gets lost, because every request has an owner, a status and a place it lives. Nobody asks who is on this — the queue answers it. First replies come faster, measured against what you promised rather than guessed at. Nobody repeats themselves, because the customer’s whole history sits beside the request. Causes get fixed instead of symptoms, since repeat problems and frequent requesters surface in one view. And there is nothing new to buy: it runs on the mailbox and the accounts you already have.',
+          lead: 'Support Desk turns every email into a ticket with an *owner, status, and SLA clock*.',
+          body: 'Teams can manage and reply to tickets from one place, while customer history stays connected to every request. Track ticket volume, status, team performance, and recurring issues to keep support organized. *Nothing gets missed, and every request has an owner.*',
           image: '/work/support-desk/why-solution.png',
         },
       },
