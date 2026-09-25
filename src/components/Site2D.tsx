@@ -4,7 +4,6 @@ import About from './About'
 import Contact from './Contact'
 import GridBg from './GridBg'
 import Intro, { INTRO_NAV_DELAY } from './Intro'
-import Marquee from './Marquee'
 import Nav from './Nav'
 import Notice from './Notice'
 import Bento from './Bento'
@@ -13,7 +12,11 @@ type Props = { onEnterLab?: () => void }
 
 /* The intro loader is gone. It held the page back ~6s on a first visit, which
    is a long time to ask of someone who followed a link off a CV. `Preloader`
-   is still in the tree, unmounted, if it is ever wanted back. */
+   is still in the tree, unmounted, if it is ever wanted back.
+
+   So is `Marquee`, the strip of skills that ran between the picture and About.
+   It sat on the seam as a hard band; with it gone the picture dissolves
+   straight into About instead (see .intro__art in styles.css). */
 
 /** The scrolling page — phones, fallback, and anyone who prefers it. */
 export default function Site2D({ onEnterLab }: Props) {
@@ -37,7 +40,6 @@ export default function Site2D({ onEnterLab }: Props) {
           <Nav onEnterLab={onEnterLab} delay={INTRO_NAV_DELAY} />
           <main>
             <Intro />
-            <Marquee />
             <About />
             <Bento />
             <Contact />

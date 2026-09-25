@@ -1210,15 +1210,41 @@ a { color: inherit; text-decoration: none; }
 
 /* ── opening intro (image hero) ─────────────────────────── */
 .intro {
+  /* how tall the dissolve into About is. The words sit above it (see
+     .intro__grid): in the light theme the ground below is pale, and white
+     type over the fade would wash out */
+  --intro-blend: clamp(120px, 18vh, 190px);
   position: relative;
   min-height: 100svh;
   display: grid;
   align-items: end;
   overflow: hidden;
   color: #fff;
-  background: #0a0f1c; /* the night sky, while the picture loads */
   margin-top: -74px; /* the picture runs under the transparent nav */
   padding-top: 74px;
+}
+/* the picture, its shade, the fireflies and the frame — faded out together
+   toward the bottom, so the page's own background and graph paper come up
+   through it and the hero dissolves into About instead of stopping at an edge.
+   The curve eases rather than running straight: a linear fade from a night
+   picture to the pale light-theme ground passes through a flat muddy grey. */
+.intro__art {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - var(--intro-blend)),
+    rgba(0, 0, 0, 0.82) calc(100% - var(--intro-blend) * 0.62),
+    rgba(0, 0, 0, 0.4) calc(100% - var(--intro-blend) * 0.28),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - var(--intro-blend)),
+    rgba(0, 0, 0, 0.82) calc(100% - var(--intro-blend) * 0.62),
+    rgba(0, 0, 0, 0.4) calc(100% - var(--intro-blend) * 0.28),
+    transparent 100%
+  );
 }
 /* the whole picture leans a few pixels toward the pointer (--px/--py are
    -0.5..0.5, set from Intro); scaled a touch so its edges never show */
@@ -1226,6 +1252,7 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   overflow: hidden;
+  background: #0a0f1c; /* the night sky, while the picture loads */
   transform: translate3d(calc(var(--px, 0) * -18px), calc(var(--py, 0) * -12px), 0) scale(1.035);
   transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -1297,7 +1324,9 @@ a { color: inherit; text-decoration: none; }
      they stay on the dark side of the picture and clear of the reader */
   max-width: none;
   padding-inline: calc(3.5% + 34px);
-  padding-bottom: clamp(84px, 12vh, 124px);
+  /* tied to the dissolve, so the lowest line of type always sits where the
+     picture is still ~90% there — never on the fade itself */
+  padding-bottom: calc(var(--intro-blend) * 0.7 + 16px);
 }
 @media (max-width: 860px) { .intro__grid { gap: 26px; padding-inline: 20px; } }
 .intro__main { position: relative; z-index: 2; display: grid; gap: 22px; max-width: 540px; }

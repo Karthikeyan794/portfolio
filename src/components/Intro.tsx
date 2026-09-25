@@ -123,6 +123,12 @@ export default function Intro() {
 
   return (
     <section className="intro" id="top" aria-label="Intro" onPointerMove={lean}>
+      {/* Everything that is picture, and nothing that is words: the photo, its
+          shade, the fireflies and the hairline frame fade out together over the
+          bottom of the hero, so it dissolves into About rather than stopping at
+          an edge. One mask on one still wrapper — the picture inside leans and
+          breathes, and a mask on that would move with it. */}
+      <div className="intro__art">
       <div className="intro__media" ref={media} data-ready={ready === true}>
         {useImage && ready !== false && (
           <>
@@ -197,6 +203,7 @@ export default function Intro() {
       <Fireflies />
       <div className="intro__frame" aria-hidden="true">
         <i /><i /><i /><i />
+      </div>
       </div>
 
       <div className="wrap intro__grid">
