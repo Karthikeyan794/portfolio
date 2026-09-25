@@ -385,6 +385,14 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'The Ticket Thread',
+          body: 'Open a ticket to see the complete conversation in one place. You can view all replies, recipients, CCs, and attachments along with the message they belong to. Reply, Reply All, or Forward directly from the ticket, so the conversation stays connected and organized.',
+          clip: `${HD}/thread.mp4`,
+          clipFallback: '/work/support-desk/clips/thread.mp4',
+          caption: 'Every message with its from, its to, and whatever came attached.',
+        },
+        {
+          span: 'full',
           heading: 'All thirteen filters, and the view you save them as',
           body: 'The full set: thirteen filters over the queue — status, owner, customer, type, the clock, the rest — and they stack, so each one you add narrows what is left rather than replacing it. Which is powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
           clip: `${HD}/views.mp4`,
@@ -433,14 +441,6 @@ export const projects: Project[] = [
           body: 'Open a ticket and the assistant has already read the thread — and it does not paraphrase it, it takes a position. *I can reproduce this on their account, so it is a fault rather than a misunderstanding of the setting*, then where it thinks the cause is, then whether it reproduces anywhere else. The suggested reply underneath is that same finding written as an email, and it is labelled *AI generated — review before sending* rather than dressed up as a colleague. Press Reply and it lands in the composer as a draft that has not been sent, so a reply always starts written and never leaves on its own.\n\nWhat makes it usable is that none of it has to be taken on trust. *How the assistant got here* opens the diagnosis it ran, the email it drafted, and — the part people actually want — what it could not check. You can ask it a follow-up in the same place, and that conversation deliberately does not touch the draft: regenerating is a separate, deliberate act, because a reply that quietly rewrites itself while you are reading it is worse than one that is simply wrong. The feedback under it reads correct, partially, wrong. Partially is the honest answer most of the time, so it is there to give.',
           clip: `${HD}/ai-suggestions.mp4`,
           caption: 'Reply, with the draft already written — then the reading behind it, the diagnosis it ran, and what it could not check.',
-        },
-        {
-          span: 'full',
-          heading: 'The thread, its recipients, and what came attached',
-          body: 'Open a ticket and the real conversation is there, not a copy of it: SharePoint stores a deeplink rather than a mail, so the app pulls the message id out of it and asks Graph for the thread itself. Every message carries who it came from and who it went to — the whole to and cc line, not just the sender — so you can see at a glance whether the customer was actually on the last reply or whether it went round the team. Attachments come with it, listed on the message they arrived on, and inline images render where they were written instead of being dumped at the foot of the mail. The whole thread sits in a sandboxed frame, so nobody’s email HTML can reach the page around it. Reply, reply-all and forward are right there, with recipient chips you can read before you send — and each one opens a real reply draft rather than a new mail, so the answer carries the conversation id and the threading headers with it. Send it as a fresh message instead and the intake flow underneath files it as a second ticket for the same problem.',
-          clip: `${HD}/thread.mp4`,
-          clipFallback: '/work/support-desk/clips/thread.mp4',
-          caption: 'Every message with its from, its to, and whatever came attached.',
         },
         {
           span: 'full',
