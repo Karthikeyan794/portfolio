@@ -684,6 +684,8 @@ a { color: inherit; text-decoration: none; }
   height: 100%;
   object-fit: cover;
   object-position: 58% 50%;
+  /* a little out of focus, so the glass card is the sharp thing in front */
+  filter: blur(3px);
   transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(1.04);
   transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -814,13 +816,6 @@ a { color: inherit; text-decoration: none; }
 
 /* share your words */
 .cdlg__form { display: grid; gap: 10px; }
-.cdlg__label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-}
 .cdlg__area {
   width: 100%;
   min-height: 104px;
@@ -838,6 +833,31 @@ a { color: inherit; text-decoration: none; }
 .cdlg__area::placeholder { color: rgba(255, 255, 255, 0.55); }
 /* one stroke on focus, no glow around it */
 .cdlg__area:focus { outline: none; border-color: #a6e85b; }
+/* the box, and the prompt typing itself over it while it is empty */
+.cdlg__field { position: relative; }
+.cdlg__prompt {
+  position: absolute;
+  top: 14px;
+  left: 15px;
+  right: 15px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cdlg__caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: rgba(255, 255, 255, 0.7);
+  animation: cdlg-caret 1.06s steps(1, end) infinite;
+}
+@keyframes cdlg-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cdlg__caret { animation: none; } }
 .cdlg__honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .cdlg__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .cdlg__fine { font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }

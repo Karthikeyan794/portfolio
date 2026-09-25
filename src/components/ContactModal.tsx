@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { aboutLinks, profile } from '../data'
 import { marks } from '../logos'
 import { formLive, sendForm } from '../sendForm'
+import { useTyped } from '../useTyped'
 
 /**
  * Contact me, in a dialog: the night library behind, one glass card in front.
@@ -39,11 +40,38 @@ function Icon({ name }: { name: 'mail' | 'phone' | 'copy' | 'check' | 'arrow' | 
   }
 }
 
+/**
+ * What the empty box says, typing itself the way the line above the landing
+ * headline does — so the dialog needs no label: the prompt is the label, and
+ * it moves. It sits over the box and never takes the pointer; it goes the
+ * moment there is a word in the box, and a screen reader gets the textarea's
+ * own name instead. Its caret shows only while the box is not focused, so it
+ * never blinks beside the real one.
+ */
+const PROMPTS = [
+  'Say hello…',
+  'Ask me anything…',
+  "Tell me what you're building…",
+  "Add your email if you'd like a reply.",
+] as const
+
+function Prompt({ caret }: { caret: boolean }) {
+  const reduce = useReducedMotion()
+  const text = useTyped(PROMPTS, { delay: 0.5, firstHold: 1500, hold: 1500, still: Boolean(reduce) })
+  return (
+    <span className="cdlg__prompt" aria-hidden="true">
+      {text}
+      {caret && !reduce && <span className="cdlg__caret" />}
+    </span>
+  )
+}
+
 export default function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const reduce = useReducedMotion()
   const [message, setMessage] = useState('')
   const [phase, setPhase] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle')
   const [copied, setCopied] = useState<string | null>(null)
+  const [focused, setFocused] = useState(false)
   const sheet = useRef<HTMLDivElement>(null)
   const field = useRef<HTMLTextAreaElement>(null)
   // a field no person can see or reach; anything typed into it was typed by a bot
@@ -250,17 +278,21 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                   </motion.div>
                 ) : (
                   <form className="cdlg__form" onSubmit={submit}>
-                    <label className="cdlg__label" htmlFor="cdlg-words">Share your words</label>
-                    <textarea
-                      id="cdlg-words"
-                      ref={field}
-                      className="cdlg__area"
-                      value={message}
-                      onChange={(e) => { setMessage(e.target.value); if (phase === 'failed') setPhase('idle') }}
-                      rows={4}
-                      maxLength={3000}
-                      placeholder="Say hello, ask anything, or tell me what you're building. Add your email if you'd like a reply."
-                    />
+                    <div className="cdlg__field">
+                      <textarea
+                        id="cdlg-words"
+                        ref={field}
+                        className="cdlg__area"
+                        value={message}
+                        onChange={(e) => { setMessage(e.target.value); if (phase === 'failed') setPhase('idle') }}
+                        onFocus={() => setFocused(true)}
+                        onBlur={() => setFocused(false)}
+                        rows={4}
+                        maxLength={3000}
+                        aria-label="Your message. Say hello, ask anything, or tell me what you're building. Add your email if you'd like a reply."
+                      />
+                      {!message && <Prompt caret={!focused} />}
+                    </div>
                     <input ref={honey} className="cdlg__honey" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
                     <div className="cdlg__row">
                       <p className="cdlg__fine">{live ? 'Goes straight to my inbox.' : 'Opens your mail app, written.'}</p>

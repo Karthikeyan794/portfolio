@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { intro } from '../data'
+import { useTyped } from '../useTyped'
 import { useTheme } from '../theme'
 import Fireflies from './Fireflies'
 
@@ -50,43 +51,8 @@ function Scene({ show }: { show: boolean }) {
  */
 function Hello({ phrases, delay }: { phrases: string[]; delay: number }) {
   const reduce = useReducedMotion()
-  const [text, setText] = useState(reduce ? phrases[0] ?? '' : '')
-  useEffect(() => {
-    if (reduce || !phrases.length) {
-      setText(phrases[0] ?? '')
-      return
-    }
-    let i = 0
-    let n = 0
-    let typing = true
-    let t = 0
-    const tick = () => {
-      const phrase = phrases[i]
-      if (typing) {
-        n += 1
-        setText(phrase.slice(0, n))
-        if (n >= phrase.length) {
-          typing = false
-          // the name stays up longest: it is the one that matters
-          t = window.setTimeout(tick, i === 0 ? 2800 : 1800)
-          return
-        }
-        t = window.setTimeout(tick, 52 + Math.random() * 46)
-      } else {
-        n -= 1
-        setText(phrase.slice(0, n))
-        if (n <= 0) {
-          typing = true
-          i = (i + 1) % phrases.length
-          t = window.setTimeout(tick, 380)
-          return
-        }
-        t = window.setTimeout(tick, 28)
-      }
-    }
-    t = window.setTimeout(tick, delay * 1000)
-    return () => window.clearTimeout(t)
-  }, [phrases, delay, reduce])
+  // the name stays up longest: it is the one that matters
+  const text = useTyped(phrases, { delay, firstHold: 2800, hold: 1800, still: Boolean(reduce) })
 
   return (
     <motion.p className="intro__hello" {...rise(Math.max(0, delay - 0.3))}>
