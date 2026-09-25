@@ -501,6 +501,39 @@ One wrinkle if it ever needs repeating: re-submitting the edit form after the fi
 fails with *release assets name has already been taken*. That error is harmless — the assets are
 already saved. Close the form rather than retrying.
 
+## 2i. The demo, embedded (25 Sep 2026)
+
+The case study ends with the desk itself, running in a drawn window — the same build the team
+uses, on generated data. Component: `src/components/DemoFrame.tsx`; the slice carries
+`embed: { src, pages, art }` and the row renders it under the words across the full width.
+
+**Where the app lives.** `public/demo/support-desk/` — a copy of the static build from
+`~/Desktop/support-desk-demo/demo/` (6 MB, 19 files). Copied without the stray pictures at the
+package root that nothing referenced, without the five sub-folder `index.html` copies (the app
+routes by hash, so they were only ever for deep links), and without `sw.js` — the bundle
+registers its worker at an absolute `/sw.js`, which at this address can never resolve; the
+call is caught and nothing runs, so the file was dead. To update the demo, re-copy the build
+the same way. The data is baked into the bundle: fictional companies and people on
+`demodesk.io`, the AI readings and Teams cards written in; the only outside traffic is Google
+Fonts and customer-logo lookups.
+
+**How the window behaves.** Inert until you press *Click to interact* — the iframe takes no
+pointer events, so scrolling the page past it never gets caught inside the app. Move the pointer
+out of the window and it goes quiet again. The tab strip (Home · Tickets · Customers) drives the
+app's own router through its hash, same origin, no reload; the address line follows; *Open in
+full screen* opens the current page in a new tab. The header's *Try the demo* points at the
+same place. 16:10 on desktop, 4:5 on a phone, where the tabs hide.
+
+**The gotcha.** In dev, a browser asking for the folder (`/demo/support-desk/`) gets the
+*portfolio* — Vite's single-page fallback claims every HTML request that is not a file, and
+the public folder is only consulted after. A curl gets the demo because it does not ask for
+HTML, which made this confusing. Every address therefore points at the file itself,
+`/demo/support-desk/index.html#/…`, which works the same way in dev and on Vercel.
+
+Verified 25 Sep 2026 by driving it headlessly: the queue loads 200 tickets, a ticket opens with
+Reply, Assignee and AI summary, the composer opens on the template greeting, Customers lists
+seven accounts, Home shows the welcome and the counts — no dialogs, no errors.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup
@@ -544,7 +577,6 @@ already saved. Close the form rather than retrying.
   Removed on 15 Sep 2026 as surplus: the Goals cards, the User flow map and the Design phases spine (`src/components/Phases.tsx`, data in `detail.phases`): numbered nodes down the middle, cards alternating either side, a duration pill and three checklist items each — the layout from the Pinterest references. Folds to one column under 880px.
 
   Still missing, and only you can supply them:
-  - [ ] a **hosted demo URL** for `demo.href` in `src/data.ts` (the local one runs from `~/Desktop/support-desk-demo`)
   - [ ] the **Figma rough layout** as an image, for the "Rough in Figma" slice
   - [x] the **overview walkthrough** — done 20 Sep 2026 from your Desktop recording:
         `public/work/support-desk/clips/overview.mp4` (your own 1748x1080 export, 5.3 MB, copied in untouched) plays in the panel beside the Overview

@@ -335,7 +335,7 @@ export const projects: Project[] = [
     kind: 'work',
     // TODO: paste a hosted demo URL, or leave blank — the demo runs locally
     // from ~/Desktop/support-desk-demo via ./start-demo.command
-    demo: { label: 'Try the demo', href: '/demo/support-desk/#/tickets' },
+    demo: { label: 'Try the demo', href: '/demo/support-desk/index.html#/tickets' },
     detail: {
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
@@ -481,7 +481,7 @@ export const projects: Project[] = [
           heading: 'Try it yourself',
           body: 'This is the desk itself, not a video of it — the same build that runs for the team, on generated data: fictional companies, people and email bodies, with the AI readings and the Teams cards written in for every ticket. Nothing here is a real customer. Click into it and use it the way the team does: open a ticket, read the thread, hand it to somebody, reply from the template, ask for the AI summary, save a view, or go and look at a customer. It needs no sign-in, and whatever you do stays in your own browser.',
           embed: {
-            src: '/demo/support-desk/',
+            src: '/demo/support-desk/index.html',
             pages: [
               { label: 'Home', hash: '#/homepage' },
               { label: 'Tickets', hash: '#/tickets' },
