@@ -311,6 +311,16 @@ zero width — name every child, never style a bare element under a class. And t
 first called `.step`, which already exists in this sheet for the timeline and draws a rule down its
 left side; they are `.cstep` now — grep the sheet before naming anything.
 
+## 2f-2. Contact band on the home page (25 Sep 2026)
+
+- Built after the Polser "Join the movement" screen: your night-library picture full bleed
+  (`public/contact-bg.png`, exact file), one frosted-glass panel over it.
+- On the panel: the heading writes itself in word by word (blur → sharp), a short note, pills for
+  Behance / GitHub / LinkedIn, and your mail as a light pill with a copy button (shows a tick).
+- A soft orange light follows the pointer across the glass; the picture drifts a little on scroll.
+- Footer (name + credit) sits on the picture's bottom edge. The nav's Contact Me still opens the dialog.
+- Words live in `contact` in `src/data.ts`; links come from `socials`.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**

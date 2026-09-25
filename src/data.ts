@@ -44,6 +44,17 @@ export const socials: { label: string; href: string }[] = [
   // { label: 'X', href: 'https://x.com/' },
 ]
 
+/**
+ * The contact band at the end of the home page: one line that animates in,
+ * a short note, your links, and your mail — on a glass panel over `bg`.
+ * The picture is your export, exact; swap the file to change it.
+ */
+export const contact = {
+  heading: "Let's build something.",
+  body: "The fastest way to reach me is email. I read everything, and reply to anything that isn't a template.",
+  bg: '/contact-bg.png',
+}
+
 /** The greeting and the two or three short paragraphs beside it. */
 export const intro_about = {
   greeting: "Hey, I'm Karthikeyan!",
