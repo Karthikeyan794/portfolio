@@ -4,19 +4,19 @@
 // ─────────────────────────────────────────────────────────────
 
 /**
- * Where the "How did this one land?" answers at the end of each case study go.
+ * Where "Your take" at the end of each case study goes — straight to the inbox.
  *
- * Paste the endpoint of any form service that accepts a JSON POST and every
- * reaction and note arrives in your inbox. Two free ones that work as-is:
- *   Web3Forms  endpoint 'https://api.web3forms.com/submit' + accessKey from web3forms.com
- *   Formspree  endpoint 'https://formspree.io/f/<your-id>'  (accessKey stays empty)
+ * FormSubmit (formsubmit.co) turns a POST into an email with no account and no
+ * key: the address is the endpoint. The very first submission does not arrive;
+ * it sends a one-time "Activate Form" mail to this address instead. Click it
+ * once and every note after that lands in the inbox.
  *
- * Left empty, the buttons still work: a reaction is remembered on the visitor's
- * own device, and a written note opens their email app with it filled in — so
- * nothing anyone takes the time to write is silently dropped.
+ * Any other form service that takes a JSON POST works in its place — Web3Forms
+ * needs its `accessKey` as well. Left empty, a note opens the visitor's own
+ * email app with it filled in, so nothing anyone writes is silently dropped.
  */
 export const feedback = {
-  endpoint: '',
+  endpoint: 'https://formsubmit.co/ajax/karthikeyan.design09@gmail.com',
   accessKey: '',
 }
 

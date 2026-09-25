@@ -35,7 +35,9 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       {projectSlug ? (
-        <ProjectPage slug={projectSlug} />
+        // keyed, so moving from one case study to the next from its footer
+        // builds a fresh page: no answer, zoom or scrub state carries across
+        <ProjectPage key={projectSlug} slug={projectSlug} />
       ) : mode === '3d' ? (
         <Lab onSwitch2D={() => setMode('2d')} />
       ) : (

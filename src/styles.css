@@ -2653,95 +2653,281 @@ a { color: inherit; text-decoration: none; }
 }
 .case__link:hover { color: var(--text); border-color: var(--line-strong); }
 
-/* ── the end of a case study: talk to me, and tell me how it landed ──
-   Two halves on one card. The light that follows the pointer is a radial
-   gradient at --sx/--sy, written by CaseEnd.tsx; before the pointer arrives it
-   sits in the top-left corner, so the card is never flat. */
+/* ── the end of a case study: a bento of where to go next ─────────
+   Heading and one button above; five tiles below — two projects, your
+   take, how many more there are, and contact. Laid out by named areas so
+   the three breakpoints only ever rename, never recompute. */
 .cend {
-  --cend-lift: #eef3ea;
-  --cend-base: #e4ede0;
-  position: relative;
+  --tile-r: 22px;
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --glass-a: #eef3ec;
+  --glass-b: #e2eadf;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(22px, 4vw, 56px);
-  align-items: stretch;
-  margin-top: clamp(64px, 10vh, 112px);
-  padding: clamp(26px, 4vw, 52px);
-  border-radius: 28px;
-  border: 1px solid var(--line);
-  background:
-    radial-gradient(560px circle at var(--sx, 14%) var(--sy, 0%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 64%),
-    linear-gradient(160deg, var(--cend-lift), var(--cend-base));
-  overflow: hidden;
-  isolation: isolate;
+  gap: clamp(22px, 3vw, 34px);
+  margin-top: clamp(72px, 11vh, 128px);
 }
-:root[data-theme='dark'] .cend {
-  --cend-lift: #173129;
-  --cend-base: #0f1f1b;
-  border-color: color-mix(in srgb, var(--accent) 14%, var(--line));
-}
-/* a faint rule of graph paper in the card, echoing the page behind it */
-.cend::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 34px 34px;
-  -webkit-mask-image: linear-gradient(115deg, #000 0%, transparent 55%);
-  mask-image: linear-gradient(115deg, #000 0%, transparent 55%);
-  opacity: 0.7;
-}
+:root[data-theme='dark'] .cend { --glass-a: #213734; --glass-b: #162523; }
 
-/* left: the invitation */
-.cend__talk { display: grid; gap: 14px; align-content: center; justify-items: start; }
-.cend__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.cend__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
+.cend__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
 .cend__h {
   font-family: var(--display);
-  font-size: clamp(30px, 3.8vw, 46px);
+  font-size: clamp(30px, 4vw, 50px);
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -0.025em;
 }
-.cend__p { color: var(--text-mid); max-width: 42ch; font-size: 16px; line-height: 1.55; }
-.cend__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
-.cend__arrow { transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
-.cend__cta:hover .cend__arrow { transform: translateX(3px); }
-.cend__back:hover .cend__arrow { transform: translateX(-3px); }
-:root[data-theme='dark'] .cend__cta { background: var(--accent); color: #0d1a0a; }
-:root[data-theme='dark'] .cend__cta:hover { background: color-mix(in srgb, var(--accent) 86%, #fff); }
-
-/* right: how did it land */
-.cend__vote {
-  container-type: inline-size;
-  display: grid;
-  gap: 16px;
-  align-content: start;
-  padding: clamp(20px, 2.6vw, 28px);
-  border-radius: 20px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg-elev) 62%, transparent);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+.cend__p { margin-top: 12px; max-width: 58ch; color: var(--muted); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.5; }
+.cend__talk {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.cend__talk svg { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.cend__talk:hover { background: var(--primary); border-color: var(--primary); color: var(--on-primary); transform: translateY(-1px); }
+.cend__talk:hover svg { transform: translate(2px, -2px); }
+:root[data-theme='dark'] .cend__talk:hover { background: var(--accent); border-color: var(--accent); color: #0d1a0a; }
+
+.cend__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr) minmax(0, 1.28fr);
+  grid-template-rows: minmax(300px, auto) minmax(240px, auto);
+  grid-template-areas:
+    'next take other'
+    'next more reach';
+  gap: 10px;
+}
+
+/* every tile */
+.ctile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  border-radius: var(--tile-r);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  isolation: isolate;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+button.ctile { cursor: pointer; }
+.ctile:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+:root[data-theme='dark'] .ctile:focus-visible { outline-color: var(--accent); }
+.ctile--next { grid-area: next; }
+.ctile--take { grid-area: take; }
+.ctile--other { grid-area: other; }
+.ctile--more { grid-area: more; }
+.ctile--reach { grid-area: reach; }
+
+/* the little label at the top of a tile */
+.cend__eye {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cend__sun { flex: none; opacity: 0.85; }
+.cend__eye--center {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* glass tiles: your take and contact. A light follows the pointer. */
+.ctile--glass {
+  gap: 18px;
+  padding: clamp(20px, 2.2vw, 28px);
+  background:
+    radial-gradient(420px circle at var(--sx, -30%) var(--sy, -30%), color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
+    linear-gradient(160deg, var(--glass-a), var(--glass-b));
+}
+.ctile--glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--grain);
+  opacity: 0.07;
+  pointer-events: none;
+}
+:root[data-theme='dark'] .ctile--glass { border-color: rgba(255, 255, 255, 0.07); }
+
+/* picture tiles: the next two projects */
+.ctile--shot { justify-content: flex-end; color: #fff; background: #0e1614; }
+.ctile__img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.001);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+}
+.ctile__veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(6, 10, 9, 0.38) 0%, rgba(6, 10, 9, 0) 22%),
+    linear-gradient(0deg, rgba(6, 10, 9, 0.88) 0%, rgba(6, 10, 9, 0.35) 36%, rgba(6, 10, 9, 0) 62%);
+}
+.ctile--shot:hover .ctile__img,
+.ctile--shot:focus-visible .ctile__img { transform: scale(1.05); filter: saturate(1.08) brightness(1.06); }
+.ctile__open {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: #0e1614;
+  opacity: 0;
+  transform: translate(-6px, 6px) scale(0.85);
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctile--shot:hover .ctile__open,
+.ctile--shot:focus-visible .ctile__open { opacity: 1; transform: none; }
+.ctile__foot { display: grid; gap: 4px; padding: clamp(18px, 2vw, 26px); }
+.ctile__year { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.66); }
+.ctile__title { font-size: clamp(22px, 2.2vw, 30px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+.ctile__tag { font-size: 14px; color: rgba(255, 255, 255, 0.78); }
+.ctile--next .ctile__title { font-size: clamp(26px, 2.8vw, 38px); }
+
+/* the count: dark and lit whatever the theme, like a picture */
+.ctile--more {
+  /* its row is sized by the take tile beside it in two columns; without a
+     floor the count gets whatever height is left over */
+  min-height: 230px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(120% 80% at 50% 112%, #08130f 22%, transparent 72%),
+    linear-gradient(168deg, #3c6b6f 0%, #25494c 40%, #122527 100%);
+}
+.ctile--more::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--grain);
+  opacity: 0.12;
+}
+.ctile__beam {
+  position: absolute;
+  inset: -30% -20%;
+  z-index: -1;
+  background: linear-gradient(112deg, transparent 40%, rgba(255, 205, 160, 0.18) 46%, rgba(255, 240, 220, 0.5) 50%, rgba(255, 180, 140, 0.22) 54%, transparent 62%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  animation: cend-beam 11s ease-in-out infinite alternate;
+}
+@keyframes cend-beam {
+  from { transform: translateX(-8%) rotate(-4deg); }
+  to { transform: translateX(8%) rotate(3deg); }
+}
+.ctile__bokeh {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle at 16% 28%, rgba(255, 214, 170, 0.7) 0 1.6px, transparent 2.6px),
+    radial-gradient(circle at 26% 64%, rgba(255, 214, 170, 0.45) 0 2.2px, transparent 3.4px),
+    radial-gradient(circle at 78% 20%, rgba(255, 236, 200, 0.6) 0 1.4px, transparent 2.4px),
+    radial-gradient(circle at 86% 58%, rgba(255, 200, 150, 0.5) 0 2.6px, transparent 4px),
+    radial-gradient(circle at 60% 82%, rgba(255, 220, 180, 0.4) 0 1.8px, transparent 3px);
+  filter: blur(0.5px);
+}
+.ctile__num {
+  font-size: clamp(68px, 7.4vw, 112px);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctile--more:hover .ctile__num { transform: scale(1.04); }
+.ctile__numsub { display: grid; justify-items: center; gap: 6px; font-size: 14px; color: rgba(255, 255, 255, 0.82); }
+.ctile__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s ease, gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctile--more:hover .ctile__back { color: #fff; gap: 9px; }
+
+/* contact */
+.ctile--reach { justify-content: space-between; cursor: pointer; }
+.ctile__arrow {
+  position: absolute;
+  top: clamp(16px, 2vw, 22px);
+  right: clamp(16px, 2vw, 22px);
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease;
+}
+.ctile--reach:hover .ctile__arrow { color: var(--text); transform: translate(3px, -3px); }
+.ctile__arrow:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.ctile__lines { display: grid; justify-items: start; gap: 4px; margin-top: auto; }
+.ctile__line {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: copy;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+a.ctile__line { cursor: pointer; }
+.ctile__line:hover { text-decoration-color: var(--line-strong); }
+.ctile__copied { color: var(--accent-ink); }
+:root[data-theme='dark'] .ctile__copied { color: var(--accent); }
+
+/* your take */
+.cend__form { display: grid; gap: 14px; }
 .cend__q { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
 .cend__qsub { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
 
@@ -2753,11 +2939,11 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 52px;
-  padding: 12px 16px;
+  min-height: 48px;
+  padding: 10px 14px;
   border-radius: 14px;
   border: 1px solid var(--line-strong);
-  background: color-mix(in srgb, var(--bg) 40%, transparent);
+  background: color-mix(in srgb, var(--bg) 35%, transparent);
   color: var(--text);
   font: inherit;
   font-size: 14.5px;
@@ -2786,47 +2972,40 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
 }
 
-.cend__note { display: grid; gap: 10px; overflow: hidden; }
-.cend__field textarea,
-.cend__field input {
+.cend__field textarea {
   width: 100%;
+  min-height: 92px;
   padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid var(--line-strong);
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  background: color-mix(in srgb, var(--bg) 45%, transparent);
   color: var(--text);
   font: inherit;
   font-size: 14.5px;
   line-height: 1.5;
+  resize: vertical;
   transition: border-color 0.2s ease;
 }
-.cend__field textarea { resize: vertical; min-height: 88px; }
-.cend__field textarea::placeholder,
-.cend__field input::placeholder { color: var(--muted); }
+.cend__field textarea::placeholder { color: var(--muted); }
 /* one stroke on focus, no glow around it */
-.cend__field textarea:focus,
-.cend__field input:focus { outline: none; border-color: var(--accent-ink); }
-:root[data-theme='dark'] .cend__field textarea:focus,
-:root[data-theme='dark'] .cend__field input:focus { border-color: var(--accent); }
+.cend__field textarea:focus { outline: none; border-color: var(--accent-ink); }
+:root[data-theme='dark'] .cend__field textarea:focus { border-color: var(--accent); }
+/* the bot trap: present in the form, absent from the page */
+.cend__honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .cend__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .cend__fine { font-size: 12.5px; color: var(--muted); max-width: 30ch; }
-.cend__send { padding: 10px 18px; }
+.cend__send { padding: 10px 20px; }
+:root[data-theme='dark'] .cend__send:not(:disabled) { background: var(--accent); color: #0d1a0a; }
 .cend__send:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 .cend__err { font-size: 13px; color: var(--dia-bad); }
 .cend__err a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
-/* after answering */
-.cend__thanks { display: grid; grid-template-columns: auto 1fr; gap: 14px 16px; align-items: center; }
-.cend__badge {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-}
-.cend__badge--like { color: var(--accent-ink); background: var(--accent-soft); }
-:root[data-theme='dark'] .cend__badge--like { color: var(--accent); }
+.cend__thanks { display: grid; grid-template-columns: auto 1fr; gap: 14px 16px; align-items: center; margin-top: auto; margin-bottom: auto; }
+.cend__badge { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid currentColor; }
+.cend__badge .cend__sun { width: 18px; height: 18px; }
+.cend__badge--like, .cend__badge--none { color: var(--accent-ink); background: var(--accent-soft); }
+:root[data-theme='dark'] .cend__badge--like,
+:root[data-theme='dark'] .cend__badge--none { color: var(--accent); }
 .cend__badge--dislike { color: var(--dia-bad); background: color-mix(in srgb, var(--dia-bad) 14%, transparent); }
 .cend__change {
   grid-column: 1 / -1;
@@ -2844,16 +3023,32 @@ a { color: inherit; text-decoration: none; }
 }
 .cend__change:hover { color: var(--text); text-decoration-color: currentColor; }
 
-@media (max-width: 860px) {
-  .cend { grid-template-columns: 1fr; }
+/* two columns: the tall project keeps its height, the rest pair up */
+@media (max-width: 1080px) {
+  .cend__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'next take'
+      'next more'
+      'other reach';
+  }
+  .ctile--other { min-height: 300px; }
 }
-/* measured against the panel, not the window: the panel is narrowest in the
-   middle widths, while the card is still two columns */
-@container (max-width: 330px) {
-  .cend__pick { grid-template-columns: 1fr; }
+/* one column on a phone, the picture first so the section opens on something */
+@media (max-width: 680px) {
+  .cend__grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'next' 'take' 'other' 'more' 'reach'; }
+  .ctile--next { min-height: 440px; }
+  .ctile--other { min-height: 300px; }
+  .ctile--more { min-height: 230px; }
+  .ctile--reach { min-height: 200px; }
+}
+@media (max-width: 380px) {
+  .cend__pick { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .react, .cend__arrow { transition: none; }
+  .ctile__beam { animation: none; }
+  .ctile__img, .react, .ctile__num, .ctile__open, .ctile__arrow, .cend__talk, .cend__talk svg { transition: none; }
 }
 
 /* visible to a screen reader, not on screen */
