@@ -26,9 +26,9 @@ release instead, so the untouched exports are what visitors get.
 | 7 | Filter & Save Ticket Views | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
 | 8 | Merge & Mark as Spam | release `merge.mp4` | 170 MB | **original, live on the release** |
 | 9 | Track Response Time & SLA | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
-| 10 | Who gets in, and what they may do | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
-| 11 | Dashboard | release `home.mp4` | 268 MB | **original, live on the release** |
-| 12 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
+| 10 | Customer & Contact Management | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
+| 11 | Who gets in, and what they may do | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
+| 12 | Dashboard | release `home.mp4` | 268 MB | **original, live on the release** |
 | 13 | Milo — the desk, from inside Teams | release `Milio.workflow.chat.bot.in.term.mp4` | 79 MB · 3636×2160 · 46s | **original, live on the release** — uploaded by hand under the name GitHub gave the file; the page's address matches it |
 
 **The Milo recording went up under its raw name** (`Milio.workflow.chat.bot.in.term.mp4`, dots

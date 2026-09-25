@@ -444,6 +444,13 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'Customer & Contact Management',
+          body: 'View all customers, their contacts, and the tickets associated with each person. Customer details are automatically created from incoming emails, keeping your customer directory up to date without manual entry.',
+          clip: '/work/support-desk/clips/customers.mp4',
+          caption: 'Accounts → people → their tickets, all of it derived from the sender’s address.',
+        },
+        {
+          span: 'full',
           heading: 'Who gets in, and what they may do',
           body: 'The desk has three roles and one place to set them. Under your own name, top right, with the role you hold shown beside it, sits Manage access: everyone who can open the desk, their role on a dropdown, when they last signed in and whether they ever have, and an Invite. Admin edits the list and manages who else has access; support reads, replies, assigns and changes fields; view only reads. Your own row is locked, so an admin cannot demote themselves by accident.\n\nBeside the users sit the requests. Somebody who lands on the gate and asks for access — to the desk, or to the shared mailbox itself — shows up here with what they asked for and when, and Approve says in plain words what it grants before you press it: edit access in the desk, replying, assigning and editing fields. Approve one and the count drops and their role is set. The same menu holds Spam & drafts: a mail flagged as not a ticket is kept there, out of the queue, and nothing in it is deleted.',
           clip: `${HD}/Profile.menu.+.manage.access.mp4`,
@@ -456,13 +463,6 @@ export const projects: Project[] = [
           clip: `${HD}/home.mp4`,
           clipFallback: '/work/support-desk/clips/home.mp4',
           caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
-        },
-        {
-          span: 'full',
-          heading: 'The customer view it produces',
-          body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody keeps it current — a new address creates its person the first time they write, so the directory builds itself out of the mail that was already arriving.',
-          clip: '/work/support-desk/clips/customers.mp4',
-          caption: 'Accounts → people → their tickets, all of it derived from the sender’s address.',
         },
         {
           span: 'full',
