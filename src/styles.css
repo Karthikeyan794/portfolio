@@ -1242,8 +1242,7 @@ a { color: inherit; text-decoration: none; }
       linear-gradient(180deg, rgba(6, 5, 8, 0) 62%, rgba(6, 5, 8, 0.3) 84%, rgba(6, 5, 8, 0.55) 100%);
   }
 }
-/* snowfall canvas (About still uses it) and the fireflies over the picture, under the text */
-.snow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+/* the fireflies over the picture, under the text */
 .fireflies { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
 /* hairline frame, like the reference */
@@ -4955,16 +4954,8 @@ a.ctile__line { cursor: pointer; }
   .about__greeting .rise > span { transform: none !important; }
 }
 
-/* the snow that carries on into About: behind everything, softer, and it
-   never takes a click so the cards underneath stay reachable */
+/* About's content sits above anything drawn behind the section */
 .about { position: relative; }
-.snow--drift {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.55;
-  pointer-events: none;
-}
 .about > .wrap { position: relative; z-index: 1; }
 
 /* ── one hairline on every bento card ──────────────────────
