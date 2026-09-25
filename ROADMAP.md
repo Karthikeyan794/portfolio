@@ -315,12 +315,13 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
 
 - Built after the Polser "Join the movement" screen, then made smaller: a **short banner, edge to
   edge** and the last thing on the page (about 420px tall on a laptop), your Milky Way picture as its
-  background (`public/contact-sky.png`, exact file), fading in from the page at the top. The glass
-  sits on the left so the person with the laptop stays in view on the right; heading on one line,
-  links and mail on one row. On a phone the sky shows above and the glass sits at the bottom.
+  background (`public/contact-sky.png`, exact file), fading in from the page at the top. **No box**
+  (the glass panel went, 26 Sep): the words sit straight on the sky over a soft wash of night on
+  the left, so the person with the laptop stays in view on the right; heading on one line, links
+  and mail on one row. On a phone the sky shows above and the glass sits at the bottom.
 - On the panel: the heading writes itself in word by word (blur → sharp), a short note, pills for
   Behance / GitHub / LinkedIn, and your mail as a light pill with a copy button (shows a tick).
-- A soft orange light follows the pointer across the glass; the picture drifts a little on scroll.
+- The picture drifts a little on scroll.
 - Footer (name + credit) sits on the picture's bottom edge. The nav's Contact Me still opens the dialog.
 - Words live in `contact` in `src/data.ts`; links come from `socials`.
 

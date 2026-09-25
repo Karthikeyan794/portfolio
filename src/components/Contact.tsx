@@ -1,18 +1,16 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { useEffect, useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { contact, profile, socials } from '../data'
 import ContactModal from './ContactModal'
 
 /**
- * The end of the home page: the sky picture as a banner card, and one
- * frosted panel on it holding the whole invitation — a line that writes itself in, a
- * short note, your links, and your mail.
+ * The end of the home page: the sky picture as a short banner, and the whole
+ * invitation set straight on it, no box around it — a line that writes
+ * itself in, a short note, your links, and your mail. A soft wash of night
+ * on the left keeps the words readable over the stars.
  *
- * The panel is glass, not a card: `backdrop-filter` smears the glowing
- * shelves behind it, so the orange comes through soft instead of the panel
- * sitting on the picture like a sticker. The contact dialog still lives
- * here, because the nav's Contact button opens it with an `open-contact`
- * event and this is the component listening.
+ * The contact dialog still lives here, because the nav's Contact button
+ * opens it with an `open-contact` event and this is the component listening.
  */
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -31,7 +29,6 @@ export default function Contact() {
   const [copied, setCopied] = useState(false)
   const reduce = useReducedMotion()
   const root = useRef<HTMLElement>(null)
-  const glass = useRef<HTMLDivElement>(null)
 
   // the nav's Contact button opens the same dialog
   useEffect(() => {
@@ -40,18 +37,9 @@ export default function Contact() {
     return () => window.removeEventListener('open-contact', onOpen)
   }, [])
 
-  // the picture drifts a little slower than the page, so the panel floats over it
+  // the picture drifts a little slower than the page, so the words float over it
   const { scrollYProgress } = useScroll({ target: root, offset: ['start end', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['-6%', '6%'])
-
-  // a soft light follows the pointer across the glass
-  const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    const el = glass.current
-    if (!el) return
-    const r = el.getBoundingClientRect()
-    el.style.setProperty('--mx', `${e.clientX - r.left}px`)
-    el.style.setProperty('--my', `${e.clientY - r.top}px`)
-  }
 
   const copy = async () => {
     try {
@@ -66,7 +54,7 @@ export default function Contact() {
   return (
     <section className="reach" id="contact" ref={root} aria-label="Contact">
       {/* a short banner, edge to edge and the last thing on the page: the
-          sky picture fading in from the page at the top, the glass on the
+          sky picture fading in from the page at the top, the words on the
           left so the person with the laptop stays in view on the right, and
           the footer on the picture's bottom edge */}
       <div className="reach__banner">
@@ -75,9 +63,7 @@ export default function Contact() {
 
       <div className="reach__stage">
         <motion.div
-          className="reach__glass"
-          ref={glass}
-          onPointerMove={onMove}
+          className="reach__text"
           variants={words}
           initial="rest"
           whileInView="in"
