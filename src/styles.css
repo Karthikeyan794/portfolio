@@ -3173,7 +3173,7 @@ a.ctile__line { cursor: pointer; }
 .work__head h2 {
   /* the same small caps as Problem and Solution on a case study */
   font-family: var(--label-face);
-  font-size: clamp(26px, 2.8vw, 36px);
+  font-size: 20px;
   letter-spacing: 0.02em;
   font-weight: 400;
   line-height: 1.04;
