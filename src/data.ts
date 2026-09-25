@@ -393,6 +393,21 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'Write & Send Replies',
+          body: 'Start with a ready-to-use reply template, including a greeting and signature. If AI assistance is available, it can suggest a reply based on the ticket conversation. You can edit the suggestion before sending, keeping you in control of the final response. Use the text editor to write and format your reply.',
+          clip: `${HD}/reply.mp4`,
+          clipFallback: '/work/support-desk/clips/reply.mp4',
+          caption: 'The whole reply, start to finish: the template already in the box, the AI reading beside it, the edit, and the send.'
+        },
+        {
+          span: 'full',
+          heading: 'Assign & Manage Tickets',
+          body: 'When you reply to a ticket, it is automatically assigned to you, or you can reassign it to another team member. You can also update the status, priority, type, category, customer, and dates. Required fields must be completed before closing a ticket.',
+          clip: '/work/support-desk/clips/assign.mp4',
+          caption: 'Auto-assign, the detail panel, and what Closed asks for.',
+        },
+        {
+          span: 'full',
           heading: 'All thirteen filters, and the view you save them as',
           body: 'The full set: thirteen filters over the queue — status, owner, customer, type, the clock, the rest — and they stack, so each one you add narrows what is left rather than replacing it. Which is powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
           clip: `${HD}/views.mp4`,
@@ -419,21 +434,6 @@ export const projects: Project[] = [
           body: 'Pick a person from a roster that Graph keeps honest — enabled, licensed members only, with a presence dot so you can see who is free before you hand a ticket over. Start typing and it narrows. Assigning writes the row, and the person hears about it twice over. A Power Automate flow watching that list posts the card the app built, verbatim, into Teams: who assigned it, the number and the subject, status and priority, the requester, and a button straight back into the desk — with their real Teams photo on it, pulled from Graph, and an initials badge when there is none. And Milo, the desk’s own bot, sends a card of its own — “is now assigned to you”, with the priority, the customer and the status. Either way the person knows whether it is theirs before they click.',
           clip: `${HD}/Team.notified.with.assigned.mp4`,
           caption: 'From the roster to Teams: the flow’s card with the photo, and Milo’s own “now assigned to you”.',
-        },
-        {
-          span: 'full',
-          heading: 'Auto-assign, and the fields it insists on',
-          body: 'A ticket can arrive already owned — an auto-assign rule picks the person, and the panel beside the thread is where you change it when the rule gets it wrong. The rest of that panel is the record: status, priority, ticket type, categories, the customer and the dates. The ones marked required are enforced rather than suggested, so moving a ticket to Closed asks for them first and nothing is shut with its type or its category still empty.',
-          clip: '/work/support-desk/clips/assign.mp4',
-          caption: 'Auto-assign, the detail panel, and what Closed asks for.',
-        },
-        {
-          span: 'full',
-          heading: 'A reply that starts written',
-          body: 'The composer opens on a template: greeting, the signature with its logo travelling as an inline attachment rather than a link, and the quoted thread underneath. Where the AI assistant has read the ticket, its suggestion sits beside that — read straight out of the ticket’s own SharePoint columns, in one of three honest states: answered, needs input, or no reading yet. No reading yet is the common case, not an error, so it never looks like one. The person edits, and the person sends: the suggestion is a starting point, never the last word. Unsent drafts live in SharePoint rather than the browser, so a reply started on a laptop is there on the desktop, with item permissions and an author filter on top, because half-written words are the most private thing this app holds.',
-          clip: `${HD}/reply.mp4`,
-          clipFallback: '/work/support-desk/clips/reply.mp4',
-          caption: 'The whole reply, start to finish: the template already in the box, the AI reading beside it, the edit, and the send.'
         },
         {
           span: 'full',
