@@ -900,11 +900,16 @@ export const awards: Award[] = [
 // Empty `image` falls back to `video` (none now — the mountain clips are gone). Missing file →
 // drawn scene.
 export const intro = {
-  image: '/night-library.png',
-  poster: '',
+  // The hero is the night library, moving: the reader turning a page. It is
+  // the export untouched — 2560x1440, 10s, 18 MB. `poster` is its first frame,
+  // so what shows while it loads is exactly where it starts playing.
+  // Back to the still picture: put '/night-library.png' in `image` — a set
+  // `image` wins over `video`.
+  image: '',
+  poster: '/intro/reading-poster.jpg',
   imageFocus: '50% 50%', // which part of the picture stays in view when cropped (the reader is centre)
-  video: '',
-  videoDark: '',
+  video: '/intro/reading.mp4',
+  videoDark: '', // empty: the one clip plays in both themes
   zoom: false,
   loop: true,
   headline: ['I Design And Build', 'For The Web.'],

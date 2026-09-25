@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { intro, profile } from '../data'
 import { useTheme } from '../theme'
@@ -77,14 +77,43 @@ export default function Intro() {
   useEffect(() => {
     if (dark) setDarkWanted(true)
   }, [dark])
+  // With no night version of the clip, the one clip plays in both themes.
+  // Without this, dark theme marked it inactive and faded it out, leaving only
+  // the still — a video that stopped the moment the theme switched.
+  const oneClip = !intro.videoDark
+  const lightOn = !dark || oneClip
+  // Motion people have asked the system to reduce: the still, not a loop.
+  const reduce = useReducedMotion()
+  // Off screen, a 2560x1440 decode is pure cost — and it would compete with
+  // the scroll the rest of the page depends on. Paused while it is out of view.
+  const offscreen = useRef(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const mayPlay = () => !offscreen.current && !reduce
+
   // keep only the visible clip decoding; pause the other after the crossfade
   useEffect(() => {
-    const show = dark ? darkRef.current : lightRef.current
-    const hide = dark ? lightRef.current : darkRef.current
-    show?.play().catch(() => {})
+    const show = lightOn ? lightRef.current : darkRef.current
+    const hide = lightOn ? darkRef.current : lightRef.current
+    if (mayPlay()) show?.play().catch(() => {})
     const t = window.setTimeout(() => hide?.pause(), 1700)
     return () => window.clearTimeout(t)
-  }, [dark, darkReady])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightOn, darkReady, reduce])
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(([entry]) => {
+      offscreen.current = !entry.isIntersecting
+      const v = lightOn ? lightRef.current : darkRef.current
+      if (!v) return
+      if (mayPlay()) v.play().catch(() => {})
+      else v.pause()
+    })
+    io.observe(el)
+    return () => io.disconnect()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightOn, reduce])
   const [speaking, setSpeaking] = useState(false)
   const [spoken, setSpoken] = useState(false)
 
@@ -122,7 +151,7 @@ export default function Intro() {
   }
 
   return (
-    <section className="intro" id="top" aria-label="Intro" onPointerMove={lean}>
+    <section className="intro" id="top" aria-label="Intro" onPointerMove={lean} ref={sectionRef}>
       {/* Everything that is picture, and nothing that is words: the photo, its
           shade, the fireflies and the hairline frame fade out together over the
           bottom of the hero, so it dissolves into About rather than stopping at
@@ -155,22 +184,25 @@ export default function Intro() {
             <video
               ref={lightRef}
               className="intro__video"
-              data-active={!dark}
+              data-active={lightOn}
               src={intro.video}
               poster={intro.poster || undefined}
-              autoPlay
+              style={{ objectPosition: intro.imageFocus }}
+              autoPlay={!reduce}
               muted
               loop={intro.loop}
               playsInline
               preload="auto"
               onCanPlay={(e) => {
                 setReady(true)
-                if (!dark) e.currentTarget.play().catch(() => {})
+                if (lightOn && mayPlay()) e.currentTarget.play().catch(() => {})
               }}
               onPause={(e) => {
-                // browsers pause background media when a tab is hidden — pick it back up
+                // browsers pause background media when a tab is hidden — pick
+                // it back up, unless it was paused on purpose (off screen, or
+                // reduced motion)
                 const v = e.currentTarget
-                if (!dark && !v.ended && document.visibilityState === 'visible') v.play().catch(() => {})
+                if (lightOn && mayPlay() && !v.ended && document.visibilityState === 'visible') v.play().catch(() => {})
               }}
               onError={() => setReady(false)}
             />
