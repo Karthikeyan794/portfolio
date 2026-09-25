@@ -451,18 +451,18 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Who gets in, and what they may do',
-          body: 'The desk has three roles and one place to set them. Under your own name, top right, with the role you hold shown beside it, sits Manage access: everyone who can open the desk, their role on a dropdown, when they last signed in and whether they ever have, and an Invite. Admin edits the list and manages who else has access; support reads, replies, assigns and changes fields; view only reads. Your own row is locked, so an admin cannot demote themselves by accident.\n\nBeside the users sit the requests. Somebody who lands on the gate and asks for access — to the desk, or to the shared mailbox itself — shows up here with what they asked for and when, and Approve says in plain words what it grants before you press it: edit access in the desk, replying, assigning and editing fields. Approve one and the count drops and their role is set. The same menu holds Spam & drafts: a mail flagged as not a ticket is kept there, out of the queue, and nothing in it is deleted.',
-          clip: `${HD}/Profile.menu.+.manage.access.mp4`,
-          caption: 'Manage access from the profile menu: every user with a role, the requests waiting for a yes, and spam kept out of the queue without deleting anything.',
-        },
-        {
-          span: 'full',
           heading: 'Dashboard',
           body: 'Get a clear overview of your support activity, including ticket status, ticket volume, incoming trends, common issues, top customers, and team performance. Track key metrics in one place to quickly understand what’s happening across your tickets.',
           clip: `${HD}/home.mp4`,
           clipFallback: '/work/support-desk/clips/home.mp4',
           caption: 'The home dashboard: volume, intake, recurring problems — and the widgets that honestly read zero.',
+        },
+        {
+          span: 'full',
+          heading: 'User Roles & Access',
+          body: 'Manage who can access the Support Desk and what they can do. Set roles such as *Admin, Support, and View Only*, and control permissions for replying, assigning tickets, and editing ticket details. You can also review and approve access requests from one place.',
+          clip: `${HD}/Profile.menu.+.manage.access.mp4`,
+          caption: 'Manage access from the profile menu: every user with a role, the requests waiting for a yes, and spam kept out of the queue without deleting anything.',
         },
         {
           span: 'full',
