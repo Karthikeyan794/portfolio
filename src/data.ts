@@ -401,6 +401,13 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'AI Assistance for Ticket Replies',
+          body: 'The AI assistant reads the ticket conversation and suggests a response based on the context. You can review and edit the suggestion before sending, or ask the assistant for more help. The AI suggestion is always a draft — you stay in control of the final reply.',
+          clip: `${HD}/ai-suggestions.mp4`,
+          caption: 'Reply, with the draft already written — then the reading behind it, the diagnosis it ran, and what it could not check.',
+        },
+        {
+          span: 'full',
           heading: 'Assign & Manage Tickets',
           body: 'When you reply to a ticket, it is automatically assigned to you, or you can reassign it to another team member. You can also update the status, priority, type, category, customer, and dates. Required fields must be completed before closing a ticket.',
           clip: '/work/support-desk/clips/assign.mp4',
@@ -434,13 +441,6 @@ export const projects: Project[] = [
           body: 'The desk has three roles and one place to set them. Under your own name, top right, with the role you hold shown beside it, sits Manage access: everyone who can open the desk, their role on a dropdown, when they last signed in and whether they ever have, and an Invite. Admin edits the list and manages who else has access; support reads, replies, assigns and changes fields; view only reads. Your own row is locked, so an admin cannot demote themselves by accident.\n\nBeside the users sit the requests. Somebody who lands on the gate and asks for access — to the desk, or to the shared mailbox itself — shows up here with what they asked for and when, and Approve says in plain words what it grants before you press it: edit access in the desk, replying, assigning and editing fields. Approve one and the count drops and their role is set. The same menu holds Spam & drafts: a mail flagged as not a ticket is kept there, out of the queue, and nothing in it is deleted.',
           clip: `${HD}/Profile.menu.+.manage.access.mp4`,
           caption: 'Manage access from the profile menu: every user with a role, the requests waiting for a yes, and spam kept out of the queue without deleting anything.',
-        },
-        {
-          span: 'full',
-          heading: 'What the assistant suggests, and how to check it',
-          body: 'Open a ticket and the assistant has already read the thread — and it does not paraphrase it, it takes a position. *I can reproduce this on their account, so it is a fault rather than a misunderstanding of the setting*, then where it thinks the cause is, then whether it reproduces anywhere else. The suggested reply underneath is that same finding written as an email, and it is labelled *AI generated — review before sending* rather than dressed up as a colleague. Press Reply and it lands in the composer as a draft that has not been sent, so a reply always starts written and never leaves on its own.\n\nWhat makes it usable is that none of it has to be taken on trust. *How the assistant got here* opens the diagnosis it ran, the email it drafted, and — the part people actually want — what it could not check. You can ask it a follow-up in the same place, and that conversation deliberately does not touch the draft: regenerating is a separate, deliberate act, because a reply that quietly rewrites itself while you are reading it is worse than one that is simply wrong. The feedback under it reads correct, partially, wrong. Partially is the honest answer most of the time, so it is there to give.',
-          clip: `${HD}/ai-suggestions.mp4`,
-          caption: 'Reply, with the draft already written — then the reading behind it, the diagnosis it ran, and what it could not check.',
         },
         {
           span: 'full',
