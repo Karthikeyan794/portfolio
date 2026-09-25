@@ -903,15 +903,17 @@ export const awards: Award[] = [
 // Empty `image` falls back to `video` (none now — the mountain clips are gone). Missing file →
 // drawn scene.
 export const intro = {
-  // The hero is the night library, moving: the reader turning a page. It is
-  // the export untouched — 2560x1440, 10s, 18 MB. `poster` is its first frame,
-  // so what shows while it loads is exactly where it starts playing.
-  // Back to the still picture: put '/night-library.png' in `image` — a set
-  // `image` wins over `video`.
-  image: '',
-  poster: '/intro/reading-poster.jpg',
+  // Light theme: the library by day. Dark theme: the same library at night.
+  // Switching theme crossfades between them, and each is only downloaded the
+  // first time its theme is chosen. The night picture brings two effects of
+  // its own — the shelf lights breathing and fireflies in the bushes — which
+  // on the day one would wash out the sky and look like specks in the sun.
+  // A set `image` wins over `video`.
+  image: '/intro/day-library.webp',
+  imageDark: '/night-library.png',
+  poster: '',
   imageFocus: '50% 50%', // which part of the picture stays in view when cropped (the reader is centre)
-  video: '/intro/reading.mp4',
+  video: '',
   videoDark: '', // empty: the one clip plays in both themes
   zoom: false,
   loop: true,

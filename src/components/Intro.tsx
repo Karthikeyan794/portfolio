@@ -138,6 +138,24 @@ export default function Intro() {
 
   const [ctaA, ctaB] = intro.cta
   const useImage = Boolean(intro.image)
+  // Light theme shows the library by day, dark theme the same library at
+  // night, and switching crossfades between them. Each is fetched the first
+  // time its theme is chosen, so a visitor who never leaves light never
+  // downloads the night picture at all.
+  const hasNight = Boolean(intro.imageDark)
+  const showNight = dark && hasNight
+  const [wantDay, setWantDay] = useState(!showNight)
+  const [wantNight, setWantNight] = useState(showNight)
+  const [dayReady, setDayReady] = useState(false)
+  const [nightReady, setNightReady] = useState(false)
+  useEffect(() => {
+    if (showNight) setWantNight(true)
+    else setWantDay(true)
+  }, [showNight])
+  // the section fades in once the picture for the current theme is here
+  useEffect(() => {
+    if (useImage && (showNight ? nightReady : dayReady)) setReady(true)
+  }, [useImage, showNight, nightReady, dayReady])
 
   // the picture leans a few pixels toward the pointer, so it reads as a place
   // rather than a flat backdrop
@@ -160,22 +178,39 @@ export default function Intro() {
       <div className="intro__art">
       <div className="intro__media" ref={media} data-ready={ready === true}>
         {useImage && ready !== false && (
-          <>
-            <div className="intro__pic">
-              <img
-                className="intro__img"
-                src={intro.image}
-                alt=""
-                style={{ objectPosition: intro.imageFocus }}
-                onLoad={() => setReady(true)}
-                onError={() => setReady(false)}
-              />
-              {/* the shelf lights, breathing: the same picture blurred and
-                  laid over itself in screen mode, so only what is already lit
-                  — shelves, desk, globe — swells, and it lines up at any crop */}
-              <img className="intro__img intro__bloom" src={intro.image} alt="" aria-hidden="true" style={{ objectPosition: intro.imageFocus }} />
-            </div>
-          </>
+          <div className="intro__pic">
+            {wantDay && (
+              <div className="intro__layer" data-on={dayReady}>
+                <img
+                  className="intro__img"
+                  src={intro.image}
+                  alt=""
+                  style={{ objectPosition: intro.imageFocus }}
+                  onLoad={() => setDayReady(true)}
+                  onError={() => { if (!showNight) setReady(false) }}
+                />
+              </div>
+            )}
+            {/* night sits over day, so the switch is one layer fading in or
+                out — never both at half, which would dip through the dark */}
+            {wantNight && (
+              <div className="intro__layer" data-on={showNight && nightReady}>
+                <img
+                  className="intro__img"
+                  src={intro.imageDark}
+                  alt=""
+                  style={{ objectPosition: intro.imageFocus }}
+                  onLoad={() => setNightReady(true)}
+                  onError={() => { if (showNight) setReady(false) }}
+                />
+                {/* the shelf lights, breathing: the same picture blurred and
+                    laid over itself in screen mode, so only what is already lit
+                    — shelves, desk, globe — swells. Night only: on the day
+                    picture it would wash the whole sky out every few seconds. */}
+                <img className="intro__img intro__bloom" src={intro.imageDark} alt="" aria-hidden="true" style={{ objectPosition: intro.imageFocus }} />
+              </div>
+            )}
+          </div>
         )}
         {!useImage && ready !== false && (
           <div className="intro__zoom" data-zoom={intro.zoom}>
@@ -231,8 +266,13 @@ export default function Intro() {
         )}
         <Scene show={ready !== true} />
       </div>
-      <div className="intro__shade" aria-hidden="true" />
-      <Fireflies />
+      {/* one shade per picture, crossfading with them: the night one is the
+          original, heavier one; the day one keeps the sky bright and pools
+          its dark only behind the words (see .intro__shade--day) */}
+      <div className="intro__shade" data-on={!useImage || showNight} aria-hidden="true" />
+      {useImage && <div className="intro__shade intro__shade--day" data-on={!showNight} aria-hidden="true" />}
+      {/* fireflies belong to the night garden — in daylight they are specks */}
+      {(!useImage || showNight) && <Fireflies />}
       <div className="intro__frame" aria-hidden="true">
         <i /><i /><i /><i />
       </div>

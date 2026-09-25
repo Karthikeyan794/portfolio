@@ -1276,6 +1276,12 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 1.2s ease;
 }
 .intro__media[data-ready='true'] .intro__img { opacity: 1; }
+/* day and night, stacked: a layer is visible once its picture has arrived and
+   its theme is on. Night sits over day, so a switch is one layer fading —
+   isolated, so the night's breathing bloom screens over the night picture
+   only, never through to the day one underneath */
+.intro__layer { position: absolute; inset: 0; opacity: 0; isolation: isolate; transition: opacity 1.2s ease; }
+.intro__layer[data-on='true'] { opacity: 1; }
 .intro__bloom {
   filter: blur(16px) saturate(1.45) brightness(1.15);
   mix-blend-mode: screen;
@@ -1305,6 +1311,40 @@ a { color: inherit; text-decoration: none; }
     linear-gradient(180deg, rgba(3, 7, 18, 0.55) 0%, rgba(3, 7, 18, 0) 20%),
     linear-gradient(90deg, rgba(4, 5, 12, 0.72) 0%, rgba(4, 5, 12, 0.42) 24%, rgba(4, 5, 12, 0) 46%),
     linear-gradient(180deg, rgba(6, 5, 8, 0) 54%, rgba(6, 5, 8, 0.5) 78%, rgba(6, 5, 8, 0.86) 100%);
+  transition: opacity 1.2s ease;
+}
+/* one shade per picture, crossfading with the picture it belongs to */
+.intro__shade[data-on='false'] { opacity: 0; }
+/* By day. The night shade darkens the whole frame, which on a bright picture
+   just reads as dusk — so this one keeps the top and bottom bands light and
+   pools its dark behind the words at the lower left instead. Tuned against
+   the picture itself: the headline and the paragraph clear 4.5:1 across it at
+   every width tested, and the reader, globe and sky stay bright. */
+.intro__shade.intro__shade--day {
+  background:
+    linear-gradient(180deg, rgba(3, 7, 18, 0.38) 0%, rgba(3, 7, 18, 0) 16%),
+    radial-gradient(66% 56% at 4% 68%, rgba(4, 6, 12, 0.7) 0%, rgba(4, 6, 12, 0.46) 55%, rgba(4, 6, 12, 0) 100%),
+    linear-gradient(90deg, rgba(4, 6, 12, 0.52) 0%, rgba(4, 6, 12, 0.26) 30%, rgba(4, 6, 12, 0) 52%),
+    linear-gradient(180deg, rgba(6, 5, 8, 0) 62%, rgba(6, 5, 8, 0.3) 84%, rgba(6, 5, 8, 0.55) 100%);
+}
+/* Narrower screens crop in tighter, so the paragraph runs across the reader's
+   white shirt — under the wide shades it fell to about 3:1 by day and night
+   alike. The pool reaches further right to cover it. */
+@media (max-width: 1200px) {
+  .intro__shade {
+    background:
+      linear-gradient(180deg, rgba(3, 7, 18, 0.55) 0%, rgba(3, 7, 18, 0) 20%),
+      radial-gradient(86% 50% at 6% 66%, rgba(4, 6, 12, 0.72) 0%, rgba(4, 6, 12, 0.5) 60%, rgba(4, 6, 12, 0) 100%),
+      linear-gradient(90deg, rgba(4, 5, 12, 0.72) 0%, rgba(4, 5, 12, 0.46) 30%, rgba(4, 5, 12, 0) 60%),
+      linear-gradient(180deg, rgba(6, 5, 8, 0) 54%, rgba(6, 5, 8, 0.5) 78%, rgba(6, 5, 8, 0.86) 100%);
+  }
+  .intro__shade.intro__shade--day {
+    background:
+      linear-gradient(180deg, rgba(3, 7, 18, 0.38) 0%, rgba(3, 7, 18, 0) 16%),
+      radial-gradient(86% 50% at 6% 66%, rgba(4, 6, 12, 0.78) 0%, rgba(4, 6, 12, 0.58) 60%, rgba(4, 6, 12, 0) 100%),
+      linear-gradient(90deg, rgba(4, 6, 12, 0.55) 0%, rgba(4, 6, 12, 0.3) 34%, rgba(4, 6, 12, 0) 60%),
+      linear-gradient(180deg, rgba(6, 5, 8, 0) 62%, rgba(6, 5, 8, 0.3) 84%, rgba(6, 5, 8, 0.55) 100%);
+  }
 }
 /* snowfall canvas (About still uses it) and the fireflies over the picture, under the text */
 .snow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
@@ -1441,6 +1481,7 @@ a { color: inherit; text-decoration: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .intro__pic, .intro__bloom, .intro__zoom, .intro__voice::before { animation: none !important; }
+  .intro__layer, .intro__shade { transition: none; }
   .intro__media { transform: none; transition: none; }
   .intro__bloom { opacity: 0.3; }
 }
