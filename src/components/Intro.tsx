@@ -2,14 +2,16 @@ import { motion } from 'motion/react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { intro, profile } from '../data'
 import { useTheme } from '../theme'
-import SnowLayer from './SnowLayer'
+import Fireflies from './Fireflies'
 
 /**
- * Opening hero: the picture (or clip) fills the screen with slow life in it —
- * clouds drifting, mist moving over the valley, a breeze in the grass — while
- * the headline (serif punch word), copy, email → "Say Hello." pill and tool
- * wordmarks appear; the nav slides in last. Sound needs a click, so the voice
- * waits for the small "Play intro voice" control. No file → drawn sunset scene.
+ * Opening hero: the night-library picture fills the screen with slow life in
+ * it — the shelf light breathing, fireflies in the bushes, the whole picture
+ * leaning a little toward the pointer — while the headline (serif punch word
+ * on its own line), copy, email → "Say Hello." pill and tool wordmarks
+ * appear; the nav slides in last. Sound needs a click, so the voice waits for
+ * the small "Play intro voice" control. The clip path is still here for
+ * `intro.video` if `intro.image` is ever emptied. No file → drawn scene.
  */
 
 const T = { line: 0.8, gap: 0.45, punch: 1.75, para: 2.2, form: 2.65, tools: 2.95, nav: 3.35 }
@@ -108,28 +110,36 @@ export default function Intro() {
   const [ctaA, ctaB] = intro.cta
   const useImage = Boolean(intro.image)
 
+  // the picture leans a few pixels toward the pointer, so it reads as a place
+  // rather than a flat backdrop
+  const media = useRef<HTMLDivElement>(null)
+  function lean(e: React.PointerEvent<HTMLElement>) {
+    const el = media.current
+    if (!el || e.pointerType !== 'mouse') return
+    const r = e.currentTarget.getBoundingClientRect()
+    el.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3))
+    el.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3))
+  }
+
   return (
-    <section className="intro" id="top" aria-label="Intro">
-      <div className="intro__media" data-ready={ready === true}>
+    <section className="intro" id="top" aria-label="Intro" onPointerMove={lean}>
+      <div className="intro__media" ref={media} data-ready={ready === true}>
         {useImage && ready !== false && (
           <>
-            <img
-              className="intro__img"
-              src={intro.image}
-              alt=""
-              style={{ objectPosition: intro.imageFocus }}
-              onLoad={() => setReady(true)}
-              onError={() => setReady(false)}
-            />
-            {/* breeze layer: same picture, masked to the grass, swaying */}
-            <div className="intro__grass" aria-hidden="true">
-              <img className="intro__img" src={intro.image} alt="" style={{ objectPosition: intro.imageFocus }} />
+            <div className="intro__pic">
+              <img
+                className="intro__img"
+                src={intro.image}
+                alt=""
+                style={{ objectPosition: intro.imageFocus }}
+                onLoad={() => setReady(true)}
+                onError={() => setReady(false)}
+              />
+              {/* the shelf lights, breathing: the same picture blurred and
+                  laid over itself in screen mode, so only what is already lit
+                  — shelves, desk, globe — swells, and it lines up at any crop */}
+              <img className="intro__img intro__bloom" src={intro.image} alt="" aria-hidden="true" style={{ objectPosition: intro.imageFocus }} />
             </div>
-            <div className="intro__clouds" aria-hidden="true">
-              <i />
-              <i />
-            </div>
-            <div className="intro__mist" aria-hidden="true" />
           </>
         )}
         {!useImage && ready !== false && (
@@ -184,7 +194,7 @@ export default function Intro() {
         <Scene show={ready !== true} />
       </div>
       <div className="intro__shade" aria-hidden="true" />
-      <SnowLayer />
+      <Fireflies />
       <div className="intro__frame" aria-hidden="true">
         <i /><i /><i /><i />
       </div>

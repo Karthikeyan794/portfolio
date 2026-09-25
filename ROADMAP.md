@@ -321,6 +321,19 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
 - Footer (name + credit) sits on the picture's bottom edge. The nav's Contact Me still opens the dialog.
 - Words live in `contact` in `src/data.ts`; links come from `socials`.
 
+## 2f-3. The landing page is the night library (25 Sep 2026)
+
+- The mountain clips are gone (`intro.mp4`, `intro-dark.mp4`, 15 MB out of the deploy). The landing
+  screen is `public/night-library.png` — your export, exact — in both themes.
+- Life in it, all drawn by the page: the shelf light **breathes** (a blurred copy of the picture laid
+  over itself, so only what is lit swells), **fireflies** drift in the bushes, shy of the cursor,
+  and a click lets a few more loose (`Fireflies.tsx`), and the picture **leans** a few px toward the mouse.
+- Words moved to the frame's left rail so they sit on the dark side, clear of the reader; the name
+  is on its own line in warm cream; the tool names went up into the dark sky, top right.
+- The contact band at the bottom uses the same picture file (one download serves both).
+- Tried and dropped the same day: the wide banner version at the foot of both pages.
+- Next idea: the sound is still the mountain ambience (wind + birds). Crickets would suit the night.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**
@@ -649,7 +662,7 @@ Verified with the network stubbed: reaction-only and thought-only sends, the 200
 - [x] **Opening hero** in the "UGH" reference layout: picture full-screen with slow life in it (clouds drifting, mist over the valley, breeze in the grass, gentle Ken Burns) → headline bottom-left with the serif punch word *Karthikeyan.* → copy → email → "Say Hello." pill → tool wordmarks bottom-right → hairline frame → nav slides in (transparent over the picture, solid cream after you scroll). "Play intro voice" reads the intro (browser voice; browsers need a click before sound)
 - [x] **Background clip** in place — `public/intro.mp4` (your "clouds drifting over mountain lake", 1920×1080, 10 s, 7.4 MB, loops) with `public/intro.jpg` underneath while it loads. Set `intro.image = '/intro.jpg'` in `src/data.ts` to go back to the still + CSS motion
 - [x] **Nature sound** on the landing page — wind, distant birds, rustling leaves, synthesised in the browser (no audio file). Starts on the visitor's first click/tap/key (browser rule), speaker toggle in the nav, remembers "off", ducks when you scroll past the hero, pauses in hidden tabs
-- [x] **Snowfall** over the landing screen — smooth canvas flakes (drawn icy crystal sprite at `public/snowflake.svg`; drop your own PNG there to swap), depth-based speed, sway, spin; sleeps off-screen and in hidden tabs; off for reduced-motion users
+- [x] ~~**Snowfall** over the landing screen~~ → fireflies since 25 Sep (snow still drifts in About). Was: — smooth canvas flakes (drawn icy crystal sprite at `public/snowflake.svg`; drop your own PNG there to swap), depth-based speed, sway, spin; sleeps off-screen and in hidden tabs; off for reduced-motion users
 - [x] **Dark theme** — sun/moon toggle in the nav; the hero crossfades to your night clip (`public/intro-dark.mp4`, fetched only when first needed), page colours fade to the dark green set
 - [ ] Better voice: record the intro once with ElevenLabs (free tier) → MP3 (#11)
 - [ ] Hero photo + resume button (now inside the intro)

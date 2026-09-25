@@ -1209,11 +1209,25 @@ a { color: inherit; text-decoration: none; }
   align-items: end;
   overflow: hidden;
   color: #fff;
-  background: #1e3a34;
+  background: #0a0f1c; /* the night sky, while the picture loads */
   margin-top: -74px; /* the picture runs under the transparent nav */
   padding-top: 74px;
 }
-.intro__media { position: absolute; inset: 0; overflow: hidden; }
+/* the whole picture leans a few pixels toward the pointer (--px/--py are
+   -0.5..0.5, set from Intro); scaled a touch so its edges never show */
+.intro__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translate3d(calc(var(--px, 0) * -18px), calc(var(--py, 0) * -12px), 0) scale(1.035);
+  transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.intro__pic {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 55%;
+  animation: intro-kenburns 46s ease-in-out infinite alternate; /* very slow breathing */
+}
 .intro__img {
   position: absolute;
   inset: 0;
@@ -1222,70 +1236,16 @@ a { color: inherit; text-decoration: none; }
   object-fit: cover;
   opacity: 0;
   transition: opacity 1.2s ease;
-  transform-origin: 60% 45%;
-  animation: intro-kenburns 46s ease-in-out infinite alternate; /* very slow breathing */
 }
 .intro__media[data-ready='true'] .intro__img { opacity: 1; }
+.intro__bloom {
+  filter: blur(16px) saturate(1.45) brightness(1.15);
+  mix-blend-mode: screen;
+}
+.intro__media[data-ready='true'] .intro__bloom { animation: intro-breathe 7s ease-in-out infinite alternate; }
+@keyframes intro-breathe { from { opacity: 0.1; } to { opacity: 0.55; } }
 @keyframes intro-kenburns { from { transform: scale(1); } to { transform: scale(1.07) translate(-0.6%, 0.5%); } }
 
-/* breeze: a copy of the picture, faded to only the bottom-left grass, swaying */
-.intro__grass {
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 100%;
-  animation: intro-breeze 6.5s ease-in-out infinite alternate;
-  -webkit-mask-image: linear-gradient(to top, #000 45%, transparent 76%), linear-gradient(to right, #000 50%, transparent 78%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to top, #000 45%, transparent 76%), linear-gradient(to right, #000 50%, transparent 78%);
-  mask-composite: intersect;
-}
-@keyframes intro-breeze { from { transform: skewX(-0.7deg) translateX(-0.25%); } to { transform: skewX(0.7deg) translateX(0.25%); } }
-
-/* clouds: two tileable noise layers drifting across the sky at different speeds */
-.intro__clouds {
-  position: absolute;
-  inset: 0 0 48% 0;
-  overflow: hidden;
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: opacity 2s ease 0.8s;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
-  pointer-events: none;
-}
-.intro__media[data-ready='true'] .intro__clouds { opacity: 0.55; }
-.intro__clouds i {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0035 0.011' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 9 -4.2'/%3E%3C/filter%3E%3Crect width='800' height='400' filter='url(%23c)'/%3E%3C/svg%3E");
-  background-size: 50% 100%;
-  background-repeat: repeat-x;
-  filter: blur(6px);
-  animation: intro-drift 110s linear infinite;
-}
-.intro__clouds i:nth-child(2) { opacity: 0.6; background-position: 30% 0; filter: blur(10px); animation-duration: 170s; animation-direction: reverse; }
-@keyframes intro-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* mist drifting over the valley */
-.intro__mist {
-  position: absolute;
-  left: -20%;
-  right: -20%;
-  top: 44%;
-  height: 20%;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 30%, rgba(255, 255, 255, 0.25) 60%, transparent 100%);
-  filter: blur(18px);
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: opacity 2s ease 1s;
-  animation: intro-mist 38s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-.intro__media[data-ready='true'] .intro__mist { opacity: 0.45; }
-@keyframes intro-mist { from { transform: translateX(-5%); } to { transform: translateX(5%); } }
 
 /* video option */
 .intro__zoom { position: absolute; inset: 0; }
@@ -1295,16 +1255,22 @@ a { color: inherit; text-decoration: none; }
 .intro__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.6s ease; }
 /* day/night clips stacked; the active one is visible — switching themes crossfades them */
 .intro__media[data-ready='true'] .intro__video[data-active='true'] { opacity: 1; }
-:root[data-theme='dark'] .intro__shade { background: linear-gradient(180deg, rgba(5, 10, 9, 0.5) 0%, rgba(5, 10, 9, 0.05) 28%, rgba(5, 10, 9, 0.1) 48%, rgba(5, 10, 9, 0.6) 72%, rgba(5, 10, 9, 0.92) 100%); }
 
 .intro__shade {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(10, 20, 17, 0.42) 0%, rgba(10, 20, 17, 0) 26%, rgba(10, 20, 17, 0) 46%, rgba(10, 20, 17, 0.55) 72%, rgba(10, 20, 17, 0.9) 100%);
+  /* night at the top for the nav, a darker left side where the words sit,
+     and the bushes deepening at the base — the reader in the middle is left
+     alone. The picture is night in either theme, so there is one shade. */
+  background:
+    linear-gradient(180deg, rgba(3, 7, 18, 0.55) 0%, rgba(3, 7, 18, 0) 20%),
+    linear-gradient(90deg, rgba(4, 5, 12, 0.72) 0%, rgba(4, 5, 12, 0.42) 24%, rgba(4, 5, 12, 0) 46%),
+    linear-gradient(180deg, rgba(6, 5, 8, 0) 54%, rgba(6, 5, 8, 0.5) 78%, rgba(6, 5, 8, 0.86) 100%);
 }
-/* snowfall canvas sits over the picture, under the text */
+/* snowfall canvas (About still uses it) and the fireflies over the picture, under the text */
 .snow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.fireflies { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
 /* hairline frame, like the reference */
 .intro__frame { position: absolute; inset: 0; pointer-events: none; }
@@ -1316,30 +1282,41 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 720px) { .intro__frame { display: none; } }
 
 .intro__grid {
-  position: relative;
-  z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.65fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
   gap: 32px;
+  /* the words start at the frame's left rail, not the reading column, so
+     they stay on the dark side of the picture and clear of the reader */
+  max-width: none;
+  padding-inline: calc(3.5% + 34px);
   padding-bottom: clamp(84px, 12vh, 124px);
 }
-@media (max-width: 860px) { .intro__grid { grid-template-columns: 1fr; gap: 26px; } }
-.intro__main { display: grid; gap: 22px; }
+@media (max-width: 860px) { .intro__grid { gap: 26px; padding-inline: 20px; } }
+.intro__main { position: relative; z-index: 2; display: grid; gap: 22px; max-width: 540px; }
 
 .intro__h1 {
   font-family: var(--sans);
   font-weight: 400;
-  font-size: clamp(34px, 5.4vw, 66px);
+  font-size: clamp(34px, 3.9vw, 58px);
   line-height: 1.08;
   letter-spacing: -0.025em;
   color: #fff;
-  max-width: 17ch;
-  text-shadow: 0 4px 30px rgba(10, 20, 17, 0.45);
+  text-shadow: 0 4px 30px rgba(4, 5, 12, 0.55);
 }
 .intro__l { display: block; }
-.intro__punch { font-family: var(--display); font-style: italic; font-weight: 600; letter-spacing: 0; color: #f4f1e8; }
-.intro__p { font-size: clamp(14.5px, 1.25vw, 17px); line-height: 1.55; color: rgba(255, 255, 255, 0.88); max-width: 60ch; }
+.intro__punch {
+  display: block; /* its own line: the name, lit like the shelves */
+  margin-top: 0.06em;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.12em;
+  letter-spacing: 0;
+  color: #ffd6a3;
+  text-shadow: 0 0 28px rgba(255, 150, 60, 0.35), 0 4px 30px rgba(4, 5, 12, 0.55);
+}
+.intro__p { font-size: clamp(14.5px, 1.25vw, 17px); line-height: 1.55; color: rgba(255, 255, 255, 0.88); max-width: 44ch; }
 
 .intro__form {
   display: flex;
@@ -1347,10 +1324,10 @@ a { color: inherit; text-decoration: none; }
   gap: 8px;
   padding: 8px 8px 8px 16px;
   border-radius: 16px;
-  background: rgba(10, 20, 17, 0.55);
+  background: rgba(8, 10, 20, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(12px);
-  max-width: 560px;
+  max-width: 480px;
 }
 .intro__field { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; color: rgba(255, 255, 255, 0.7); }
 .intro__field input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: #fff; font: inherit; font-size: 15px; padding: 10px 0; }
@@ -1368,7 +1345,7 @@ a { color: inherit; text-decoration: none; }
   transition: transform 0.18s ease, background 0.18s ease;
 }
 .intro__cta em { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 1.08em; }
-.intro__cta:hover { background: #fff; transform: translateY(-1px); }
+.intro__cta:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 12px 30px -14px rgba(255, 160, 70, 0.8); }
 
 .intro__voice {
   justify-self: start;
@@ -1382,16 +1359,20 @@ a { color: inherit; text-decoration: none; }
   font-size: 13.5px;
   cursor: pointer;
 }
-.intro__voice::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(166, 232, 91, 0.25); }
+.intro__voice::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #ffc07a; box-shadow: 0 0 0 3px rgba(255, 170, 90, 0.25), 0 0 12px rgba(255, 170, 90, 0.7); }
 .intro__voice:hover { color: #fff; }
 .intro__voice:disabled { opacity: 0.7; cursor: default; }
 .intro__voice[aria-pressed='true']::before { animation: ping 1.4s ease-out infinite; }
 
-.intro__tools { display: grid; gap: 12px; justify-items: end; text-align: right; padding-bottom: 6px; }
-@media (max-width: 860px) { .intro__tools { justify-items: start; text-align: left; } }
+.intro__tools { position: relative; z-index: 2; display: grid; gap: 12px; justify-items: start; text-align: left; }
+/* on a wide screen the tools go up into the dark sky, top right, where
+   nothing is lit behind them */
+@media (min-width: 861px) {
+  .intro__tools { position: absolute; top: clamp(104px, 15vh, 150px); right: calc(3.5% + 34px); justify-items: end; text-align: right; }
+}
 .intro__tools-label { font-size: 12px; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.65); }
-.intro__marks { display: flex; flex-wrap: wrap; gap: 22px; justify-content: flex-end; align-items: baseline; color: #fff; }
-@media (max-width: 860px) { .intro__marks { justify-content: flex-start; } }
+.intro__marks { display: flex; flex-wrap: wrap; gap: 22px; justify-content: flex-start; align-items: baseline; color: #fff; }
+@media (min-width: 861px) { .intro__marks { justify-content: flex-end; } }
 .mark { line-height: 1; opacity: 0.95; white-space: nowrap; }
 .mark--serif { font-family: var(--display); font-weight: 700; font-size: 24px; }
 .mark--sans { font-family: var(--sans); font-weight: 500; font-size: 20px; letter-spacing: -0.02em; }
@@ -1419,13 +1400,21 @@ a { color: inherit; text-decoration: none; }
 .nav[data-stuck='false'] .nav__menu { background: rgba(10, 20, 17, 0.9); }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro__img, .intro__grass, .intro__clouds i, .intro__mist, .intro__zoom, .intro__voice::before { animation: none; }
+  .intro__pic, .intro__bloom, .intro__zoom, .intro__voice::before { animation: none !important; }
+  .intro__media { transform: none; transition: none; }
+  .intro__bloom { opacity: 0.3; }
 }
 @media (max-width: 720px) {
   .intro__h1 { font-size: clamp(30px, 9vw, 42px); max-width: 100%; }
   .intro__form { flex-wrap: wrap; padding: 10px; }
   .intro__cta { width: 100%; }
-  .intro__grass { display: none; }
+  /* on a phone the reader fills the screen, so the base goes darker sooner
+     and the words sit on night, not on the white shirt */
+  .intro__shade {
+    background:
+      linear-gradient(180deg, rgba(3, 7, 18, 0.5) 0%, rgba(3, 7, 18, 0) 18%),
+      linear-gradient(180deg, rgba(6, 5, 8, 0) 30%, rgba(6, 5, 8, 0.78) 54%, rgba(6, 5, 8, 0.94) 100%);
+  }
 }
 
 /* ── nav contact pill: white pill, dark arrow badge; on hover the badge grows to fill the pill ── */

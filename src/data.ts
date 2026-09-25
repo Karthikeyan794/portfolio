@@ -52,7 +52,7 @@ export const socials: { label: string; href: string }[] = [
 export const contact = {
   heading: "Let's build something.",
   body: "The fastest way to reach me is email. I read everything, and reply to anything that isn't a template.",
-  bg: '/contact-bg.png',
+  bg: '/night-library.png',
 }
 
 /** The greeting and the two or three short paragraphs beside it. */
@@ -895,16 +895,17 @@ export const awards: Award[] = [
 ]
 
 // ── Opening intro (image hero) ────────────────────────────
-// Background: the clip at public/intro.mp4 (1920×1080, 10 s, loops) with public/intro.jpg shown
-// underneath while it loads. Set image to '/intro.jpg' to use the still picture (with CSS cloud/mist
-// motion) instead of the clip. Missing files → drawn sunset scene.
+// Background: the night-library picture at public/night-library.png, your export, exact. The page
+// adds the motion itself: shelf light breathing, fireflies, a slight lean toward the pointer.
+// Empty `image` falls back to `video` (none now — the mountain clips are gone). Missing file →
+// drawn scene.
 export const intro = {
-  image: '', // '' = use the video
-  poster: '/intro.jpg', // still shown under the video while it loads
-  imageFocus: '60% 50%', // which part of the picture stays in view when cropped (person is right of centre)
-  video: '/intro.mp4',
-  videoDark: '/intro-dark.mp4', // night version, crossfaded in when the theme is dark
-  zoom: false, // CSS push-in for the video (leave off — the clip has its own motion)
+  image: '/night-library.png',
+  poster: '',
+  imageFocus: '50% 50%', // which part of the picture stays in view when cropped (the reader is centre)
+  video: '',
+  videoDark: '',
+  zoom: false,
   loop: true,
   headline: ['I Design And Build', 'For The Web.'],
   punch: 'Karthikeyan.', // the serif word that ends the headline
