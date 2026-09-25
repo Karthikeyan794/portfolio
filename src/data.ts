@@ -437,6 +437,13 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
+          heading: 'Track Response Time & SLA',
+          body: 'Track how quickly your team responds to and resolves tickets. Set response and resolution targets based on the customer’s SLA, with deadlines shown directly on the ticket. You can also filter tickets by date and export the records as *CSV, Excel, or PDF* for reporting.',
+          clip: '/work/support-desk/clips/sla.mp4',
+          caption: 'The two clocks on a ticket, the targets and time zone behind them, and the whole record out as a file.',
+        },
+        {
+          span: 'full',
           heading: 'Who gets in, and what they may do',
           body: 'The desk has three roles and one place to set them. Under your own name, top right, with the role you hold shown beside it, sits Manage access: everyone who can open the desk, their role on a dropdown, when they last signed in and whether they ever have, and an Invite. Admin edits the list and manages who else has access; support reads, replies, assigns and changes fields; view only reads. Your own row is locked, so an admin cannot demote themselves by accident.\n\nBeside the users sit the requests. Somebody who lands on the gate and asks for access — to the desk, or to the shared mailbox itself — shows up here with what they asked for and when, and Approve says in plain words what it grants before you press it: edit access in the desk, replying, assigning and editing fields. Approve one and the count drops and their role is set. The same menu holds Spam & drafts: a mail flagged as not a ticket is kept there, out of the queue, and nothing in it is deleted.',
           clip: `${HD}/Profile.menu.+.manage.access.mp4`,
@@ -448,13 +455,6 @@ export const projects: Project[] = [
           body: 'Three columns: every account, the people inside one account, and that person’s tickets. Nobody typed a customer in and nobody keeps it current — a new address creates its person the first time they write, so the directory builds itself out of the mail that was already arriving.',
           clip: '/work/support-desk/clips/customers.mp4',
           caption: 'Accounts → people → their tickets, all of it derived from the sender’s address.',
-        },
-        {
-          span: 'full',
-          heading: 'The response clock, and taking the record out',
-          body: 'Two clocks, because a ticket owes two different things: an answer, and a finish. Both start when the mail arrived and neither restarts. The targets sit on the customer’s own account — first response from the mail arriving to our first reply, resolution from the mail arriving to the ticket being closed — so giving somebody an SLA is a data edit rather than a release, and a blank means no promise of that kind, which is silence rather than zero. A third field earns more than it looks: *the zone their deadlines land in*. Kestrel is on two hours and one working day, in London — so a mail that arrives at six in the evening their time is not quietly overdue before anyone here has opened it.\n\nOn the ticket it reads as met or missed rather than as a percentage: *met with 2h 0m to spare*, or *+31h overdue* in the same red the queue row already uses, so the list and the ticket never disagree about the same ticket. The numbers behind the defaults came from measuring rather than guessing — across the 96 tickets belonging to customers with an SLA, a three-hour first reply was met 39 times out of 61, and a three-hour close was met zero times out of 58, with a median close of 504 hours. One of those is a target and the other is a wish, so resolution starts blank for somebody to set honestly.\n\nThe same page hands the whole record over. Pick a date range and the count moves with it — *58 tickets in this range* — then take it as CSV, Excel or PDF, read from the ticket records themselves rather than from anything cached. It is the answer to *send me everything you have on us*, which was previously somebody’s afternoon.',
-          clip: '/work/support-desk/clips/sla.mp4',
-          caption: 'The two clocks on a ticket, the targets and time zone behind them, and the whole record out as a file.',
         },
         {
           span: 'full',
