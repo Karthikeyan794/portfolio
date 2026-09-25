@@ -422,8 +422,8 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'All thirteen filters, and the view you save them as',
-          body: 'The full set: thirteen filters over the queue — status, owner, customer, type, the clock, the rest — and they stack, so each one you add narrows what is left rather than replacing it. Which is powerful and exhausting to set twice. So a set of filters can be saved with a name, and the saved list splits in two — mine, and the ones the desk has shared — because “who else can see this” is the question people actually have about a saved filter. Sharing is decided when you save and changed from the same menu, and only the owner can rename, reshare or remove one: a shared view is somebody else’s work, and quietly editing it under them is how people stop sharing.',
+          heading: 'Filter & Save Ticket Views',
+          body: 'Use filters to quickly find tickets by status, assignee, customer, type, priority, and more. Combine filters to narrow down your results, then save them as a view for quick access. You can keep views private or share them with your team.',
           clip: `${HD}/views.mp4`,
           caption: 'The thirteen filters stacking over the queue, then saved as a named view — and who else can see it.',
         },
