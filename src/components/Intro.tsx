@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { intro, profile } from '../data'
+import { useEffect, useRef, useState } from 'react'
+import { intro } from '../data'
 import { useTheme } from '../theme'
 import Fireflies from './Fireflies'
 
@@ -14,7 +14,7 @@ import Fireflies from './Fireflies'
  * `intro.video` if `intro.image` is ever emptied. No file → drawn scene.
  */
 
-const T = { line: 0.8, gap: 0.45, punch: 1.75, para: 2.2, form: 2.65, tools: 2.95, nav: 3.35 }
+const T = { hello: 0.55, line: 0.95, word: 0.085, para: 1.75, cta: 2.05, tools: 2.35, nav: 2.8 }
 export const INTRO_NAV_DELAY = T.nav
 
 const rise = (delay: number) => ({
@@ -23,31 +23,6 @@ const rise = (delay: number) => ({
   transition: { delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] as const },
 })
 
-function speak(text: string, onEnd: () => void) {
-  if (!('speechSynthesis' in window)) return false
-  const u = new SpeechSynthesisUtterance(text)
-  const voices = window.speechSynthesis.getVoices()
-  const pick =
-    voices.find((v) => /en-(IN|GB)/i.test(v.lang) && /female|Samantha|Karen|Moira|Google/i.test(v.name)) ??
-    voices.find((v) => /^en/i.test(v.lang)) ??
-    null
-  if (pick) u.voice = pick
-  u.rate = 0.96
-  u.onend = onEnd
-  u.onerror = onEnd
-  window.speechSynthesis.cancel()
-  window.speechSynthesis.speak(u)
-  return true
-}
-
-function MailIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="14" rx="3" />
-      <path d="m3 8 9 6 9-6" />
-    </svg>
-  )
-}
 
 function Scene({ show }: { show: boolean }) {
   return (
@@ -63,6 +38,73 @@ function Scene({ show }: { show: boolean }) {
       <div className="scene__grass" />
     </div>
   )
+}
+
+/**
+ * The line that types itself above the headline, like a prompt: the name
+ * first, then what I do, then where. Each phrase types at a slightly uneven,
+ * hand-typed pace, holds, deletes, and the next begins. Timers rather than
+ * animation frames, so a throttled tab only slows it down — the text is plain
+ * DOM and is there whether or not a frame ever arrives. A screen reader gets
+ * every phrase at once instead of letters arriving.
+ */
+function Hello({ phrases, delay }: { phrases: string[]; delay: number }) {
+  const reduce = useReducedMotion()
+  const [text, setText] = useState(reduce ? phrases[0] ?? '' : '')
+  useEffect(() => {
+    if (reduce || !phrases.length) {
+      setText(phrases[0] ?? '')
+      return
+    }
+    let i = 0
+    let n = 0
+    let typing = true
+    let t = 0
+    const tick = () => {
+      const phrase = phrases[i]
+      if (typing) {
+        n += 1
+        setText(phrase.slice(0, n))
+        if (n >= phrase.length) {
+          typing = false
+          // the name stays up longest: it is the one that matters
+          t = window.setTimeout(tick, i === 0 ? 2800 : 1800)
+          return
+        }
+        t = window.setTimeout(tick, 52 + Math.random() * 46)
+      } else {
+        n -= 1
+        setText(phrase.slice(0, n))
+        if (n <= 0) {
+          typing = true
+          i = (i + 1) % phrases.length
+          t = window.setTimeout(tick, 380)
+          return
+        }
+        t = window.setTimeout(tick, 28)
+      }
+    }
+    t = window.setTimeout(tick, delay * 1000)
+    return () => window.clearTimeout(t)
+  }, [phrases, delay, reduce])
+
+  return (
+    <motion.p className="intro__hello" {...rise(Math.max(0, delay - 0.3))}>
+      <span className="sr-only">{phrases.join(', ')}</span>
+      <span aria-hidden="true">
+        <span className="intro__prompt">$</span> {text}
+        <span className="intro__caret" data-still={reduce ? 'true' : undefined} />
+      </span>
+    </motion.p>
+  )
+}
+
+/** 'I *design* and *build*' → its words, the starred ones set in the serif */
+function wordsOf(line: string) {
+  return line.split(' ').map((w) => {
+    const m = w.match(/^\*(.+?)\*([.,!?;:]*)$/)
+    return m ? { text: m[1], tail: m[2], serif: true } : { text: w, tail: '', serif: false }
+  })
 }
 
 export default function Intro() {
@@ -114,29 +156,7 @@ export default function Intro() {
     return () => io.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightOn, reduce])
-  const [speaking, setSpeaking] = useState(false)
-  const [spoken, setSpoken] = useState(false)
-
-  useEffect(() => () => window.speechSynthesis?.cancel(), [])
-
-  function playVoice() {
-    if (speaking) return
-    const ok = speak(intro.voice, () => {
-      setSpeaking(false)
-      setSpoken(true)
-    })
-    if (ok) setSpeaking(true)
-  }
-
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const email = String(new FormData(e.currentTarget).get('email') ?? '')
-    const subject = encodeURIComponent(`Hello from ${email}`)
-    const body = encodeURIComponent(`Hi ${profile.name.split(' ')[0]},\n\n`)
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
-  }
-
-  const [ctaA, ctaB] = intro.cta
+  const reduce2 = useReducedMotion()
   const useImage = Boolean(intro.image)
   // Light theme shows the library by day, dark theme the same library at
   // night, and switching crossfades between them. Each is fetched the first
@@ -280,46 +300,46 @@ export default function Intro() {
 
       <div className="wrap intro__grid">
         <div className="intro__main">
+          <Hello phrases={intro.hello} delay={T.hello} />
+
+          {/* each word clears out of a blur on its own beat, left to right */}
           <h1 className="intro__h1">
-            {intro.headline.map((line, i) => (
-              <motion.span className="intro__l" key={line} {...rise(T.line + i * T.gap)}>
-                {line}
-                {i === intro.headline.length - 1 && (
-                  <>
-                    {' '}
-                    <motion.em className="intro__punch" {...rise(T.punch)}>
-                      {intro.punch}
-                    </motion.em>
-                  </>
-                )}
-              </motion.span>
-            ))}
+            {(() => {
+              let k = 0
+              return intro.headline.map((line) => (
+                <span className="intro__l" key={line}>
+                  {wordsOf(line).map((w, wi, all) => {
+                    const at = k++
+                    return (
+                      <span key={wi}>
+                        <motion.span
+                          className={w.serif ? 'intro__w intro__serif' : 'intro__w'}
+                          initial={reduce2 ? false : { opacity: 0, y: 14, filter: 'blur(10px)' }}
+                          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                          transition={{ delay: T.line + at * T.word, duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+                        >
+                          {w.serif ? <em>{w.text}</em> : w.text}
+                          {w.tail}
+                        </motion.span>
+                        {wi < all.length - 1 ? ' ' : ''}
+                      </span>
+                    )
+                  })}
+                </span>
+              ))
+            })()}
           </h1>
 
           <motion.p className="intro__p" {...rise(T.para)}>
             {intro.paragraph}
           </motion.p>
 
-          <motion.form className="intro__form" onSubmit={onSubmit} {...rise(T.form)}>
-            <label className="intro__field">
-              <MailIcon />
-              <input name="email" type="email" required placeholder={intro.placeholder} aria-label="Your email" autoComplete="email" />
-            </label>
-            <button type="submit" className="intro__cta">
-              {ctaA} <em>{ctaB}</em>
-            </button>
-          </motion.form>
-
-          <motion.button
-            type="button"
-            className="intro__voice"
-            onClick={playVoice}
-            disabled={speaking}
-            aria-pressed={speaking}
-            {...rise(T.form + 0.2)}
-          >
-            {speaking ? 'Speaking…' : spoken ? 'Play intro voice again' : 'Play intro voice'}
-          </motion.button>
+          <motion.a className="intro__go" href={intro.cta.href} {...rise(T.cta)}>
+            {intro.cta.label}
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
+          </motion.a>
         </div>
 
         <motion.aside className="intro__tools" {...rise(T.tools)}>

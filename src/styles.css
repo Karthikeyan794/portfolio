@@ -1268,76 +1268,79 @@ a { color: inherit; text-decoration: none; }
   padding-bottom: calc(var(--intro-blend) * 0.7 + 16px);
 }
 @media (max-width: 860px) { .intro__grid { gap: 26px; padding-inline: 20px; } }
-.intro__main { position: relative; z-index: 2; display: grid; gap: 22px; max-width: 540px; }
+.intro__main { position: relative; z-index: 2; display: grid; gap: 20px; max-width: 560px; }
 
+/* the prompt that types itself — the name, then what I do, then where */
+.intro__hello {
+  display: inline-flex;
+  align-items: baseline;
+  min-height: 1.5em; /* holds its height while it empties between phrases */
+  font-family: var(--mono);
+  font-size: clamp(13px, 1.05vw, 15px);
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 2px 16px rgba(4, 5, 12, 0.6);
+}
+.intro__prompt { margin-right: 0.1em; color: #a6e85b; }
+.intro__caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: rgba(166, 232, 91, 0.9);
+  animation: intro-caret 1.06s steps(1, end) infinite;
+}
+.intro__caret[data-still='true'] { animation: none; }
+@keyframes intro-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+/* the headline: sentence case, two lines, the two verbs in the grey serif.
+   Each word clears out of a blur on its own beat (Intro.tsx). */
 .intro__h1 {
   font-family: var(--sans);
   font-weight: 400;
-  font-size: clamp(34px, 3.9vw, 58px);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
+  font-size: clamp(36px, 4.2vw, 62px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
   color: #fff;
   text-shadow: 0 4px 30px rgba(4, 5, 12, 0.55);
 }
 .intro__l { display: block; }
-.intro__punch {
-  display: block; /* its own line: the name, lit like the shelves */
-  margin-top: 0.06em;
+.intro__w { display: inline-block; }
+.intro__serif em {
   font-family: var(--display);
   font-style: italic;
-  font-weight: 600;
-  font-size: 1.12em;
-  letter-spacing: 0;
-  color: #ffd6a3;
-  text-shadow: 0 0 28px rgba(255, 150, 60, 0.35), 0 4px 30px rgba(4, 5, 12, 0.55);
-}
-.intro__p { font-size: clamp(14.5px, 1.25vw, 17px); line-height: 1.55; color: rgba(255, 255, 255, 0.88); max-width: 44ch; }
-
-.intro__form {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 8px 8px 16px;
-  border-radius: 16px;
-  background: rgba(8, 10, 20, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(12px);
-  max-width: 480px;
-}
-.intro__field { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; color: rgba(255, 255, 255, 0.7); }
-.intro__field input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: #fff; font: inherit; font-size: 15px; padding: 10px 0; }
-.intro__field input::placeholder { color: rgba(255, 255, 255, 0.55); }
-.intro__cta {
-  flex: none;
-  padding: 12px 18px;
-  border-radius: 11px;
-  border: 0;
-  background: #f4f1e8;
-  color: #14261f;
   font-weight: 500;
-  font-size: 15px;
-  cursor: pointer;
-  transition: transform 0.18s ease, background 0.18s ease;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.62);
+  transition: color 0.35s ease;
 }
-.intro__cta em { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 1.08em; }
-.intro__cta:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 12px 30px -14px rgba(255, 160, 70, 0.8); }
+/* point at one and it lights up */
+.intro__serif:hover em { color: #fff; }
+.intro__p { font-size: clamp(15px, 1.2vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.84); max-width: 46ch; }
 
-.intro__voice {
+/* the one way on: down to the work */
+.intro__go {
   justify-self: start;
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 4px 0;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 13.5px;
-  cursor: pointer;
+  margin-top: 4px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.intro__voice::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #ffc07a; box-shadow: 0 0 0 3px rgba(255, 170, 90, 0.25), 0 0 12px rgba(255, 170, 90, 0.7); }
-.intro__voice:hover { color: #fff; }
-.intro__voice:disabled { opacity: 0.7; cursor: default; }
-.intro__voice[aria-pressed='true']::before { animation: ping 1.4s ease-out infinite; }
+.intro__go svg { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.intro__go:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.45); transform: translateY(-1px); }
+.intro__go:hover svg { transform: translateY(3px); }
+.intro__go:focus-visible { outline: 2px solid #a6e85b; outline-offset: 3px; }
 
 .intro__tools { position: relative; z-index: 2; display: grid; gap: 12px; justify-items: start; text-align: left; }
 /* on a wide screen the tools go up into the dark sky, top right, where
@@ -1375,15 +1378,13 @@ a { color: inherit; text-decoration: none; }
 .nav[data-stuck='false'] .nav__menu { background: rgba(10, 20, 17, 0.9); }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro__pic, .intro__bloom, .intro__zoom, .intro__voice::before { animation: none !important; }
+  .intro__pic, .intro__bloom, .intro__zoom, .intro__caret { animation: none !important; }
   .intro__layer, .intro__shade { transition: none; }
   .intro__media { transform: none; transition: none; }
   .intro__bloom { opacity: 0.3; }
 }
 @media (max-width: 720px) {
   .intro__h1 { font-size: clamp(30px, 9vw, 42px); max-width: 100%; }
-  .intro__form { flex-wrap: wrap; padding: 10px; }
-  .intro__cta { width: 100%; }
   /* on a phone the reader fills the screen, so the base goes darker sooner
      and the words sit on night, not on the white shirt */
   .intro__shade {

@@ -924,12 +924,14 @@ export const intro = {
   videoDark: '', // empty: the one clip plays in both themes
   zoom: false,
   loop: true,
-  headline: ['I Design And Build', 'For The Web.'],
-  punch: 'Karthikeyan.', // the serif word that ends the headline
+  // The line that types itself above the headline: the name first, then what
+  // I do, then where. Each types, holds, and deletes before the next.
+  hello: ["hi, i'm karthikeyan", 'product designer', 'front-end developer', 'based in chennai'],
+  // Two lines. A word between *asterisks* is set in the grey serif italic.
+  headline: ['I *design* and *build*', 'for the web.'],
   paragraph:
-    'Product Designer From Chennai. I Go Deep On Research To Find The Real Problem, Design It In Figma, Then Build It In React.',
-  placeholder: 'Your email here…',
-  cta: ['Say', 'Hello.'], // second word is set in the serif
+    'Product designer from Chennai. I go deep on research to find the real problem, design it in Figma, then build it in React.',
+  cta: { label: 'See my work', href: '#work' },
   toolsLabel: 'Working With',
   tools: [
     { name: 'Figma', style: 'serif' },
@@ -937,5 +939,4 @@ export const intro = {
     { name: 'TypeScript', style: 'heavy' },
     { name: 'Vite', style: 'wide' },
   ] as { name: string; style: 'serif' | 'sans' | 'heavy' | 'wide' }[],
-  voice: "Hi, I'm Karthikeyan. I design and build for the web. Welcome — take a look around.",
 }
