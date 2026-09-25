@@ -65,9 +65,10 @@ export default function Contact() {
 
   return (
     <section className="reach" id="contact" ref={root} aria-label="Contact">
-      {/* a banner, not a screen: the sky picture in a rounded card inside
-          the page margins, the glass on its left so the person with the
-          laptop stays in view on the right */}
+      {/* a short banner, edge to edge and the last thing on the page: the
+          sky picture fading in from the page at the top, the glass on the
+          left so the person with the laptop stays in view on the right, and
+          the footer on the picture's bottom edge */}
       <div className="reach__banner">
       <motion.img className="reach__bg" src={contact.bg} alt="" aria-hidden="true" style={{ y: drift }} />
       <span className="reach__shade" aria-hidden="true" />
@@ -94,6 +95,8 @@ export default function Contact() {
             {contact.body}
           </motion.p>
 
+          {/* links and mail share one row, so the card stays short */}
+          <div className="reach__row">
           <motion.ul className="reach__links" variants={after} custom={1}>
             {socials.map((s) => (
               <li key={s.label}>
@@ -133,8 +136,8 @@ export default function Contact() {
               )}
             </button>
           </motion.div>
+          </div>
         </motion.div>
-      </div>
       </div>
 
       <footer className="reach__foot">
@@ -144,6 +147,8 @@ export default function Contact() {
           <a href="https://kenney.nl" target="_blank" rel="noreferrer">Kenney</a> (CC0)
         </span>
       </footer>
+      </div>
+
 
       <ContactModal open={open} onClose={() => setOpen(false)} />
     </section>
