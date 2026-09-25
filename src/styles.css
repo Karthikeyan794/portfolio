@@ -2094,9 +2094,10 @@ a { color: inherit; text-decoration: none; }
 .dfr__full:hover { background: rgba(255, 255, 255, 0.16); }
 .dfr__view {
   position: relative;
-  /* tall enough to work in, never taller than the screen it is on: the
-     window and its bar fit inside the viewport with the words above them */
-  height: clamp(420px, 74vh, 900px);
+  /* the height of a real browser window on a laptop, so the desk has the
+     room it was built for — it may run past the fold, and that is fine: the
+     page scrolls, and anyone who wants the whole screen has the button */
+  height: clamp(680px, 92vh, 1040px);
   overflow: hidden;
   background: #fff;
 }
@@ -2145,7 +2146,7 @@ a { color: inherit; text-decoration: none; }
 .dfr__go:hover { transform: translateX(-50%) translateY(-2px); background: rgba(14, 16, 20, 0.96); }
 @media (max-width: 860px) {
   .dfr { padding: 10px; border-radius: 16px; }
-  .dfr__view { height: clamp(360px, 62vh, 640px); }
+  .dfr__view { height: clamp(420px, 78vh, 760px); }
   .dfr__tabs { display: none; }
   .dfr__full span { display: none; }
 }
