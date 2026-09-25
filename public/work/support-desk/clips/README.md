@@ -24,7 +24,7 @@ release instead, so the untouched exports are what visitors get.
 | 5 | Assign & Manage Tickets | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
 | 6 | Assign & Notify | release `Team.notified.with.assigned.mp4` | 90 MB · 3188×2160 · 30s | **original, live on the release** — recorded against the real desk: colleagues’ names and work emails in the roster and the Teams sidebar |
 | 7 | Filter & Save Ticket Views | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
-| 8 | Merging duplicates, marking spam | release `merge.mp4` | 170 MB | **original, live on the release** |
+| 8 | Merge & Mark as Spam | release `merge.mp4` | 170 MB | **original, live on the release** |
 | 9 | Who gets in, and what they may do | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
 | 10 | The customer view it produces | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
 | 11 | The response clock, and taking the record out | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |

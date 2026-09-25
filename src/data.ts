@@ -429,8 +429,8 @@ export const projects: Project[] = [
         },
         {
           span: 'full',
-          heading: 'Merging duplicates, and marking spam',
-          body: 'Two tickets for the same request — the customer wrote twice, or two people reported the same thing — merge into one, so there is a single thread and a single owner instead of two people each answering half of it. And junk that arrived in the shared mailbox is marked spam, which takes it out of the queue without anybody having to answer it first.',
+          heading: 'Merge & Mark as Spam',
+          body: 'If multiple tickets are about the same request, merge them into one ticket to keep the conversation and ownership in one place. Unwanted emails can be marked as spam and removed from the support queue without needing a reply.',
           clip: `${HD}/merge.mp4`,
           clipFallback: '/work/support-desk/clips/merge.mp4',
           caption: 'Two tickets merged into one, and junk marked spam out of the queue.',
