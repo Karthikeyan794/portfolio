@@ -19,6 +19,24 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
   const [loaded, setLoaded] = useState(false)
   const frame = useRef<HTMLIFrameElement>(null)
   const view = useRef<HTMLDivElement>(null)
+  const root = useRef<HTMLDivElement>(null)
+
+  // while the window is on screen the page's fixed header steps out of the
+  // way — it would sit over the top of the app. Announced as an event so the
+  // header, which lives two components up, can listen without a prop chain.
+  useEffect(() => {
+    const el = root.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => window.dispatchEvent(new CustomEvent('demo-inview', { detail: entry.isIntersecting })),
+      { threshold: 0.2 },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      window.dispatchEvent(new CustomEvent('demo-inview', { detail: false }))
+    }
+  }, [])
   // the app is built for a desktop. Below DESIGN px of room it is not squeezed
   // but drawn at DESIGN px and scaled down to fit, so a phone sees the desk
   // whole — and the height follows the viewport rather than a fixed ratio.
@@ -54,7 +72,7 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
 
   const path = hash.replace(/^#/, '')
   return (
-    <div className="dfr">
+    <div className="dfr" ref={root}>
       {art && <img className="dfr__desk" src={art} alt="" aria-hidden="true" />}
       <span className="dfr__tint" aria-hidden="true" />
 

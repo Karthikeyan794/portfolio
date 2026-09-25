@@ -295,6 +295,13 @@ function chaptered(slices: Slice[]) {
 export default function ProjectPage({ slug }: { slug: string }) {
   const project = projectBySlug(slug)
   const heroRef = useRef<HTMLDivElement>(null)
+  // the demo window asks the header to leave while it is on screen
+  const [navAway, setNavAway] = useState(false)
+  useEffect(() => {
+    const onDemo = (e: Event) => setNavAway(Boolean((e as CustomEvent<boolean>).detail))
+    window.addEventListener('demo-inview', onDemo)
+    return () => window.removeEventListener('demo-inview', onDemo)
+  }, [])
   const { scrollYProgress } = useScroll()
   const bar = useSpring(scrollYProgress, { stiffness: 120, damping: 26, restDelta: 0.001 })
 
@@ -364,7 +371,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
       <main className="case">
       <motion.div className="case__bar" style={{ scaleX: bar }} aria-hidden="true" />
 
-      <header className={solid ? 'case__nav case__nav--solid' : 'case__nav'}>
+      <header className={[ 'case__nav', solid && 'case__nav--solid', navAway && 'case__nav--away' ].filter(Boolean).join(' ')}>
         <button className="case__back" onClick={closeProject}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M19 12H5M11 18l-6-6 6-6" />

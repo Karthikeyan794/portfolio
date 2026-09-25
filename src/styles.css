@@ -1491,6 +1491,8 @@ a { color: inherit; text-decoration: none; }
     border-color 0.35s ease, backdrop-filter 0.35s ease;
 }
 /* once the hero has gone past, it needs a ground to stay readable */
+/* over the demo the header is gone — it would sit on top of the app */
+.case__nav--away { transform: translateY(-120%); opacity: 0; pointer-events: none; }
 .case__nav--solid {
   background: color-mix(in srgb, var(--bg) 86%, transparent);
   backdrop-filter: blur(12px);
@@ -1997,19 +1999,20 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate;
 }
 .dfr__desk {
+  /* the picture is the point now, so it is shown sharp — only a light tint
+     under the window so the bar's white type holds against the sky */
   position: absolute;
-  inset: -4%;
-  width: 108%;
-  height: 108%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  filter: blur(14px) saturate(1.15);
   z-index: 0;
 }
 .dfr__tint {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(8, 14, 20, 0.35), rgba(8, 14, 20, 0.6));
+  background: linear-gradient(180deg, rgba(8, 14, 20, 0.18), rgba(8, 14, 20, 0.42));
 }
 .dfr__win {
   position: relative;

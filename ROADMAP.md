@@ -526,6 +526,13 @@ drawn at 1100px and scaled down to fit (`transform: scale`, measured with a `Res
 `DemoFrame.tsx`), so a phone sees the desk whole — small, but whole — and *Open in full screen*
 is right there. A laptop's content column is about 1100px, so it gets the app 1:1.
 
+**The header leaves while the demo is on screen (25 Sep 2026).** The frame watches itself with
+an `IntersectionObserver` and fires a `demo-inview` event; the case page's fixed header listens
+and takes `.case__nav--away` (slid up, faded, no pointer events) so it never sits over the top of
+the app. Scroll back up and it returns. The wallpaper behind the window is your meadow and paper
+plane, `public/work/support-desk/demo-bg.jpg` (2000×1427, 409 KB, as sent), shown sharp under a
+light tint — the `art` field on the slice's `embed`.
+
 **How the window behaves.** Inert until you press *Click to interact* — the iframe takes no
 pointer events, so scrolling the page past it never gets caught inside the app. Move the pointer
 out of the window and it goes quiet again. The tab strip (Home · Tickets · Customers) drives the

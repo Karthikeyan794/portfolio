@@ -487,7 +487,7 @@ export const projects: Project[] = [
               { label: 'Tickets', hash: '#/tickets' },
               { label: 'Customers', hash: '#/contacts' },
             ],
-            art: '/bento/support-desk.jpg',
+            art: '/work/support-desk/demo-bg.jpg',
           },
         },
       ],
