@@ -459,78 +459,75 @@ a { color: inherit; text-decoration: none; }
 
 
 
-/* ── contact, the home page's last screen ─────────────────────────────────
-   Your picture full bleed, one glass panel over it. Everything on it is
-   light on dark whatever the page theme is, because the picture is night.
-   The top edge melts into the page, so the band rises out of it rather than
-   starting at a hard line. */
+/* ── contact: a banner card, not a screen ─────────────────────────────────
+   The sky picture in a rounded card inside the page margins, one glass
+   panel on its left so the person with the laptop stays in view on the
+   right. Light on dark inside the card whatever the theme; the footer under
+   it is back on the page's own colours. */
 .reach {
+  padding: clamp(40px, 8vh, 90px) clamp(16px, 2.5vw, 40px) 0;
+}
+.reach__banner {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 1fr auto;
-  min-height: clamp(660px, 62vw, 980px);
-  margin-top: clamp(40px, 8vh, 90px);
+  align-items: center;
+  max-width: 1400px;
+  min-height: clamp(440px, 36vw, 560px);
+  margin-inline: auto;
+  padding: clamp(20px, 3.6vw, 56px);
+  border-radius: clamp(20px, 2vw, 28px);
   color: #f4f1e8;
-  background: #0b1220;
+  background: #0b1430;
+  box-shadow: 0 30px 80px -40px rgba(8, 14, 40, 0.55);
 }
 .reach__bg {
   position: absolute;
-  /* taller than the band and sitting low, so the reader lands under the
-     panel instead of behind it */
-  top: -4%;
+  top: -7%;
   left: 0;
   z-index: -2;
   width: 100%;
-  height: 124%;
+  height: 114%;
   object-fit: cover;
-  object-position: 50% 62%;
+  object-position: 62% 50%;
 }
-/* the page's own colour at the top, the night at the bottom, and a little
-   weight at the base so the footer reads */
+/* a little night on the left, under the glass, and nothing on the right */
 .reach__shade {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--bg) 0%, color-mix(in srgb, var(--bg) 55%, transparent) 7%, transparent 22%),
-    linear-gradient(to top, rgba(6, 9, 18, 0.78) 0%, rgba(6, 9, 18, 0) 26%);
+  background: linear-gradient(90deg, rgba(4, 8, 24, 0.45) 0%, rgba(4, 8, 24, 0.12) 45%, rgba(4, 8, 24, 0) 65%);
 }
-.reach__stage {
-  display: grid;
-  place-items: center;
-  padding: clamp(84px, 11vh, 120px) 16px clamp(40px, 8vh, 90px);
-  align-self: start;
-}
+.reach__stage { display: grid; justify-items: start; min-width: 0; }
 .reach__glass {
-  --mx: 50%;
-  --my: 40%;
+  --mx: 30%;
+  --my: 30%;
   position: relative;
   display: grid;
-  justify-items: center;
+  justify-items: start;
   gap: 16px;
-  width: min(640px, 100%);
-  padding: clamp(28px, 4vw, 44px) clamp(20px, 4vw, 48px);
-  border-radius: 28px;
-  text-align: center;
+  width: min(560px, 100%);
+  min-width: 0;
+  padding: clamp(26px, 3.4vw, 44px);
+  border-radius: 24px;
+  text-align: left;
   background:
-    radial-gradient(420px circle at var(--mx) var(--my), rgba(255, 176, 92, 0.16), transparent 62%),
-    rgba(12, 16, 30, 0.34);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  -webkit-backdrop-filter: blur(30px) saturate(1.35);
-  backdrop-filter: blur(30px) saturate(1.35);
+    radial-gradient(420px circle at var(--mx) var(--my), rgba(255, 176, 92, 0.14), transparent 62%),
+    rgba(10, 16, 40, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  backdrop-filter: blur(28px) saturate(1.35);
 }
 .reach__h {
   font-family: var(--display);
   font-weight: 500;
-  font-size: clamp(36px, 5vw, 60px);
-  line-height: 1.04;
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: #fff;
-  text-wrap: balance;
 }
 .reach__w { display: inline-block; margin-right: 0.24em; will-change: transform, filter, opacity; }
 .reach__w:last-child { margin-right: 0; }
@@ -538,12 +535,11 @@ a { color: inherit; text-decoration: none; }
   max-width: 42ch;
   font-size: 15.5px;
   line-height: 1.6;
-  color: rgba(244, 241, 232, 0.74);
+  color: rgba(244, 241, 232, 0.76);
 }
 .reach__links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 8px;
   margin-top: 4px;
   list-style: none;
@@ -556,13 +552,13 @@ a { color: inherit; text-decoration: none; }
   padding: 8px 14px;
   border-radius: 999px;
   font-size: 14px;
-  color: rgba(244, 241, 232, 0.86);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(244, 241, 232, 0.88);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 .reach__links a svg { opacity: 0.7; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease; }
-.reach__links a:hover { color: #fff; background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.3); }
+.reach__links a:hover { color: #fff; background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.32); }
 .reach__links a:hover svg { opacity: 1; transform: translate(2px, -2px); }
 .reach__mail {
   display: inline-flex;
@@ -608,25 +604,36 @@ a { color: inherit; text-decoration: none; }
   align-items: baseline;
   justify-content: space-between;
   gap: 10px 24px;
-  width: 100%;
-  max-width: var(--maxw);
+  max-width: 1400px;
   margin-inline: auto;
-  padding: 22px clamp(20px, 5vw, 40px) 28px;
+  padding: 26px 4px 34px;
   font-size: 13px;
-  color: rgba(244, 241, 232, 0.6);
+  color: var(--muted);
 }
-.reach__foot a { color: rgba(244, 241, 232, 0.86); text-decoration: underline; text-underline-offset: 3px; }
-.reach__mark { font-family: var(--display); font-size: 22px; color: #fff; }
+.reach__foot a { color: var(--text-mid); text-decoration: underline; text-underline-offset: 3px; }
+.reach__foot a:hover { color: var(--text); }
+.reach__mark { font-family: var(--display); font-size: 20px; color: var(--text); }
 @media (max-width: 640px) {
-  .reach { min-height: 118svh; }
-  .reach__bg { object-position: 50% 70%; }
-  .reach__stage { padding-top: 88px; }
-  .reach__glass { gap: 14px; }
+  /* a phone: the sky shows above, the glass sits along the bottom */
+  .reach__banner { align-items: end; min-height: 0; padding: 190px 12px 12px; }
+  .reach__bg { object-position: 72% 30%; }
+  .reach__shade { background: linear-gradient(180deg, rgba(4, 8, 24, 0) 30%, rgba(4, 8, 24, 0.4) 100%); }
+  .reach__glass { padding: 22px 18px; gap: 14px; border-radius: 18px; }
   .reach__p { font-size: 14.5px; }
   .reach__links { flex-wrap: nowrap; gap: 6px; }
   .reach__links a { padding: 7px 11px; font-size: 13px; }
   .reach__mail { padding-left: 14px; }
-  .reach__addr { font-size: 13.5px; gap: 8px; }
+  .reach__addr { font-size: 13.5px; gap: 8px; white-space: nowrap; }
+  /* the address needs the room more than the icon does */
+  .reach__addr svg { display: none; }
+}
+@media (max-width: 360px) {
+  /* the smallest phones: less frame, and the links may take two rows */
+  .reach { padding-inline: 8px; }
+  .reach__banner { padding: 170px 8px 8px; }
+  .reach__glass { padding: 20px 14px; }
+  .reach__links { flex-wrap: wrap; }
+  .reach__addr { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .reach__w { will-change: auto; }

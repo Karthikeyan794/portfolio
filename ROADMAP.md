@@ -313,12 +313,14 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
 
 ## 2f-2. Contact band on the home page (25 Sep 2026)
 
-- Built after the Polser "Join the movement" screen: your night-library picture full bleed
-  (`public/contact-bg.png`, exact file), one frosted-glass panel over it.
+- Built after the Polser "Join the movement" screen, then made smaller the same night: a **banner
+  card** inside the page margins (not a full screen), your Milky Way picture as its background
+  (`public/contact-sky.png`, exact file), the frosted-glass panel on its left so the person with the
+  laptop stays in view on the right. On a phone the sky shows above and the glass sits at the bottom.
 - On the panel: the heading writes itself in word by word (blur → sharp), a short note, pills for
   Behance / GitHub / LinkedIn, and your mail as a light pill with a copy button (shows a tick).
 - A soft orange light follows the pointer across the glass; the picture drifts a little on scroll.
-- Footer (name + credit) sits on the picture's bottom edge. The nav's Contact Me still opens the dialog.
+- Footer (name + credit) sits under the card on the page's own colours. The nav's Contact Me still opens the dialog.
 - Words live in `contact` in `src/data.ts`; links come from `socials`.
 
 ## 2f-3. The landing page is the night library (25 Sep 2026)
@@ -330,7 +332,7 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
   and a click lets a few more loose (`Fireflies.tsx`), and the picture **leans** a few px toward the mouse.
 - Words moved to the frame's left rail so they sit on the dark side, clear of the reader; the name
   is on its own line in warm cream; the tool names went up into the dark sky, top right.
-- The contact band at the bottom uses the same picture file (one download serves both).
+- The contact band has its own picture now (the Milky Way one), so the page no longer opens and ends on the same scene.
 - Tried and dropped the same day: the wide banner version at the foot of both pages.
 - Next idea: the sound is still the mountain ambience (wind + birds). Crickets would suit the night.
 

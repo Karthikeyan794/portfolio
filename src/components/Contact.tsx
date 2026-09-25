@@ -4,8 +4,8 @@ import { contact, profile, socials } from '../data'
 import ContactModal from './ContactModal'
 
 /**
- * The end of the home page: your picture full bleed, and one frosted panel
- * over it holding the whole invitation — a line that writes itself in, a
+ * The end of the home page: the sky picture as a banner card, and one
+ * frosted panel on it holding the whole invitation — a line that writes itself in, a
  * short note, your links, and your mail.
  *
  * The panel is glass, not a card: `backdrop-filter` smears the glowing
@@ -42,7 +42,7 @@ export default function Contact() {
 
   // the picture drifts a little slower than the page, so the panel floats over it
   const { scrollYProgress } = useScroll({ target: root, offset: ['start end', 'end start'] })
-  const drift = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['-7%', '7%'])
+  const drift = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['-6%', '6%'])
 
   // a soft light follows the pointer across the glass
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
@@ -65,6 +65,10 @@ export default function Contact() {
 
   return (
     <section className="reach" id="contact" ref={root} aria-label="Contact">
+      {/* a banner, not a screen: the sky picture in a rounded card inside
+          the page margins, the glass on its left so the person with the
+          laptop stays in view on the right */}
+      <div className="reach__banner">
       <motion.img className="reach__bg" src={contact.bg} alt="" aria-hidden="true" style={{ y: drift }} />
       <span className="reach__shade" aria-hidden="true" />
 
@@ -130,6 +134,7 @@ export default function Contact() {
             </button>
           </motion.div>
         </motion.div>
+      </div>
       </div>
 
       <footer className="reach__foot">

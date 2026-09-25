@@ -52,7 +52,7 @@ export const socials: { label: string; href: string }[] = [
 export const contact = {
   heading: "Let's build something.",
   body: "The fastest way to reach me is email. I read everything, and reply to anything that isn't a template.",
-  bg: '/night-library.png',
+  bg: '/contact-sky.png',
 }
 
 /** The greeting and the two or three short paragraphs beside it. */
