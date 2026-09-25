@@ -517,6 +517,14 @@ the same way. The data is baked into the bundle: fictional companies and people 
 `demodesk.io`, the AI readings and Teams cards written in; the only outside traffic is Google
 Fonts and customer-logo lookups.
 
+**It follows the viewport (25 Sep 2026).** The window's height is a share of the screen
+(`clamp(420px, 74vh, 900px)`, less on a phone), so the whole thing, bar included, sits inside the
+viewport with the words above it — it used to be a fixed 16:10 box that ran taller than a laptop
+screen. The app is built for a desktop, so below 1100px of room it is not squeezed: the iframe is
+drawn at 1100px and scaled down to fit (`transform: scale`, measured with a `ResizeObserver` in
+`DemoFrame.tsx`), so a phone sees the desk whole — small, but whole — and *Open in full screen*
+is right there. A laptop's content column is about 1100px, so it gets the app 1:1.
+
 **How the window behaves.** Inert until you press *Click to interact* — the iframe takes no
 pointer events, so scrolling the page past it never gets caught inside the app. Move the pointer
 out of the window and it goes quiet again. The tab strip (Home · Tickets · Customers) drives the

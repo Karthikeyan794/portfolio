@@ -2094,7 +2094,10 @@ a { color: inherit; text-decoration: none; }
 .dfr__full:hover { background: rgba(255, 255, 255, 0.16); }
 .dfr__view {
   position: relative;
-  aspect-ratio: 16 / 10;
+  /* tall enough to work in, never taller than the screen it is on: the
+     window and its bar fit inside the viewport with the words above them */
+  height: clamp(420px, 74vh, 900px);
+  overflow: hidden;
   background: #fff;
 }
 .dfr__view iframe {
@@ -2142,7 +2145,7 @@ a { color: inherit; text-decoration: none; }
 .dfr__go:hover { transform: translateX(-50%) translateY(-2px); background: rgba(14, 16, 20, 0.96); }
 @media (max-width: 860px) {
   .dfr { padding: 10px; border-radius: 16px; }
-  .dfr__view { aspect-ratio: 4 / 5; }
+  .dfr__view { height: clamp(360px, 62vh, 640px); }
   .dfr__tabs { display: none; }
   .dfr__full span { display: none; }
 }

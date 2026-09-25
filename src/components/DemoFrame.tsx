@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export type DemoPage = { label: string; hash: string }
 
@@ -18,6 +18,29 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
   const [live, setLive] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const frame = useRef<HTMLIFrameElement>(null)
+  const view = useRef<HTMLDivElement>(null)
+  // the app is built for a desktop. Below DESIGN px of room it is not squeezed
+  // but drawn at DESIGN px and scaled down to fit, so a phone sees the desk
+  // whole — and the height follows the viewport rather than a fixed ratio.
+  const DESIGN = 1100
+  const [fit, setFit] = useState({ scale: 1, height: 0 })
+  useEffect(() => {
+    const el = view.current
+    if (!el) return
+    const measure = () => {
+      const w = el.clientWidth
+      const h = el.clientHeight
+      setFit({ scale: Math.min(1, w / DESIGN), height: h })
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  const scaled = fit.scale < 1
+  const frameStyle = scaled && fit.height
+    ? { width: `${DESIGN}px`, height: `${fit.height / fit.scale}px`, transform: `scale(${fit.scale})`, transformOrigin: 'top left' }
+    : undefined
 
   function go(h: string) {
     setHash(h)
@@ -69,13 +92,14 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
           </a>
         </div>
 
-        <div className="dfr__view">
+        <div className="dfr__view" ref={view}>
           <iframe
             ref={frame}
             src={src + (pages[0]?.hash ?? '')}
             title={title}
             loading="lazy"
             onLoad={() => setLoaded(true)}
+            style={frameStyle}
           />
           {!loaded && <span className="dfr__wait">Loading the desk…</span>}
           {!live && (
