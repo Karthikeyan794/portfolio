@@ -1,10 +1,11 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
-import { profile, projectBySlug, type Project, type Slice } from '../data'
+import { projectBySlug, type Project, type Slice } from '../data'
 import { closeProject } from '../router'
 import GridBg from './GridBg'
 import Brief from './Brief'
 import AutoClip from './AutoClip'
+import CaseEnd from './CaseEnd'
 import Credits from './Credits'
 import DemoFrame from './DemoFrame'
 import { Lightbox, ZoomButton, type Zoomed } from './Zoom'
@@ -461,22 +462,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
           ))}
         </div>
 
-        <motion.div className="case__end" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7 }}>
-          <h2>
-            <Words text="Want the full story?" />
-          </h2>
-          <p>
-            <Words text="Happy to walk through the decisions, the dead ends and what I'd change." />
-          </p>
-          <div className="case__end-actions">
-            <a className="btn btn--primary" href={`mailto:${profile.email}?subject=${encodeURIComponent(project.title)}`}>
-              Get in touch
-            </a>
-            <button className="btn btn--ghost" onClick={closeProject}>
-              Back to all work
-            </button>
-          </div>
-        </motion.div>
+        <CaseEnd slug={project.slug} title={project.title} />
       </div>
       </main>
     </>

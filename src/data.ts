@@ -16,8 +16,8 @@
  * nothing anyone takes the time to write is silently dropped.
  */
 export const feedback = {
-  endpoint: 'https://example.invalid/submit',
-  accessKey: 'TEST-KEY',
+  endpoint: '',
+  accessKey: '',
 }
 
 export const profile = {

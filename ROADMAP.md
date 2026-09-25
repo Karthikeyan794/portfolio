@@ -568,6 +568,38 @@ Verified 25 Sep 2026 by driving it headlessly: the queue loads 200 tickets, a ti
 Reply, Assignee and AI summary, the composer opens on the template greeting, Customers lists
 seven accounts, Home shows the welcome and the counts — no dialogs, no errors.
 
+## 2i. The end of each case study asks how it landed (25 Sep 2026)
+
+`src/components/CaseEnd.tsx` replaces the old "Want the full story?" block on every project page.
+
+- **Left:** the invitation, now opening the real contact dialog instead of a bare `mailto:` (the
+  project page replaces the home page, so the nav's dialog was never mounted there).
+- **Right:** *How did this one land?* — **Liked it / Not for me**, then an optional line of why and
+  an optional name or role. Clicking the same button again takes the answer back. A visitor's answer
+  is remembered on their own device, so coming back shows what they said.
+
+**Private on purpose.** Nothing is shown publicly: a visible dislike count on a job portfolio helps
+nobody, and an open comment wall invites exactly the kind of comment you don't want a recruiter to
+read first.
+
+**Where the answers go** — `feedback` at the top of `src/data.ts`:
+
+| `endpoint` | What happens |
+|---|---|
+| empty (today) | reaction stays on the visitor's device; a written note opens *their* email app, filled in, addressed to you |
+| a form service URL | each reaction and each note is POSTed as JSON and lands in your inbox |
+
+Free services that work with no code change:
+
+- **Web3Forms** — `endpoint: 'https://api.web3forms.com/submit'`, plus the `accessKey` they email you
+- **Formspree** — `endpoint: 'https://formspree.io/f/<your-id>'`, `accessKey` left empty
+
+Verified with a stubbed service: a bare reaction posts on its own, a note posts with `message` and
+`from`, the access key rides along, and a failed send keeps the note and offers "Email it instead".
+
+Also fixed in passing: `.btn--ghost` on a `<button>` showed the browser's default grey fill —
+`.btn` never reset it. The old footer's "Back to all work" had it too.
+
 ## 3. Checklist — what's done
 
 ### Phase 0 · Setup

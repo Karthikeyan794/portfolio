@@ -359,7 +359,9 @@ a { color: inherit; text-decoration: none; }
 .btn:hover { transform: translateY(-1px); }
 .btn--primary { background: var(--primary); color: var(--on-primary); }
 .btn--primary:hover { background: var(--primary-hover); }
-.btn--ghost { border-color: var(--primary); color: var(--primary); }
+/* transparent on purpose: on a <button>, leaving it unset shows the browser's
+   own buttonface grey — an <a class="btn"> never had one, so the two drifted */
+.btn--ghost { border-color: var(--primary); color: var(--primary); background: transparent; }
 :root[data-theme='dark'] .btn--ghost { border-color: var(--line-strong); color: var(--text); }
 .btn--ghost:hover { background: var(--bg-sunk); }
 
@@ -1721,8 +1723,7 @@ a { color: inherit; text-decoration: none; }
    a mistake. */
 .case__body > .primer,
 .case__body > .brief,
-.case__body > .rows,
-.case__body > .case__end {
+.case__body > .rows {
   padding-top: clamp(40px, 6vh, 72px);
 }
 /* ── case-study rows: words on the left, screens on the right ───── */
@@ -2652,19 +2653,221 @@ a { color: inherit; text-decoration: none; }
 }
 .case__link:hover { color: var(--text); border-color: var(--line-strong); }
 
-.case__end {
+/* ── the end of a case study: talk to me, and tell me how it landed ──
+   Two halves on one card. The light that follows the pointer is a radial
+   gradient at --sx/--sy, written by CaseEnd.tsx; before the pointer arrives it
+   sits in the top-left corner, so the card is never flat. */
+.cend {
+  --cend-lift: #eef3ea;
+  --cend-base: #e4ede0;
+  position: relative;
   display: grid;
-  gap: 14px;
-  justify-items: start;
-  padding: clamp(26px, 4vw, 42px);
-  border-radius: 24px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(22px, 4vw, 56px);
+  align-items: stretch;
+  margin-top: clamp(64px, 10vh, 112px);
+  padding: clamp(26px, 4vw, 52px);
+  border-radius: 28px;
   border: 1px solid var(--line);
-  background: linear-gradient(180deg, #eef3ea, #e7efe3);
+  background:
+    radial-gradient(560px circle at var(--sx, 14%) var(--sy, 0%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 64%),
+    linear-gradient(160deg, var(--cend-lift), var(--cend-base));
+  overflow: hidden;
+  isolation: isolate;
 }
-:root[data-theme='dark'] .case__end { background: linear-gradient(180deg, #16302a, #122622); }
-.case__end h2 { font-family: var(--display); font-size: clamp(24px, 3.2vw, 34px); font-weight: 700; letter-spacing: -0.02em; }
-.case__end p { color: var(--text-mid); max-width: 56ch; }
-.case__end-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+:root[data-theme='dark'] .cend {
+  --cend-lift: #173129;
+  --cend-base: #0f1f1b;
+  border-color: color-mix(in srgb, var(--accent) 14%, var(--line));
+}
+/* a faint rule of graph paper in the card, echoing the page behind it */
+.cend::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 34px 34px;
+  -webkit-mask-image: linear-gradient(115deg, #000 0%, transparent 55%);
+  mask-image: linear-gradient(115deg, #000 0%, transparent 55%);
+  opacity: 0.7;
+}
+
+/* left: the invitation */
+.cend__talk { display: grid; gap: 14px; align-content: center; justify-items: start; }
+.cend__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cend__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.cend__h {
+  font-family: var(--display);
+  font-size: clamp(30px, 3.8vw, 46px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+}
+.cend__p { color: var(--text-mid); max-width: 42ch; font-size: 16px; line-height: 1.55; }
+.cend__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.cend__arrow { transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+.cend__cta:hover .cend__arrow { transform: translateX(3px); }
+.cend__back:hover .cend__arrow { transform: translateX(-3px); }
+:root[data-theme='dark'] .cend__cta { background: var(--accent); color: #0d1a0a; }
+:root[data-theme='dark'] .cend__cta:hover { background: color-mix(in srgb, var(--accent) 86%, #fff); }
+
+/* right: how did it land */
+.cend__vote {
+  container-type: inline-size;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  padding: clamp(20px, 2.6vw, 28px);
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-elev) 62%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.cend__q { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+.cend__qsub { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
+
+.cend__pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.react {
+  --react: var(--text);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--bg) 40%, transparent);
+  color: var(--text);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.react--like { --react: var(--accent-ink); }
+.react--dislike { --react: var(--dia-bad); }
+.react:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--react) 55%, var(--line-strong)); }
+.react:active { transform: translateY(0) scale(0.98); }
+.react[aria-pressed='true'] {
+  border-color: var(--react);
+  color: var(--react);
+  background: color-mix(in srgb, var(--react) 13%, transparent);
+}
+:root[data-theme='dark'] .react--like[aria-pressed='true'] { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.react:focus-visible { outline: 2px solid var(--react); outline-offset: 2px; }
+.react__icon { position: relative; display: inline-flex; }
+.react__ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--react);
+  pointer-events: none;
+}
+
+.cend__note { display: grid; gap: 10px; overflow: hidden; }
+.cend__field textarea,
+.cend__field input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  color: var(--text);
+  font: inherit;
+  font-size: 14.5px;
+  line-height: 1.5;
+  transition: border-color 0.2s ease;
+}
+.cend__field textarea { resize: vertical; min-height: 88px; }
+.cend__field textarea::placeholder,
+.cend__field input::placeholder { color: var(--muted); }
+/* one stroke on focus, no glow around it */
+.cend__field textarea:focus,
+.cend__field input:focus { outline: none; border-color: var(--accent-ink); }
+:root[data-theme='dark'] .cend__field textarea:focus,
+:root[data-theme='dark'] .cend__field input:focus { border-color: var(--accent); }
+.cend__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cend__fine { font-size: 12.5px; color: var(--muted); max-width: 30ch; }
+.cend__send { padding: 10px 18px; }
+.cend__send:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.cend__err { font-size: 13px; color: var(--dia-bad); }
+.cend__err a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* after answering */
+.cend__thanks { display: grid; grid-template-columns: auto 1fr; gap: 14px 16px; align-items: center; }
+.cend__badge {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+}
+.cend__badge--like { color: var(--accent-ink); background: var(--accent-soft); }
+:root[data-theme='dark'] .cend__badge--like { color: var(--accent); }
+.cend__badge--dislike { color: var(--dia-bad); background: color-mix(in srgb, var(--dia-bad) 14%, transparent); }
+.cend__change {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-mid);
+  font: inherit;
+  font-size: 13.5px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--line-strong);
+  cursor: pointer;
+}
+.cend__change:hover { color: var(--text); text-decoration-color: currentColor; }
+
+@media (max-width: 860px) {
+  .cend { grid-template-columns: 1fr; }
+}
+/* measured against the panel, not the window: the panel is narrowest in the
+   middle widths, while the card is still two columns */
+@container (max-width: 330px) {
+  .cend__pick { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .react, .cend__arrow { transition: none; }
+}
+
+/* visible to a screen reader, not on screen */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 /* ── graph-paper canvas, lit where the cursor is ─────────── */
 .gridbg {
