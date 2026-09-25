@@ -21,15 +21,15 @@ release instead, so the untouched exports are what visitors get.
 | 2 | The Ticket Thread | release `thread.mp4` | 177 MB | **original, live on the release** |
 | 3 | Write & Send Replies | release `reply.mp4` | 159 MB | **original, live on the release** |
 | 4 | AI Assistance for Ticket Replies | release `ai-suggestions.mp4` | 146 MB · 3644×2160 · 50s | **original, live on the release** |
-| 5 | Assign & Manage Tickets | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
-| 6 | Assign & Notify | release `Team.notified.with.assigned.mp4` | 90 MB · 3188×2160 · 30s | **original, live on the release** — recorded against the real desk: colleagues’ names and work emails in the roster and the Teams sidebar |
-| 7 | Filter & Save Ticket Views | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
-| 8 | Merge & Mark as Spam | release `merge.mp4` | 170 MB | **original, live on the release** |
-| 9 | Track Response Time & SLA | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
-| 10 | Customer & Contact Management | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
-| 11 | Dashboard | release `home.mp4` | 268 MB | **original, live on the release** |
-| 12 | User Roles & Access | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
-| 13 | Milo — the desk, from inside Teams | release `Milio.workflow.chat.bot.in.term.mp4` | 79 MB · 3636×2160 · 46s | **original, live on the release** — uploaded by hand under the name GitHub gave the file; the page's address matches it |
+| 5 | Milo: Your Support Assistant in Teams | release `Milio.workflow.chat.bot.in.term.mp4` | 79 MB · 3636×2160 · 46s | **original, live on the release** — uploaded by hand under the name GitHub gave the file; the page's address matches it |
+| 6 | Assign & Manage Tickets | `assign.mp4` | 72 MB · 1592×1080 | **original, byte for byte** |
+| 7 | Assign & Notify | release `Team.notified.with.assigned.mp4` | 90 MB · 3188×2160 · 30s | **original, live on the release** — recorded against the real desk: colleagues’ names and work emails in the roster and the Teams sidebar |
+| 8 | Filter & Save Ticket Views | release `views.mp4` | 225 MB · 3644×2160 · 128s | **original, on the release** — checked: serves all 236,273,045 bytes, range requests answered |
+| 9 | Merge & Mark as Spam | release `merge.mp4` | 170 MB | **original, live on the release** |
+| 10 | Track Response Time & SLA | `sla.mp4` | 89 MB · 3636×2160 | **original, byte for byte** |
+| 11 | Customer & Contact Management | `customers.mp4` | 65 MB · 1820×1080 | **original, byte for byte** |
+| 12 | Dashboard | release `home.mp4` | 268 MB | **original, live on the release** |
+| 13 | User Roles & Access | release `Profile.menu.+.manage.access.mp4` | 128 MB · 3636×2160 · 69s | **original, live on the release** — recorded against the demo |
 
 **The Milo recording went up under its raw name** (`Milio.workflow.chat.bot.in.term.mp4`, dots
 where the spaces were) on 24 Sep, and the page's address is matched to it. It was recorded against
