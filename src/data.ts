@@ -381,8 +381,7 @@ export const projects: Project[] = [
     cover: '/bento/support-desk.jpg',
     // the card plays the Support Desk intro (dark) over the still; the still
     // stays as its poster, since the clip opens on a black frame
-    // in the banner its top edge sits flush with the banner's top, so nothing at the top is cut
-    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg', bannerDown: 0, bannerFill: '#030407' },
+    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg' },
     featured: 1,
     size: 'hero',
     tone: 'sage',
