@@ -442,7 +442,10 @@ export default function ProjectPage({ slug }: { slug: string }) {
         </motion.div>
         <motion.div className="wrap wrap--wide case__hero-text" variants={heroV} initial="rest" animate="in">
           <span className="case__h1">
-            <motion.h1 variants={heroMask}>{project.title}</motion.h1>
+            <motion.h1 variants={heroMask}>
+              {project.logo && <img className="case__logo" src={project.logo} alt="" />}
+              {project.title}
+            </motion.h1>
           </span>
           {detail.hook && (
             <motion.p className="case__hook" variants={heroLine}>

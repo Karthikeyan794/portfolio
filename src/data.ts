@@ -309,6 +309,8 @@ export type Brief = {
 export type Project = {
   slug: string
   title: string
+  /** the product's own mark, beside the title in the case study's banner */
+  logo?: string
   /** one line under the title in the grid */
   tagline: string
   blurb: string
@@ -371,6 +373,7 @@ export const projects: Project[] = [
     latest: true,
     group: 'product',
     title: 'Support Desk',
+    logo: '/work/support-desk/logo.svg',
     tagline: 'A shared mailbox, turned into a support system',
     blurb:
       'Support ran on one shared Outlook mailbox, and a ticket that is only an email has no owner, no status, no clock and no customer. I sat with the team, collected the Microsoft access first, drew the flow, and built the desk on the tenant we already pay for: assignment that lands in Teams, a reply that opens already written, SLA clocks, saved views, a derived customer directory and role-based access — with the mailbox, the intake flow and the SharePoint list underneath left exactly where they were.',
@@ -557,7 +560,8 @@ export const projects: Project[] = [
     slug: 'atom',
     latest: true,
     group: 'product',
-    title: 'Atom',
+    title: 'Atom Gallery',
+    logo: '/work/atom/logo.svg',
     tagline: 'One place to find, switch on and pay for AI',
     blurb:
       'The console where a facilities team finds its AI: agents you open, assistants you switch on, and one shared pool of credits behind both. I designed and built the catalogue, the guide with its playgrounds, access and credits.',
@@ -581,10 +585,8 @@ export const projects: Project[] = [
         { label: 'Stack', value: 'React · TypeScript · Vite' },
         { label: 'Status', value: 'In production' },
       ],
-      hook: {
-        lead: 'Every AI feature now has',
-        words: ['a home.', 'a guide.', 'an owner.', 'a price.'],
-      },
+      // no line under the title in the banner: the logo and the name, and the
+      // recording says the rest
       primer: {
         heads: { what: 'Overview' },
         what: 'Atom is *one console for every AI feature a team can use*. Agents are whole apps you open, like a helpdesk or a planner; assistants live inside the tools people already use, and you switch them on for everyone. Both sit on one page that answers the two questions anyone arrives with — *what do we have, and what could we have?* — with a guide and a playground for each one, and a single pool of credits that shows who spends what.',
