@@ -4,12 +4,11 @@ import { useEffect, useRef } from 'react'
  * Fireflies over the night garden on the landing screen.
  *
  * Canvas, not DOM. Each firefly has a depth: the far ones are small, sharp
- * points of light with a little starburst when they flare; the near ones are
- * big, soft, out-of-focus discs, like a camera focused past them. Every one
+ * points of light with a little starburst when they flare; the nearer ones
+ * are bigger, softer glows. Every one
  * comes and goes — it fades in somewhere, drifts on a slow curving path,
  * glows, and fades out, then turns up again elsewhere — so the garden is
- * always changing but never fills up. Tiny specks twinkle between them, and a
- * few cool blue-green discs sit far back, the lights of the trees behind.
+ * always changing but never fills up. Tiny specks twinkle between them.
  *
  * They drift away from the pointer when it comes near, and a click on the
  * picture lets a few more loose from that spot. The layer takes no pointer
@@ -30,7 +29,6 @@ type Fly = {
 type Speck = { x: number; y: number; phase: number; rate: number; r: number }
 
 const WARM = ['255, 214, 140', '255, 196, 112', '255, 234, 176']
-const COOL = '150, 205, 225'
 
 /** a firefly's light: a white-hot core, a warm glow, a wide faint halo */
 function glow(rgb: string) {
@@ -68,22 +66,6 @@ function rays(rgb: string) {
   return c
 }
 
-/** an out-of-focus light: a flat disc with a soft rim */
-function bokeh(rgb: string) {
-  const c = document.createElement('canvas')
-  c.width = c.height = 96
-  const g = c.getContext('2d')!
-  const grad = g.createRadialGradient(48, 48, 0, 48, 48, 48)
-  grad.addColorStop(0, `rgba(${rgb}, 0.5)`)
-  grad.addColorStop(0.62, `rgba(${rgb}, 0.42)`)
-  grad.addColorStop(0.8, `rgba(${rgb}, 0.5)`)
-  grad.addColorStop(0.9, `rgba(${rgb}, 0.18)`)
-  grad.addColorStop(1, `rgba(${rgb}, 0)`)
-  g.fillStyle = grad
-  g.fillRect(0, 0, 96, 96)
-  return c
-}
-
 export default function Fireflies({ className = '' }: { className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
@@ -95,7 +77,6 @@ export default function Fireflies({ className = '' }: { className?: string }) {
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const glows = WARM.map(glow)
     const flares = WARM.map(rays)
-    const discs = [...WARM.map(bokeh), bokeh(COOL)]
 
     let w = 0, h = 0, dpr = 1
     let flies: Fly[] = []
@@ -111,9 +92,8 @@ export default function Fireflies({ className = '' }: { className?: string }) {
     }
 
     const make = (x: number, y: number, burst = false): Fly => {
-      // depth: mostly far and sharp, some middling, a few near and soft
-      const roll = Math.random()
-      const z = burst ? 0.2 + Math.random() * 0.3 : roll < 0.62 ? Math.random() * 0.45 : roll < 0.86 ? 0.45 + Math.random() * 0.3 : 0.78 + Math.random() * 0.22
+      // depth: mostly far and sharp, the rest nearer and softer
+      const z = burst ? 0.2 + Math.random() * 0.3 : Math.random() < 0.65 ? Math.random() * 0.45 : 0.45 + Math.random() * 0.4
       const heading = Math.random() * Math.PI * 2
       const kick = burst ? 0.8 + Math.random() * 0.9 : 0
       return {
@@ -128,8 +108,7 @@ export default function Fireflies({ className = '' }: { className?: string }) {
         rate: 0.5 + Math.random() * 1.2,
         life: burst ? 0 : -Math.random() * 3, // ambient ones start staggered
         ttl: burst ? 3 + Math.random() * 3 : 7 + Math.random() * 9,
-        // a few far-back discs are the cool lights of the trees behind
-        tint: z > 0.8 && Math.random() < 0.15 ? 3 : Math.floor(Math.random() * WARM.length),
+        tint: Math.floor(Math.random() * WARM.length),
         burst,
       }
     }
@@ -193,23 +172,16 @@ export default function Fireflies({ className = '' }: { className?: string }) {
         if (on < 0.01) continue
         // a slow breath, with a brighter flare now and then
         const pulse = Math.pow(Math.max(0, Math.sin(t * f.rate + f.phase)), 2)
-        if (f.z > 0.72) {
-          // near: a big soft disc, faint, barely pulsing — out of focus
-          const d = 30 + f.z * 80
-          ctx.globalAlpha = on * (0.26 + pulse * 0.14) * (f.tint === 3 ? 0.6 : 1)
-          ctx.drawImage(discs[f.tint], f.x - d / 2, f.y - d / 2, d, d)
-          continue
-        }
         const a = on * (0.55 + 0.45 * pulse)
         // far ones are smaller; the middle ones bigger and softer
         const d = (18 + f.z * 46) * (1 + pulse * 0.6)
         ctx.globalAlpha = Math.min(1, a * (0.9 + f.z * 0.3))
-        ctx.drawImage(glows[f.tint % 3], f.x - d / 2, f.y - d / 2, d, d)
+        ctx.drawImage(glows[f.tint], f.x - d / 2, f.y - d / 2, d, d)
         // the sharp ones throw a small starburst at the peak of a flare
         if (f.z < 0.45 && pulse > 0.75) {
           const r = d * 1.5
           ctx.globalAlpha = Math.min(1, a * (pulse - 0.75) * 3.2)
-          ctx.drawImage(flares[f.tint % 3], f.x - r / 2, f.y - r / 2, r, r)
+          ctx.drawImage(flares[f.tint], f.x - r / 2, f.y - r / 2, r, r)
         }
       }
       ctx.globalAlpha = 1
