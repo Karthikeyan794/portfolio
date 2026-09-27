@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { ambience } from '../audio/ambience'
 import { intro } from '../data'
 import { marks } from '../logos'
 import { useTyped } from '../useTyped'
@@ -252,6 +253,12 @@ export default function Intro() {
     return () => io.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightOn, reduce])
+  // sound on: the ambience is actually playing (the toggle's own state)
+  const soundOn = useSyncExternalStore(
+    (fn) => ambience.subscribe(fn),
+    () => ambience.running,
+    () => false,
+  )
   const useImage = Boolean(intro.image)
   // Light theme shows the library by day, dark theme the same library at
   // night, and switching crossfades between them. Each is fetched the first
@@ -414,8 +421,9 @@ export default function Intro() {
       {/* a light blur across the screen behind the words (see .intro__veil);
           under the fireflies and the frame, which stay sharp on top of it */}
       <div className="intro__veil" aria-hidden="true" />
-      {/* fireflies belong to the night garden — in daylight they are specks */}
-      {(!useImage || showNight) && <Fireflies />}
+      {/* fireflies belong to the night garden, and come out with the sound:
+          switch the sound on and they fade in, switch it off and they fade away */}
+      {(!useImage || showNight) && <Fireflies on={soundOn} />}
       <motion.div className="intro__frame" aria-hidden="true" style={{ opacity: frameFade }}>
         <i /><i /><i /><i />
       </motion.div>

@@ -68,7 +68,7 @@ function rays() {
   return c
 }
 
-export default function Fireflies({ className = '' }: { className?: string }) {
+export default function Fireflies({ className = '', on = true }: { className?: string; on?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -294,5 +294,5 @@ export default function Fireflies({ className = '' }: { className?: string }) {
     }
   }, [])
 
-  return <canvas ref={ref} className={`fireflies ${className}`.trim()} aria-hidden="true" />
+  return <canvas ref={ref} className={`fireflies ${className}`.trim()} data-on={on} aria-hidden="true" />
 }
