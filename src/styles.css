@@ -1704,6 +1704,13 @@ a { color: inherit; text-decoration: none; }
   will-change: top, left, right, border-radius;
 }
 @media (max-width: 720px) { .case__hero { --hero-inset: 14px; } }
+/* a banner playing a recording: at least as tall as the recording is at the
+   frame's width, so it is not cut top and bottom; a phone keeps 68% of the
+   screen, where the width is the short side */
+.case__hero--clip {
+  min-height: max(calc(68vh + var(--hero-inset)), calc((100vw - 2 * var(--hero-inset)) / var(--clip-ratio) + var(--hero-inset)));
+  min-height: max(calc(68svh + var(--hero-inset)), calc((100vw - 2 * var(--hero-inset)) / var(--clip-ratio) + var(--hero-inset)));
+}
 .case__hero-media { position: absolute; inset: 0; }
 .case__hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .case__hero-shade {
@@ -1754,8 +1761,8 @@ a { color: inherit; text-decoration: none; }
 .case__hero-text h1 {
   font-family: var(--display);
   font-weight: 700;
-  font-size: clamp(28px, 4.4vw, 50px);
-  line-height: 1.04;
+  font-size: 24px;
+  line-height: 1.1;
   letter-spacing: -0.025em;
 }
 .case__hook {

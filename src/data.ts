@@ -321,8 +321,9 @@ export type Project = {
    *  while the card is on screen; `poster` is its first frame. It plays in the
    *  case page's banner too; with `bannerDown` set it is pinned by its top
    *  edge that many px below the banner's top (0 = flush, nothing cut), the
-   *  band above painted `bannerFill` (the clip's own edge colour) */
-  coverClip?: { src: string; poster?: string; bannerDown?: number; bannerFill?: string }
+   *  band above painted `bannerFill` (the clip's own edge colour). `ratio` is
+   *  the clip's width / height: the banner grows to show it whole */
+  coverClip?: { src: string; poster?: string; ratio?: number; bannerDown?: number; bannerFill?: string }
   /** the Behance gallery for this project — shown as a link inside its page */
   behance?: string
   /** still being made: its card opens a short "working on it" note (see
@@ -381,7 +382,7 @@ export const projects: Project[] = [
     cover: '/bento/support-desk.jpg',
     // the card plays the Support Desk intro (dark) over the still; the still
     // stays as its poster, since the clip opens on a black frame
-    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg' },
+    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg', ratio: 3840 / 2160 },
     featured: 1,
     size: 'hero',
     tone: 'sage',
@@ -397,12 +398,7 @@ export const projects: Project[] = [
         // where it plugs in: mail comes from Outlook, the assistant lives in Teams
         { label: 'Works with', value: 'Outlook · Microsoft Teams' },
       ],
-      hook: {
-        // a short lead, so the ending is the thing that lands — and every
-        // ending is two or three words, so the slot never swings far
-        lead: 'Every request now has',
-        words: ['an owner.', 'a status.', 'a clock.', 'a reply.'],
-      },
+      // no line under the title in the banner: the recording says it
       primer: {
         heads: { what: 'Overview' },
         what: 'Support Desk lets you *manage every customer request in one place*, on your own or as a team. Every question that comes in gets an owner, a status and a clock, with that customer’s whole history sitting beside it — so your team can reach people quickly, understand what they actually need, answer without hunting through an inbox, and keep the conversation going until the customer is happy. Nothing goes missing, nobody is asked to repeat themselves, and no one on your team has to guess who is handling what.',
@@ -572,7 +568,7 @@ export const projects: Project[] = [
     emoji: '⚛️',
     cover: '/bento/atom.jpg',
     // the card plays the Atom intro: agents, assistants, access and credits
-    coverClip: { src: '/work/atom/clips/intro.mp4', poster: '/work/atom/clips/intro.jpg' },
+    coverClip: { src: '/work/atom/clips/intro.mp4', poster: '/work/atom/clips/intro.jpg', ratio: 3692 / 2160 },
     featured: 2,
     size: 'wide',
     tone: 'mist',

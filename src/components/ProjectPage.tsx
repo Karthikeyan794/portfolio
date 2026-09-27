@@ -399,7 +399,13 @@ export default function ProjectPage({ slug }: { slug: string }) {
       </header>
 
       {/* full screen, and the nav sits on top of it */}
-      <div className="case__hero" ref={heroRef}>
+      {/* with a recording in it, the banner is as tall as the recording is at
+          the banner's width, so it shows whole rather than cropped */}
+      <div
+        className={project.coverClip?.ratio ? 'case__hero case__hero--clip' : 'case__hero'}
+        ref={heroRef}
+        style={project.coverClip?.ratio ? ({ '--clip-ratio': project.coverClip.ratio } as React.CSSProperties) : undefined}
+      >
         <motion.div className="case__hero-frame" style={{ '--grow': heroOpen } as React.CSSProperties}>
           {project.cover && (
             <motion.div

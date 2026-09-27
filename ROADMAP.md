@@ -385,6 +385,9 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
 - The same recording plays in the Atom page's banner, over the still, zooming and fading with the scroll.
 - Support Desk does the same with `SupportDesk_Intro_Dark` (`clips/intro-dark.mp4`, the export exactly):
   card, Up next tile and banner. Its still stays the poster, because the clip opens on black.
+- A case banner with a recording is as tall as the recording at the banner's width (`ratio` on
+  `coverClip`), so it shows whole; phones keep 68% of the screen. The banner title is 24px, and
+  Support Desk has no line under it any more.
 - The Atom overview plays the "One console, five pages" recording, and that section is gone from
   How it works. Both clips are the exported files exactly (`public/work/atom/clips`).
 
