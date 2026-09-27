@@ -115,7 +115,6 @@ function Box({ project, slot, index, onHot }: BoxProps) {
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
           </span>
           <span className="box__title">{project.title}</span>
-          <span className="box__tagline">{project.tagline}</span>
         </span>
         </motion.a>
       ) : (
@@ -160,7 +159,6 @@ function Box({ project, slot, index, onHot }: BoxProps) {
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
           </span>
           <span className="box__title">{project.title}</span>
-          <span className="box__tagline">{project.tagline}</span>
         </span>
         </motion.button>
       )}
@@ -193,7 +191,6 @@ function MoreBox({ slot, index, count, href, onHot }: { slot: string; index: num
               <span className="box__tag box__tag--ghost">{count} more</span>
             </span>
             <span className="box__title">The rest of the work</span>
-            <span className="box__tagline">Branding, motion, redesign studies and drawings.</span>
             <span className="box__cta">
               Open Behance
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">

@@ -170,7 +170,6 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
       <span className="ctile__foot">
         <span className="ctile__year">{p.year}</span>
         <span className="ctile__title">{p.title}</span>
-        <span className="ctile__tag">{p.tagline}</span>
       </span>
     </motion.a>
   ) : (
@@ -197,7 +196,6 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
         <span className="ctile__foot">
           <span className="ctile__year">{p.year}</span>
           <span className="ctile__title">{p.title}</span>
-          <span className="ctile__tag">{p.tagline}</span>
         </span>
       </motion.button>
       {mode === 'wip' && <InProgressNote open={note} title={p.title} onClose={() => setNote(false)} />}
