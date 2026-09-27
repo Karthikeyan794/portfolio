@@ -610,10 +610,7 @@ export default function About() {
         >
           <figure className="pcard pcard--portrait" style={{ gridArea: 'p' }} ref={portraitGlow.ref} onPointerMove={portraitGlow.onPointerMove}>
             <Glow />
-            {/* zoomed out: the photo is tall and the card wide, so a soft,
-                blurred copy fills the sides behind it — the wall carries on */}
-            <img className="pcard__fill" src={currently.portrait} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-            <img className="pcard__me" src={currently.portrait} alt="" loading="lazy" decoding="async" />
+            <img src={currently.portrait} alt="" loading="lazy" decoding="async" />
             <figcaption>
               <span className="pcard__now">
                 <i aria-hidden="true" />
