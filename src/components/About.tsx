@@ -220,7 +220,6 @@ function PlaceCard() {
               </>
             )}
           </strong>
-          <span>{here.coords}</span>
           <span className="place__time">
             {time} {place.tzLabel}
           </span>
