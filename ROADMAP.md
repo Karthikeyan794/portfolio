@@ -383,6 +383,8 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
   recording over its still: muted, looping, only while on screen; a still for reduced motion.
   Any project can do this with `coverClip: { src, poster }` in `src/data.ts` (`CardClip.tsx`).
 - The same recording plays in the Atom page's banner, over the still, zooming and fading with the scroll.
+- Support Desk does the same with `SupportDesk_Intro_Dark` (`clips/intro-dark.mp4`, the export exactly):
+  card, Up next tile and banner. Its still stays the poster, because the clip opens on black.
 - The Atom overview plays the "One console, five pages" recording, and that section is gone from
   How it works. Both clips are the exported files exactly (`public/work/atom/clips`).
 

@@ -376,6 +376,9 @@ export const projects: Project[] = [
     tools: ['microsoft', 'figma', 'claude'],
     emoji: '🎧',
     cover: '/bento/support-desk.jpg',
+    // the card plays the Support Desk intro (dark) over the still; the still
+    // stays as its poster, since the clip opens on a black frame
+    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg' },
     featured: 1,
     size: 'hero',
     tone: 'sage',
