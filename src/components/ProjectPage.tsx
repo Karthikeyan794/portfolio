@@ -84,7 +84,7 @@ const sheenV = {
 } as const
 
 /** One media block on the right with its explanation on the left. */
-function Row({ slice, no }: { slice: Slice; no: number }) {
+function Row({ slice, no, slug }: { slice: Slice; no: number; slug: string }) {
   const ref = useRef<HTMLDivElement>(null)
   // a slice with no image and no video field is prose — it gets the full width
   const hasMedia = Boolean(slice.image || slice.pair || slice.stats || slice.clip || slice.video)
@@ -153,7 +153,7 @@ function Row({ slice, no }: { slice: Slice; no: number }) {
       </motion.div>
 
       {/* the product itself, under the words and across the whole row */}
-      {slice.embed && <DemoFrame src={slice.embed.src} pages={slice.embed.pages} art={slice.embed.art} title={slice.heading} />}
+      {slice.embed && <DemoFrame src={slice.embed.src} pages={slice.embed.pages} art={slice.embed.art} title={slice.heading} host={`${slug}.demo`} />}
 
       {/* right: the screens or the video */}
       {hasMedia && (
@@ -429,7 +429,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
       <div className="wrap wrap--wide case__body">
         {detail.facts.length > 0 && <Credits facts={detail.facts} />}
 
-        {detail.primer && <Primer primer={detail.primer} />}
+        {detail.primer && <Primer primer={detail.primer} name={project.title} />}
 
 
         {detail.brief && <Brief brief={detail.brief} />}
@@ -457,7 +457,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
                   />
                 </motion.h2>
               )}
-              <Row slice={item.slice} no={item.no} />
+              <Row slice={item.slice} no={item.no} slug={project.slug} />
             </Fragment>
           ))}
         </div>

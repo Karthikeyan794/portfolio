@@ -421,10 +421,10 @@ export default function CaseEnd({ slug, title }: { slug: string; title: string }
         >
           <div>
             <h2 className="cend__h">
-              <Words text="Want the full story?" />
+              <Words text="Want to Know More?" />
             </h2>
             <p className="cend__p">
-              <Words text="Happy to walk through the decisions, the dead ends and what I'd change — or pick another project below." />
+              <Words text="Explore the full story, design process, and key decisions behind the project." />
             </p>
           </div>
         </motion.header>

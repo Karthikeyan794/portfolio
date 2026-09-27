@@ -74,6 +74,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
   const [focused, setFocused] = useState(false)
   const sheet = useRef<HTMLDivElement>(null)
   const field = useRef<HTMLTextAreaElement>(null)
+  const glass = useRef<HTMLDivElement>(null)
   // a field no person can see or reach; anything typed into it was typed by a bot
   const honey = useRef<HTMLInputElement>(null)
   const returnTo = useRef<HTMLElement | null>(null)
@@ -169,7 +170,8 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
     if (ok) forget()
   }
 
-  // the scene drifts a little against the pointer, like the landing page does
+  // the scene drifts a little against the pointer, like the landing page does;
+  // the glass tilts toward it and a soft light follows it across the card
   function lean(e: React.PointerEvent<HTMLDivElement>) {
     if (reduce || e.pointerType !== 'mouse') return
     const el = sheet.current
@@ -177,6 +179,17 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
     const r = el.getBoundingClientRect()
     el.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3))
     el.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3))
+    const g = glass.current?.getBoundingClientRect()
+    if (g) {
+      el.style.setProperty('--gx', `${(e.clientX - g.left).toFixed(0)}px`)
+      el.style.setProperty('--gy', `${(e.clientY - g.top).toFixed(0)}px`)
+    }
+  }
+  function rest() {
+    const el = sheet.current
+    if (!el) return
+    el.style.setProperty('--px', '0')
+    el.style.setProperty('--py', '0')
   }
 
   const tel = profile.phone ? profile.phone.replace(/[^+\d]/g, '') : ''
@@ -201,6 +214,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
             className="cdlg__sheet"
             ref={sheet}
             onPointerMove={lean}
+            onPointerLeave={rest}
             initial={{ opacity: 0, y: reduce ? 0 : 28, scale: reduce ? 1 : 0.975 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: reduce ? 0 : 14, scale: reduce ? 1 : 0.985 }}
@@ -214,50 +228,33 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
             </button>
 
-            <motion.div className="cdlg__glass" variants={stagger} initial="rest" animate="in">
+            <motion.div className="cdlg__glass" ref={glass} variants={stagger} initial="rest" animate="in">
               <motion.div variants={rise}>
-                <h3 className="cdlg__h" id="cdlg-title">Contact me</h3>
+                <h3 className="cdlg__h" id="cdlg-title" aria-label="Contact me">
+                  {/* each letter rises out of a blur, one after another */}
+                  {['Contact', 'me'].map((w, wi) => (
+                    <span className="cdlg__hw" key={w} aria-hidden="true">
+                      {[...w].map((ch, ci) => (
+                        <motion.span
+                          className="cdlg__hl"
+                          key={ci}
+                          initial={{ opacity: 0, y: reduce ? 0 : '0.4em', filter: reduce ? 'none' : 'blur(8px)' }}
+                          animate={{ opacity: 1, y: '0em', filter: 'blur(0px)' }}
+                          transition={{ delay: reduce ? 0 : 0.18 + (wi * 7 + ci) * 0.035, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                          {ch}
+                        </motion.span>
+                      ))}
+                    </span>
+                  ))}
+                </h3>
                 {profile.available && (
                   <p className="cdlg__status">
-                    <span className="cdlg__dot" aria-hidden="true" />
                     {profile.availableNote}
                   </p>
                 )}
               </motion.div>
 
-              <motion.ul className="cdlg__links" variants={rise}>
-                <li className="cdlg__link cdlg__link--wide">
-                  <a className="cdlg__go" href={`mailto:${profile.email}`}>
-                    <Icon name="mail" />
-                    <span className="cdlg__v">{profile.email}</span>
-                  </a>
-                  <button className="cdlg__copy" type="button" onClick={() => copy('email', profile.email)} aria-label="Copy email address">
-                    {copied === 'email' ? <Icon name="check" /> : <Icon name="copy" />}
-                  </button>
-                </li>
-                {profile.phone && (
-                  <li className="cdlg__link cdlg__link--wide">
-                    <a className="cdlg__go" href={`tel:${tel}`}>
-                      <Icon name="phone" />
-                      <span className="cdlg__v">{profile.phone}</span>
-                    </a>
-                    <button className="cdlg__copy" type="button" onClick={() => copy('phone', profile.phone)} aria-label="Copy phone number">
-                      {copied === 'phone' ? <Icon name="check" /> : <Icon name="copy" />}
-                    </button>
-                  </li>
-                )}
-                {aboutLinks.map((l) => (
-                  <li className="cdlg__link" key={l.label}>
-                    <a className="cdlg__go" href={l.href} target="_blank" rel="noreferrer">
-                      <span className="cdlg__mark" aria-hidden="true">
-                        {l.mark ? <svg viewBox="0 0 24 24" width="14" height="14"><path d={marks[l.mark]} fill="currentColor" /></svg> : <b>{l.mono}</b>}
-                      </span>
-                      <span className="cdlg__v">{l.label}</span>
-                      <span className="cdlg__out"><Icon name="out" /></span>
-                    </a>
-                  </li>
-                ))}
-              </motion.ul>
 
               <motion.div variants={rise}>
                 {phase === 'sent' ? (
@@ -294,13 +291,34 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                       {!message && <Prompt caret={!focused} />}
                     </div>
                     <input ref={honey} className="cdlg__honey" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-                    <div className="cdlg__row">
-                      <p className="cdlg__fine">{live ? 'Goes straight to my inbox.' : 'Opens your mail app, written.'}</p>
-                      <button className="cdlg__send" type="submit" disabled={!words || phase === 'sending'}>
-                        <span>{phase === 'sending' ? 'Sending…' : 'Send'}</span>
-                        <Icon name="arrow" />
-                      </button>
-                    </div>
+                    {/* Send shows only once there are words to send: the row opens,
+                        then the button rises in */}
+                    <AnimatePresence initial={false}>
+                      {(words || phase === 'sending') && (
+                        <motion.div
+                          className="cdlg__row"
+                          key="send"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: reduce ? 0 : 0.32, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                          <motion.button
+                            className="cdlg__send"
+                            type="submit"
+                            disabled={phase === 'sending'}
+                            data-phase={phase}
+                            initial={{ opacity: 0, y: reduce ? 0 : 8, scale: reduce ? 1 : 0.92, filter: reduce ? 'none' : 'blur(4px)' }}
+                            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                            exit={{ opacity: 0, y: reduce ? 0 : 4, scale: reduce ? 1 : 0.96 }}
+                            transition={{ type: 'spring', stiffness: 260, damping: 22, delay: reduce ? 0 : 0.06 }}
+                          >
+                            <span>{phase === 'sending' ? 'Sending…' : 'Send'}</span>
+                            <Icon name="arrow" />
+                          </motion.button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     {phase === 'failed' && (
                       <p className="cdlg__err" role="alert">
                         That did not go through. <a href={mailto}>Send it from your mail app</a> instead.
@@ -309,6 +327,61 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
                   </form>
                 )}
               </motion.div>
+
+              {/* every other way to reach me, as small tags under the box */}
+              <motion.ul className="cdlg__links" variants={rise}>
+                <li className="cdlg__link cdlg__link--wide">
+                  <a className="cdlg__go" href={`mailto:${profile.email}`}>
+                    <Icon name="mail" />
+                    {/* the address scrolls in a loop, so the whole of it fits one small tag */}
+                    <span className="cdlg__v cdlg__marq">
+                      <span className="cdlg__marq-track">
+                        <span>{profile.email}</span>
+                        <span aria-hidden="true">{profile.email}</span>
+                      </span>
+                    </span>
+                  </a>
+                  <button className="cdlg__copy" type="button" onClick={() => copy('email', profile.email)} aria-label="Copy email address">
+                    {copied === 'email' ? <Icon name="check" /> : <Icon name="copy" />}
+                  </button>
+                  <AnimatePresence>
+                    {copied === 'email' && (
+                      <motion.span
+                        className="cdlg__toast"
+                        role="status"
+                        initial={{ opacity: 0, x: 8, scale: 0.9 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0, x: 4, scale: 0.95 }}
+                        transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                      >
+                        Copied
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </li>
+                {profile.phone && (
+                  <li className="cdlg__link cdlg__link--wide">
+                    <a className="cdlg__go" href={`tel:${tel}`}>
+                      <Icon name="phone" />
+                      <span className="cdlg__v">{profile.phone}</span>
+                    </a>
+                    <button className="cdlg__copy" type="button" onClick={() => copy('phone', profile.phone)} aria-label="Copy phone number">
+                      {copied === 'phone' ? <Icon name="check" /> : <Icon name="copy" />}
+                    </button>
+                  </li>
+                )}
+                {aboutLinks.map((l) => (
+                  <li className="cdlg__link" key={l.label}>
+                    <a className="cdlg__go" href={l.href} target="_blank" rel="noreferrer">
+                      <span className="cdlg__mark" aria-hidden="true">
+                        {l.mark ? <svg viewBox="0 0 24 24" width="14" height="14"><path d={marks[l.mark]} fill="currentColor" /></svg> : <b>{l.mono}</b>}
+                      </span>
+                      <span className="cdlg__v">{l.label}</span>
+                      <span className="cdlg__out"><Icon name="out" /></span>
+                    </a>
+                  </li>
+                ))}
+              </motion.ul>
             </motion.div>
           </motion.div>
         </motion.div>

@@ -547,9 +547,9 @@ export const projects: Project[] = [
     slug: 'atom',
     group: 'product',
     title: 'Atom',
-    tagline: 'Small AI apps, built and shipped fast',
+    tagline: 'One place to find, switch on and pay for AI',
     blurb:
-      'A platform for small AI-powered apps — request one, watch it get built, then run it. I designed the catalogue, the request and approval flow, and the credit accounting behind it.',
+      'The console where a facilities team finds its AI: agents you open, assistants you switch on, and one shared pool of credits behind both. I designed and built the catalogue, the guide with its playgrounds, access and credits.',
     year: '2025',
     role: 'Design + Frontend',
     tags: ['AI', 'Platform', 'Dashboard'],
@@ -560,24 +560,131 @@ export const projects: Project[] = [
     size: 'wide',
     tone: 'mist',
     kind: 'work',
-    demo: { label: 'Try the demo', href: '' },
+    demo: { label: 'Try the demo', href: '/demo/atom/index.html#/home' },
     detail: {
       facts: [
         { label: 'Role', value: 'Design + Frontend' },
         { label: 'Year', value: '2025' },
-        { label: 'Stack', value: 'React · TypeScript' },
+        { label: 'Stack', value: 'React · TypeScript · Vite' },
         { label: 'Status', value: 'In production' },
       ],
+      hook: {
+        lead: 'Every AI feature now has',
+        words: ['a home.', 'a guide.', 'an owner.', 'a price.'],
+      },
+      primer: {
+        heads: { what: 'Overview' },
+        what: 'Atom is *one console for every AI feature a team can use*. Agents are whole apps you open, like a helpdesk or a planner; assistants live inside the tools people already use, and you switch them on for everyone. Both sit on one page that answers the two questions anyone arrives with — *what do we have, and what could we have?* — with a guide and a playground for each one, and a single pool of credits that shows who spends what.',
+        showcase: {
+          note: 'Agents, assistants, access and credits — the whole console on one screen.',
+          poster: '/work/atom/home.jpg',
+          clip: '/work/atom/clips/overview.mp4',
+        },
+      },
+      brief: {
+        problem: {
+          lead: 'The AI was there, but nobody could find it, and switching it on spent money nobody could see.',
+          body: 'Agents lived on one page, the ones you could ask for on another, and assistants had no home at all. People could not tell what their team already had or what else there was. An admin had no single place to turn a feature on for everyone, and when they did, the shared credits went down with no sign of who was using them.',
+        },
+        solution: {
+          lead: 'Atom puts *every agent and assistant on one page* that shapes itself to who you are.',
+          body: 'Admins switch assistants on for the whole team, with the cost shown before they confirm. Everyone else sees what they have and asks for the rest. Each feature has a guide and, where it can, a playground to try it right there. Access, requests and credit usage sit one step away, so *spending is never a surprise*.',
+        },
+      },
+      // Each row shows a still until its recording is in. To swap one, replace
+      // `image` with `clip: '/work/atom/clips/<name>.mp4'` and keep `poster`.
+      // The shot list for every clip is ~/Desktop/labs-atoms-portfolio-demo/docs/SHOT-LIST.md.
       slices: [
         {
           span: 'full',
-          heading: 'A catalogue you can scan',
-          body: 'Dozens of small apps, each with its own purpose. The cards lead with what the app does for you, not what it is called internally.',
-          image: '/bento/smart-findings.jpg',
+          chapter: 'How it works',
+          heading: 'Everything on one page',
+          body: 'Atom opens on a single page with every agent and assistant on it. Agents you already have say *Try Now*; the rest say *Contact Sales*. Assistants sit underneath with a switch each, and a small moving picture on every card shows what that assistant looks like in use.',
+          image: '/work/atom/home.jpg',
+          poster: '/work/atom/home.jpg',
+          caption: 'The greeting, the agents, and the assistants below them, on one scroll.',
         },
-        { span: 'half', heading: 'Ask, approve, build', body: 'A request flow that stays honest about where your app is: asked for, approved, being built, ready.' },
-        { span: 'half', heading: 'Credits that make sense', body: 'Usage shown per team and per app, so the bill is never a surprise at the end of the month.' },
-        { span: 'full', heading: 'Walkthrough', body: '', video: '' },
+        {
+          span: 'full',
+          heading: 'Open an agent',
+          body: 'An agent is a whole app. Click *Try Now* and it opens in the same tab. Next time, the card remembers you have tried it and says *Open* instead, so the page always tells you what you have already used.',
+          image: '/work/atom/home.jpg',
+          poster: '/work/atom/home.jpg',
+          caption: 'Try Now opens the agent; back on the page, the same card now reads Open.',
+        },
+        {
+          span: 'full',
+          heading: 'Switch on an assistant',
+          body: 'Assistants work inside tools people already use, so an admin switches them on for everyone. Before anything changes, a dialog shows *what it will cost* from the shared credits. Switching one off lists the people who will lose it, so nobody is cut off by surprise.',
+          image: '/work/atom/home.jpg',
+          poster: '/work/atom/home.jpg',
+          caption: 'The switch, the cost before you confirm, and who is affected when you turn it off.',
+        },
+        {
+          span: 'full',
+          heading: 'A guide you can try',
+          body: 'Every assistant has a guide: what it does, who it is for, where to find it and how to use it. Where it can, the guide has a *playground* beside it — ask the Work Assistant about a job, have the Text Assistant rewrite a note, or check before-and-after photos of finished work.',
+          image: '/work/atom/guide.jpg',
+          poster: '/work/atom/guide.jpg',
+          caption: 'Reading the guide and trying the assistant, side by side.',
+        },
+        {
+          span: 'full',
+          heading: 'Users & Permissions',
+          body: 'Invite people one by one or a whole role at once, choose which assistants they get, and set how many credits each person can spend. Every limit can be changed later from the same table.',
+          image: '/work/atom/users.jpg',
+          poster: '/work/atom/users.jpg',
+          caption: 'Pick people, pick assistants, set a limit — then add them in one go.',
+        },
+        {
+          span: 'full',
+          heading: 'Requests',
+          body: 'When someone asks for an agent, an assistant or more credits, it lands here. Approve it and it happens straight away; for credits, the dialog shows their limit now and what it becomes before you confirm.',
+          image: '/work/atom/requests.jpg',
+          poster: '/work/atom/requests.jpg',
+          caption: 'An agent request, a credit upgrade and an assistant request, approved in turn.',
+        },
+        {
+          span: 'full',
+          heading: 'Credit usage',
+          body: 'See where the credits go, *by feature* or *by person*. Sort by what was spent, narrow it to assistants, and hover a person to see which features they ran and how often.',
+          image: '/work/atom/credit-usage.jpg',
+          poster: '/work/atom/credit-usage.jpg',
+          caption: 'Spending by feature, then by user, down to each run.',
+        },
+        {
+          span: 'full',
+          heading: 'The credit limiter',
+          body: 'The credits left are always in the top bar. Open it to see how much of the pool is used, with a colour that changes as it fills, and a quick way to see usage or ask for more.',
+          image: '/work/atom/home.jpg',
+          poster: '/work/atom/home.jpg',
+          caption: 'The pool, how full it is, and what to do next.',
+        },
+        {
+          span: 'full',
+          heading: 'Accessible buildings',
+          body: 'Choose which buildings the AI is allowed to work with. Add one and it joins the list straight away.',
+          image: '/work/atom/buildings.jpg',
+          poster: '/work/atom/buildings.jpg',
+          caption: 'Adding a building to what the AI can see.',
+        },
+        {
+          chapter: 'Demo',
+          span: 'full',
+          anchor: 'demo',
+          heading: 'Click around the console yourself — it runs on made-up data, so nothing you do is real.',
+          unnumbered: true,
+          embed: {
+            src: '/demo/atom/index.html',
+            pages: [
+              { label: 'Atoms & Assistants', hash: '#/home', hint: 'Try an agent, or switch an assistant on.' },
+              { label: 'Guide', hash: '#/home/guide', hint: 'Pick an assistant and try its playground.' },
+              { label: 'Users', hash: '#/home/users?tab=assistants', hint: 'Invite people and set their credits.' },
+              { label: 'Requests', hash: '#/home/app-requests', hint: 'Approve what people asked for.' },
+              { label: 'Credit usage', hash: '#/home/credit-usage', hint: 'See who spends what.' },
+            ],
+          },
+        },
       ],
     },
   },
@@ -927,16 +1034,18 @@ export const intro = {
   // The line that types itself above the headline: the name first, then what
   // I do, then where. Each types, holds, and deletes before the next.
   hello: ["hi, i'm karthikeyan", 'product designer', 'front-end developer', 'based in chennai'],
-  // Two lines. A word between *asterisks* is set in the grey serif italic.
-  headline: ['I *design* and *build*', 'for the web.'],
+  // The headline: the top line stays put (a word between *asterisks* is the
+  // grey serif italic); the line under it turns over every few seconds and
+  // finishes the sentence — what I make, then the tool, the tool in its own
+  // colour with its logo popping in beside it. `mark` is a key in
+  // src/logos.ts. Add a line to `headline` to add a turn.
+  headlineTop: 'I *design* and *build*',
+  headline: [
+    { what: 'interfaces', prep: 'in', tool: 'Figma', mark: 'figma', color: '#A259FF' },
+    { what: 'front-ends', prep: 'in', tool: 'React', mark: 'react', color: '#7fdcff' },
+    { what: 'faster', prep: 'with', tool: 'Claude', mark: 'claude', color: '#ec9a76' },
+  ] as { what: string; prep: string; tool: string; mark: string; color: string }[],
   paragraph:
     'Product designer from Chennai. I go deep on research to find the real problem, design it in Figma, then build it in React.',
   cta: { label: 'See my work', href: '#work' },
-  toolsLabel: 'Working With',
-  tools: [
-    { name: 'Figma', style: 'serif' },
-    { name: 'React', style: 'sans' },
-    { name: 'TypeScript', style: 'heavy' },
-    { name: 'Vite', style: 'wide' },
-  ] as { name: string; style: 'serif' | 'sans' | 'heavy' | 'wide' }[],
 }

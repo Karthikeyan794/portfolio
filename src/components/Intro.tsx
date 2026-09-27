@@ -1,6 +1,7 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { intro } from '../data'
+import { marks } from '../logos'
 import { useTyped } from '../useTyped'
 import { useTheme } from '../theme'
 import Fireflies from './Fireflies'
@@ -15,7 +16,7 @@ import Fireflies from './Fireflies'
  * `intro.video` if `intro.image` is ever emptied. No file → drawn scene.
  */
 
-const T = { hello: 0.55, line: 0.95, word: 0.085, para: 1.75, cta: 2.05, tools: 2.35, nav: 2.8 }
+const T = { hello: 0.55, line: 0.95, para: 1.75, cta: 2.05, nav: 2.8 }
 export const INTRO_NAV_DELAY = T.nav
 
 const rise = (delay: number) => ({
@@ -65,12 +66,128 @@ function Hello({ phrases, delay }: { phrases: string[]; delay: number }) {
   )
 }
 
-/** 'I *design* and *build*' → its words, the starred ones set in the serif */
-function wordsOf(line: string) {
-  return line.split(' ').map((w) => {
-    const m = w.match(/^\*(.+?)\*([.,!?;:]*)$/)
-    return m ? { text: m[1], tail: m[2], serif: true } : { text: w, tail: '', serif: false }
-  })
+/**
+ * The headline: "I design and build" stays put, the line under it finishes
+ * the sentence and turns over — "interfaces in Figma." then "front-ends in
+ * React." then "faster with Claude." Only the words that change move, and
+ * they roll: inside a clipped line, the old word's letters leave upward one
+ * after another while the new word's letters rise in from below, so the two
+ * never sit on top of each other half-blurred. The words go one after
+ * another, left to right, like the line being read; a word that is the same
+ * both times ("in") stays and just slides over to make room. The tool is set
+ * in its own colour, and its logo lands at the shoulder once the letters
+ * have. Timers, not frames, so a throttled tab only slows it. A screen reader
+ * gets every line at once.
+ */
+const EASE = [0.2, 0.8, 0.2, 1] as const
+const ROLL_STEP = 0.028 // seconds between one letter and the next
+const WORD_GAP = 0.09 // seconds between one word of the line and the next
+const letter = {
+  in: { y: '110%', opacity: 0 },
+  rest: { y: '0%', opacity: 1 },
+  out: { y: '-110%', opacity: 0 },
+}
+const logoPop = {
+  in: { scale: 0, rotate: -30, opacity: 0 },
+  rest: { scale: 1, rotate: 0, opacity: 1 },
+  out: { scale: 0.4, opacity: 0, transition: { duration: 0.2 } },
+}
+
+/** logos drawn in their own brand colours, where one colour would not do them justice */
+const COLOUR_LOGOS: Record<string, { viewBox: string; paths: [string, string][] }> = {
+  figma: {
+    viewBox: '0 0 38 57',
+    paths: [
+      ['M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z', '#1ABCFE'],
+      ['M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z', '#0ACF83'],
+      ['M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z', '#FF7262'],
+      ['M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z', '#F24E1E'],
+      ['M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z', '#A259FF'],
+    ],
+  },
+}
+
+/**
+ * One word that turns over by rolling its letters through a clipped line.
+ * `after` is drawn with the word (the tool's logo) and leaves with it.
+ */
+function Roll({ text, className, style, delay = 0, after }: { text: string; className?: string; style?: React.CSSProperties; delay?: number; after?: React.ReactNode }) {
+  return (
+    <motion.span className="intro__slot" layout="position" transition={{ layout: { duration: 0.5, ease: EASE } }}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span key={text} className={className ? `intro__roll ${className}` : 'intro__roll'} style={style} initial="in" animate="rest" exit="out">
+          {[...text].map((ch, k) => (
+            <motion.span key={k} className="intro__ch" variants={letter} transition={{ duration: 0.52, ease: EASE, delay: delay + k * ROLL_STEP }}>
+              {ch}
+            </motion.span>
+          ))}
+          {after}
+        </motion.span>
+      </AnimatePresence>
+    </motion.span>
+  )
+}
+
+function Headline({ start }: { start: number }) {
+  const reduce = useReducedMotion()
+  const lines = intro.headline
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    if (reduce || lines.length < 2) return
+    let t: number
+    // a hidden tab keeps its timers but not its animations: wait, don't pile up
+    const next = () => {
+      if (!document.hidden) setI((n) => (n + 1) % lines.length)
+      t = window.setTimeout(next, 3200)
+    }
+    t = window.setTimeout(next, start * 1000 + 2600)
+    return () => window.clearTimeout(t)
+  }, [reduce, lines.length, start])
+  const h = lines[i]
+
+  return (
+    <motion.h1 className="intro__h1" {...rise(start)}>
+      <span className="sr-only">{`${intro.headlineTop.replace(/\*/g, '')} ${lines.map((l) => `${l.what} ${l.prep} ${l.tool}`).join(', ')}.`}</span>
+      <span aria-hidden="true">
+        {/* the top line stays put; a word between *asterisks* is the grey serif */}
+        <span className="intro__l">
+          {intro.headlineTop.split(' ').map((w, wi) => {
+            const m = w.match(/^\*(.+)\*$/)
+            return (
+              <span key={wi}>
+                {wi ? ' ' : ''}
+                <span className={m ? 'intro__w intro__serif' : 'intro__w'}>{m ? m[1] : w}</span>
+              </span>
+            )
+          })}
+        </span>
+        <span className="intro__l">
+          <Roll text={h.what} />{' '}
+          <Roll text={h.prep} delay={WORD_GAP} />{' '}
+          <Roll
+            text={`${h.tool}.`}
+            className="intro__tool"
+            style={{ color: h.color }}
+            delay={WORD_GAP * 2}
+            after={
+              (COLOUR_LOGOS[h.mark] || marks[h.mark]) && (
+                <motion.svg
+                  className={COLOUR_LOGOS[h.mark] ? 'intro__logo intro__logo--tall' : 'intro__logo'}
+                  viewBox={COLOUR_LOGOS[h.mark]?.viewBox ?? '0 0 24 24'}
+                  variants={logoPop}
+                  transition={{ type: 'spring', stiffness: 320, damping: 15, delay: reduce ? 0 : WORD_GAP * 2 + (h.tool.length + 1) * ROLL_STEP + 0.3 }}
+                >
+                  {COLOUR_LOGOS[h.mark]
+                    ? COLOUR_LOGOS[h.mark].paths.map(([d, fill]) => <path key={fill} d={d} fill={fill} />)
+                    : <path d={marks[h.mark]} fill="currentColor" />}
+                </motion.svg>
+              )
+            }
+          />
+        </span>
+      </span>
+    </motion.h1>
+  )
 }
 
 export default function Intro() {
@@ -96,6 +213,9 @@ export default function Intro() {
   // the scroll the rest of the page depends on. Paused while it is out of view.
   const offscreen = useRef(false)
   const sectionRef = useRef<HTMLElement>(null)
+  // the hairline frame fades out over the first stretch of scrolling
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  const frameFade = useTransform(scrollYProgress, [0, 0.3], [1, 0])
   const mayPlay = () => !offscreen.current && !reduce
 
   // keep only the visible clip decoding; pause the other after the crossfade
@@ -122,7 +242,6 @@ export default function Intro() {
     return () => io.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightOn, reduce])
-  const reduce2 = useReducedMotion()
   const useImage = Boolean(intro.image)
   // Light theme shows the library by day, dark theme the same library at
   // night, and switching crossfades between them. Each is fetched the first
@@ -259,42 +378,16 @@ export default function Intro() {
       {useImage && <div className="intro__shade intro__shade--day" data-on={!showNight} aria-hidden="true" />}
       {/* fireflies belong to the night garden — in daylight they are specks */}
       {(!useImage || showNight) && <Fireflies />}
-      <div className="intro__frame" aria-hidden="true">
+      <motion.div className="intro__frame" aria-hidden="true" style={{ opacity: frameFade }}>
         <i /><i /><i /><i />
-      </div>
+      </motion.div>
       </div>
 
       <div className="wrap intro__grid">
         <div className="intro__main">
           <Hello phrases={intro.hello} delay={T.hello} />
 
-          {/* each word clears out of a blur on its own beat, left to right */}
-          <h1 className="intro__h1">
-            {(() => {
-              let k = 0
-              return intro.headline.map((line) => (
-                <span className="intro__l" key={line}>
-                  {wordsOf(line).map((w, wi, all) => {
-                    const at = k++
-                    return (
-                      <span key={wi}>
-                        <motion.span
-                          className={w.serif ? 'intro__w intro__serif' : 'intro__w'}
-                          initial={reduce2 ? false : { opacity: 0, y: 14, filter: 'blur(10px)' }}
-                          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                          transition={{ delay: T.line + at * T.word, duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-                        >
-                          {w.serif ? <em>{w.text}</em> : w.text}
-                          {w.tail}
-                        </motion.span>
-                        {wi < all.length - 1 ? ' ' : ''}
-                      </span>
-                    )
-                  })}
-                </span>
-              ))
-            })()}
-          </h1>
+          <Headline start={T.line} />
 
           <motion.p className="intro__p" {...rise(T.para)}>
             {intro.paragraph}
@@ -308,16 +401,6 @@ export default function Intro() {
           </motion.a>
         </div>
 
-        <motion.aside className="intro__tools" {...rise(T.tools)}>
-          <span className="intro__tools-label">{intro.toolsLabel}</span>
-          <div className="intro__marks">
-            {intro.tools.map((t) => (
-              <span key={t.name} className={`mark mark--${t.style}`}>
-                {t.name}
-              </span>
-            ))}
-          </div>
-        </motion.aside>
       </div>
 
     </section>

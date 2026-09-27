@@ -49,12 +49,12 @@ export default function SoundToggle() {
       onClick={toggle}
       aria-pressed={on}
       aria-label={on ? 'Turn nature sound off' : 'Turn nature sound on'}
-      title={on ? 'Sound on' : 'Sound off'}
+      title={state === 'waiting' ? 'Tap for sound' : on ? 'Sound on' : 'Sound off'}
     >
+      {/* icon only, round like the theme button beside it; the bars move while it plays */}
       <span className="sound__bars" aria-hidden="true">
         <i /><i /><i /><i />
       </span>
-      <span className="sound__label">{state === 'waiting' ? 'Tap for sound' : on ? 'Sound on' : 'Sound off'}</span>
     </button>
   )
 }

@@ -11,8 +11,8 @@ export type DemoPage = { label: string; hash: string; role?: 'admin' | 'support'
  * pointer events, so scrolling the page past it never gets caught inside the
  * app; move the pointer out of the window and it goes quiet again.
  */
-export default function DemoFrame({ src, pages = [], art, title = 'Product demo' }: {
-  src: string; pages?: DemoPage[]; art?: string; title?: string
+export default function DemoFrame({ src, pages = [], art, title = 'Product demo', host = 'product.demo' }: {
+  src: string; pages?: DemoPage[]; art?: string; title?: string; host?: string
 }) {
   const [hash, setHash] = useState(pages[0]?.hash ?? '')
   const [tab, setTab] = useState(0)
@@ -116,7 +116,7 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
 
         <div className="dfr__url">
           <span className="dfr__addr" aria-hidden="true">
-            support-desk.demo<b>{path}</b>
+            {host}<b>{path}</b>
             {pages[tab]?.role && <em className="dfr__as">signed in as {pages[tab].role === 'viewer' ? 'view only' : pages[tab].role}</em>}
           </span>
           <a className="dfr__full" href={src + hash} target="_blank" rel="noreferrer">
@@ -136,7 +136,7 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
             onLoad={() => setLoaded(true)}
             style={frameStyle}
           />
-          {!loaded && <span className="dfr__wait">Loading the desk…</span>}
+          {!loaded && <span className="dfr__wait">Loading the demo…</span>}
           {!live && (
             <button type="button" className="dfr__go" onClick={() => setLive(true)}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

@@ -459,194 +459,13 @@ a { color: inherit; text-decoration: none; }
 
 
 
-/* ── contact: a banner card, not a screen ─────────────────────────────────
-   The sky picture in a rounded card inside the page margins, one glass
-   panel on its left so the person with the laptop stays in view on the
-   right. Light on dark inside the card whatever the theme; the footer under
-   it is back on the page's own colours. */
-.reach {
-  --edge: max(clamp(16px, 2.5vw, 40px), calc((100% - 1400px) / 2 + 38px));
-  padding-top: clamp(40px, 8vh, 90px);
-}
-/* edge to edge and down to the end of the page; the content lines up with
-   the page's own margins through --edge */
-.reach__banner {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  align-items: center;
-  min-height: clamp(340px, 27vw, 420px);
-  padding: clamp(56px, 6vw, 84px) var(--edge) 0;
-  color: #f4f1e8;
-  background: #0b1430;
-}
-.reach__bg {
-  position: absolute;
-  top: -7%;
-  left: 0;
-  z-index: -2;
-  width: 100%;
-  height: 114%;
-  object-fit: cover;
-  /* a short card crops the picture top and bottom: keep the person and the
-     glowing horizon in, the sky above them in part */
-  object-position: 62% 80%;
-}
-/* a light blend from the page into the sky at the top, a little night on
-   the left under the glass, and weight at the base for the footer */
-.reach__shade {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--bg) 0%, color-mix(in srgb, var(--bg) 45%, transparent) 9%, transparent 24%),
-    linear-gradient(to top, rgba(4, 6, 16, 0.6) 0%, rgba(4, 6, 16, 0) 22%),
-    linear-gradient(90deg, rgba(4, 8, 24, 0.66) 0%, rgba(4, 8, 24, 0.38) 34%, rgba(4, 8, 24, 0) 62%);
-}
-.reach__stage { display: grid; justify-items: start; min-width: 0; }
-/* no box: the words sit straight on the sky */
-.reach__text {
-  display: grid;
-  justify-items: start;
-  gap: 12px;
-  width: min(780px, 100%);
-  min-width: 0;
-  text-align: left;
-}
-.reach__h {
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: clamp(30px, 3.2vw, 46px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: #fff;
-  text-shadow: 0 2px 24px rgba(4, 8, 24, 0.55);
-}
-.reach__w { display: inline-block; margin-right: 0.24em; will-change: transform, filter, opacity; }
-.reach__w:last-child { margin-right: 0; }
-.reach__p {
-  max-width: 68ch;
-  font-size: 15px;
-  text-wrap: pretty; /* one line on a laptop; on a phone, no one-word last line */
-  line-height: 1.6;
-  color: rgba(244, 241, 232, 0.8);
-  text-shadow: 0 1px 14px rgba(4, 8, 24, 0.7);
-}
-.reach__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; }
-/* the words take a share of the width, so the person keeps the right side */
-@media (min-width: 861px) { .reach__text { width: min(780px, 60%); } }
-.reach__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
-  padding: 0;
-}
-.reach__links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 14px;
-  color: rgba(244, 241, 232, 0.88);
-  background: rgba(8, 12, 30, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-.reach__links a svg { opacity: 0.7; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease; }
-.reach__links a:hover { color: #fff; background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.32); }
-.reach__links a:hover svg { opacity: 1; transform: translate(2px, -2px); }
-.reach__mail {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 5px 5px 16px;
-  border-radius: 999px;
-  background: #f4f1e8;
-  color: #14181b;
-  box-shadow: 0 18px 40px -22px rgba(255, 150, 60, 0.75);
-  max-width: 100%;
-}
-.reach__addr {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: inherit;
-  overflow-wrap: anywhere;
-}
-.reach__addr:hover { text-decoration: underline; text-underline-offset: 3px; }
-.reach__copy {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: #14181b;
-  color: #f4f1e8;
-  cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.25s ease;
-}
-.reach__copy:hover { transform: scale(1.06); }
-.reach__copy--done { background: var(--dia-good); }
-/* the footer, on the picture's bottom edge */
-.reach__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 24px;
-  margin-top: clamp(20px, 2.6vw, 34px);
-  padding: 16px 2px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 13px;
-  color: rgba(244, 241, 232, 0.66);
-}
-.reach__foot a { color: rgba(244, 241, 232, 0.88); text-decoration: underline; text-underline-offset: 3px; }
-.reach__foot a:hover { color: #fff; }
-.reach__mark { font-family: var(--display); font-size: 20px; color: #fff; }
-@media (max-width: 640px) {
-  /* a phone: the sky shows above, the glass sits along the bottom */
-  .reach__banner { align-items: end; min-height: 0; padding: 150px 12px 0; }
-  .reach__bg { object-position: 72% 40%; }
-  .reach__shade {
-    background:
-      linear-gradient(to bottom, var(--bg) 0%, color-mix(in srgb, var(--bg) 45%, transparent) 7%, transparent 18%),
-      linear-gradient(180deg, rgba(4, 8, 24, 0) 26%, rgba(4, 8, 24, 0.62) 58%, rgba(4, 8, 24, 0.8) 100%);
-  }
-  .reach__text { gap: 12px; }
-  .reach__p { font-size: 14.5px; }
-  .reach__links { flex-wrap: nowrap; gap: 6px; }
-  .reach__links a { padding: 7px 11px; font-size: 13px; }
-  .reach__mail { padding-left: 14px; }
-  .reach__addr { font-size: 13.5px; gap: 8px; white-space: nowrap; }
-  /* the address needs the room more than the icon does */
-  .reach__addr svg { display: none; }
-}
-@media (max-width: 360px) {
-  /* the smallest phones: less frame, and the links may take two rows */
-  .reach__banner { padding: 140px 8px 0; }
-  .reach__links { flex-wrap: wrap; }
-  .reach__addr { font-size: 12px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reach__w { will-change: auto; }
-}
+/* ── contact: the end of the page ──────────────────────────────────────────
+   Nothing on show, only room below the last cards. */
+.reach { padding-bottom: clamp(40px, 8vh, 90px); }
 
 /* ── the contact dialog ─────────────────────────────────────
-   The night library fills the sheet; one glass card sits over the dark
-   trees on the left, where the landing page puts its words too — so the
-   reader, the shelves and the globe stay in view on the right. The scene is
+   The night library fills the sheet; one glass card sits in the middle of
+   it, tilting a little toward the pointer. The scene is
    night in either theme, so everything on the glass is set light on dark
    rather than from the theme tokens. */
 .cdlg {
@@ -664,6 +483,8 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  perspective: 1200px;
   width: min(960px, 100%);
   min-height: min(600px, calc(100svh - 48px));
   max-height: calc(100svh - 24px);
@@ -689,14 +510,14 @@ a { color: inherit; text-decoration: none; }
   transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(1.04);
   transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-/* darker on the left where the card sits, so the glass reads as glass over
+/* darker in the middle where the card sits, so the glass reads as glass over
    shadow rather than a pale box over a lit shelf */
 .cdlg__veil {
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgba(4, 6, 12, 0.62) 0%, rgba(4, 6, 12, 0.28) 44%, rgba(4, 6, 12, 0) 70%),
+    radial-gradient(ellipse 55% 70% at 50% 50%, rgba(4, 6, 12, 0.55) 0%, rgba(4, 6, 12, 0.2) 70%, rgba(4, 6, 12, 0) 100%),
     linear-gradient(180deg, rgba(3, 7, 18, 0.35) 0%, rgba(3, 7, 18, 0) 26%, rgba(6, 5, 8, 0) 70%, rgba(6, 5, 8, 0.45) 100%);
 }
 .cdlg__x {
@@ -724,8 +545,11 @@ a { color: inherit; text-decoration: none; }
 /* the one container: heading, the ways to reach me, the words */
 .cdlg__glass {
   display: grid;
+  /* one column that never grows past the card, so the tag row can't push
+     the box and the button out of it */
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
-  width: min(430px, 100%);
+  width: min(470px, 100%);
   max-height: 100%;
   overflow: auto;
   padding: clamp(20px, 2.4vw, 28px);
@@ -736,14 +560,33 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(22px) saturate(1.25);
   backdrop-filter: blur(22px) saturate(1.25);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 60px -24px rgba(0, 0, 0, 0.65);
+  position: relative;
+  transform: rotateX(calc(var(--py, 0) * -4deg)) rotateY(calc(var(--px, 0) * 5deg));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
+/* a soft light that follows the pointer across the glass */
+.cdlg__glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(260px circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.09), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.cdlg__sheet:hover .cdlg__glass::before { opacity: 1; }
 .cdlg__h {
   font-family: var(--display);
-  font-size: clamp(28px, 3vw, 34px);
+  font-size: clamp(22px, 2.2vw, 26px);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
+.cdlg__hw { display: inline-block; white-space: nowrap; }
+.cdlg__hw + .cdlg__hw { margin-left: 0.24em; }
+.cdlg__hl { display: inline-block; }
 .cdlg__status {
   display: flex;
   align-items: center;
@@ -752,70 +595,94 @@ a { color: inherit; text-decoration: none; }
   font-size: 13.5px;
   color: rgba(255, 255, 255, 0.78);
 }
-.cdlg__dot {
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #a6e85b;
-  box-shadow: 0 0 0 0 rgba(166, 232, 91, 0.55);
-  animation: cdlg-pulse 2.4s ease-out infinite;
-}
-@keyframes cdlg-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(166, 232, 91, 0.5); }
-  70%, 100% { box-shadow: 0 0 0 8px rgba(166, 232, 91, 0); }
-}
 
-/* email (and phone) full width; the profiles two to a row */
-/* a list resets its own indent: the browser's 40px would push the links
-   in from the heading */
-.cdlg__links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* small tags under the box: the email with its copy button, then the
+   profiles. A list resets its own indent so the tags line up with the box */
+.cdlg__links { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; }
+/* one line always: the profiles keep their size, the email gives way and
+   trims its end if the card is ever too narrow */
+.cdlg__link { flex: none; }
+.cdlg__link:first-child { flex: 1 1 auto; }
+.cdlg__link:first-child .cdlg__go { min-width: 0; }
 .cdlg__link {
   position: relative;
   display: flex;
   align-items: center;
   min-width: 0;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.06);
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.cdlg__link:hover { background: rgba(255, 255, 255, 0.11); border-color: rgba(255, 255, 255, 0.22); }
-.cdlg__link--wide { grid-column: 1 / -1; }
+.cdlg__link:hover { background: rgba(255, 255, 255, 0.11); border-color: rgba(255, 255, 255, 0.22); transform: translateY(-2px); }
+.cdlg__link:active { transform: translateY(0) scale(0.98); }
+.cdlg__mark, .cdlg__go > svg { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.cdlg__link:hover .cdlg__mark, .cdlg__link:hover .cdlg__go > svg { transform: scale(1.12); }
+/* "Copied", popping in beside the copy button */
+.cdlg__toast {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  translate: -50% 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f4f1e8;
+  color: #14181b;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
 .cdlg__go {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   flex: 1;
   min-width: 0;
-  padding: 11px 12px;
-  color: #fff;
-  font-size: 14px;
+  padding: 6px 10px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 12px;
 }
-.cdlg__go:focus-visible, .cdlg__copy:focus-visible { outline: 2px solid #a6e85b; outline-offset: -2px; border-radius: 12px; }
+.cdlg__go > svg { width: 13px; height: 13px; }
+.cdlg__link:hover .cdlg__go { color: #fff; }
+.cdlg__go:focus-visible, .cdlg__copy:focus-visible { outline: 2px solid #a6e85b; outline-offset: -2px; border-radius: 999px; }
 .cdlg__v { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.cdlg__mark { display: grid; place-items: center; width: 16px; }
-.cdlg__mark b { font-size: 12px; font-weight: 700; letter-spacing: -0.02em; }
-.cdlg__out { margin-left: auto; display: inline-flex; opacity: 0.55; transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+/* the email: two copies side by side slide left by one copy's width, so the
+   loop has no jump; the edges fade so the words slip in and out */
+.cdlg__marq {
+  flex: 1;
+  text-overflow: clip;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 14px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 14px), transparent);
+}
+.cdlg__marq-track { display: inline-flex; width: max-content; animation: cdlg-marq 12s linear infinite; }
+.cdlg__marq-track > span { padding-right: 28px; }
+.cdlg__link:hover .cdlg__marq-track { animation-play-state: paused; }
+@keyframes cdlg-marq { to { transform: translateX(-50%); } }
+.cdlg__mark { display: grid; place-items: center; width: 13px; }
+.cdlg__mark b { font-size: 11px; font-weight: 700; letter-spacing: -0.02em; }
+.cdlg__out { display: inline-flex; opacity: 0.55; transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.cdlg__out svg, .cdlg__copy svg { width: 12px; height: 12px; }
 .cdlg__link:hover .cdlg__out { opacity: 1; transform: translate(2px, -2px); }
 .cdlg__copy {
   flex: none;
   display: grid;
   place-items: center;
-  width: 40px;
+  width: 30px;
   align-self: stretch;
-  padding: 0;
+  padding: 0 2px 0 0;
   border: 0;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 999px 999px 0;
   background: none;
   color: rgba(255, 255, 255, 0.72);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 .cdlg__copy:hover { color: #fff; }
+.cdlg__copy:active { transform: scale(0.88); }
 
 /* share your words */
-.cdlg__form { display: grid; gap: 10px; }
+.cdlg__form { display: grid; }
 .cdlg__area {
   width: 100%;
   min-height: 104px;
@@ -828,11 +695,12 @@ a { color: inherit; text-decoration: none; }
   font-size: 14.5px;
   line-height: 1.5;
   resize: vertical;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-.cdlg__area::placeholder { color: rgba(255, 255, 255, 0.55); }
-/* one stroke on focus, no glow around it */
-.cdlg__area:focus { outline: none; border-color: #a6e85b; }
+.cdlg__area:hover { border-color: rgba(255, 255, 255, 0.24); }
+/* one soft white stroke on focus, no glow around it */
+.cdlg__area:focus { outline: none; border-color: rgba(255, 255, 255, 0.32); background: rgba(4, 7, 12, 0.5); }
+.cdlg__area::selection { background: rgba(255, 255, 255, 0.3); color: #fff; }
 /* the box, and the prompt typing itself over it while it is empty */
 .cdlg__field { position: relative; }
 .cdlg__prompt {
@@ -859,29 +727,40 @@ a { color: inherit; text-decoration: none; }
 @keyframes cdlg-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cdlg__caret { animation: none; } }
 .cdlg__honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.cdlg__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.cdlg__fine { font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
+/* the row opens from nothing, so its space sits inside it as padding */
+.cdlg__row { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding-top: 12px; overflow: hidden; }
+.cdlg__row .cdlg__send { margin: 2px; }
 .cdlg__send {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 6px;
+  padding: 7px 12px 7px 14px;
   border: 0;
   border-radius: 999px;
   background: #a6e85b;
   color: #0d1a0a;
   font: inherit;
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, opacity 0.2s ease;
 }
-.cdlg__send svg { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.cdlg__send svg { width: 12px; height: 12px; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 .cdlg__send:hover:not(:disabled) { transform: translateY(-1px); background: #b6f070; }
 .cdlg__send:hover:not(:disabled) svg { transform: translateX(3px); }
+.cdlg__send:active:not(:disabled) { transform: scale(0.96); }
 .cdlg__send:disabled { opacity: 0.4; cursor: not-allowed; }
+/* while sending, the arrow keeps flying off to the right */
+.cdlg__send[data-phase='sending'] { opacity: 0.85; }
+.cdlg__send[data-phase='sending'] svg { animation: cdlg-fly 0.8s ease-in infinite; }
+@keyframes cdlg-fly {
+  0% { transform: translateX(0); opacity: 1; }
+  60% { transform: translateX(10px); opacity: 0; }
+  61% { transform: translateX(-8px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
 .cdlg__send:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-.cdlg__err { font-size: 13px; color: #f0a591; }
+.cdlg__err { margin-top: 10px; font-size: 13px; color: #f0a591; }
 .cdlg__err a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
 /* after sending */
@@ -915,9 +794,14 @@ a { color: inherit; text-decoration: none; }
 .cdlg__again:hover { color: #fff; text-decoration-color: currentColor; }
 
 @media (prefers-reduced-motion: reduce) {
-  .cdlg__dot { animation: none; }
   .cdlg__x:hover { transform: none; }
   .cdlg__scene { transform: scale(1.04); transition: none; }
+  .cdlg__glass { transform: none; }
+  .cdlg__marq-track { animation: none; }
+  .cdlg__marq-track > span + span { display: none; }
+  .cdlg__marq { text-overflow: ellipsis; -webkit-mask-image: none; mask-image: none; }
+  .cdlg__link:hover { transform: none; }
+  .cdlg__send[data-phase='sending'] svg { animation: none; }
 }
 /* a phone: the card takes the width, low on the picture, the reader above it */
 @media (max-width: 640px) {
@@ -1314,8 +1198,8 @@ a { color: inherit; text-decoration: none; }
 .intro__caret[data-still='true'] { animation: none; }
 @keyframes intro-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 
-/* the headline: sentence case, two lines, the two verbs in the grey serif.
-   Each word clears out of a blur on its own beat (Intro.tsx). */
+/* the headline: sentence case, two lines, turning over every few seconds
+   (Headline in Intro.tsx) — the verb in the grey serif, the tool in colour. */
 .intro__h1 {
   font-family: var(--sans);
   font-weight: 400;
@@ -1325,18 +1209,37 @@ a { color: inherit; text-decoration: none; }
   color: #fff;
   text-shadow: 0 4px 30px rgba(4, 5, 12, 0.55);
 }
-.intro__l { display: block; }
+.intro__l { display: block; white-space: nowrap; }
 .intro__w { display: inline-block; }
-.intro__serif em {
-  font-family: var(--display);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.62);
-  transition: color 0.35s ease;
+/* a word that turns over: its letters roll through a clipped line, the old
+   ones out of the top, the new ones in from the bottom, fading as they go.
+   The clip's top is the line's own top, so nothing reaches up into the line
+   above; it runs a little past the bottom (padding, cancelled by the negative
+   margin) so a descender is never cut. */
+.intro__slot {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0 0.02em 0.16em;
+  margin: 0 -0.02em -0.16em;
 }
-/* point at one and it lights up */
-.intro__serif:hover em { color: #fff; }
+.intro__roll { display: inline-block; white-space: nowrap; }
+.intro__ch { display: inline-block; will-change: transform; }
+.intro__serif { font-family: var(--display); font-style: italic; font-weight: 500; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.62); }
+/* the tool, in its own colour, with its logo at the shoulder — inside its
+   own line, like a superscript, so it never reaches up into the line above */
+.intro__tool { font-weight: 500; white-space: nowrap; }
+.intro__logo {
+  display: inline-block;
+  vertical-align: top;
+  width: 0.4em;
+  height: 0.4em;
+  margin: 0.08em 0 0 0.12em;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+}
+/* the Figma mark is taller than it is wide */
+.intro__logo--tall { width: 0.3em; height: 0.45em; margin-top: 0.05em; }
 .intro__p { font-size: clamp(15px, 1.2vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.84); max-width: 46ch; }
 
 /* the one way on: down to the work */
@@ -1362,20 +1265,6 @@ a { color: inherit; text-decoration: none; }
 .intro__go:hover svg { transform: translateY(3px); }
 .intro__go:focus-visible { outline: 2px solid #a6e85b; outline-offset: 3px; }
 
-.intro__tools { position: relative; z-index: 2; display: grid; gap: 12px; justify-items: start; text-align: left; }
-/* on a wide screen the tools go up into the dark sky, top right, where
-   nothing is lit behind them */
-@media (min-width: 861px) {
-  .intro__tools { position: absolute; top: clamp(104px, 15vh, 150px); right: calc(3.5% + 34px); justify-items: end; text-align: right; }
-}
-.intro__tools-label { font-size: 12px; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.65); }
-.intro__marks { display: flex; flex-wrap: wrap; gap: 22px; justify-content: flex-start; align-items: baseline; color: #fff; }
-@media (min-width: 861px) { .intro__marks { justify-content: flex-end; } }
-.mark { line-height: 1; opacity: 0.95; white-space: nowrap; }
-.mark--serif { font-family: var(--display); font-weight: 700; font-size: 24px; }
-.mark--sans { font-family: var(--sans); font-weight: 500; font-size: 20px; letter-spacing: -0.02em; }
-.mark--heavy { font-family: var(--sans); font-weight: 900; font-size: 17px; letter-spacing: -0.03em; text-transform: uppercase; }
-.mark--wide { font-family: var(--mono); font-weight: 500; font-size: 15px; letter-spacing: 0.22em; text-transform: uppercase; }
 
 /* drawn sunset scene — while the picture loads and when there is none */
 .scene { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; pointer-events: none; }
@@ -1405,6 +1294,7 @@ a { color: inherit; text-decoration: none; }
 }
 @media (max-width: 720px) {
   .intro__h1 { font-size: clamp(26px, 7.6vw, 34px); max-width: 100%; }
+  .intro__l { white-space: normal; }
   /* on a phone the reader fills the screen, so the base goes darker sooner
      and the words sit on night, not on the white shirt */
   .intro__shade {
@@ -1472,35 +1362,32 @@ a { color: inherit; text-decoration: none; }
 /* ── nature sound toggle (nav, left slot) ───────────────── */
 .nav__left { display: flex; align-items: center; }
 .sound {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
+  display: grid;
+  place-items: center;
+  width: 34px;
   height: 34px;
-  padding: 0 12px 0 10px;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(12px) saturate(1.2);
   color: #fff;
-  font-size: 12.5px;
-  font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 .sound:hover { background: rgba(255, 255, 255, 0.22); }
 .nav[data-stuck='true'] .sound { color: var(--text); background: var(--bg-elev); border-color: var(--line); }
-.sound__bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
-.sound__bars i { width: 3px; height: 40%; border-radius: 2px; background: currentColor; transform-origin: bottom; }
+.sound__bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.sound__bars i { width: 2px; height: 40%; border-radius: 2px; background: currentColor; transform-origin: bottom; }
 .sound[data-state='on'] .sound__bars i { animation: sound-bar 0.9s ease-in-out infinite; }
 .sound[data-state='on'] .sound__bars i:nth-child(2) { animation-delay: 0.15s; }
 .sound[data-state='on'] .sound__bars i:nth-child(3) { animation-delay: 0.3s; }
 .sound[data-state='on'] .sound__bars i:nth-child(4) { animation-delay: 0.45s; }
 .sound[data-state='off'] .sound__bars { opacity: 0.45; }
-.sound[data-state='waiting'] .sound__label { animation: sound-hint 1.6s ease-in-out infinite; }
+.sound[data-state='waiting'] .sound__bars { animation: sound-hint 1.6s ease-in-out infinite; }
 @keyframes sound-bar { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
 @keyframes sound-hint { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-@media (max-width: 720px) { .sound__label { display: none; } .sound { padding: 0 10px; } }
-@media (prefers-reduced-motion: reduce) { .sound__bars i, .sound__label { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sound__bars, .sound__bars i { animation: none !important; } }
 
 /* ── theme toggle (nav, left slot) ──────────────────────── */
 .theme {

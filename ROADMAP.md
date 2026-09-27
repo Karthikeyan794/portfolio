@@ -668,7 +668,8 @@ Verified with the network stubbed: reaction-only and thought-only sends, the 200
 - [ ] Your real bio (3–4 lines), role, location
 - [ ] **Resume PDF**
 - [x] **Behance projects** — all 12 pulled from behance.net/karthikbabu13 via its RSS feed; covers downloaded to `public/work/` (2.4 MB total, no hotlinking). Blurbs are my first drafts — rewrite in your own words in `src/data.ts`
-- [ ] **Support Desk + Atom**: demo URLs (`demo.href` in `src/data.ts`), walkthrough videos (`video` on the Walkthrough slice — MP4 in `public/` or a YouTube/Loom link), and 4–6 real screenshots to replace the placeholder banners
+- [x] **Support Desk + Atom**: demo URLs, walkthrough videos and real screenshots. Support Desk is done. Atom (27 Sep) now follows the same layout: overview, problem/solution, 9 "How it works" rows, and the live demo at `public/demo/atom/`. The demo is built from `~/Desktop/labs-atoms-portfolio-demo` (new UI, neutral branding, `npm run build` scrubs company names). The stills are in `public/work/atom/`.
+- [ ] **Atom clips**: record the 10 clips in Screen Studio from `~/Desktop/labs-atoms-portfolio-demo/docs/SHOT-LIST.md`, put them in `public/work/atom/clips/`, then swap each row's `image` for `clip` in `src/data.ts`.
 - [x] **One thumbnail set** — every project now uses a `/bento/*.jpg` image from the labs-client repo so the grid reads as one theme (Behance covers retired). Swap any file for your own generated art later, same path
 - [x] **Graph-paper canvas** — faint grid over the grey/black background whose lines brighten in a soft circle that follows the cursor
 - [ ] **Your own banner images** → `public/bento/*.jpg` are back at your request, and they are still the labs-client placeholders on a public repo. Replace with your own screenshots before this goes on a CV. Drawn stand-ins are ready in `scripts/make-covers.mjs` if you want any tile swapped back — one line each in `src/data.ts`.

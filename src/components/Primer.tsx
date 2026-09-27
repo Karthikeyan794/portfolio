@@ -32,7 +32,7 @@ function Head({ kick, text }: { kick: string; text?: string }) {
   )
 }
 
-export default function Primer({ primer }: { primer: PrimerData }) {
+export default function Primer({ primer, name = 'The product' }: { primer: PrimerData; name?: string }) {
   // The overview recording is served from a GitHub release, not from this
   // deploy — it is 636 MB, far past what a repository will hold. So it can be
   // absent, and this is the first thing on the page: if it will not load, show
@@ -92,7 +92,7 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                 /\.gif$/.test(primer.showcase.clip) ? (
                   <img
                     src={primer.showcase.clip}
-                    alt="Support Desk in use"
+                    alt={`${name} in use`}
                     loading="lazy"
                     decoding="async"
                     onError={() => setClipDead(true)}
@@ -101,22 +101,22 @@ export default function Primer({ primer }: { primer: PrimerData }) {
                   <AutoClip
                     src={primer.showcase.clip}
                     poster={primer.showcase.poster}
-                    label="Support Desk in use"
+                    label={`${name} in use`}
                     onFail={() => setClipDead(true)}
                   />
                 )
               ) : (
-                <img src={primer.showcase.poster} alt="The Support Desk queue" loading="lazy" decoding="async" />
+                <img src={primer.showcase.poster} alt={`${name}, a still`} loading="lazy" decoding="async" />
               )}
               <ZoomButton
                 onOpen={() =>
                   setZoom(
                     primer.showcase?.clip
-                      ? { src: primer.showcase.clip, alt: 'Support Desk in use', video: !/\.gif$/.test(primer.showcase.clip) }
-                      : { src: primer.showcase!.poster, alt: 'The Support Desk queue' },
+                      ? { src: primer.showcase.clip, alt: `${name} in use`, video: !/\.gif$/.test(primer.showcase.clip) }
+                      : { src: primer.showcase!.poster, alt: `${name}, a still` },
                   )
                 }
-                label="Support Desk"
+                label={name}
               />
               </div>
             </motion.div>
