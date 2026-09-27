@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { intro } from '../data'
 import { marks } from '../logos'
@@ -24,63 +24,6 @@ const rise = (delay: number) => ({
   animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
   transition: { delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] as const },
 })
-
-/**
- * "See my work", as a pane of glass: it tilts toward the pointer, is pulled a
- * few pixels after it, and a soft light follows it across the glass; the
- * arrow bobs while you are on it, and a press squeezes it in. The entrance
- * rides on a wrapper, not on the button — the rise leaves a filter on what
- * it animates, and a filter on the button's parent would stop the glass from
- * seeing (and blurring) the picture behind it. Mouse only; nothing moves for
- * someone who has asked for less motion.
- */
-function Go({ delay }: { delay: number }) {
-  const reduce = useReducedMotion()
-  const spring = { stiffness: 260, damping: 20, mass: 0.6 }
-  const rx = useSpring(0, spring)
-  const ry = useSpring(0, spring)
-  const x = useSpring(0, spring)
-  function move(e: React.PointerEvent<HTMLAnchorElement>) {
-    if (reduce || e.pointerType !== 'mouse') return
-    const r = e.currentTarget.getBoundingClientRect()
-    const px = (e.clientX - r.left) / r.width
-    const py = (e.clientY - r.top) / r.height
-    rx.set((0.5 - py) * 22)
-    ry.set((px - 0.5) * 18)
-    x.set((px - 0.5) * 8)
-    e.currentTarget.style.setProperty('--gx', `${(px * 100).toFixed(1)}%`)
-    e.currentTarget.style.setProperty('--gy', `${(py * 100).toFixed(1)}%`)
-  }
-  function leave() {
-    rx.set(0)
-    ry.set(0)
-    x.set(0)
-  }
-  return (
-    <motion.div
-      className="intro__go-wrap"
-      initial={{ opacity: 0, y: 22 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-    >
-      <motion.a
-        className="intro__go"
-        href={intro.cta.href}
-        style={{ rotateX: rx, rotateY: ry, x, transformPerspective: 520 }}
-        onPointerMove={move}
-        onPointerLeave={leave}
-        whileTap={reduce ? undefined : { scale: 0.95 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-      >
-        <span className="intro__go-light" aria-hidden="true" />
-        {intro.cta.label}
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M12 5v14M6 13l6 6 6-6" />
-        </svg>
-      </motion.a>
-    </motion.div>
-  )
-}
 
 function Scene({ show }: { show: boolean }) {
   return (
@@ -477,7 +420,31 @@ export default function Intro() {
             {intro.paragraph}
           </motion.p>
 
-          <Go delay={T.cta} />
+          {/* two ways on: talk to me, or down to the work */}
+          <div className="intro__ctas">
+            <motion.a
+              className="intro__go intro__go--solid"
+              href={intro.contactCta.href}
+              onClick={(e) => {
+                // the contact section is a dialog: open it rather than scroll
+                // to it. The href stays, so it still works without JS.
+                e.preventDefault()
+                window.dispatchEvent(new CustomEvent('open-contact'))
+              }}
+              {...rise(T.cta)}
+            >
+              {intro.contactCta.label}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7M9 7h8v8" />
+              </svg>
+            </motion.a>
+            <motion.a className="intro__go" href={intro.cta.href} {...rise(T.cta + 0.1)}>
+              {intro.cta.label}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 5v14M6 13l6 6 6-6" />
+              </svg>
+            </motion.a>
+          </div>
         </div>
 
       </div>
