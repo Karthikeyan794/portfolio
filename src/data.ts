@@ -1002,9 +1002,7 @@ export const marquee = [
 // ── Awards & certificates (PLACEHOLDERS — replace with real ones) ──
 export type Award = { title: string; issuer: string; year: string; note?: string; kind: 'award' | 'certificate' | 'hackathon' }
 
-// TODO: add the years — the two Vibeathons need them to read apart.
 export const awards: Award[] = [
-  { title: 'Vibeathon', issuer: 'Zoho', year: '', kind: 'hackathon' },
   { title: 'Vibeathon', issuer: 'Zoho', year: '', kind: 'hackathon' },
   { title: 'Inktober', issuer: 'Zoho', year: '', kind: 'award' },
 ]
