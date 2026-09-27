@@ -4038,6 +4038,23 @@ a.ctile__line { cursor: pointer; }
   color: #fff;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+/* on the drawings photo the label sits on bright sky, where white type
+   alone disappears: a dark glass pill behind it, like the "now" tag, the
+   same height as the arrow badge opposite so the two line up */
+.pcard--shot .pcard__label--over {
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(10, 16, 14, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  text-shadow: none;
+}
 .pcard__go {
   position: absolute;
   top: 12px;
