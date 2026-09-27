@@ -3984,7 +3984,7 @@ a.ctile__line { cursor: pointer; }
     's s s w w w'
     's s s w w w'
     's s s w w w'
-    's s s y y y'
+    's s s w w w'
     's s s y y y'
     'l l l y y y'
     'l l l y y y'
@@ -5230,5 +5230,6 @@ a.ctile__line { cursor: pointer; }
 @media (max-width: 560px) {
   .collage .pcard { min-height: 220px; height: auto; align-self: stretch; }
   .collage .pcard--portrait { min-height: 320px; }
+  .collage .pcard--awards { min-height: 280px; }
   .collage .pcard--music { align-self: stretch; height: auto; min-height: 150px; }
 }
