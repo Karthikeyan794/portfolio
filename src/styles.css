@@ -4641,7 +4641,9 @@ a.ctile__line { cursor: pointer; }
 .awards__veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(6, 8, 10, 0.82) 0%, rgba(6, 8, 10, 0.46) 38%, rgba(6, 8, 10, 0.9) 100%);
+  /* only enough shade for the label at the top and the name at the foot;
+     the photo in between stays clear */
+  background: linear-gradient(180deg, rgba(6, 8, 10, 0.5) 0%, rgba(6, 8, 10, 0) 28%, rgba(6, 8, 10, 0) 64%, rgba(6, 8, 10, 0.62) 100%);
 }
 .pcard--awards .pcard__label, .pcard--awards .atags, .awards__title { position: relative; z-index: 2; }
 /* the award's name, set in the display serif over the photo */
