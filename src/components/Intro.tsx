@@ -146,19 +146,28 @@ function Headline({ start }: { start: number }) {
 
   return (
     <motion.h1 className="intro__h1" {...rise(start)}>
-      <span className="sr-only">{`${intro.headlineTop.replace(/\*/g, '')} ${lines.map((l) => `${l.what} ${l.prep} ${l.tool}`).join(', ')}.`}</span>
+      <span className="sr-only">{`${intro.headlineTop.replace(/\*| \|/g, '')} ${lines.map((l) => `${l.what} ${l.prep} ${l.tool}`).join(', ')}.`}</span>
       <span aria-hidden="true">
-        {/* the top line stays put; a word between *asterisks* is the grey serif */}
+        {/* the top line stays put; a word between *asterisks* is the grey
+            serif. Its groups (split at ` | `) never break inside, so a narrow
+            screen can only wrap it between them. */}
         <span className="intro__l">
-          {intro.headlineTop.split(' ').map((w, wi) => {
-            const m = w.match(/^\*(.+)\*$/)
-            return (
-              <span key={wi}>
-                {wi ? ' ' : ''}
-                <span className={m ? 'intro__w intro__serif' : 'intro__w'}>{m ? m[1] : w}</span>
+          {intro.headlineTop.split(' | ').map((group, gi) => (
+            <span key={gi}>
+              {gi ? ' ' : ''}
+              <span className="intro__keep">
+                {group.split(' ').map((w, wi) => {
+                  const m = w.match(/^\*(.+)\*$/)
+                  return (
+                    <span key={wi}>
+                      {wi ? ' ' : ''}
+                      <span className={m ? 'intro__w intro__serif' : 'intro__w'}>{m ? m[1] : w}</span>
+                    </span>
+                  )
+                })}
               </span>
-            )
-          })}
+            </span>
+          ))}
         </span>
         <span className="intro__l">
           <Roll text={h.what} />{' '}

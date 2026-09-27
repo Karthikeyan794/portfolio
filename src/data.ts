@@ -1035,8 +1035,10 @@ export const intro = {
   // grey serif italic); the line under it turns over every few seconds and
   // finishes the sentence — what I make, then the tool, the tool in its own
   // colour with its logo popping in beside it. `mark` is a key in
-  // src/logos.ts. Add a line to `headline` to add a turn.
-  headlineTop: 'I *design* and *build*',
+  // src/logos.ts. Add a line to `headline` to add a turn. In the top line a
+  // ` | ` is the one place it may break on a narrow screen (a phone), so it
+  // splits into "Every day" / "I design & build" rather than orphaning a word.
+  headlineTop: 'Every day | I *design* & *build*',
   headline: [
     { what: 'interfaces', prep: 'in', tool: 'Figma', mark: 'figma', color: '#0ACF83' },
     { what: 'front-ends', prep: 'in', tool: 'React', mark: 'react', color: '#7fdcff' },
