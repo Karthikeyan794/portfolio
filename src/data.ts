@@ -567,8 +567,8 @@ export const projects: Project[] = [
     tools: ['claude', 'figma'],
     emoji: '⚛️',
     cover: '/bento/atom.jpg',
-    // the card plays the Atom intro: agents, assistants, access and credits
-    coverClip: { src: '/work/atom/clips/intro.mp4', poster: '/work/atom/clips/intro.jpg', ratio: 3692 / 2160 },
+    // the card and the case banner play the dark Atom intro (Atom_Intro_Dark, as exported)
+    coverClip: { src: '/work/atom/clips/intro-dark.mp4', poster: '/work/atom/clips/intro-dark.jpg', ratio: 3840 / 2160 },
     featured: 2,
     size: 'wide',
     tone: 'mist',
