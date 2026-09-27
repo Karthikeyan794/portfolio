@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { artworks } from '../data'
+import { useBackSteps, usePhone } from '../sheet'
 
 /**
  * The drawings, in a dark glass sheet over the page — what the Drawings card
@@ -29,6 +30,10 @@ export default function ArtGallery({ open, onClose }: { open: boolean; onClose: 
   const viewRef = useRef(view)
   viewRef.current = view
   const closeBtn = useRef<HTMLButtonElement>(null)
+  // on a phone the drawings are a page: full screen, in from the right, a
+  // Back button, and the back gesture goes one drawing -> the grid -> out
+  const phone = usePhone()
+  useBackSteps(open ? (view === 'one' ? 2 : 1) : 0, () => (viewRef.current === 'one' ? setView('grid') : onClose()), phone)
 
   const go = useCallback((d: number) => setPage(([k]) => [(k + d + n) % n, d]), [n])
   const jump = (k: number) => setPage(([cur]) => [k, k === cur ? 0 : k > cur ? 1 : -1])
@@ -110,14 +115,20 @@ export default function ArtGallery({ open, onClose }: { open: boolean; onClose: 
             className="agal__sheet"
             ref={sheet}
             onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, y: reduce ? 0 : 28, scale: reduce ? 1 : 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: reduce ? 0 : 12, scale: reduce ? 1 : 0.98, transition: { duration: 0.18, ease: 'easeIn' } }}
-            transition={{ type: 'spring', stiffness: 160, damping: 22 }}
+            initial={phone && !reduce ? { x: '100%' } : { opacity: 0, y: reduce ? 0 : 28, scale: reduce ? 1 : 0.96 }}
+            animate={phone && !reduce ? { x: 0 } : { opacity: 1, y: 0, scale: 1 }}
+            exit={phone && !reduce ? { x: '100%', transition: { duration: 0.28, ease: [0.4, 0, 1, 1] } } : { opacity: 0, y: reduce ? 0 : 12, scale: reduce ? 1 : 0.98, transition: { duration: 0.18, ease: 'easeIn' } }}
+            transition={phone && !reduce ? { duration: 0.42, ease: [0.22, 1, 0.36, 1] } : { type: 'spring', stiffness: 160, damping: 22 }}
           >
             {view === 'grid' ? (
               <>
                 <div className="agal__head">
+                  {phone && (
+                    <button type="button" className="agal__pageback" onClick={onClose}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+                      Back
+                    </button>
+                  )}
                   <p className="agal__cap">
                     Drawings
                     <span className="agal__no">{String(n).padStart(2, '0')}</span>

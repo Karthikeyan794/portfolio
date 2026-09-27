@@ -1050,6 +1050,8 @@ export const intro = {
   // on the day one would wash out the sky and look like specks in the sun.
   // A set `image` wins over `video`.
   image: '/intro/day-library.webp',
+  // a phone gets the same library by day, framed tall (your export, exact)
+  imagePhone: '/intro/day-library-tall.png',
   imageDark: '/night-library.png',
   poster: '',
   imageFocus: '50% 50%', // which part of the picture stays in view when cropped (the reader is centre)

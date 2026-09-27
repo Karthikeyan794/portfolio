@@ -402,6 +402,19 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
   outside it, or leaves it later, puts it back to sleep. On touch it sleeps when scrolled off screen.
   Both demos (Support Desk and Atom) — `DemoFrame.tsx`.
 
+## 2f-9. Phones (27 Sep 2026)
+
+- **Case pages:** the section tabs are gone on a phone; the bar is Back only.
+- **Contact me and the drawings** open as pages on a phone, not floating boxes: the whole screen,
+  sliding in from the right, a text **← Back** top left in place of the ×. The phone's own back
+  gesture works too: one drawing → the grid → out. `src/sheet.ts` (`usePhone`, `useBackSteps`).
+- **Less space** between sections: home sections 44px top and bottom, case blocks 24px apart,
+  "How it works" rows 40px apart; the screens no longer drift with the scroll on a phone.
+- **Landing picture:** in light theme a phone gets the tall day library
+  (`public/intro/day-library-tall.png`, the export exactly; `intro.imagePhone`). Dark theme — the
+  default on a first visit — still shows the wide night picture on a phone: a tall night version
+  would finish it.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**

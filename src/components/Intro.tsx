@@ -349,14 +349,18 @@ export default function Intro() {
           <div className="intro__pic">
             {wantDay && (
               <div className="intro__layer" data-on={dayReady}>
-                <img
-                  className="intro__img"
-                  src={intro.image}
-                  alt=""
-                  style={{ objectPosition: intro.imageFocus }}
-                  onLoad={() => setDayReady(true)}
-                  onError={() => { if (!showNight) setReady(false) }}
-                />
+                {/* a phone gets the tall picture; everything wider the wide one */}
+                <picture>
+                  {intro.imagePhone && <source media="(max-width: 700px)" srcSet={intro.imagePhone} />}
+                  <img
+                    className="intro__img"
+                    src={intro.image}
+                    alt=""
+                    style={{ objectPosition: intro.imageFocus }}
+                    onLoad={() => setDayReady(true)}
+                    onError={() => { if (!showNight) setReady(false) }}
+                  />
+                </picture>
               </div>
             )}
             {/* night sits over day, so the switch is one layer fading in or

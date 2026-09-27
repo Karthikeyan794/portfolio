@@ -6,6 +6,7 @@ import GridBg from './GridBg'
 import Brief from './Brief'
 import AutoClip from './AutoClip'
 import CardClip from './CardClip'
+import { usePhone } from '../sheet'
 import CaseEnd from './CaseEnd'
 import Credits from './Credits'
 import DemoFrame from './DemoFrame'
@@ -97,6 +98,9 @@ function Row({ slice, no, slug }: { slice: Slice; no: number; slug: string }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], [26, -26])
   const float = useSpring(drift, { stiffness: 80, damping: 24, restDelta: 0.4 })
+  // not on a phone: there the rows are stacked, and a screen sliding into the
+  // gap under it only makes the spacing between rows uneven
+  const phone = usePhone()
 
   // The section holds full contrast through the middle of its travel and sits
   // back as it arrives and leaves, so the page stays alive the whole way down
@@ -158,7 +162,7 @@ function Row({ slice, no, slug }: { slice: Slice; no: number; slug: string }) {
 
       {/* right: the screens or the video */}
       {hasMedia && (
-        <motion.div className="row__media" style={{ y: float }}>
+        <motion.div className="row__media" style={{ y: phone ? 0 : float }}>
           {slice.video ? (
             <motion.div className="frame frame--video" variants={frameV}>
                 {isEmbed(slice.video) ? (

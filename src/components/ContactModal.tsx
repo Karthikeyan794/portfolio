@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useBackSteps, usePhone } from '../sheet'
 import { aboutLinks, profile } from '../data'
 import { marks } from '../logos'
 import { formLive, sendForm } from '../sendForm'
@@ -68,6 +69,10 @@ function Prompt({ caret }: { caret: boolean }) {
 
 export default function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const reduce = useReducedMotion()
+  // on a phone the dialog is a page: full screen, in from the right, with a
+  // Back button, and the phone's own back gesture closes it
+  const phone = usePhone()
+  useBackSteps(open ? 1 : 0, onClose, phone)
   const [message, setMessage] = useState('')
   const [phase, setPhase] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle')
   const [copied, setCopied] = useState<string | null>(null)
@@ -215,15 +220,21 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
             ref={sheet}
             onPointerMove={lean}
             onPointerLeave={rest}
-            initial={{ opacity: 0, y: reduce ? 0 : 28, scale: reduce ? 1 : 0.975 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: reduce ? 0 : 14, scale: reduce ? 1 : 0.985 }}
-            transition={{ type: 'spring', stiffness: 150, damping: 20 }}
+            initial={phone && !reduce ? { x: '100%' } : { opacity: 0, y: reduce ? 0 : 28, scale: reduce ? 1 : 0.975 }}
+            animate={phone && !reduce ? { x: 0 } : { opacity: 1, y: 0, scale: 1 }}
+            exit={phone && !reduce ? { x: '100%', transition: { duration: 0.28, ease: [0.4, 0, 1, 1] } } : { opacity: 0, y: reduce ? 0 : 14, scale: reduce ? 1 : 0.985 }}
+            transition={phone && !reduce ? { duration: 0.42, ease: [0.22, 1, 0.36, 1] } : { type: 'spring', stiffness: 150, damping: 20 }}
             onClick={(e) => e.stopPropagation()}
           >
             <img className="cdlg__scene" src={SCENE} alt="" aria-hidden="true" />
             <span className="cdlg__veil" aria-hidden="true" />
 
+            {phone && (
+              <button type="button" className="cdlg__back" onClick={onClose}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+                Back
+              </button>
+            )}
             <button className="cdlg__x" onClick={onClose} aria-label="Close">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
             </button>
