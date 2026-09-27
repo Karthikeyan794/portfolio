@@ -1,7 +1,5 @@
 import { motion } from 'motion/react'
 import { useScrolled } from '../hooks'
-import SoundToggle from './SoundToggle'
-import ThemeToggle from './ThemeToggle'
 
 type Props = { onEnterLab?: () => void; delay?: number }
 
@@ -18,11 +16,8 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
       transition={{ delay, type: 'spring', stiffness: 90, damping: 18 }}
     >
       <nav className="wrap nav__inner" aria-label="Primary">
-        {/* left slot: nature-sound toggle */}
-        <div className="nav__left">
-          <SoundToggle />
-          <ThemeToggle />
-        </div>
+        {/* sound and theme moved into the landing picture (Intro.tsx) */}
+        <div className="nav__left" />
 
         <div className="nav__actions">
           {onEnterLab && (

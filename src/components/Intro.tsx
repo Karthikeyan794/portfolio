@@ -5,6 +5,8 @@ import { marks } from '../logos'
 import { useTyped } from '../useTyped'
 import { useTheme } from '../theme'
 import Fireflies from './Fireflies'
+import SoundToggle from './SoundToggle'
+import ThemeToggle from './ThemeToggle'
 
 /**
  * Opening hero: the night-library picture fills the screen with slow life in
@@ -465,6 +467,11 @@ export default function Intro() {
           </div>
         </div>
 
+        {/* sound and theme, on the frame's right rail, level with the buttons */}
+        <motion.div className="intro__controls" {...rise(T.cta + 0.2)}>
+          <SoundToggle />
+          <ThemeToggle />
+        </motion.div>
       </div>
 
     </section>

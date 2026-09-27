@@ -37,7 +37,9 @@ export default function Site2D({ onEnterLab }: Props) {
           onAnimationComplete={() => setSettled(true)}
           style={settled ? { transform: 'none' } : undefined}
         >
-          <Nav onEnterLab={onEnterLab} delay={INTRO_NAV_DELAY} />
+          {/* sound and theme now sit in the picture (Intro), so the bar only
+              has something to carry when the 3D lab is switched on */}
+          {onEnterLab && <Nav onEnterLab={onEnterLab} delay={INTRO_NAV_DELAY} />}
           <main>
             <Intro />
             <About />
