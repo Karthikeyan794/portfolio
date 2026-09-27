@@ -1041,7 +1041,7 @@ export const intro = {
   // src/logos.ts. Add a line to `headline` to add a turn.
   headlineTop: 'I *design* and *build*',
   headline: [
-    { what: 'interfaces', prep: 'in', tool: 'Figma', mark: 'figma', color: '#A259FF' },
+    { what: 'interfaces', prep: 'in', tool: 'Figma', mark: 'figma', color: '#B98CFF' },
     { what: 'front-ends', prep: 'in', tool: 'React', mark: 'react', color: '#7fdcff' },
     { what: 'faster', prep: 'with', tool: 'Claude', mark: 'claude', color: '#ec9a76' },
   ] as { what: string; prep: string; tool: string; mark: string; color: string }[],
