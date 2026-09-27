@@ -10,6 +10,8 @@ export type DemoPage = { label: string; hash: string; role?: 'admin' | 'support'
  * button to open it full screen. Until you click into it the iframe takes no
  * pointer events, so scrolling the page past it never gets caught inside the
  * app; move the pointer out of the window and it goes quiet again.
+ * Clicking in also brings the whole window up to the top of the screen, so
+ * the app is never half below the fold while you use it.
  */
 export default function DemoFrame({ src, pages = [], art, title = 'Product demo', host = 'product.demo', roleKey = 'sd.demoRole' }: {
   src: string; pages?: DemoPage[]; art?: string; title?: string; host?: string
@@ -23,6 +25,42 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
   const frame = useRef<HTMLIFrameElement>(null)
   const view = useRef<HTMLDivElement>(null)
   const root = useRef<HTMLDivElement>(null)
+  const win = useRef<HTMLDivElement>(null)
+  // true while the page glides up to the window: the pointer stays still and
+  // the window moves under it, which is not the reader leaving
+  const gliding = useRef(false)
+
+  // click to interact: the app wakes, and the page glides until the window's
+  // top sits just under the top of the screen (the header has stepped away)
+  function start(e: React.MouseEvent) {
+    setLive(true)
+    const el = win.current
+    if (!el) return
+    const mouse = (e.nativeEvent as PointerEvent).pointerType !== 'touch' && (e.nativeEvent as PointerEvent).pointerType !== 'pen'
+    let at = { x: e.clientX, y: e.clientY }
+    const track = (ev: PointerEvent) => { at = { x: ev.clientX, y: ev.clientY } }
+    gliding.current = true
+    let ended = false
+    const done = () => {
+      if (ended) return
+      ended = true
+      gliding.current = false
+      window.removeEventListener('pointermove', track)
+      window.removeEventListener('scrollend', done)
+      // a mouse that has ended up outside the window after all puts it back to
+      // sleep, so scrolling the page never gets caught inside the app
+      const r = win.current?.getBoundingClientRect()
+      if (mouse && r && (at.x < r.left || at.x > r.right || at.y < r.top || at.y > r.bottom)) setLive(false)
+    }
+    window.addEventListener('pointermove', track, { passive: true })
+    window.addEventListener('scrollend', done)
+    window.setTimeout(done, 1200) // where there is no scrollend, or nothing to scroll
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const top = el.getBoundingClientRect().top + window.scrollY - 16
+    window.scrollTo({ top: Math.max(0, top), behavior: still ? 'auto' : 'smooth' })
+    // keys go straight to the app, without the focus itself scrolling anything
+    frame.current?.focus({ preventScroll: true })
+  }
 
   // the first tab's role, set before the demo starts and reads it: without
   // this a role left over from an earlier visit would open under the wrong tab
@@ -44,7 +82,12 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
     const el = root.current
     if (!el) return
     const io = new IntersectionObserver(
-      ([entry]) => window.dispatchEvent(new CustomEvent('demo-inview', { detail: entry.isIntersecting })),
+      ([entry]) => {
+        window.dispatchEvent(new CustomEvent('demo-inview', { detail: entry.isIntersecting }))
+        // off screen, the app goes back to sleep — the way a touch screen,
+        // which has no pointer to leave, puts it down
+        if (!entry.isIntersecting) setLive(false)
+      },
       { threshold: 0.2 },
     )
     io.observe(el)
@@ -107,7 +150,13 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
       {art && <img className="dfr__desk" src={art} alt="" aria-hidden="true" />}
       <span className="dfr__tint" aria-hidden="true" />
 
-      <div className={live ? 'dfr__win dfr__win--live' : 'dfr__win'} onMouseLeave={() => setLive(false)}>
+      <div
+        className={live ? 'dfr__win dfr__win--live' : 'dfr__win'}
+        ref={win}
+        onPointerLeave={(e) => {
+          if (e.pointerType === 'mouse' && !gliding.current) setLive(false)
+        }}
+      >
         <div className="dfr__bar">
           <span className="dfr__dots" aria-hidden="true"><i /><i /><i /></span>
           {pages.length > 0 && (
@@ -154,7 +203,7 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
           />
           {!loaded && <span className="dfr__wait">Loading the demo…</span>}
           {!live && (
-            <button type="button" className="dfr__go" onClick={() => setLive(true)}>
+            <button type="button" className="dfr__go" onClick={start}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 3l14 9-7 1-4 7z" />
               </svg>

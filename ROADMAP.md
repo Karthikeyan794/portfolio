@@ -386,6 +386,15 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
 - The Atom overview plays the "One console, five pages" recording, and that section is gone from
   How it works. Both clips are the exported files exactly (`public/work/atom/clips`).
 
+## 2f-8. Click to interact brings the demo up (27 Sep 2026)
+
+- The demo window is taller than a laptop screen and its **Click to interact** button sits at its
+  foot, so you scroll past the top to reach it. Clicking it now glides the page back until the
+  window's top sits 16px under the top of the screen, wakes the app and puts the keyboard in it.
+- It stays awake through the glide (the window moves under a still pointer); a mouse that ends up
+  outside it, or leaves it later, puts it back to sleep. On touch it sleeps when scrolled off screen.
+  Both demos (Support Desk and Atom) — `DemoFrame.tsx`.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**
