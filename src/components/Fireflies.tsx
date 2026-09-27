@@ -99,8 +99,8 @@ export default function Fireflies({ className = '' }: { className?: string }) {
         heading,
         turn: (Math.random() - 0.5) * 0.9,
         speed: 0.35 + Math.random() * 0.3,
-        // a little depth: some nearer and bigger than others
-        size: (small ? 34 : 46) + Math.random() * (small ? 16 : 26),
+        // small, like a real firefly across a garden; a little variety for depth
+        size: (small ? 18 : 22) + Math.random() * (small ? 6 : 10),
         phase: Math.random() * Math.PI * 2,
         rate: 0.5 + Math.random() * 0.6,
         beat: 16 + Math.random() * 6, // wing beats a second
