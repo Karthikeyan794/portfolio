@@ -5424,8 +5424,9 @@ a.ctile__line { cursor: pointer; }
     .bento .box:nth-child(even) .box__lift { animation-range: entry 10% entry 85%; }
 
     /* the pictures inside: a slow parallax across the whole pass */
+    /* not the portrait: its framing (head to knees) is the point, and the
+       zoom the drift needs would crop his head */
     .box__img,
-    .pcard--portrait img,
     .pcard--shot img,
     .awards__bg,
     .crate__video {
