@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
  * frame, and if the file will not load it removes itself and the still cover
  * under it is what shows.
  */
-export default function CardClip({ src, poster, className }: { src: string; poster?: string; className: string }) {
+export default function CardClip({ src, poster, className, style }: { src: string; poster?: string; className: string; style?: React.CSSProperties }) {
   const ref = useRef<HTMLVideoElement>(null)
   const reduce = useReducedMotion()
   const [dead, setDead] = useState(false)
@@ -35,6 +35,7 @@ export default function CardClip({ src, poster, className }: { src: string; post
     <video
       ref={ref}
       className={className}
+      style={style}
       src={src}
       poster={poster}
       muted

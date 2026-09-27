@@ -318,8 +318,10 @@ export type Project = {
   emoji: string // fallback when there is no cover image
   cover?: string
   /** the card's cover, moving: a recording laid over `cover`, muted, looping
-   *  while the card is on screen; `poster` is its first frame */
-  coverClip?: { src: string; poster?: string }
+   *  while the card is on screen; `poster` is its first frame. It plays in the
+   *  case page's banner too, `bannerDown` px lower there if set, with the band
+   *  above it painted `bannerFill` (the clip's own edge colour) */
+  coverClip?: { src: string; poster?: string; bannerDown?: number; bannerFill?: string }
   /** the Behance gallery for this project — shown as a link inside its page */
   behance?: string
   /** still being made: its card opens a short "working on it" note (see
@@ -378,7 +380,8 @@ export const projects: Project[] = [
     cover: '/bento/support-desk.jpg',
     // the card plays the Support Desk intro (dark) over the still; the still
     // stays as its poster, since the clip opens on a black frame
-    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg' },
+    // in the banner it hangs 50px lower, so its captions clear the back button and tabs
+    coverClip: { src: '/work/support-desk/clips/intro-dark.mp4', poster: '/bento/support-desk.jpg', bannerDown: 50, bannerFill: '#030407' },
     featured: 1,
     size: 'hero',
     tone: 'sage',

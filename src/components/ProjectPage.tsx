@@ -311,6 +311,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
 
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroScale = useTransform(heroProgress, [0, 1], [1, 1.12])
+  const reduceHero = useReducedMotion()
   const heroY = useTransform(heroProgress, [0, 1], ['0%', '16%'])
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, 0.3])
   // the banner starts as an inset card and opens to the full width of the
@@ -411,9 +412,21 @@ export default function ProjectPage({ slug }: { slug: string }) {
               <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
               {/* the same recording the project's card plays, over the still,
                   moving with it as the page scrolls */}
-              {project.coverClip && (
+              {/* not for reduced motion: there the banner keeps its still */}
+              {project.coverClip && !reduceHero && (
                 <motion.div style={{ position: 'absolute', inset: 0, scale: heroScale, y: heroY, opacity: heroFade }}>
-                  <CardClip className="case__hero-img" src={project.coverClip.src} poster={project.coverClip.poster} />
+                  <CardClip
+                    className="case__hero-img"
+                    src={project.coverClip.src}
+                    // the banner can hang the recording lower, so what is at its
+                    // top is not under the back button and the tabs; the band
+                    // left above it is painted in the clip's own edge colour
+                    style={
+                      project.coverClip.bannerDown
+                        ? { objectPosition: `50% ${project.coverClip.bannerDown}px`, background: project.coverClip.bannerFill }
+                        : undefined
+                    }
+                  />
                 </motion.div>
               )}
             </motion.div>
