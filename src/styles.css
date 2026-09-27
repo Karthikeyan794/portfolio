@@ -1272,6 +1272,9 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.6;
   /* lighter than the headline, so the line reads as a note under it */
   color: rgba(255, 255, 255, 0.62);
+  /* take back the space the tall line leaves under the last line of text
+     ((1.6 - 1) / 2 = 0.3em), so the 16px to the buttons is 16px to the eye */
+  margin-bottom: -0.3em;
   max-width: 52ch;
   text-wrap: pretty; /* never one word alone on the last line */
 }
