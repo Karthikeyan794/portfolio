@@ -40,7 +40,7 @@ export const profile = {
   email: 'karthikeyan.design09@gmail.com',
   // paste your number here and the contact dialog shows it; empty hides the
   // row entirely. Keep it in the form you want read aloud: '+91 98765 43210'.
-  phone: '+91 78128 18507',
+  phone: '',
   resumeUrl: '', // e.g. '/resume.pdf' — drop the file in /public
   photo: '', // e.g. '/me.jpg' — drop the file in /public. Empty = initials placeholder.
 }

@@ -504,7 +504,7 @@ export default function About() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ type: 'spring', stiffness: 66, damping: 18 }}
         >
-          <span className="eyebrow">01 — About</span>
+          <span className="eyebrow">About</span>
           {/* Driven by useInView on the heading rather than whileInView.
               The words start translated fully below their own masks, and an
               element clipped away by an ancestor's overflow never registers
