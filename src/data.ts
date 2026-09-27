@@ -154,7 +154,8 @@ export const stackCards: { no: string; label: string; image: string; shift?: num
  * TODO: one of your own Behance covers standing in — swap it for a photo of
  * the trophies when you have them.
  */
-export const awardsCard = { image: '/work/neomorphism.jpg' }
+// the Vibeathon 2026 trophy, held up over the hills
+export const awardsCard = { image: '/about/award.jpg' }
 
 /**
  * What's on while I build.
