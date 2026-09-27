@@ -4478,16 +4478,16 @@ a.ctile__line { cursor: pointer; }
   letter-spacing: -0.01em;
   line-height: 1.1;
 }
-.slide__apps { display: flex; flex-wrap: wrap; gap: 6px; }
+.slide__apps { display: flex; flex-wrap: wrap; gap: 5px; }
 
 /* the tools, as frosted tags over the picture */
 .tchip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px 4px 4px;
+  gap: 5px;
+  padding: 3px 9px 3px 3px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
@@ -4513,14 +4513,14 @@ a.ctile__line { cursor: pointer; }
 .tchip__mark {
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #fff;
   color: #14181b;
 }
-.tchip__mark svg { width: 12px; height: 12px; fill: currentColor; }
-.tchip__mark b { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: -0.04em; }
+.tchip__mark svg { width: 10px; height: 10px; fill: currentColor; }
+.tchip__mark b { font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: -0.04em; }
 
 /* ── the foot: pips that fill as the slide runs, and what comes next ── */
 .deck__nav {
@@ -5394,3 +5394,63 @@ a.ctile__line { cursor: pointer; }
 .wipdlg__ok:hover { background: #e9e7e2; }
 .wipdlg__ok:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .ctag--wip i { animation: none; } }
+
+/* ── scroll motion ─────────────────────────────────────────────
+   Tied to the scroll itself, not a timer: as a card comes up the screen it
+   rises into place and comes to full strength, and the picture inside it
+   drifts a touch slower than the card, so it feels set back behind glass.
+   Run by the browser off the main thread (scroll-driven animations); a
+   browser without them simply shows everything still. The individual
+   `translate` / `scale` properties are used so none of it fights the hover
+   zooms, which use `transform`. Nothing moves for reduced motion. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* the cards: rise and brighten while entering the screen */
+    .box__lift,
+    .collage .pcard {
+      /* the card's pass across the screen, named, so the picture inside can
+         follow it — a picture's own view() would be measured against the
+         card (its overflow makes it a scroller) and never move */
+      view-timeline: --card block;
+      animation: scroll-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 75%;
+    }
+    /* stagger the About cards a little, the right-hand column trailing */
+    .collage .pcard--shot,
+    .collage .pcard--awards,
+    .collage .pcard--music { animation-range: entry 8% entry 85%; }
+
+    /* the pictures inside: a slow parallax across the whole pass */
+    .box__img,
+    .pcard--portrait img,
+    .pcard--shot img,
+    .awards__bg {
+      scale: 1.1;
+      animation: scroll-drift linear both;
+      animation-timeline: --card;
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* the section titles rise in as they arrive */
+    .work__head h2,
+    .about__greeting,
+    #about .eyebrow {
+      animation: scroll-title linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 90%;
+    }
+  }
+}
+@keyframes scroll-rise {
+  from { opacity: 0.25; translate: 0 56px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes scroll-drift {
+  from { translate: 0 -5%; }
+  to { translate: 0 5%; }
+}
+@keyframes scroll-title {
+  from { opacity: 0; translate: 0 22px; }
+  to { opacity: 1; translate: 0 0; }
+}
