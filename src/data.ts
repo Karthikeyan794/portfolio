@@ -234,7 +234,7 @@ export const currently = {
   role: 'Product Designer',
   at: 'Facilio',
   focus: 'Support Desk & Atom',
-  portrait: '/intro.jpg', // swap for a photo of you when you have one
+  portrait: '/about/portrait.jpg',
 }
 
 export const about = [
