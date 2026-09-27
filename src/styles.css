@@ -4405,6 +4405,21 @@ a.ctile__line { cursor: pointer; }
   inset: 0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.14) 28%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.78) 100%);
 }
+/* a light blur across the foot of the slide, behind the category, its tools
+   and the pips, so they read over a busy photo; it fades in from above, so
+   there is no edge, and the photo stays sharp above it */
+.slide__veil::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 250px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 90px);
+  mask-image: linear-gradient(to bottom, transparent, #000 90px);
+}
 .slide__body {
   position: relative;
   display: grid;
