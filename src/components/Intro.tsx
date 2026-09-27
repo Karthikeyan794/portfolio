@@ -5,7 +5,7 @@ import { pageCentre, releaseFirefly } from '../fly'
 import { intro } from '../data'
 import { marks } from '../logos'
 import { useTyped } from '../useTyped'
-import { useTheme } from '../theme'
+import { getTheme, useTheme } from '../theme'
 import Fireflies from './Fireflies'
 import SoundToggle from './SoundToggle'
 import ThemeToggle from './ThemeToggle'
@@ -28,6 +28,10 @@ const rise = (delay: number) => ({
   animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
   transition: { delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] as const },
 })
+
+/** the pictures that have loaded once already this visit: coming back from a
+ *  project page, the landing draws them at once, with no fade and no wait */
+const shown = new Set<string>()
 
 function Scene({ show }: { show: boolean }) {
   return (
@@ -203,7 +207,19 @@ function Headline({ start }: { start: number }) {
 }
 
 export default function Intro() {
-  const [ready, setReady] = useState<boolean | null>(null) // null = loading, false = missing
+  // null = loading, false = missing. A picture already shown this visit is
+  // ready from the first frame, so a return from a project page never fades.
+  const [ready, setReady] = useState<boolean | null>(() => {
+    const night = getTheme() === 'dark' && Boolean(intro.imageDark)
+    return intro.image && shown.has(night ? intro.imageDark : intro.image) ? true : null
+  })
+  // the blurred stand-in, until the real picture has finished fading in over it
+  const [settled, setSettled] = useState(ready === true)
+  useEffect(() => {
+    if (ready !== true || settled) return
+    const t = window.setTimeout(() => setSettled(true), 1500)
+    return () => window.clearTimeout(t)
+  }, [ready, settled])
   const theme = useTheme()
   const dark = theme === 'dark'
   // the night clip is only fetched the first time dark is chosen, then kept warm
@@ -289,8 +305,8 @@ export default function Intro() {
   }
   const [wantDay, setWantDay] = useState(!showNight)
   const [wantNight, setWantNight] = useState(showNight)
-  const [dayReady, setDayReady] = useState(false)
-  const [nightReady, setNightReady] = useState(false)
+  const [dayReady, setDayReady] = useState(() => shown.has(intro.image))
+  const [nightReady, setNightReady] = useState(() => Boolean(intro.imageDark) && shown.has(intro.imageDark))
   useEffect(() => {
     if (showNight) setWantNight(true)
     else setWantDay(true)
@@ -347,6 +363,15 @@ export default function Intro() {
       <div className="intro__media" ref={media} data-ready={ready === true}>
         {useImage && ready !== false && (
           <div className="intro__pic">
+            {/* while the picture is on its way: a 40px copy of it, built into
+                the page, blurred up to full size — so the first thing seen is
+                the picture itself coming into focus, never a drawn scene */}
+            {!settled && intro.blur && (
+              <picture>
+                {!showNight && <source media="(max-width: 700px)" srcSet={intro.blur.dayPhone} />}
+                <img className="intro__blur" src={showNight ? intro.blur.night : intro.blur.day} alt="" aria-hidden="true" style={{ objectPosition: intro.imageFocus }} />
+              </picture>
+            )}
             {wantDay && (
               <div className="intro__layer" data-on={dayReady}>
                 {/* a phone gets the tall picture; everything wider the wide one */}
@@ -357,7 +382,8 @@ export default function Intro() {
                     src={intro.image}
                     alt=""
                     style={{ objectPosition: intro.imageFocus }}
-                    onLoad={() => setDayReady(true)}
+                    fetchPriority="high"
+                    onLoad={() => { shown.add(intro.image); setDayReady(true) }}
                     onError={() => { if (!showNight) setReady(false) }}
                   />
                 </picture>
@@ -372,7 +398,8 @@ export default function Intro() {
                   src={intro.imageDark}
                   alt=""
                   style={{ objectPosition: intro.imageFocus }}
-                  onLoad={() => setNightReady(true)}
+                  fetchPriority="high"
+                  onLoad={() => { shown.add(intro.imageDark); setNightReady(true) }}
                   onError={() => { if (showNight) setReady(false) }}
                 />
                 {/* the shelf lights, breathing: the same picture blurred and
@@ -436,7 +463,8 @@ export default function Intro() {
             )}
           </div>
         )}
-        <Scene show={ready !== true} />
+        {/* the drawn scene only if the picture itself will not load */}
+        <Scene show={ready === false} />
       </div>
       {/* one shade per picture, crossfading with them: the night one is the
           original, heavier one; the day one keeps the sky bright and pools

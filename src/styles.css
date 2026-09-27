@@ -1090,6 +1090,17 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 1.2s ease;
 }
 .intro__media[data-ready='true'] .intro__img { opacity: 1; }
+/* the 40px copy of the picture, blurred up while the real one downloads; a
+   touch larger than the frame so the blur's soft edge never shows */
+.intro__blur {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(26px) saturate(1.1);
+  transform: scale(1.12);
+}
 /* day and night, stacked: a layer is visible once its picture has arrived and
    its theme is on. Night sits over day, so a switch is one layer fading —
    isolated, so the night's breathing bloom screens over the night picture

@@ -9,6 +9,33 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="description" content="Karthikeyan B — product designer and front-end developer in Chennai. Turning user problems into working products: case studies, design work and the code behind them." />
     <meta name="theme-color" content="#1e3a34" />
+    <!-- the page colour before the stylesheet arrives: never a white flash -->
+    <style>html { background: #0a0b0c; } html[data-theme='light'] { background: #eceef0; }</style>
+    <script>
+      // Before anything paints: the theme the visitor chose (the night garden on
+      // a first visit — the same rule as src/theme.ts), so the page never opens
+      // in the wrong colours; and the landing picture for that theme and screen
+      // starts downloading now, not once the app's code has loaded. Keep the
+      // paths in step with `intro` in src/data.ts.
+      ;(function () {
+        var theme = 'dark'
+        try {
+          var v = localStorage.getItem('portfolio:theme:v3')
+          if (v === 'light' || v === 'dark') theme = v
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme)
+        // a direct link to a case study opens on its own banner, not the landing
+        if (location.hash.indexOf('#/project/') === 0) return
+        var phone = window.matchMedia('(max-width: 700px)').matches
+        var src = theme === 'dark' ? '/night-library.png' : phone ? '/intro/day-library-tall.png' : '/intro/day-library.webp'
+        var link = document.createElement('link')
+        link.rel = 'preload'
+        link.as = 'image'
+        link.href = src
+        link.setAttribute('fetchpriority', 'high')
+        document.head.appendChild(link)
+      })()
+    </script>
     <meta property="og:title" content="Karthikeyan B — Product Designer" />
     <meta property="og:description" content="Product design and front-end work — case studies, design projects and awards." />
     <meta property="og:type" content="website" />

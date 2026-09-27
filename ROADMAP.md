@@ -414,6 +414,11 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
   (`public/intro/day-library-tall.png`, the export exactly; `intro.imagePhone`). Dark theme — the
   default on a first visit — still shows the wide night picture on a phone: a tall night version
   would finish it.
+- **Landing loads properly:** the drawn sun-and-hills stand-in no longer shows while the picture
+  downloads — a 40px copy of the real picture (built into the page, `intro.blur`) is blurred up in
+  its place, and the drawn scene is only for a picture that fails. `index.html` sets the theme and
+  starts the right picture downloading before the app's code runs. A picture shown once is drawn
+  at once, no fade, when you come back from a project page.
 
 ## 2g. Where the video files should live (21 Sep 2026)
 
