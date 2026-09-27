@@ -3336,6 +3336,9 @@ a.ctile__line { cursor: pointer; }
 /* the card opens on Behance: the same white tag, with the mark */
 .box__tag--behance { display: inline-flex; align-items: center; gap: 5px; }
 .ctile__year { display: inline-flex; align-items: center; gap: 7px; }
+/* the card opens on Behance: the same white tag, with the mark */
+.box__tag--behance { display: inline-flex; align-items: center; gap: 5px; }
+.ctile__year { display: inline-flex; align-items: center; gap: 7px; }
 .box__title { font-family: var(--display); font-weight: 600; font-size: clamp(16px, 1.3vw, 20px); letter-spacing: -0.005em; line-height: 1.2; }
 .box--a .box__title, .box--b .box__title { font-size: clamp(18px, 1.6vw, 24px); }
 .box__tagline { font-size: 13px; color: rgba(255, 255, 255, 0.82); }
