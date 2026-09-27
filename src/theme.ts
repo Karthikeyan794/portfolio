@@ -10,7 +10,8 @@ let theme: Theme = (() => {
   } catch {
     /* ignore */
   }
-  return 'light'
+  // first visit: the night garden. Anyone who picked light keeps light.
+  return 'dark'
 })()
 
 const listeners = new Set<() => void>()
