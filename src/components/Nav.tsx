@@ -1,18 +1,9 @@
 import { motion } from 'motion/react'
-import { navCta } from '../data'
 import { useScrolled } from '../hooks'
 import SoundToggle from './SoundToggle'
 import ThemeToggle from './ThemeToggle'
 
 type Props = { onEnterLab?: () => void; delay?: number }
-
-function ArrowIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M7 17 17 7M9 7h8v8" />
-    </svg>
-  )
-}
 
 export default function Nav({ onEnterLab, delay = 0 }: Props) {
   // the nav sits over the intro picture; it turns solid once you scroll past it
@@ -39,36 +30,6 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
               Enter 3D lab
             </button>
           )}
-          {/* pops in once the nav has landed; the arrow badge spins in a beat later */}
-          <motion.a
-            href="#contact"
-            className="nav__cta"
-            onClick={(e) => {
-              // the contact section is a button and a dialog now: open it from
-              // here rather than scrolling somebody to a button they then have
-              // to press. The href stays, so it still works without JS.
-              e.preventDefault()
-              window.dispatchEvent(new CustomEvent('open-contact'))
-            }}
-            initial={{ opacity: 0, scale: 0.6, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: delay + 0.45, type: 'spring', stiffness: 240, damping: 15 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            {/* two stacked labels; hover slides the second one up into view */}
-            <span className="nav__cta-label">
-              <span>{navCta.label}</span>
-              <span aria-hidden="true">{navCta.hover}</span>
-            </span>
-            <motion.span
-              className="nav__cta-icon"
-              initial={{ rotate: -120, scale: 0.4, opacity: 0 }}
-              animate={{ rotate: 0, scale: 1, opacity: 1 }}
-              transition={{ delay: delay + 0.7, type: 'spring', stiffness: 220, damping: 14 }}
-            >
-              <ArrowIcon />
-            </motion.span>
-          </motion.a>
         </div>
       </nav>
     </motion.header>

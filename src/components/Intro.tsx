@@ -423,7 +423,7 @@ export default function Intro() {
           {/* two ways on: talk to me, or down to the work */}
           <div className="intro__ctas">
             <motion.a
-              className="intro__go intro__go--solid"
+              className="intro__talk"
               href={intro.contactCta.href}
               onClick={(e) => {
                 // the contact section is a dialog: open it rather than scroll
@@ -433,10 +433,16 @@ export default function Intro() {
               }}
               {...rise(T.cta)}
             >
-              {intro.contactCta.label}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M7 17 17 7M9 7h8v8" />
-              </svg>
+              {/* two stacked labels; hover slides the second one up into view */}
+              <span className="intro__talk-label">
+                <span>{intro.contactCta.label}</span>
+                <span aria-hidden="true">{intro.contactCta.hover}</span>
+              </span>
+              <span className="intro__talk-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </span>
             </motion.a>
             <motion.a className="intro__go" href={intro.cta.href} {...rise(T.cta + 0.1)}>
               {intro.cta.label}

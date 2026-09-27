@@ -980,9 +980,6 @@ export const sections = [
 
 export const sectionIds = sections.map((s) => s.id)
 
-/** The nav button: resting label and the one that slides in on hover. */
-export const navCta = { label: 'Contact Me', hover: "Let's Talk." }
-
 // ── Stickers on the hero (drag them around) ───────────────
 // x/y are % offsets inside the hero visual column. rotate in degrees.
 export type Sticker = { label: string; emoji: string; x: number; y: number; rotate: number; tone: 'cream' | 'mint' | 'sky' | 'peach' | 'lilac'; depth: number }
@@ -1048,6 +1045,6 @@ export const intro = {
   paragraph:
     'Product designer from Chennai. I go deep on research to find the real problem, design it in Figma, then build it in React.',
   cta: { label: 'See my work', href: '#work' },
-  // beside it: opens the contact dialog, like Contact Me in the nav
-  contactCta: { label: 'Contact me', href: '#contact' },
+  // beside it: opens the contact dialog; `hover` is the label that slides in
+  contactCta: { label: 'Contact me', hover: "Let's Talk.", href: '#contact' },
 }
