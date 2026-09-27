@@ -1363,8 +1363,8 @@ a { color: inherit; text-decoration: none; }
   filter: drop-shadow(0 0 5px rgba(255, 200, 110, 0.55));
   animation: bee-twitch 3.4s ease-in-out infinite;
 }
-.bee[data-gone='true'] { animation: bee-fly 4.2s ease-in-out forwards; }
-.bee[data-gone='true'] img { animation: bee-buzz 0.06s linear infinite; }
+/* once it takes off, a real flight carries on from here (fly.ts) */
+.bee[data-gone='true'] { visibility: hidden; animation: none; }
 @keyframes bee-land {
   from { opacity: 0; translate: 46px -96px; scale: 0.7; }
   70% { opacity: 1; translate: -3px 3px; scale: 1; }
@@ -1386,57 +1386,28 @@ a { color: inherit; text-decoration: none; }
   50% { scale: 0.8 1; }
   100% { scale: 1 1; }
 }
-/* up and away, slowly: it lifts off the corner, hangs a moment, then
-   drifts up and to the right in a lazy wander, fading as it goes */
-@keyframes bee-fly {
-  0% { translate: 0 0; opacity: 1; }
-  12% { translate: 4px -10px; }
-  30% { translate: 22px -34px; }
-  50% { translate: 8px -70px; }
-  70% { translate: 40px -110px; opacity: 1; }
-  100% { translate: 90px -170px; opacity: 0; scale: 0.75; }
-}
-
-/* the firefly that rises from a job's dot on the timeline when it opens */
-.flybee {
+/* a firefly let loose (fly.ts): moved every frame from script, so it
+   faces where it flies and wanders like the swarm */
+.flyer {
   position: absolute;
-  left: -32px;
-  top: 2px;
-  z-index: 3;
-  width: 26px;
-  height: 24px;
+  left: 0;
+  top: 0;
+  z-index: 60;
   pointer-events: none;
-  animation: bee-rise 4.4s ease-in-out forwards;
+  will-change: transform, opacity;
 }
-.flybee::before {
+.flyer::before {
   content: '';
   position: absolute;
-  inset: -40%;
+  inset: -45%;
   border-radius: 50%;
-  background: radial-gradient(circle at 42% 64%, rgba(255, 236, 180, 0.75), rgba(255, 196, 110, 0.22) 30%, transparent 62%);
+  background: radial-gradient(circle at 50% 62%, rgba(255, 236, 180, 0.7), rgba(255, 196, 110, 0.2) 32%, transparent 62%);
   animation: bee-breathe 2.2s ease-in-out infinite;
 }
-.flybee img {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  rotate: 70deg;
-  filter: drop-shadow(0 0 5px rgba(255, 200, 110, 0.55));
-  animation: bee-buzz 0.06s linear infinite;
-}
-/* it wakes on the dot, lifts, and wanders off up and to the right */
-@keyframes bee-rise {
-  0% { opacity: 0; translate: 0 6px; scale: 0.6; }
-  12% { opacity: 1; translate: 0 0; scale: 1; }
-  32% { translate: 18px -26px; }
-  55% { translate: 6px -60px; }
-  78% { translate: 46px -96px; opacity: 1; }
-  100% { translate: 96px -150px; opacity: 0; scale: 0.75; }
-}
+.flyer img { position: relative; display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 5px rgba(255, 200, 110, 0.55)); }
 @media (prefers-reduced-motion: reduce) {
   .bee, .bee::before, .bee img { animation: none; }
-  .flybee { display: none; }
+
   .bee[data-gone='true'] { opacity: 0; transition: opacity 0.4s ease; }
 }
 /* Contact me: a white pill with a dark arrow badge. On hover a dark sheet
@@ -5715,6 +5686,90 @@ a.ctile__line { cursor: pointer; }
 }
 .agal__dot:hover { background: rgba(255, 255, 255, 0.6); }
 .agal__dot--on { width: 22px; background: #fff; }
+
+/* the grid the sheet opens on: every drawing, three to a row */
+.agal__head { display: flex; align-items: center; justify-content: space-between; padding: 6px 60px 0 6px; min-height: 38px; }
+.agal__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px);
+  max-height: min(78vh, 820px);
+  overflow-y: auto;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.agal__tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: zoom-in;
+}
+.agal__tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease; }
+.agal__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(6, 8, 10, 0.72));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.agal__tile-name {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  z-index: 1;
+  font-family: var(--display);
+  font-size: 15px;
+  text-align: left;
+  color: #fff;
+  opacity: 0;
+  translate: 0 6px;
+  transition: opacity 0.3s ease, translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agal__tile:hover img, .agal__tile:focus-visible img { transform: scale(1.05); filter: brightness(1.06); }
+.agal__tile:hover::after, .agal__tile:focus-visible::after,
+.agal__tile:hover .agal__tile-name, .agal__tile:focus-visible .agal__tile-name { opacity: 1; translate: 0 0; }
+.agal__tile:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* one at a time: the way back to the grid, top left */
+.agal__back {
+  position: absolute;
+  top: clamp(20px, 2.4vw, 30px);
+  left: clamp(20px, 2.4vw, 30px);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 14px 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(10, 12, 14, 0.5);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.agal__back:hover { background: rgba(10, 12, 14, 0.74); }
+.agal__back:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@media (max-width: 640px) {
+  .agal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 76vh; }
+  .agal__tile-name { opacity: 1; translate: 0 0; font-size: 13px; }
+  .agal__tile::after { opacity: 1; }
+  .agal__back { top: 18px; left: 18px; height: 34px; font-size: 12px; }
+}
 @media (max-width: 640px) {
   .agal { padding: 8px; }
   .agal__sheet { border-radius: 18px; padding: 10px; gap: 10px; }
