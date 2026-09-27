@@ -4637,8 +4637,8 @@ a.ctile__line { cursor: pointer; }
 /* the Recognition card sits on a picture now */
 .pcard--awards { position: relative; }
 /* the card is short and wide: keep the trophy and its name plate in view */
-/* + 20px nudges the picture down inside the card, so the top of the trophy shows */
-.awards__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% calc(52% + 20px); }
+/* the sunset photo is wide: the trophy stands a little left of centre */
+.awards__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%; }
 .awards__veil {
   position: absolute;
   inset: 0;
