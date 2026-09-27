@@ -1,0 +1,16 @@
+/* DEMO: self-hosted copies of the Google Fonts the production index.html loads,
+   so the demo renders identically offline. */
+@font-face{font-family:'Caladea';font-style:italic;font-weight:400;font-display:swap;src:url('./caladea-latin-400-italic.woff2') format('woff2');}
+@font-face{font-family:'Caladea';font-style:normal;font-weight:400;font-display:swap;src:url('./caladea-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Caladea';font-style:normal;font-weight:700;font-display:swap;src:url('./caladea-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url('./instrument-serif-latin-400-italic.woff2') format('woff2');}
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url('./instrument-serif-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:400;font-display:swap;src:url('./playfair-display-latin-400-italic.woff2') format('woff2');}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:400;font-display:swap;src:url('./playfair-display-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:500;font-display:swap;src:url('./playfair-display-latin-500-italic.woff2') format('woff2');}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:500;font-display:swap;src:url('./playfair-display-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:600;font-display:swap;src:url('./playfair-display-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Roboto';font-style:italic;font-weight:400;font-display:swap;src:url('./roboto-latin-400-italic.woff2') format('woff2');}
+@font-face{font-family:'Roboto';font-style:normal;font-weight:400;font-display:swap;src:url('./roboto-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Roboto';font-style:normal;font-weight:500;font-display:swap;src:url('./roboto-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Roboto';font-style:normal;font-weight:700;font-display:swap;src:url('./roboto-latin-700-normal.woff2') format('woff2');}

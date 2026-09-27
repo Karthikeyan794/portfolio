@@ -290,7 +290,8 @@ export type Slice = {
   /** the numbers a slice landed on */
   stats?: { value: string; label: string }[]
   /** the product itself, running in a window under the words */
-  embed?: { src: string; pages?: { label: string; hash: string; role?: 'admin' | 'support' | 'viewer'; hint?: string }[]; art?: string }
+  /** `roleKey`: the localStorage key the demo reads a page's `role` from (default 'sd.demoRole') */
+  embed?: { src: string; pages?: { label: string; hash: string; role?: 'admin' | 'support' | 'viewer' | 'user'; hint?: string }[]; art?: string; roleKey?: string }
 }
 
 /** the plain-English layer: what it is, what it does, how a day on it goes */
@@ -607,85 +608,69 @@ export const projects: Project[] = [
         },
         solution: {
           lead: 'Atom puts *every agent and assistant on one page* that shapes itself to who you are.',
-          body: 'Admins switch assistants on for the whole team, with the cost shown before they confirm. Everyone else sees what they have and asks for the rest. Each feature has a guide and, where it can, a playground to try it right there. Access, requests and credit usage sit one step away, so *spending is never a surprise*.',
+          body: 'Admins switch assistants on for the whole team and see who loses one before they switch it off. Members see what they have and ask for the rest, in one click. Each feature has a guide and a playground to try it right there. Requests, credits and access sit one step away, so *spending is never a surprise*.',
         },
       },
-      // Each row shows a still until its recording is in. To swap one, replace
-      // `image` with `clip: '/work/atom/clips/<name>.mp4'` and keep `poster`.
-      // The shot list for every clip is ~/Desktop/labs-atoms-portfolio-demo/docs/SHOT-LIST.md.
+      // Every row is a recording of the demo (made-up data: northwind-fm.example).
+      // The originals are in ~/Desktop/labs-atoms-portfolio-demo-old-ui-backup/Atom Portfolio Videos,
+      // copied here byte for byte; each poster is one frame of its own clip.
       slices: [
         {
           span: 'full',
           chapter: 'How it works',
           heading: 'Everything on one page',
-          body: 'Atom opens on a single page with every agent and assistant on it. Agents you already have say *Try Now*; the rest say *Contact Sales*. Assistants sit underneath with a switch each, and a small moving picture on every card shows what that assistant looks like in use.',
-          image: '/work/atom/home.jpg',
-          poster: '/work/atom/home.jpg',
-          caption: 'The greeting, the agents, and the assistants below them, on one scroll.',
-        },
-        {
-          span: 'full',
-          heading: 'Open an agent',
-          body: 'An agent is a whole app. Click *Try Now* and it opens in the same tab. Next time, the card remembers you have tried it and says *Open* instead, so the page always tells you what you have already used.',
-          image: '/work/atom/home.jpg',
-          poster: '/work/atom/home.jpg',
-          caption: 'Try Now opens the agent; back on the page, the same card now reads Open.',
+          body: 'Atom opens on one page with every agent and assistant on it. Agents you have say *Try Now*; once you have opened one, it says *Open*. For the rest, Contact sales opens a short form: pick a feature, say what you need, and send it to the team.',
+          clip: '/work/atom/clips/home.mp4',
+          poster: '/work/atom/clips/home.jpg',
+          caption: 'Try Now on Helpdesk comes back as Open, then Contact sales sends a request to pilot Smart Finding.',
         },
         {
           span: 'full',
           heading: 'Switch on an assistant',
-          body: 'Assistants work inside tools people already use, so an admin switches them on for everyone. Before anything changes, a dialog shows *what it will cost* from the shared credits. Switching one off lists the people who will lose it, so nobody is cut off by surprise.',
-          image: '/work/atom/home.jpg',
-          poster: '/work/atom/home.jpg',
-          caption: 'The switch, the cost before you confirm, and who is affected when you turn it off.',
+          body: 'Assistants work inside tools people already use, so an admin switches them on for everyone. Switching one off first shows *who will lose it*. The gear on each card holds a tool instruction that shapes how the assistant answers. Members see the same cards with Active or Request Access instead of a switch.',
+          clip: '/work/atom/clips/assistants-on-off.mp4',
+          poster: '/work/atom/clips/assistants-on-off.jpg',
+          caption: 'Ask AI on, Work Assistant off with the people who lose it, a tool instruction saved, then the member view.',
         },
         {
           span: 'full',
-          heading: 'A guide you can try',
-          body: 'Every assistant has a guide: what it does, who it is for, where to find it and how to use it. Where it can, the guide has a *playground* beside it — ask the Work Assistant about a job, have the Text Assistant rewrite a note, or check before-and-after photos of finished work.',
-          image: '/work/atom/guide.jpg',
-          poster: '/work/atom/guide.jpg',
-          caption: 'Reading the guide and trying the assistant, side by side.',
+          heading: 'Ask for an assistant',
+          body: 'A member who needs an assistant clicks *Request Access*, and the card says Requested. The request lands in the admin\'s Requests page with the time it was sent. One click on Approve and the member\'s card turns *Active*, with its guide ready to open.',
+          clip: '/work/atom/clips/request-assistant.mp4',
+          poster: '/work/atom/clips/request-assistant.jpg',
+          caption: 'Sophia asks for the Work Order Completion Validator, the admin approves it, and her card turns Active.',
+        },
+        {
+          span: 'full',
+          heading: 'When credits run out',
+          body: 'Each member has a credit limit, shown as a pill in the top bar. When it runs out the pill turns red, Atom pauses, and one button sends *a request for more*. The admin picks how much to add, sees the new limit before confirming, and the member\'s pill updates.',
+          clip: '/work/atom/clips/request-credits.mp4',
+          poster: '/work/atom/clips/request-credits.jpg',
+          caption: 'Sophia hits her 2,000-credit limit and asks for more, the admin adds 250, and her pill shows 2,000 / 2,250.',
         },
         {
           span: 'full',
           heading: 'Users & Permissions',
-          body: 'Invite people one by one or a whole role at once, choose which assistants they get, and set how many credits each person can spend. Every limit can be changed later from the same table.',
-          image: '/work/atom/users.jpg',
-          poster: '/work/atom/users.jpg',
-          caption: 'Pick people, pick assistants, set a limit — then add them in one go.',
-        },
-        {
-          span: 'full',
-          heading: 'Requests',
-          body: 'When someone asks for an agent, an assistant or more credits, it lands here. Approve it and it happens straight away; for credits, the dialog shows their limit now and what it becomes before you confirm.',
-          image: '/work/atom/requests.jpg',
-          poster: '/work/atom/requests.jpg',
-          caption: 'An agent request, a credit upgrade and an assistant request, approved in turn.',
+          body: 'Admins invite people to agents by email, several at once. For assistants they can add *a whole role* at once, like every Technician, give each person one credit limit, and switch on the assistants they need. The table keeps each person\'s role, assistants, limit and status.',
+          clip: '/work/atom/clips/add-users.mp4',
+          poster: '/work/atom/clips/add-users.jpg',
+          caption: 'Two people invited to agents by email, then seven Technicians added to assistants with a 500-credit limit.',
         },
         {
           span: 'full',
           heading: 'Credit usage',
-          body: 'See where the credits go, *by feature* or *by person*. Sort by what was spent, narrow it to assistants, and hover a person to see which features they ran and how often.',
-          image: '/work/atom/credit-usage.jpg',
-          poster: '/work/atom/credit-usage.jpg',
-          caption: 'Spending by feature, then by user, down to each run.',
+          body: 'The pill in the top bar shows the shared credits used and *how many are left*. View usage opens the spending by feature, agents and assistants side by side, or by person, so you can see who uses the most.',
+          clip: '/work/atom/clips/credit-usage.mp4',
+          poster: '/work/atom/clips/credit-usage.jpg',
+          caption: 'The credit pill (18,580 of 25,000 used), then Credit Usage by feature and by user.',
         },
         {
           span: 'full',
-          heading: 'The credit limiter',
-          body: 'The credits left are always in the top bar. Open it to see how much of the pool is used, with a colour that changes as it fills, and a quick way to see usage or ask for more.',
-          image: '/work/atom/home.jpg',
-          poster: '/work/atom/home.jpg',
-          caption: 'The pool, how full it is, and what to do next.',
-        },
-        {
-          span: 'full',
-          heading: 'Accessible buildings',
-          body: 'Choose which buildings the AI is allowed to work with. Add one and it joins the list straight away.',
-          image: '/work/atom/buildings.jpg',
-          poster: '/work/atom/buildings.jpg',
-          caption: 'Adding a building to what the AI can see.',
+          heading: 'A guide you can try',
+          body: 'Every assistant has a guide: who it is for, where to find it and how to use it. Beside it sits a *Playground*, so you can try the assistant before switching it on. Ask AI answers a question about work orders; Text Assistant turns a rough note into a polite one.',
+          clip: '/work/atom/clips/guide-playground.mp4',
+          poster: '/work/atom/clips/guide-playground.jpg',
+          caption: 'View Guide, Ask AI on open work orders, then Text Assistant makes a rough note professional.',
         },
         {
           chapter: 'Demo',
@@ -695,12 +680,12 @@ export const projects: Project[] = [
           unnumbered: true,
           embed: {
             src: '/demo/atom/index.html',
+            // the tabs sign in as the admin or as a member; the demo reads the
+            // role from labs.demo.role once, at start-up
+            roleKey: 'labs.demo.role',
             pages: [
-              { label: 'Atoms & Assistants', hash: '#/home', hint: 'Try an agent, or switch an assistant on.' },
-              { label: 'Guide', hash: '#/home/guide', hint: 'Pick an assistant and try its playground.' },
-              { label: 'Users', hash: '#/home/users?tab=assistants', hint: 'Invite people and set their credits.' },
-              { label: 'Requests', hash: '#/home/app-requests', hint: 'Approve what people asked for.' },
-              { label: 'Credit usage', hash: '#/home/credit-usage', hint: 'See who spends what.' },
+              { label: 'Admin', hash: '#/home', role: 'admin', hint: 'The admin: switch assistants on, approve requests, manage people and credits.' },
+              { label: 'User', hash: '#/home', role: 'user', hint: 'A member: see what you have, ask for an assistant or more credits.' },
             ],
           },
         },

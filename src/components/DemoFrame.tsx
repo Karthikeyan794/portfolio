@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export type DemoPage = { label: string; hash: string; role?: 'admin' | 'support' | 'viewer'; hint?: string }
+export type DemoPage = { label: string; hash: string; role?: 'admin' | 'support' | 'viewer' | 'user'; hint?: string }
 
 /**
  * The product itself, running inside the case study.
@@ -11,8 +11,10 @@ export type DemoPage = { label: string; hash: string; role?: 'admin' | 'support'
  * pointer events, so scrolling the page past it never gets caught inside the
  * app; move the pointer out of the window and it goes quiet again.
  */
-export default function DemoFrame({ src, pages = [], art, title = 'Product demo', host = 'product.demo' }: {
+export default function DemoFrame({ src, pages = [], art, title = 'Product demo', host = 'product.demo', roleKey = 'sd.demoRole' }: {
   src: string; pages?: DemoPage[]; art?: string; title?: string; host?: string
+  /** the localStorage key the demo reads its signed-in role from at start-up */
+  roleKey?: string
 }) {
   const [hash, setHash] = useState(pages[0]?.hash ?? '')
   const [tab, setTab] = useState(0)
@@ -21,6 +23,19 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
   const frame = useRef<HTMLIFrameElement>(null)
   const view = useRef<HTMLDivElement>(null)
   const root = useRef<HTMLDivElement>(null)
+
+  // the first tab's role, set before the demo starts and reads it: without
+  // this a role left over from an earlier visit would open under the wrong tab
+  useEffect(() => {
+    const r = pages[0]?.role
+    if (!r) return
+    try {
+      localStorage.setItem(roleKey, r)
+    } catch {
+      /* storage blocked: the demo falls back to its own default */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // while the window is on screen the page's fixed header steps out of the
   // way — it would sit over the top of the app. Announced as an event so the
@@ -70,10 +85,11 @@ export default function DemoFrame({ src, pages = [], art, title = 'Product demo'
       const w = frame.current?.contentWindow
       if (!w) return
       if (p.role) {
-        // the desk reads its signed-in role once, at start-up, from this key
-        // (a patch on the demo build — see the clips README), so a change of
-        // role is a reload; a change of page alone is just the hash
-        w.localStorage.setItem('sd.demoRole', p.role)
+        // the demo reads its signed-in role once, at start-up, from `roleKey`
+        // (the Support Desk build is patched for it — see its clips README;
+        // Atom reads labs.roleView as it ships), so a change of role is a
+        // reload; a change of page alone is just the hash
+        w.localStorage.setItem(roleKey, p.role)
         setLoaded(false)
         w.location.hash = p.hash
         w.location.reload()

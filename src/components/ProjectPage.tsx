@@ -154,7 +154,7 @@ function Row({ slice, no, slug }: { slice: Slice; no: number; slug: string }) {
       </motion.div>
 
       {/* the product itself, under the words and across the whole row */}
-      {slice.embed && <DemoFrame src={slice.embed.src} pages={slice.embed.pages} art={slice.embed.art} title={slice.heading} host={`${slug}.demo`} />}
+      {slice.embed && <DemoFrame src={slice.embed.src} pages={slice.embed.pages} art={slice.embed.art} roleKey={slice.embed.roleKey} title={slice.heading} host={`${slug}.demo`} />}
 
       {/* right: the screens or the video */}
       {hasMedia && (
