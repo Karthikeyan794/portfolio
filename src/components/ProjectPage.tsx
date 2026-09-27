@@ -5,6 +5,7 @@ import { closeProject } from '../router'
 import GridBg from './GridBg'
 import Brief from './Brief'
 import AutoClip from './AutoClip'
+import CardClip from './CardClip'
 import CaseEnd from './CaseEnd'
 import Credits from './Credits'
 import DemoFrame from './DemoFrame'
@@ -408,6 +409,13 @@ export default function ProjectPage({ slug }: { slug: string }) {
               aria-hidden="true"
             >
               <motion.img className="case__hero-img" src={project.cover} alt="" style={{ scale: heroScale, y: heroY, opacity: heroFade }} />
+              {/* the same recording the project's card plays, over the still,
+                  moving with it as the page scrolls */}
+              {project.coverClip && (
+                <motion.div style={{ position: 'absolute', inset: 0, scale: heroScale, y: heroY, opacity: heroFade }}>
+                  <CardClip className="case__hero-img" src={project.coverClip.src} poster={project.coverClip.poster} />
+                </motion.div>
+              )}
             </motion.div>
           )}
           <div className="case__hero-blur" aria-hidden="true" />
