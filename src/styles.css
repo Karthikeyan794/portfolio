@@ -2265,16 +2265,19 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   display: grid;
   place-items: center;
+  /* just under the Click to interact button, which sits in the middle */
+  padding-top: 120px;
   color: var(--muted);
   font-size: 14px;
   background: #f5f6f7;
   pointer-events: none;
 }
 .dfr__go {
+  /* in the middle of the app, so it is on screen as soon as the demo is */
   position: absolute;
   left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -2292,7 +2295,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.8);
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease;
 }
-.dfr__go:hover { transform: translateX(-50%) translateY(-2px); background: rgba(14, 16, 20, 0.96); }
+.dfr__go:hover { transform: translate(-50%, calc(-50% - 2px)); background: rgba(14, 16, 20, 0.96); }
 @media (max-width: 860px) {
   .dfr { padding: 10px; border-radius: 16px; }
   .dfr__view { height: clamp(420px, 78vh, 760px); }
