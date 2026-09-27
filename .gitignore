@@ -7,3 +7,6 @@ public/_ref
 
 # tsc incremental cache
 *.tsbuildinfo
+
+# source media kept locally, not published (songs, art, toolkit originals)
+assets-src/

@@ -1,36 +1,44 @@
 # Portfolio
 
-Personal portfolio — a 3D "Iron Man lab" built with React 19, Vite, TypeScript and React Three Fiber, with a 2D page for phones and as a fallback.
+Karthikeyan B's portfolio: product design and front-end work, with two case
+studies you can watch and click through (Support Desk and Atom).
+
+React 19 · Vite · TypeScript · plain CSS (tokens in `src/styles.css`) · motion.
+A 3D lab (React Three Fiber, `src/three`) is parked behind `LAB_ENABLED` in
+`src/App.tsx`; it loads only if switched on.
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
+npm run typecheck
 npm run build      # static output in dist/
 npm run preview    # serve dist/ locally
 ```
 
-## Editing content
+## Where things live
 
-Everything textual lives in [`src/data.ts`](src/data.ts): name, tagline, socials,
-projects, experience, skills. Change it there; the components just render it.
+- **All text and projects:** [`src/data.ts`](src/data.ts). Components only render it.
+- **Case-study recordings:** `public/work/<project>/clips/`. Anything over 100 MB
+  (GitHub's limit) is on the release `clips-v1` instead; see
+  `public/work/support-desk/clips/README.md`.
+- **The two product demos:** `public/demo/support-desk/` and `public/demo/atom/`,
+  each a built copy of its own project, on made-up data.
+- **Résumé:** `public/Karthikeyan_B_CV.pdf` (`profile.resumeUrl`).
+- **Plan and checklist:** [`ROADMAP.md`](ROADMAP.md).
+- `assets-src/` (git-ignored) holds source files kept out of the repo.
 
-- Put a résumé at `public/resume.pdf` and set `profile.resumeUrl = '/resume.pdf'`.
-- Give a project an `href` to make the whole card a link.
-- Mark a project `featured: true` to make it span the full row.
+## Deploying (Vercel)
 
-Theme follows the OS by default; the toggle in the nav overrides it and remembers the choice.
+The build is plain static files, and routes are hashes (`#/project/atom`), so
+no server config is needed.
 
-## Hosting
+1. On vercel.com, **Add New → Project**, import `Karthikeyan794/portfolio`.
+2. Framework **Vite** (detected): build `npm run build`, output `dist`.
+3. **Deploy.** After that, every push to `main` deploys by itself.
 
-The build is plain static files (`dist/`), so anything that serves HTML works.
-See the notes in the repo conversation or pick one:
-
-| Host | Setup |
-| --- | --- |
-| Vercel / Netlify / Cloudflare Pages | Connect the Git repo → build `npm run build`, output `dist` |
-| GitHub Pages | Set `base: '/<repo-name>/'` in `vite.config.ts`, deploy `dist/` via Actions |
-| S3 + CloudFront | `npm run build` then sync `dist/` to the bucket |
+Watch **usage** in the Vercel dashboard: the recordings are large, and the free
+plan includes 100 GB of transfer a month.
 
 ## Credits
 
-- 3D furniture: [Kenney Furniture Kit](https://kenney.nl/assets/furniture-kit) — CC0. Models live in `public/models/` and are re-coloured at runtime in `src/three/Model.tsx`.
+- 3D furniture (parked lab): [Kenney Furniture Kit](https://kenney.nl/assets/furniture-kit), CC0, in `public/models/`.

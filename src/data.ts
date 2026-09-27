@@ -76,14 +76,6 @@ export const intro_about = {
   ],
 }
 
-/** The compact role list on the left — a summary; the timeline below has the detail. */
-export const roleList: { org: string; role: string; years: string }[] = [
-  { org: 'Facilio', role: 'Product Designer', years: '2025 — Present' },
-  // TODO: the resume doesn't date these two — add the years.
-  { org: 'Amvion Labs', role: 'UI + Graphic Design Intern', years: '' },
-  { org: 'T-Eurasia', role: 'Creative Designer', years: '' },
-]
-
 /** Education — from the resume. */
 export const education: { school: string; course: string; years: string; logo?: string }[] = [
   { school: 'Web D Schools', course: 'Mastery UX/UI Designing', years: 'Jun 2024 — Jan 2025', logo: '/logos/webd.png' },
@@ -1020,8 +1012,6 @@ export const sections = [
   { id: 'contact', label: 'Contact' },
 ] as const
 
-export const sectionIds = sections.map((s) => s.id)
-
 // ── Stickers on the hero (drag them around) ───────────────
 // x/y are % offsets inside the hero visual column. rotate in degrees.
 export type Sticker = { label: string; emoji: string; x: number; y: number; rotate: number; tone: 'cream' | 'mint' | 'sky' | 'peach' | 'lilac'; depth: number }
@@ -1034,11 +1024,6 @@ export const stickers: Sticker[] = [
   { label: '3D room soon', emoji: '🏠', x: 26, y: 90, rotate: -3, tone: 'lilac', depth: 0.6 },
 ]
 
-// ── Scrolling strip under the hero ───────────────────────
-export const marquee = [
-  'React', 'TypeScript', 'Design systems', 'Vibe coding', 'Three.js', 'Figma', 'Accessibility',
-  'Vite', 'CSS', 'Motion', 'AI chatbots', 'Product UI',
-]
 
 // ── Awards & certificates (PLACEHOLDERS — replace with real ones) ──
 export type Award = { title: string; issuer: string; year: string; note?: string; kind: 'award' | 'certificate' | 'hackathon' }

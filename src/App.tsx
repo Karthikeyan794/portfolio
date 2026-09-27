@@ -1,7 +1,6 @@
 import { MotionConfig } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { ambience } from './audio/ambience'
-import Lab from './components/Lab'
 import ProjectPage from './components/ProjectPage'
 import Site2D from './components/Site2D'
 import { useRoute } from './router'
@@ -14,6 +13,10 @@ function webglOk() {
     return false
   }
 }
+
+// the parked 3D lab (three.js and its helpers, most of the code by weight) is
+// its own file, fetched only if the lab is ever switched on — not by every visitor
+const Lab = lazy(() => import('./components/Lab'))
 
 /** The 3D lab is parked for now — flip this to bring back the "Enter 3D lab" button and 3D-by-default on desktop. */
 const LAB_ENABLED = false
@@ -39,7 +42,9 @@ export default function App() {
         // builds a fresh page: no answer, zoom or scrub state carries across
         <ProjectPage key={projectSlug} slug={projectSlug} />
       ) : mode === '3d' ? (
-        <Lab onSwitch2D={() => setMode('2d')} />
+        <Suspense fallback={null}>
+          <Lab onSwitch2D={() => setMode('2d')} />
+        </Suspense>
       ) : (
         <Site2D onEnterLab={canLab ? () => setMode('3d') : undefined} />
       )}
