@@ -422,7 +422,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
                     // top is not under the back button and the tabs; the band
                     // left above it is painted in the clip's own edge colour
                     style={
-                      project.coverClip.bannerDown
+                      project.coverClip.bannerDown !== undefined
                         ? { objectPosition: `50% ${project.coverClip.bannerDown}px`, background: project.coverClip.bannerFill }
                         : undefined
                     }
