@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * The section nav for a case study: plain names in the top bar that scroll you
@@ -16,6 +16,17 @@ const BAR = 92
 
 export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
   const [active, setActive] = useState(tabs[0]?.id ?? '')
+  const row = useRef<HTMLDivElement>(null)
+
+  // on a phone the row is wider than the pill and scrolls sideways: keep the
+  // lit tab in view, sliding the row rather than the page
+  useEffect(() => {
+    const r = row.current
+    const on = r?.querySelector<HTMLElement>('.ctab--on')
+    if (!r || !on || r.scrollWidth <= r.clientWidth) return
+    const left = on.offsetLeft - (r.clientWidth - on.offsetWidth) / 2
+    r.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+  }, [active])
 
   // light the section you are in: the lowest one whose top has passed the bar
   useEffect(() => {
@@ -54,7 +65,7 @@ export default function CaseTabs({ tabs }: { tabs: Tab[] }) {
       transition={{ delay: 0.45, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="ctabs__wrap">
-        <div className="ctabs__row">
+        <div className="ctabs__row" ref={row}>
           {tabs.map((t) => (
             <button
             key={t.id}

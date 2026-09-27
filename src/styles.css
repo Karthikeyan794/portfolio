@@ -604,6 +604,14 @@ a { color: inherit; text-decoration: none; }
 .cdlg__link { flex: none; }
 .cdlg__link:first-child { flex: 1 1 auto; }
 .cdlg__link:first-child .cdlg__go { min-width: 0; }
+/* a phone has no room for all three on one line: the email takes its own
+   line, the two profiles share the next */
+@media (max-width: 480px) {
+  .cdlg__links { flex-wrap: wrap; }
+  .cdlg__link:first-child { flex: 1 1 100%; }
+  .cdlg__link:not(:first-child) { flex: 1 1 0; }
+  .cdlg__link:not(:first-child) .cdlg__out { margin-left: auto; }
+}
 .cdlg__link {
   position: relative;
   display: flex;
@@ -1009,7 +1017,9 @@ a { color: inherit; text-decoration: none; }
 .chip--btn:hover { border-color: var(--accent-ink); color: var(--accent-ink); }
 
 /* ── reference motion: the page tilts into view (perspective only during the intro) ── */
-.page3d { perspective: 1600px; perspective-origin: 50% 0%; }
+/* clip, not hidden: while the page tilts up into place it is wider than a
+   phone screen, and must not open a sideways scroll — clip keeps sticky working */
+.page3d { perspective: 1600px; perspective-origin: 50% 0%; overflow-x: clip; }
 .page3d__inner { transform-origin: 50% 0%; will-change: transform, opacity; }
 
 /* ── opening intro (image hero) ─────────────────────────── */
@@ -2639,7 +2649,19 @@ a { color: inherit; text-decoration: none; }
 .frame--video iframe,
 .frame--video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-.case__nav-right { display: flex; align-items: center; gap: 8px; }
+.case__nav-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
+/* the tab pill may scroll sideways inside the bar, never push it off screen */
+.case__nav-right .ctabs, .case__nav-right .ctabs__wrap { min-width: 0; }
+@media (max-width: 700px) {
+  /* the banner sits closer to the edge on a phone, so the bar does too */
+  .case__nav { gap: 8px; }
+  .case__nav:not(.case__nav--solid) { padding: 26px 22px 10px; }
+}
+@media (max-width: 560px) {
+  /* no room for extra buttons beside the tabs; the Demo tab already goes
+     to the demo */
+  .case__nav .case__demo, .case__nav .case__link { display: none; }
+}
 .case__link {
   padding: 9px 14px;
   border-radius: 999px;
@@ -3389,6 +3411,10 @@ a.ctile__line { cursor: pointer; }
 .box--more .box__title { font-family: var(--display); font-weight: 600; }
 .box--more .box__label { color: var(--text); }
 .box--more .box__tagline { color: var(--text-mid); }
+/* the more card is light, so its kicker and "N more" tag are set in ink, not
+   the white the picture cards use */
+.box--more .box__kicker { color: var(--text-mid); text-shadow: none; }
+.box--more .box__tag--ghost { color: var(--text-mid); box-shadow: inset 0 0 0 1px var(--line-strong); }
 
 .bento .box:hover { z-index: 3; }
 /* `contain` stops a track resize from re-running layout inside every box —
@@ -3778,7 +3804,8 @@ a.ctile__line { cursor: pointer; }
   letter-spacing: 0.02em;
   line-height: 1.08;
   margin-bottom: 4px;
-  color: var(--accent-ink);
+  /* the page's own ink: white on the dark theme, near-black on the light */
+  color: var(--text);
 }
 .about__text { display: grid; gap: 15px; }
 .about__text p { color: var(--text-mid); font-size: 15.5px; line-height: 1.62; max-width: 54ch; }
@@ -3923,7 +3950,9 @@ a.ctile__line { cursor: pointer; }
 }
 @media (max-width: 560px) {
   .collage {
-    grid-template-columns: 1fr;
+    /* minmax(0, …) so a wide card (the drawings slider) can't push the one
+       column past the screen; nothing animates here, so the track type is free */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto;
     grid-template-areas: 'p' 'd' 's' 'w' 'l' 'y';
     aspect-ratio: auto;
@@ -3932,9 +3961,7 @@ a.ctile__line { cursor: pointer; }
     transition: none;
   }
   /* one card per row — nothing to expand into */
-  .collage:has(.pcard:hover) { grid-template-columns: 1fr; grid-template-rows: auto; }
-  .pcard--portrait { min-height: 320px; }
-  .pcard--shot, .pcard--stack, .pcard--place, .pcard--music, .pcard--awards { min-height: 220px; }
+  .collage:has(.pcard:hover) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
 }
 
 .pcard {
@@ -4251,23 +4278,28 @@ a.ctile__line { cursor: pointer; }
    The base tracks MUST stay a plain fr list. Written as
    repeat(6, minmax(0,1fr)) they are a different track type and CSS
    refuses to interpolate — the grid snaps instead of sliding. */
-.collage:has(.pcard--portrait:hover) {
-  grid-template-columns: 1.12fr 1.12fr 1.12fr 0.88fr 0.88fr 0.88fr;
-}
-.collage:has(.pcard--shot:hover) {
-  grid-template-columns: 0.88fr 0.88fr 0.88fr 1.12fr 1.12fr 1.12fr;
-}
-.collage:has(.pcard--awards:hover) {
-  grid-template-columns: 0.88fr 0.88fr 0.88fr 1.12fr 1.12fr 1.12fr;
-}
-.collage:has(.pcard--stack:hover) {
-  grid-template-columns: 1.12fr 1.12fr 1.12fr 0.88fr 0.88fr 0.88fr;
-}
-.collage:has(.pcard--music:hover) {
-  grid-template-columns: 0.88fr 0.88fr 0.88fr 1.12fr 1.12fr 1.12fr;
-}
-.collage:has(.pcard--place:hover) {
-  grid-template-columns: 1.12fr 1.12fr 1.12fr 0.88fr 0.88fr 0.88fr;
+/* only where there is a real pointer and room for the six columns: on a
+   phone a tap counts as hover, and these would pull the one-column stack
+   back into six narrow tracks */
+@media (min-width: 561px) and (hover: hover) {
+  .collage:has(.pcard--portrait:hover) {
+    grid-template-columns: 1.12fr 1.12fr 1.12fr 0.88fr 0.88fr 0.88fr;
+  }
+  .collage:has(.pcard--shot:hover) {
+    grid-template-columns: 0.88fr 0.88fr 0.88fr 1.12fr 1.12fr 1.12fr;
+  }
+  .collage:has(.pcard--awards:hover) {
+    grid-template-columns: 0.88fr 0.88fr 0.88fr 1.12fr 1.12fr 1.12fr;
+  }
+  .collage:has(.pcard--stack:hover) {
+    grid-template-columns: 1.12fr 1.12fr 1.12fr 0.88fr 0.88fr 0.88fr;
+  }
+  .collage:has(.pcard--music:hover) {
+    grid-template-columns: 0.88fr 0.88fr 0.88fr 1.12fr 1.12fr 1.12fr;
+  }
+  .collage:has(.pcard--place:hover) {
+    grid-template-columns: 1.12fr 1.12fr 1.12fr 0.88fr 0.88fr 0.88fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) { .collage { transition: none; } }
@@ -5097,3 +5129,14 @@ a.ctile__line { cursor: pointer; }
 .ctile--more:hover .ctile__bg { transform: scale(1.05); }
 .ctile--more .ctile__tint { background: radial-gradient(75% 75% at 50% 50%, rgba(4, 8, 24, 0.62) 0%, rgba(4, 8, 24, 0.3) 70%, rgba(4, 8, 24, 0.18) 100%); }
 .ctile--more .ctile__num, .ctile--more .ctile__numsub { text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45); }
+
+/* ── About collage on a phone ──────────────────────────────
+   Kept at the end of the file on purpose: the base .pcard rule and the
+   music card's desktop sizing come later than the collage's own phone
+   block, and would win — they zeroed the min-heights and squashed the
+   stack. One card per row, each tall enough for what is inside it. */
+@media (max-width: 560px) {
+  .collage .pcard { min-height: 220px; height: auto; align-self: stretch; }
+  .collage .pcard--portrait { min-height: 320px; }
+  .collage .pcard--music { align-self: stretch; height: auto; min-height: 150px; }
+}
