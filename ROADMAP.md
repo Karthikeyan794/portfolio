@@ -377,6 +377,14 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
   a click outside or × closes. Only the drawing on screen and its neighbours are fetched.
 - Ctrl/⌘-click on the card still opens the old drawings page in a new tab.
 
+## 2f-7. The Atom card moves (27 Sep 2026)
+
+- The Atom card (home grid, and the Up next tile at the end of Support Desk) plays the Atom intro
+  recording over its still: muted, looping, only while on screen; a still for reduced motion.
+  Any project can do this with `coverClip: { src, poster }` in `src/data.ts` (`CardClip.tsx`).
+- The Atom overview plays the "One console, five pages" recording, and that section is gone from
+  How it works. Both clips are the exported files exactly (`public/work/atom/clips`).
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**

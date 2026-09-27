@@ -324,6 +324,9 @@ export type Project = {
   tags: string[]
   emoji: string // fallback when there is no cover image
   cover?: string
+  /** the card's cover, moving: a recording laid over `cover`, muted, looping
+   *  while the card is on screen; `poster` is its first frame */
+  coverClip?: { src: string; poster?: string }
   /** the Behance gallery for this project — shown as a link inside its page */
   behance?: string
   /** still being made: its card opens a short "working on it" note (see
@@ -569,6 +572,8 @@ export const projects: Project[] = [
     tools: ['claude', 'figma'],
     emoji: '⚛️',
     cover: '/bento/atom.jpg',
+    // the card plays the Atom intro: agents, assistants, access and credits
+    coverClip: { src: '/work/atom/clips/intro.mp4', poster: '/work/atom/clips/intro.jpg' },
     featured: 2,
     size: 'wide',
     tone: 'mist',
@@ -588,9 +593,10 @@ export const projects: Project[] = [
       primer: {
         heads: { what: 'Overview' },
         what: 'Atom is *one console for every AI feature a team can use*. Agents are whole apps you open, like a helpdesk or a planner; assistants live inside the tools people already use, and you switch them on for everyone. Both sit on one page that answers the two questions anyone arrives with — *what do we have, and what could we have?* — with a guide and a playground for each one, and a single pool of credits that shows who spends what.',
+        // the intro recording plays on the project's card instead (coverClip)
         showcase: {
-          note: 'Agents, assistants, access and credits — the whole console on one screen.',
-          poster: '/work/atom/home.jpg',
+          note: 'One console, five pages: home, requests, credits, users and buildings.',
+          poster: '/work/atom/clips/overview.jpg',
           clip: '/work/atom/clips/overview.mp4',
         },
       },

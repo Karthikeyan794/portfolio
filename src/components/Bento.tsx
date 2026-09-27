@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { cardMode, projects, socials, type Project } from '../data'
 import { marks } from '../logos'
+import CardClip from './CardClip'
 import { openProject } from '../router'
 import { CardTag, InProgressNote } from './InProgress'
 
@@ -83,6 +84,7 @@ function Box({ project, slot, index, onHot }: BoxProps) {
         >
         <span className="box__glow" aria-hidden="true" />
         {project.cover && <img className="box__img" src={project.cover} alt="" loading="lazy" decoding="async" />}
+        {project.coverClip && <CardClip className="box__img" src={project.coverClip.src} poster={project.coverClip.poster} />}
         <span className="box__veil" aria-hidden="true" />
 
         {/* both corners stay empty until you point at the tile: what it was
@@ -127,6 +129,7 @@ function Box({ project, slot, index, onHot }: BoxProps) {
         >
         <span className="box__glow" aria-hidden="true" />
         {project.cover && <img className="box__img" src={project.cover} alt="" loading="lazy" decoding="async" />}
+        {project.coverClip && <CardClip className="box__img" src={project.coverClip.src} poster={project.coverClip.poster} />}
         <span className="box__veil" aria-hidden="true" />
 
         {/* both corners stay empty until you point at the tile: what it was

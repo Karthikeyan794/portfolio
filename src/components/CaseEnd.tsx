@@ -4,6 +4,7 @@ import { cardMode, endTiles, feedback, profile, projects } from '../data'
 import { sendForm as send } from '../sendForm'
 import { closeProject, openProject } from '../router'
 import { CardTag, InProgressNote } from './InProgress'
+import CardClip from './CardClip'
 import ContactModal from './ContactModal'
 import Words from './Words'
 
@@ -155,6 +156,7 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
       {...rise(i, reduce)}
     >
       {p.cover && <img className="ctile__img" src={p.cover} alt="" loading="lazy" decoding="async" />}
+        {p.coverClip && <CardClip className="ctile__img" src={p.coverClip.src} poster={p.coverClip.poster} />}
       <span className="ctile__veil" aria-hidden="true" />
       <span className="cend__eye cend__eye--center">
         <Sun />
@@ -181,6 +183,7 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
         {...rise(i, reduce)}
       >
         {p.cover && <img className="ctile__img" src={p.cover} alt="" loading="lazy" decoding="async" />}
+        {p.coverClip && <CardClip className="ctile__img" src={p.coverClip.src} poster={p.coverClip.poster} />}
         <span className="ctile__veil" aria-hidden="true" />
         <span className="cend__eye cend__eye--center">
           <Sun />
