@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { releaseFirefly } from '../fly'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
 import type { Tool } from '../data'
@@ -489,11 +490,14 @@ export default function About() {
     }
   }, [greetingSeen])
   const [job, setJob] = useState(-1)
-  // each time a job opens, a firefly rises from its dot and drifts away;
-  // the count remounts it, so every opening sends a new one
-  const [flight, setFlight] = useState(0)
-  const openJob = (n: number) => {
-    if (n !== job) setFlight((f) => f + 1)
+  // each time a job opens, a firefly takes off from its dot on the timeline
+  // and flies away the way the swarm on the landing picture does
+  const openJob = (n: number, head?: Element) => {
+    if (n !== job && head) {
+      const r = head.closest('.step__item')?.getBoundingClientRect()
+      // the dot sits 22px left of the item, 13px down, 9px across
+      if (r) releaseFirefly(r.left - 17.5 + window.scrollX, r.top + 17.5 + window.scrollY, { size: 24 })
+    }
     setJob(n)
   }
   const [school, setSchool] = useState(-1)
@@ -544,12 +548,7 @@ export default function About() {
             <ol className="step" onPointerLeave={() => setJob(-1)}>
               {experience.map((r, n) => (
                 <li className="step__item" key={r.company} data-open={n === job}>
-                  {n === job && (
-                    <span className="flybee" key={flight} aria-hidden="true">
-                      <img src="/intro/firefly.png" alt="" />
-                    </span>
-                  )}
-                  <button type="button" className="step__head" onPointerEnter={() => openJob(n)} onFocus={() => openJob(n)} onClick={() => openJob(n)} aria-expanded={n === job}>
+                  <button type="button" className="step__head" onPointerEnter={(e) => openJob(n, e.currentTarget)} onFocus={(e) => openJob(n, e.currentTarget)} onClick={(e) => openJob(n, e.currentTarget)} aria-expanded={n === job}>
                     <span className="step__org">{r.short ?? r.company}</span>
                     <span className="step__role">{r.title}</span>
                     <span className="step__when">{r.period}</span>

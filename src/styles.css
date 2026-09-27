@@ -1363,8 +1363,8 @@ a { color: inherit; text-decoration: none; }
   filter: drop-shadow(0 0 5px rgba(255, 200, 110, 0.55));
   animation: bee-twitch 3.4s ease-in-out infinite;
 }
-.bee[data-gone='true'] { animation: bee-fly 4.2s ease-in-out forwards; }
-.bee[data-gone='true'] img { animation: bee-buzz 0.06s linear infinite; }
+/* once it takes off, a real flight carries on from here (fly.ts) */
+.bee[data-gone='true'] { visibility: hidden; animation: none; }
 @keyframes bee-land {
   from { opacity: 0; translate: 46px -96px; scale: 0.7; }
   70% { opacity: 1; translate: -3px 3px; scale: 1; }
@@ -1386,57 +1386,28 @@ a { color: inherit; text-decoration: none; }
   50% { scale: 0.8 1; }
   100% { scale: 1 1; }
 }
-/* up and away, slowly: it lifts off the corner, hangs a moment, then
-   drifts up and to the right in a lazy wander, fading as it goes */
-@keyframes bee-fly {
-  0% { translate: 0 0; opacity: 1; }
-  12% { translate: 4px -10px; }
-  30% { translate: 22px -34px; }
-  50% { translate: 8px -70px; }
-  70% { translate: 40px -110px; opacity: 1; }
-  100% { translate: 90px -170px; opacity: 0; scale: 0.75; }
-}
-
-/* the firefly that rises from a job's dot on the timeline when it opens */
-.flybee {
+/* a firefly let loose (fly.ts): moved every frame from script, so it
+   faces where it flies and wanders like the swarm */
+.flyer {
   position: absolute;
-  left: -32px;
-  top: 2px;
-  z-index: 3;
-  width: 26px;
-  height: 24px;
+  left: 0;
+  top: 0;
+  z-index: 60;
   pointer-events: none;
-  animation: bee-rise 4.4s ease-in-out forwards;
+  will-change: transform, opacity;
 }
-.flybee::before {
+.flyer::before {
   content: '';
   position: absolute;
-  inset: -40%;
+  inset: -45%;
   border-radius: 50%;
-  background: radial-gradient(circle at 42% 64%, rgba(255, 236, 180, 0.75), rgba(255, 196, 110, 0.22) 30%, transparent 62%);
+  background: radial-gradient(circle at 50% 62%, rgba(255, 236, 180, 0.7), rgba(255, 196, 110, 0.2) 32%, transparent 62%);
   animation: bee-breathe 2.2s ease-in-out infinite;
 }
-.flybee img {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  rotate: 70deg;
-  filter: drop-shadow(0 0 5px rgba(255, 200, 110, 0.55));
-  animation: bee-buzz 0.06s linear infinite;
-}
-/* it wakes on the dot, lifts, and wanders off up and to the right */
-@keyframes bee-rise {
-  0% { opacity: 0; translate: 0 6px; scale: 0.6; }
-  12% { opacity: 1; translate: 0 0; scale: 1; }
-  32% { translate: 18px -26px; }
-  55% { translate: 6px -60px; }
-  78% { translate: 46px -96px; opacity: 1; }
-  100% { translate: 96px -150px; opacity: 0; scale: 0.75; }
-}
+.flyer img { position: relative; display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 5px rgba(255, 200, 110, 0.55)); }
 @media (prefers-reduced-motion: reduce) {
   .bee, .bee::before, .bee img { animation: none; }
-  .flybee { display: none; }
+
   .bee[data-gone='true'] { opacity: 0; transition: opacity 0.4s ease; }
 }
 /* Contact me: a white pill with a dark arrow badge. On hover a dark sheet
