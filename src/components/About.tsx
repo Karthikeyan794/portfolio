@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
 import type { Tool } from '../data'
-import { aboutLinks, awardsCard, currently, education, experience, intro_about, place, places, playlist, stackCards } from '../data'
+import { aboutLinks, awardsCard, currently, education, experience, intro_about, place, places, playlist, profile, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -597,6 +597,20 @@ export default function About() {
                 </a>
               </li>
             ))}
+            {/* the résumé, beside the profiles: opens the PDF in a new tab */}
+            {profile.resumeUrl && (
+              <li>
+                <a href={profile.resumeUrl} target="_blank" rel="noreferrer" title="Résumé · PDF" style={{ ['--brand' as string]: '#12715b' }}>
+                  <span className="plinks__mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ fill: 'none' }}>
+                      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                      <path d="M14 3v5h5M9 13h6M9 17h4" />
+                    </svg>
+                  </span>
+                  <span className="plinks__label">Resume</span>
+                </a>
+              </li>
+            )}
           </ul>
         </motion.div>
 

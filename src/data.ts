@@ -41,7 +41,8 @@ export const profile = {
   // paste your number here and the contact dialog shows it; empty hides the
   // row entirely. Keep it in the form you want read aloud: '+91 98765 43210'.
   phone: '+91 78128 18507',
-  resumeUrl: '', // e.g. '/resume.pdf' — drop the file in /public
+  // the résumé PDF in /public; the About links show it beside Behance ('' hides it)
+  resumeUrl: '/Karthikeyan_B_CV.pdf',
   photo: '', // e.g. '/me.jpg' — drop the file in /public. Empty = initials placeholder.
 }
 
