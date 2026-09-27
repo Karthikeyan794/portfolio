@@ -1,8 +1,9 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { endTiles, feedback, profile, projects } from '../data'
+import { behanceOnly, endTiles, feedback, profile, projects } from '../data'
 import { sendForm as send } from '../sendForm'
 import { closeProject, openProject } from '../router'
+import { BehanceTag } from './Bento'
 import ContactModal from './ContactModal'
 import Words from './Words'
 
@@ -139,7 +140,37 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
   const reduce = useReducedMotion()
   const p = projects.find((x) => x.slug === slug)
   if (!p) return null
-  return (
+  // no case study of its own: the tile opens its Behance gallery instead
+  const behance = behanceOnly(p)
+  return behance ? (
+    <motion.a
+      className={`ctile ctile--shot ctile--${area}`}
+      href={behance}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`${label}: ${p.title} — ${p.tagline} (opens on Behance)`}
+      {...rise(i, reduce)}
+    >
+      {p.cover && <img className="ctile__img" src={p.cover} alt="" loading="lazy" decoding="async" />}
+      <span className="ctile__veil" aria-hidden="true" />
+      <span className="cend__eye cend__eye--center">
+        <Sun />
+        {label}
+        <Sun />
+      </span>
+      <span className="ctile__open" aria-hidden="true">
+        <ArrowOut size={15} />
+      </span>
+      <span className="ctile__foot">
+        <span className="ctile__year">
+          {p.year}
+          {behance && <BehanceTag />}
+        </span>
+        <span className="ctile__title">{p.title}</span>
+        <span className="ctile__tag">{p.tagline}</span>
+      </span>
+    </motion.a>
+  ) : (
     <motion.button
       type="button"
       className={`ctile ctile--shot ctile--${area}`}
@@ -158,7 +189,10 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
         <ArrowOut size={15} />
       </span>
       <span className="ctile__foot">
-        <span className="ctile__year">{p.year}</span>
+        <span className="ctile__year">
+          {p.year}
+          {behance && <BehanceTag />}
+        </span>
         <span className="ctile__title">{p.title}</span>
         <span className="ctile__tag">{p.tagline}</span>
       </span>

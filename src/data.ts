@@ -910,6 +910,14 @@ export const groups = [
 
 export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug)
 
+/**
+ * Where a project card goes when the project has no case study of its own:
+ * its Behance gallery, in a new tab. Undefined means the card opens the
+ * project's page here. Used by the home grid and the tiles at the end of a
+ * case study, so the two always agree.
+ */
+export const behanceOnly = (p: Project) => (!p.detail && p.behance ? p.behance : undefined)
+
 export type Role = {
   company: string
   /** a logo in /public/logos; without one the stepper shows a monogram */

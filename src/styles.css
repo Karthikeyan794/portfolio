@@ -3333,6 +3333,9 @@ a.ctile__line { cursor: pointer; }
   text-transform: uppercase;
 }
 .box__tag--ghost { background: transparent; color: rgba(255, 255, 255, 0.85); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+/* the card opens on Behance: the same white tag, with the mark */
+.box__tag--behance { display: inline-flex; align-items: center; gap: 5px; }
+.ctile__year { display: inline-flex; align-items: center; gap: 7px; }
 .box__title { font-family: var(--display); font-weight: 600; font-size: clamp(16px, 1.3vw, 20px); letter-spacing: -0.005em; line-height: 1.2; }
 .box--a .box__title, .box--b .box__title { font-size: clamp(18px, 1.6vw, 24px); }
 .box__tagline { font-size: 13px; color: rgba(255, 255, 255, 0.82); }
@@ -4779,6 +4782,39 @@ a.ctile__line { cursor: pointer; }
 .pcard--music .np__meta { grid-column: 2; grid-row: 1; align-self: center; }
 .pcard--music .np__ctrl { grid-column: 3; grid-row: 1; }
 .pcard--music .np__bar { grid-column: 1 / -1; grid-row: 2; }
+/* the bar is a seek bar too: a taller invisible hit area around the thin
+   line, a knob that shows on hover, and the line thickening a touch */
+.pcard--music .np__bar {
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+  cursor: pointer;
+  touch-action: none;
+  transition: height 0.2s ease;
+}
+.pcard--music .np__bar::before { content: ''; position: absolute; inset: -9px 0; }
+.pcard--music .np__bar i { border-radius: inherit; }
+.np__knob {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.pcard--music .np__bar:hover, .pcard--music .np__bar:focus-visible { height: 5px; }
+.pcard--music .np__bar:hover .np__knob,
+.pcard--music .np__bar:focus-visible .np__knob,
+.pcard--music .np__bar:active .np__knob { opacity: 1; transform: scale(1); }
+.pcard--music .np__bar:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(166, 232, 91, 0.6); }
+/* the previous button nudges the other way on hover */
+.np__skip--prev:hover { transform: translateX(-2px); }
 
 .np__head {
   position: relative;
