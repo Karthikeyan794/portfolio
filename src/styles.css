@@ -133,6 +133,14 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   color: var(--accent-ink);
 }
+/* About's label in Arsenal SC, the small caps the case study titles wear:
+   the face does the capitals, so no uppercase and no wide tracking */
+#about .eyebrow {
+  font-family: var(--label-face);
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
 
 /* ── nav ────────────────────────────────────────────────── */
 .nav {
