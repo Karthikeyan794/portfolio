@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { intro } from '../data'
 import { marks } from '../logos'
@@ -25,6 +25,62 @@ const rise = (delay: number) => ({
   transition: { delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] as const },
 })
 
+/**
+ * "See my work", as a pane of glass: it tilts toward the pointer, is pulled a
+ * few pixels after it, and a soft light follows it across the glass; the
+ * arrow bobs while you are on it, and a press squeezes it in. The entrance
+ * rides on a wrapper, not on the button — the rise leaves a filter on what
+ * it animates, and a filter on the button's parent would stop the glass from
+ * seeing (and blurring) the picture behind it. Mouse only; nothing moves for
+ * someone who has asked for less motion.
+ */
+function Go({ delay }: { delay: number }) {
+  const reduce = useReducedMotion()
+  const spring = { stiffness: 260, damping: 20, mass: 0.6 }
+  const rx = useSpring(0, spring)
+  const ry = useSpring(0, spring)
+  const x = useSpring(0, spring)
+  function move(e: React.PointerEvent<HTMLAnchorElement>) {
+    if (reduce || e.pointerType !== 'mouse') return
+    const r = e.currentTarget.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width
+    const py = (e.clientY - r.top) / r.height
+    rx.set((0.5 - py) * 22)
+    ry.set((px - 0.5) * 18)
+    x.set((px - 0.5) * 8)
+    e.currentTarget.style.setProperty('--gx', `${(px * 100).toFixed(1)}%`)
+    e.currentTarget.style.setProperty('--gy', `${(py * 100).toFixed(1)}%`)
+  }
+  function leave() {
+    rx.set(0)
+    ry.set(0)
+    x.set(0)
+  }
+  return (
+    <motion.div
+      className="intro__go-wrap"
+      initial={{ opacity: 0, y: 22 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+    >
+      <motion.a
+        className="intro__go"
+        href={intro.cta.href}
+        style={{ rotateX: rx, rotateY: ry, x, transformPerspective: 520 }}
+        onPointerMove={move}
+        onPointerLeave={leave}
+        whileTap={reduce ? undefined : { scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+      >
+        <span className="intro__go-light" aria-hidden="true" />
+        {intro.cta.label}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 5v14M6 13l6 6 6-6" />
+        </svg>
+      </motion.a>
+    </motion.div>
+  )
+}
 
 function Scene({ show }: { show: boolean }) {
   return (
@@ -262,6 +318,31 @@ export default function Intro() {
     if (useImage && (showNight ? nightReady : dayReady)) setReady(true)
   }, [useImage, showNight, nightReady, dayReady])
 
+  // Where the words start, as --copy-top on the section, so the blur behind
+  // them (.intro__veil) begins just above them. The blur lives with the
+  // picture, under the frame, so it cannot simply sit behind the words in
+  // their own box. Offsets, not boxes: the entrance scales the page, and a
+  // measured box would be off by that much.
+  const copy = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const section = sectionRef.current
+    const main = copy.current
+    if (!section || !main || !('ResizeObserver' in window)) return
+    const place = () => {
+      let top = 0
+      let el: HTMLElement | null = main
+      while (el && el !== section) {
+        top += el.offsetTop
+        el = el.offsetParent as HTMLElement | null
+      }
+      section.style.setProperty('--copy-top', `${top}px`)
+    }
+    const ro = new ResizeObserver(place)
+    ro.observe(section)
+    ro.observe(main)
+    return () => ro.disconnect()
+  }, [])
+
   // the picture leans a few pixels toward the pointer, so it reads as a place
   // rather than a flat backdrop
   const media = useRef<HTMLDivElement>(null)
@@ -376,6 +457,9 @@ export default function Intro() {
           its dark only behind the words (see .intro__shade--day) */}
       <div className="intro__shade" data-on={!useImage || showNight} aria-hidden="true" />
       {useImage && <div className="intro__shade intro__shade--day" data-on={!showNight} aria-hidden="true" />}
+      {/* a light blur across the screen behind the words (see .intro__veil);
+          under the fireflies and the frame, which stay sharp on top of it */}
+      <div className="intro__veil" aria-hidden="true" />
       {/* fireflies belong to the night garden — in daylight they are specks */}
       {(!useImage || showNight) && <Fireflies />}
       <motion.div className="intro__frame" aria-hidden="true" style={{ opacity: frameFade }}>
@@ -384,7 +468,7 @@ export default function Intro() {
       </div>
 
       <div className="wrap intro__grid">
-        <div className="intro__main">
+        <div className="intro__main" ref={copy}>
           <Hello phrases={intro.hello} delay={T.hello} />
 
           <Headline start={T.line} />
@@ -393,12 +477,7 @@ export default function Intro() {
             {intro.paragraph}
           </motion.p>
 
-          <motion.a className="intro__go" href={intro.cta.href} {...rise(T.cta)}>
-            {intro.cta.label}
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 5v14M6 13l6 6 6-6" />
-            </svg>
-          </motion.a>
+          <Go delay={T.cta} />
         </div>
 
       </div>

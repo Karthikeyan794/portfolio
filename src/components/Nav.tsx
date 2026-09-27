@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
-import { navCta, sectionIds, sections } from '../data'
-import { useActiveSection, useScrolled } from '../hooks'
+import { navCta } from '../data'
+import { useScrolled } from '../hooks'
 import SoundToggle from './SoundToggle'
 import ThemeToggle from './ThemeToggle'
 
@@ -15,20 +15,8 @@ function ArrowIcon() {
 }
 
 export default function Nav({ onEnterLab, delay = 0 }: Props) {
-  const active = useActiveSection(sectionIds)
   // the nav sits over the intro picture; it turns solid once you scroll past it
   const stuck = useScrolled(Math.round(window.innerHeight * 0.72))
-
-  const link = (s: (typeof sections)[number]) => (
-    <a
-      key={s.id}
-      href={`#${s.id}`}
-      className="nav__link"
-      aria-current={active === s.id ? 'true' : undefined}
-    >
-      {s.label}
-    </a>
-  )
 
   return (
     <motion.header
@@ -44,9 +32,6 @@ export default function Nav({ onEnterLab, delay = 0 }: Props) {
           <SoundToggle />
           <ThemeToggle />
         </div>
-
-        {/* Contact has its own button on the right, so it leaves the link row */}
-        <div className="nav__links">{sections.filter((s) => s.id !== 'contact').map(link)}</div>
 
         <div className="nav__actions">
           {onEnterLab && (
