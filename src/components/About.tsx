@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
 import type { Tool } from '../data'
-import { aboutLinks, awards, awardsCard, currently, education, experience, intro_about, place, places, playlist, stackCards } from '../data'
+import { aboutLinks, awardsCard, currently, education, experience, intro_about, place, places, playlist, stackCards } from '../data'
 
 /**
  * Light the card's border where the cursor is, exactly like the work bento.
@@ -168,14 +168,8 @@ function AwardsCard() {
       <img className="awards__bg" src={awardsCard.image} alt="" loading="lazy" decoding="async" />
       <span className="awards__veil" aria-hidden="true" />
       <span className="pcard__label pcard__label--over">Recognition</span>
-      <div className="atags">
-        {awards.map((a, i) => (
-          <span className="atag" key={`${a.title}-${i}`}>
-            <b>{a.title}</b>
-            <i>{a.issuer}</i>
-          </span>
-        ))}
-      </div>
+      {/* one line of type over the picture — no tags */}
+      <p className="awards__title">{awardsCard.title}</p>
     </div>
   )
 }

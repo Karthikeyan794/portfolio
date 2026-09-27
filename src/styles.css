@@ -4635,7 +4635,19 @@ a.ctile__line { cursor: pointer; }
   inset: 0;
   background: linear-gradient(180deg, rgba(6, 8, 10, 0.82) 0%, rgba(6, 8, 10, 0.46) 38%, rgba(6, 8, 10, 0.9) 100%);
 }
-.pcard--awards .pcard__label, .pcard--awards .atags { position: relative; z-index: 2; }
+.pcard--awards .pcard__label, .pcard--awards .atags, .awards__title { position: relative; z-index: 2; }
+/* the award's name, set in the display serif over the photo */
+.awards__title {
+  align-self: end;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+}
 .pcard--awards .atags { align-content: end; }
 .pcard--awards .atag {
   background: rgba(255, 255, 255, 0.12);

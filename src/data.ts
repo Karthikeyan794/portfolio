@@ -155,7 +155,8 @@ export const stackCards: { no: string; label: string; image: string; shift?: num
  * the trophies when you have them.
  */
 // the Vibeathon 2026 trophy, held up over the hills
-export const awardsCard = { image: '/about/award.jpg' }
+// The card shows one line of type, no tags; `awards` below still feeds the lab.
+export const awardsCard = { image: '/about/award.jpg', title: 'Vibeathon' }
 
 /**
  * What's on while I build.
