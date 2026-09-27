@@ -253,9 +253,20 @@ function PlaceCard() {
 function MusicCard() {
   const glow = useGlow<HTMLDivElement>()
   const audio = useRef<HTMLAudioElement>(null)
+  const video = useRef<HTMLVideoElement>(null)
   const [cur, setCur] = useState(0)
   const [playing, setPlaying] = useState(false)
   const [pct, setPct] = useState(0)
+
+  // the video behind the crate is still until a song plays, and runs only
+  // while one does
+  useEffect(() => {
+    const v = video.current
+    if (!v) return
+    v.muted = true
+    if (playing) void v.play().catch(() => {})
+    else v.pause()
+  }, [playing])
 
   const track = playlist.tracks[cur]
   const playable = Boolean(track.src)
@@ -282,12 +293,13 @@ function MusicCard() {
   return (
     <div className="pcard pcard--music" style={{ gridArea: 'y' }} ref={glow.ref} onPointerMove={glow.onPointerMove}>
       <Glow />
-      {/* muted ambience behind the crate */}
+      {/* muted ambience behind the crate: its first frame at rest (#t= asks
+          Safari to paint one), moving only while the music plays */}
       {playlist.video && (
         <video
+          ref={video}
           className="crate__video"
-          src={playlist.video}
-          autoPlay
+          src={`${playlist.video}#t=0.1`}
           muted
           loop
           playsInline
@@ -362,6 +374,10 @@ function MusicCard() {
             const el = e.currentTarget
             setPct(el.duration ? (el.currentTime / el.duration) * 100 : 0)
           }}
+          // a pause from the keyboard's media keys or the system's controls
+          // still stops the record and the video
+          onPlay={() => setPlaying(true)}
+          onPause={(e) => { if (!e.currentTarget.ended) setPlaying(false) }}
           onEnded={() => {
             setPct(0)
             setCur((c) => (c + 1) % playlist.tracks.length)

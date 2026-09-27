@@ -161,12 +161,14 @@ export const awardsCard = { image: '/about/award.jpg', title: 'Vibeathon' }
 /**
  * What's on while I build.
  *
- * `src` is intentionally empty: I can't ship Anirudh's tracks with the site —
- * they're copyrighted and not mine to distribute. Drop your own MP3s in
- * /public/music and point `src` at them ('/music/the-one.mp3') and the player
- * below starts working immediately. Until then the card links out to Spotify.
+ * The songs are in /public/music, exactly as downloaded (not re-encoded).
+ * They are commercial film songs, shipped here by my choice: the rights are
+ * the labels', and a takedown notice to GitHub could block the repo. If that
+ * ever happens, empty each `src` and the card falls back to a quiet record.
  *
- * `art` is a drawn gradient rather than real cover art, for the same reason.
+ * `art` is a drawn gradient for the record's label. The files' own cover art
+ * carries a download site's watermark, so it is not used; set `cover` to a
+ * clean image to replace a gradient.
  */
 export type Track = { title: string; artist: string; src: string; art: string; cover?: string }
 export const playlist = {
@@ -174,15 +176,15 @@ export const playlist = {
   // TODO: paste your playlist's Spotify share link — the ↗ only appears once
   // this points at a real playlist instead of Spotify's front page.
   href: '',
-  /** Plays muted behind the crate. '' hides it and the card falls back to the card ground. */
+  /** Behind the crate: still until a song plays, then it runs with it. '' hides it. */
   video: '/music/playlist-bg.mp4',
   tracks: [
-    // TODO: save the AA23 poster to public/music/art/aa23.jpg and this picks it up.
-    { title: 'The One', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #1db954, #0b3d22)', cover: '' },
-    { title: 'Arabic Kuthu', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #f2994a, #6b2d12)' },
-    { title: 'Vaathi Coming', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #56ccf2, #10394d)' },
-    { title: 'Why This Kolaveri Di', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #eb5757, #4a1212)' },
-    { title: 'Jolly O Gymkhana', artist: 'Anirudh Ravichander', src: '', art: 'linear-gradient(145deg, #bb6bd9, #3a1547)' },
+    { title: 'I Am The Danger', artist: 'Anirudh Ravichander, Siddharth Basrur', src: '/music/i-am-the-danger.mp3', art: 'linear-gradient(145deg, #f2994a, #6b2d12)' },
+    { title: 'Hangova', artist: 'Anirudh Ravichander, Heisenberg', src: '/music/hangova.mp3', art: 'linear-gradient(145deg, #eb5757, #4a1212)' },
+    { title: 'Namaste', artist: 'Anirudh Ravichander', src: '/music/namaste.mp3', art: 'linear-gradient(145deg, #56ccf2, #10394d)' },
+    { title: 'Thaalam Trip (Instrumental)', artist: 'Anirudh Ravichander, Shivapriya', src: '/music/thaalam-trip.mp3', art: 'linear-gradient(145deg, #1db954, #0b3d22)' },
+    { title: 'Raga of Revenge × Paradise', artist: 'Background score', src: '/music/raga-of-revenge-x-paradise.mp3', art: 'linear-gradient(145deg, #bb6bd9, #3a1547)' },
+    { title: 'AA23 BGM', artist: 'Background score', src: '/music/aa23-bgm.mp3', art: 'linear-gradient(145deg, #f2c94c, #5a4410)' },
   ] as Track[],
 }
 
