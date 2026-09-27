@@ -325,6 +325,9 @@ export type Project = {
   cover?: string
   /** the Behance gallery for this project — shown as a link inside its page */
   behance?: string
+  /** still being made: its card opens a short "working on it" note (see
+   *  `inProgressNote`) instead of a page or Behance, and wears the tag */
+  inProgress?: boolean
   /** a live demo people can try */
   demo?: { label: string; href: string }
   /** how big the tile is in the bento grid */
@@ -383,9 +386,10 @@ export const projects: Project[] = [
     detail: {
       facts: [
         { label: 'Role', value: 'Product owner / designer' },
-        { label: 'Built', value: '~6 weeks, part-time' },
-        { label: 'Stack', value: 'React · Graph · SharePoint · Power Automate' },
-        { label: 'Status', value: 'In daily use · ~900 tickets' },
+        { label: 'Built', value: '2 weeks' },
+        { label: 'Stack', value: 'Claude Code + Figma' },
+        // where it plugs in: mail comes from Outlook, the assistant lives in Teams
+        { label: 'Works with', value: 'Outlook · Microsoft Teams' },
       ],
       hook: {
         // a short lead, so the ending is the thing that lands — and every
@@ -791,6 +795,7 @@ export const projects: Project[] = [
     emoji: '✦',
     cover: '/bento/welcome.jpg',
     behance: 'https://www.behance.net/gallery/215584601/Logofolio-%28Clickly%29',
+    inProgress: true,
     featured: 3,
     size: 'small',
     tone: 'cream',
@@ -911,12 +916,22 @@ export const groups = [
 export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug)
 
 /**
- * Where a project card goes when the project has no case study of its own:
- * its Behance gallery, in a new tab. Undefined means the card opens the
- * project's page here. Used by the home grid and the tiles at the end of a
- * case study, so the two always agree.
+ * Where a project card goes, in one place so the home grid and the tiles at
+ * the end of a case study always agree:
+ * - 'wip': still being made — a short note opens (`inProgressNote`)
+ * - 'behance': no case study of its own — its Behance gallery, in a new tab
+ * - 'page': its case study, here
  */
-export const behanceOnly = (p: Project) => (!p.detail && p.behance ? p.behance : undefined)
+export const cardMode = (p: Project): 'wip' | 'behance' | 'page' =>
+  p.inProgress ? 'wip' : !p.detail && p.behance ? 'behance' : 'page'
+
+/** what a project still being made says when its card is clicked */
+export const inProgressNote = {
+  tag: 'In progress',
+  title: 'Working on it',
+  body: "{title} is still being made — I'm working on it right now. The full story will be here soon.",
+  close: 'Okay',
+}
 
 export type Role = {
   company: string

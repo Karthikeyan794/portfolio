@@ -1,9 +1,9 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { behanceOnly, endTiles, feedback, profile, projects } from '../data'
+import { cardMode, endTiles, feedback, profile, projects } from '../data'
 import { sendForm as send } from '../sendForm'
 import { closeProject, openProject } from '../router'
-import { BehanceTag } from './Bento'
+import { CardTag, InProgressNote } from './InProgress'
 import ContactModal from './ContactModal'
 import Words from './Words'
 
@@ -138,14 +138,17 @@ function rise(i: number, reduce: boolean | null) {
 
 function ProjectTile({ slug, label, area, i }: { slug: string; label: string; area: 'next' | 'other'; i: number }) {
   const reduce = useReducedMotion()
+  const [note, setNote] = useState(false)
   const p = projects.find((x) => x.slug === slug)
   if (!p) return null
-  // no case study of its own: the tile opens its Behance gallery instead
-  const behance = behanceOnly(p)
-  return behance ? (
+  // where the tile goes: its case study, its Behance gallery, or — still
+  // being made — a short note
+  const mode = cardMode(p)
+  const cls = `ctile ctile--shot ctile--${area}${mode === 'page' ? '' : ' ctile--tagged'}`
+  return mode === 'behance' ? (
     <motion.a
-      className={`ctile ctile--shot ctile--${area}`}
-      href={behance}
+      className={cls}
+      href={p.behance}
       target="_blank"
       rel="noreferrer"
       aria-label={`${label}: ${p.title} — ${p.tagline} (opens on Behance)`}
@@ -158,45 +161,44 @@ function ProjectTile({ slug, label, area, i }: { slug: string; label: string; ar
         {label}
         <Sun />
       </span>
+      <CardTag mode="behance" />
       <span className="ctile__open" aria-hidden="true">
         <ArrowOut size={15} />
       </span>
       <span className="ctile__foot">
-        <span className="ctile__year">
-          {p.year}
-          {behance && <BehanceTag />}
-        </span>
+        <span className="ctile__year">{p.year}</span>
         <span className="ctile__title">{p.title}</span>
         <span className="ctile__tag">{p.tagline}</span>
       </span>
     </motion.a>
   ) : (
-    <motion.button
-      type="button"
-      className={`ctile ctile--shot ctile--${area}`}
-      onClick={() => openProject(p.slug)}
-      aria-label={`${label}: ${p.title} — ${p.tagline}`}
-      {...rise(i, reduce)}
-    >
-      {p.cover && <img className="ctile__img" src={p.cover} alt="" loading="lazy" decoding="async" />}
-      <span className="ctile__veil" aria-hidden="true" />
-      <span className="cend__eye cend__eye--center">
-        <Sun />
-        {label}
-        <Sun />
-      </span>
-      <span className="ctile__open" aria-hidden="true">
-        <ArrowOut size={15} />
-      </span>
-      <span className="ctile__foot">
-        <span className="ctile__year">
-          {p.year}
-          {behance && <BehanceTag />}
+    <>
+      <motion.button
+        type="button"
+        className={cls}
+        onClick={() => (mode === 'wip' ? setNote(true) : openProject(p.slug))}
+        aria-label={mode === 'wip' ? `${label}: ${p.title} — ${p.tagline} (in progress)` : `${label}: ${p.title} — ${p.tagline}`}
+        {...rise(i, reduce)}
+      >
+        {p.cover && <img className="ctile__img" src={p.cover} alt="" loading="lazy" decoding="async" />}
+        <span className="ctile__veil" aria-hidden="true" />
+        <span className="cend__eye cend__eye--center">
+          <Sun />
+          {label}
+          <Sun />
         </span>
-        <span className="ctile__title">{p.title}</span>
-        <span className="ctile__tag">{p.tagline}</span>
-      </span>
-    </motion.button>
+        {mode !== 'page' && <CardTag mode={mode} />}
+        <span className="ctile__open" aria-hidden="true">
+          <ArrowOut size={15} />
+        </span>
+        <span className="ctile__foot">
+          <span className="ctile__year">{p.year}</span>
+          <span className="ctile__title">{p.title}</span>
+          <span className="ctile__tag">{p.tagline}</span>
+        </span>
+      </motion.button>
+      {mode === 'wip' && <InProgressNote open={note} title={p.title} onClose={() => setNote(false)} />}
+    </>
   )
 }
 

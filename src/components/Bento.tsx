@@ -1,8 +1,9 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { behanceOnly, projects, socials, type Project } from '../data'
+import { cardMode, projects, socials, type Project } from '../data'
 import { marks } from '../logos'
 import { openProject } from '../router'
+import { CardTag, InProgressNote } from './InProgress'
 
 /**
  * One bento rectangle, subdivided by named grid areas into interlocking boxes:
@@ -24,21 +25,10 @@ type BoxProps = {
   onHot: (slot: string | null) => void
 }
 
-/** the small white tag on a card that opens on Behance */
-export function BehanceTag() {
-  return (
-    <span className="box__tag box__tag--behance">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d={marks.behance} />
-      </svg>
-      Behance
-    </span>
-  )
-}
-
 function Box({ project, slot, index, onHot }: BoxProps) {
   const hitRef = useRef<HTMLElement | null>(null)
-  const behance = behanceOnly(project)
+  const mode = cardMode(project)
+  const [note, setNote] = useState(false)
   const raf = useRef(0)
 
   /**
@@ -79,12 +69,13 @@ function Box({ project, slot, index, onHot }: BoxProps) {
           with the relayout. */}
       <div className="box__lift">
       {/* a project with a case study opens it here; one without opens its
-          Behance gallery in a new tab, and says so with a tag by the year */}
-      {behance ? (
+          Behance gallery in a new tab; one still being made opens a short
+          note. The last two say so with a glass tag in the corner. */}
+      {mode === 'behance' ? (
         <motion.a
           ref={(el: HTMLAnchorElement | null) => { hitRef.current = el }}
-          className="box__hit"
-          href={behance}
+          className="box__hit box__hit--tagged"
+          href={project.behance}
           target="_blank"
           rel="noreferrer"
           onPointerMove={onMove}
@@ -108,6 +99,7 @@ function Box({ project, slot, index, onHot }: BoxProps) {
           </span>
         )}
 
+        <CardTag mode="behance" />
         <span className="box__open" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
             <path d="M7 17 17 7M9 7h8v8" />
@@ -118,7 +110,6 @@ function Box({ project, slot, index, onHot }: BoxProps) {
           <span className="box__kicker">
             {project.year}
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
-            {behance && <BehanceTag />}
           </span>
           <span className="box__title">{project.title}</span>
           <span className="box__tagline">{project.tagline}</span>
@@ -128,10 +119,10 @@ function Box({ project, slot, index, onHot }: BoxProps) {
         <motion.button
           ref={(el: HTMLButtonElement | null) => { hitRef.current = el }}
           type="button"
-          className="box__hit"
-          onClick={() => openProject(project.slug)}
+          className={mode === 'wip' ? 'box__hit box__hit--tagged' : 'box__hit'}
+          onClick={() => (mode === 'wip' ? setNote(true) : openProject(project.slug))}
           onPointerMove={onMove}
-          aria-label={`${project.title} — ${project.tagline}`}
+          aria-label={mode === 'wip' ? `${project.title} — ${project.tagline} (in progress)` : `${project.title} — ${project.tagline}`}
         >
         <span className="box__glow" aria-hidden="true" />
         {project.cover && <img className="box__img" src={project.cover} alt="" loading="lazy" decoding="async" />}
@@ -151,6 +142,7 @@ function Box({ project, slot, index, onHot }: BoxProps) {
           </span>
         )}
 
+        {mode !== 'page' && <CardTag mode={mode} />}
         <span className="box__open" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
             <path d="M7 17 17 7M9 7h8v8" />
@@ -161,13 +153,13 @@ function Box({ project, slot, index, onHot }: BoxProps) {
           <span className="box__kicker">
             {project.year}
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
-            {behance && <BehanceTag />}
           </span>
           <span className="box__title">{project.title}</span>
           <span className="box__tagline">{project.tagline}</span>
         </span>
         </motion.button>
       )}
+      {mode === 'wip' && <InProgressNote open={note} title={project.title} onClose={() => setNote(false)} />}
       </div>
     </motion.article>
   )

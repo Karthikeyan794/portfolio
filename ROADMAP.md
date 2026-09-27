@@ -355,12 +355,17 @@ left side; they are `.cstep` now — grep the sheet before naming anything.
   the person and the laptop in frame, the email over a dark base.
 - Both tiles are light on dark in either theme, because both pictures are night.
 
-## 2f-5. Cards without a case study open on Behance (27 Sep 2026)
+## 2f-5. Where a project card goes (27 Sep 2026)
 
-- A project with no case study (`detail`) but a `behance` link — Clickly, TNPSC Redesign, POS School
-  Dashboard — opens its Behance gallery in a new tab from the home grid and from the tiles at the end
-  of a case study, instead of an empty page here. A white **Behance** tag with the mark sits by the
-  year on those cards. One rule for both places: `behanceOnly()` in `src/data.ts`.
+One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Keep going tiles:
+- **Case study** (Support Desk, Atom): opens here, as before.
+- **Behance only** (TNPSC Redesign, POS School Dashboard): opens the Behance gallery in a new tab.
+- **In progress** (`inProgress: true` — Clickly): opens a small "Working on it" note instead
+  (`inProgressNote` holds its words); Escape, a click outside or Okay closes it.
+- The last two wear a small frosted-glass tag in the card's top-right corner ("Behance" with the
+  mark, or "In progress" with a pulsing dot) in place of the hover arrow. `src/components/InProgress.tsx`.
+- Support Desk credits: Built "2 weeks", Stack "Claude Code + Figma", and "Works with: Outlook ·
+  Microsoft Teams" in place of Status.
 
 ## 2g. Where the video files should live (21 Sep 2026)
 
