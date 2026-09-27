@@ -4,7 +4,7 @@ import { ambience } from '../audio/ambience'
 /**
  * Fireflies over the night garden on the landing screen.
  *
- * Canvas, not DOM. Only a few of them — six on a wide screen, four on a
+ * Canvas, not DOM. A small swarm — fourteen on a wide screen, eight on a
  * phone — each the drawn firefly (/intro/firefly.png) rather than a dot of
  * light. Each one faces the way it flies, flutters its wings, and its tail
  * glows in a slow breath. Now and then it flares: a little starburst, and
@@ -107,13 +107,13 @@ export default function Fireflies({ className = '', on = true }: { className?: s
         life: -Math.random() * 2,
         ttl: 9 + Math.random() * 8,
         flared: false,
-        spark: Math.random() < 0.35,
+        spark: Math.random() < 0.15,
         rolled: false,
       }
     }
 
     const seed = () => {
-      const n = w < 720 ? 4 : 6
+      const n = w < 720 ? 8 : 14
       flies = Array.from({ length: n }, () => {
         const p = spot()
         const f = make(p.x, p.y)
@@ -183,11 +183,11 @@ export default function Fireflies({ className = '', on = true }: { className?: s
           ctx.globalAlpha = Math.min(1, on * (pulse - 0.82) * 5)
           ctx.drawImage(flare, tx - r / 2, ty - r / 2, r, r)
         }
-        // at the dimmest point between breaths, decide the next one: about a
-        // third end in a sparkle
+        // at the dimmest point between breaths, decide the next one: with a
+        // swarm about, only one breath in seven ends in a sparkle
         if (pulse < 0.05) {
           if (!f.rolled) {
-            f.spark = Math.random() < 0.35
+            f.spark = Math.random() < 0.15
             f.flared = false
             f.rolled = true
           }
