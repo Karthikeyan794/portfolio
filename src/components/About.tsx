@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { marks } from '../logos'
 import { useEffect, useRef, useState } from 'react'
+import ArtGallery from './ArtGallery'
 import type { Tool } from '../data'
 import { aboutLinks, awardsCard, currently, education, experience, intro_about, place, places, playlist, profile, stackCards } from '../data'
 
@@ -499,6 +500,8 @@ export default function About() {
   const [school, setSchool] = useState(-1)
   const portraitGlow = useGlow<HTMLElement>()
   const shotGlow = useGlow<HTMLAnchorElement>()
+  // the Drawings card opens the drawings in a sheet over the page
+  const [artOpen, setArtOpen] = useState(false)
 
   return (
     <section className="section about" id="about">
@@ -645,7 +648,20 @@ export default function About() {
             </figcaption>
           </figure>
 
-          <a className="pcard pcard--shot" href="#/project/drawings" style={{ gridArea: 'd' }} ref={shotGlow.ref} onPointerMove={shotGlow.onPointerMove}>
+          <a
+            className="pcard pcard--shot"
+            href="#/project/drawings"
+            style={{ gridArea: 'd' }}
+            ref={shotGlow.ref}
+            onPointerMove={shotGlow.onPointerMove}
+            aria-haspopup="dialog"
+            onClick={(e) => {
+              // the page is still there for a new tab; a plain click opens the sheet
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+              e.preventDefault()
+              setArtOpen(true)
+            }}
+          >
             <Glow />
             <img src="/about/drawings.jpg" alt="An ink drawing of two monsters in a sketchbook, held up against the sky" loading="lazy" decoding="async" />
             <span className="pcard__label pcard__label--over">Drawings</span>
@@ -655,6 +671,7 @@ export default function About() {
               </svg>
             </span>
           </a>
+          <ArtGallery open={artOpen} onClose={() => setArtOpen(false)} />
 
           <MusicCard />
           <StackCard />

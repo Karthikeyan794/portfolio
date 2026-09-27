@@ -367,6 +367,16 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
 - Support Desk credits: Built "2 weeks", Stack "Claude Code + Figma", and "Works with: Outlook ·
   Microsoft Teams" in place of Status.
 
+## 2f-6. The Drawings card opens the drawings (27 Sep 2026)
+
+- The Drawings card in About opens a dark glass sheet over the page instead of a page: your 11
+  drawing photos, one at a time (`public/art`, the exported PNGs exactly; order, titles and alt text
+  in `artworks` in `src/data.ts`). The two Vibeathon trophy photos in the same folder are left out.
+- Smooth: the sheet rises in, each drawing arrives blurred and settles sharp once loaded, and
+  moving on slides the next in from that side. Arrows, ← → keys, swipe or the dots move; Escape,
+  a click outside or × closes. Only the drawing on screen and its neighbours are fetched.
+- Ctrl/⌘-click on the card still opens the old drawings page in a new tab.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**

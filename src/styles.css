@@ -5600,3 +5600,132 @@ a.ctile__line { cursor: pointer; }
     to { translate: 0 -20px; }
   }
 }
+
+/* ── the drawings, in a sheet over the page ────────────────────────────────
+   A dark glass sheet; the drawing fills the stage, contained, and arrives
+   blurred and a touch large, settling sharp once it has loaded. Glass arrows
+   either side, the caption and the dots under it, a close in the corner. */
+.agal {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 2.5vw, 32px);
+  background: rgba(6, 8, 10, 0.72);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.agal__sheet {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  width: min(1180px, 100%);
+  padding: clamp(12px, 1.6vw, 20px);
+  border-radius: 24px;
+  color: #f4f1e8;
+  background: rgba(16, 19, 24, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 50px 110px -40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.agal__stage {
+  position: relative;
+  height: min(74vh, 760px);
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.35);
+}
+.agal__fig {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.agal__fig:active { cursor: grabbing; }
+/* the image box fills the stage and the drawing is letterboxed inside it, so
+   a tall one and a wide one both fit whole */
+.agal__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.03);
+  transition: opacity 0.5s ease, filter 0.7s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agal__img--in { opacity: 1; filter: none; transform: none; }
+/* while a drawing is on its way: a soft ring turning in the middle */
+.agal__wait {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-top-color: rgba(255, 255, 255, 0.7);
+  animation: agal-spin 0.9s linear infinite;
+}
+@keyframes agal-spin { to { transform: rotate(360deg); } }
+.agal__nav,
+.agal__close {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(10, 12, 14, 0.5);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agal__nav { top: 50%; margin-top: -21px; }
+.agal__nav--prev { left: 12px; }
+.agal__nav--next { right: 12px; }
+.agal__nav:hover,
+.agal__close:hover { background: rgba(10, 12, 14, 0.74); transform: scale(1.06); }
+.agal__nav:focus-visible,
+.agal__close:focus-visible,
+.agal__dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.agal__close { top: clamp(20px, 2.4vw, 30px); right: clamp(20px, 2.4vw, 30px); width: 38px; height: 38px; }
+.agal__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding: 0 4px 2px; }
+.agal__cap { display: flex; align-items: baseline; gap: 12px; font-family: var(--display); font-size: 18px; font-weight: 500; }
+.agal__no { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; color: rgba(244, 241, 232, 0.55); }
+.agal__dots { display: flex; flex-wrap: wrap; gap: 6px; }
+.agal__dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  cursor: pointer;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+}
+.agal__dot:hover { background: rgba(255, 255, 255, 0.6); }
+.agal__dot--on { width: 22px; background: #fff; }
+@media (max-width: 640px) {
+  .agal { padding: 8px; }
+  .agal__sheet { border-radius: 18px; padding: 10px; gap: 10px; }
+  .agal__stage { height: min(64vh, 560px); border-radius: 12px; }
+  .agal__nav { width: 36px; height: 36px; margin-top: -18px; }
+  .agal__nav--prev { left: 8px; }
+  .agal__nav--next { right: 8px; }
+  .agal__close { top: 18px; right: 18px; width: 34px; height: 34px; }
+  .agal__cap { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agal__img { filter: none; transform: none; transition: opacity 0.3s ease; }
+  .agal__wait { animation-duration: 2s; }
+}

@@ -921,6 +921,25 @@ export const groups = [
 export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug)
 
 /**
+ * The drawings the Drawings card in About opens, in this order — your
+ * photos of them, the exported files exactly (public/art). `title` is the
+ * caption under each; `alt` is what a screen reader hears.
+ */
+export const artworks: { src: string; title: string; alt: string }[] = [
+  { src: '/art/01-monsters.png', title: 'Two monsters', alt: 'An ink drawing of two monsters locked together, in a sketchbook held up against the sky' },
+  { src: '/art/02-basketball.png', title: 'The girl with the ball', alt: 'A pencil drawing of a girl in a mask holding a basketball, her hair blowing' },
+  { src: '/art/03-moonlit.png', title: 'Under the moon', alt: 'A painting of a couple under a tree before a full moon, one kneeling to propose' },
+  { src: '/art/04-godzilla.png', title: 'Godzilla', alt: 'An ink drawing of Godzilla, every scale and spine drawn in' },
+  { src: '/art/05-chained.png', title: 'The chained brute', alt: 'An ink drawing of a snarling brute wrapped in heavy chains' },
+  { src: '/art/06-spider.png', title: 'Spider', alt: 'A drawing of a hairy spider that seems to stand up off the page' },
+  { src: '/art/07-fortune-teller.png', title: 'The fortune teller', alt: 'An ink drawing of an old fortune teller gazing into a crystal ball' },
+  { src: '/art/08-blossom-moon.png', title: 'Blossom and moon', alt: 'A painting of a pink blossom tree on a cliff against a huge moon' },
+  { src: '/art/09-anklets.png', title: 'Anklets', alt: 'A painting of feet in silver anklets under a red skirt, on a red and orange ground' },
+  { src: '/art/10-armoured.png', title: 'Armoured', alt: 'A drawing of a figure in sleek segmented armour' },
+  { src: '/art/11-cat.png', title: 'The cat breaking through', alt: 'A drawing of a kitten tearing its way out through the page' },
+]
+
+/**
  * Where a project card goes, in one place so the home grid and the tiles at
  * the end of a case study always agree:
  * - 'wip': still being made — a short note opens (`inProgressNote`)
