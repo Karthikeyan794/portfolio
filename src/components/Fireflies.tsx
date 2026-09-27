@@ -4,55 +4,53 @@ import { ambience } from '../audio/ambience'
 /**
  * Fireflies over the night garden on the landing screen.
  *
- * Canvas, not DOM. Each firefly has a depth: the far ones are small, sharp
- * points of light, the nearer ones bigger, softer glows. Only a few of them
- * throw a little starburst when they flare (and, with the sound on, a small
- * chime). Every one
- * comes and goes — it fades in somewhere, drifts on a slow curving path,
- * glows, and fades out, then turns up again elsewhere — so the garden is
- * always changing but never fills up. Tiny specks twinkle between them.
+ * Canvas, not DOM. Only a few of them — five on a wide screen, three on a
+ * phone — each the drawn firefly (/intro/firefly.png) rather than a dot of
+ * light. Each one faces the way it flies, flutters its wings, and its tail
+ * glows in a slow breath. Now and then it flares: a little starburst, and
+ * with the sound on a small chime from its side of the screen. Every one
+ * comes and goes — it fades in somewhere, wanders on a slow curving path,
+ * and fades out, then turns up again elsewhere.
  *
- * They drift away from the pointer when it comes near, and a click on the
- * picture lets a few more loose from that spot. The layer takes no pointer
- * events itself — it listens to the page — so the buttons above it work as
- * normal. It sleeps when scrolled away or when the tab is hidden, and holds
- * still for anyone who asks for reduced motion.
+ * They drift away from the pointer when it comes near. The layer takes no
+ * pointer events itself — it listens to the page — so the buttons above it
+ * work as normal. It sleeps when scrolled away or when the tab is hidden,
+ * and holds still for anyone who asks for reduced motion.
  */
 
 type Fly = {
   x: number; y: number; vx: number; vy: number
   heading: number; turn: number; speed: number
-  z: number // 0 = far and sharp, 1 = near and soft
-  phase: number; rate: number
+  size: number
+  phase: number; rate: number; beat: number
   life: number; ttl: number
-  tint: number
-  burst: boolean // let loose by a click: gone for good when it fades
   flared: boolean // mid-flare already: chime once per flare, not every frame
-  sparker: boolean // one of the few that throw a starburst when they flare
+  spark: boolean // whether this breath ends in a sparkle — most just glow
+  rolled: boolean // already decided at this dim point
 }
-type Speck = { x: number; y: number; phase: number; rate: number; r: number }
 
-const WARM = ['255, 214, 140', '255, 196, 112', '255, 234, 176']
+const SRC = '/intro/firefly.png'
+// in the picture the head points up and to the left: this turns it to face +x
+const FACE = (125 * Math.PI) / 180
 
-/** a firefly's light: a white-hot core, a warm glow, a wide faint halo */
-function glow(rgb: string) {
+/** the tail's light: a white-hot core, a warm glow, a wide faint halo */
+function glow() {
   const c = document.createElement('canvas')
   c.width = c.height = 96
   const g = c.getContext('2d')!
   const grad = g.createRadialGradient(48, 48, 0, 48, 48, 48)
   grad.addColorStop(0, 'rgba(255, 252, 235, 1)')
-  grad.addColorStop(0.07, 'rgba(255, 246, 210, 1)')
-  grad.addColorStop(0.16, `rgba(${rgb}, 0.9)`)
-  grad.addColorStop(0.38, `rgba(${rgb}, 0.26)`)
-  grad.addColorStop(0.7, `rgba(${rgb}, 0.07)`)
-  grad.addColorStop(1, `rgba(${rgb}, 0)`)
+  grad.addColorStop(0.1, 'rgba(255, 238, 190, 0.95)')
+  grad.addColorStop(0.3, 'rgba(255, 200, 110, 0.35)')
+  grad.addColorStop(0.65, 'rgba(255, 190, 100, 0.08)')
+  grad.addColorStop(1, 'rgba(255, 190, 100, 0)')
   g.fillStyle = grad
   g.fillRect(0, 0, 96, 96)
   return c
 }
 
-/** the starburst a sharp firefly throws when it flares */
-function rays(rgb: string) {
+/** the starburst of a flare */
+function rays() {
   const c = document.createElement('canvas')
   c.width = c.height = 128
   const g = c.getContext('2d')!
@@ -61,9 +59,9 @@ function rays(rgb: string) {
     g.rotate(Math.PI / 6 + (i % 2 ? 0.12 : -0.08))
     const len = i % 3 === 0 ? 62 : 38
     const grad = g.createLinearGradient(-len, 0, len, 0)
-    grad.addColorStop(0, `rgba(${rgb}, 0)`)
-    grad.addColorStop(0.5, `rgba(255, 244, 205, 0.85)`)
-    grad.addColorStop(1, `rgba(${rgb}, 0)`)
+    grad.addColorStop(0, 'rgba(255, 214, 140, 0)')
+    grad.addColorStop(0.5, 'rgba(255, 244, 205, 0.85)')
+    grad.addColorStop(1, 'rgba(255, 214, 140, 0)')
     g.fillStyle = grad
     g.fillRect(-len, -0.7, len * 2, 1.4)
   }
@@ -79,63 +77,49 @@ export default function Fireflies({ className = '' }: { className?: string }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const glows = WARM.map(glow)
-    const flares = WARM.map(rays)
+    const light = glow()
+    const flare = rays()
+    const bug = new Image()
+    bug.src = SRC
 
     let w = 0, h = 0, dpr = 1
     let flies: Fly[] = []
-    let specks: Speck[] = []
     const pointer = { x: -9999, y: -9999 }
     let raf = 0, last = 0, t = 0
     let visible = true
 
-    // most low, in the bushes and round the desk; a few up by the shelves
-    const spot = () => {
-      const low = Math.random() < 0.7
-      return { x: Math.random() * w, y: h * (low ? 0.5 + Math.random() * 0.45 : 0.22 + Math.random() * 0.3) }
-    }
+    // over the garden, not the sky: mostly low, a few up by the shelves
+    const spot = () => ({ x: w * (0.08 + Math.random() * 0.84), y: h * (0.3 + Math.random() * 0.6) })
 
-    const make = (x: number, y: number, burst = false): Fly => {
-      // depth: mostly far and sharp, the rest nearer and softer
-      const z = burst ? 0.2 + Math.random() * 0.3 : Math.random() < 0.65 ? Math.random() * 0.45 : 0.45 + Math.random() * 0.4
+    const make = (x: number, y: number): Fly => {
       const heading = Math.random() * Math.PI * 2
-      const kick = burst ? 0.8 + Math.random() * 0.9 : 0
+      const small = w < 720
       return {
-        x, y,
-        vx: Math.cos(heading) * kick, vy: Math.sin(heading) * kick - (burst ? 0.4 : 0),
+        x, y, vx: 0, vy: 0,
         heading,
         turn: (Math.random() - 0.5) * 0.9,
-        // the near ones cross the frame faster: parallax
-        speed: 0.12 + z * 0.4 + Math.random() * 0.12,
-        z,
+        speed: 0.35 + Math.random() * 0.3,
+        // a little depth: some nearer and bigger than others
+        size: (small ? 34 : 46) + Math.random() * (small ? 16 : 26),
         phase: Math.random() * Math.PI * 2,
-        rate: 0.5 + Math.random() * 1.2,
-        life: burst ? 0 : -Math.random() * 3, // ambient ones start staggered
-        ttl: burst ? 3 + Math.random() * 3 : 7 + Math.random() * 9,
-        tint: Math.floor(Math.random() * WARM.length),
-        burst,
+        rate: 0.5 + Math.random() * 0.6,
+        beat: 16 + Math.random() * 6, // wing beats a second
+        life: -Math.random() * 2,
+        ttl: 9 + Math.random() * 8,
         flared: false,
-        // only a few ever sparkle; the rest just glow
-        sparker: !burst && z < 0.45 && Math.random() < 0.12,
+        spark: Math.random() < 0.35,
+        rolled: false,
       }
     }
 
     const seed = () => {
-      const n = Math.min(50, Math.max(22, Math.round((w * h) / 26000)))
+      const n = w < 720 ? 3 : 5
       flies = Array.from({ length: n }, () => {
         const p = spot()
         const f = make(p.x, p.y)
-        f.life = Math.random() * f.ttl * 0.8 // some already mid-glow on arrival
+        f.life = Math.random() * f.ttl * 0.7 // some already about on arrival
         return f
       })
-      const m = Math.min(90, Math.round((w * h) / 16000))
-      specks = Array.from({ length: m }, () => ({
-        x: Math.random() * w,
-        y: h * (0.25 + Math.random() * 0.75),
-        phase: Math.random() * Math.PI * 2,
-        rate: 0.8 + Math.random() * 2.2,
-        r: 0.6 + Math.random() * 0.9,
-      }))
     }
 
     const size = () => {
@@ -151,49 +135,64 @@ export default function Fireflies({ className = '' }: { className?: string }) {
       if (first) seed()
     }
 
-    /** 0 → 1 → 0 over a fly's life: fade in, glow, fade out */
+    /** 0 → 1 → 0 over a fly's life: fade in, about, fade out */
     const presence = (f: Fly) => {
       if (f.life <= 0) return 0
-      const fadeIn = f.burst ? 0.35 : 1.4
-      const fadeOut = f.burst ? 1.4 : 2.2
-      return Math.min(1, f.life / fadeIn) * Math.min(1, Math.max(0, (f.ttl - f.life) / fadeOut))
+      return Math.min(1, f.life / 1.6) * Math.min(1, Math.max(0, (f.ttl - f.life) / 2.2))
     }
 
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
-      ctx.globalCompositeOperation = 'lighter'
-
-      // the specks: pin-points that twinkle between the fireflies
-      ctx.fillStyle = 'rgba(255, 238, 190, 1)'
-      for (const s of specks) {
-        const a = Math.pow(Math.max(0, Math.sin(t * s.rate + s.phase)), 6) * 0.8
-        if (a < 0.03) continue
-        ctx.globalAlpha = a
-        ctx.beginPath()
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2)
-        ctx.fill()
-      }
-
       for (const f of flies) {
         const on = presence(f)
         if (on < 0.01) continue
-        // a slow breath, with a brighter flare now and then
+        // the tail breathes; now and then it flares
         const pulse = Math.pow(Math.max(0, Math.sin(t * f.rate + f.phase)), 2)
-        const a = on * (0.55 + 0.45 * pulse)
-        // far ones are smaller; the middle ones bigger and softer
-        const d = (18 + f.z * 46) * (1 + pulse * 0.6)
-        ctx.globalAlpha = Math.min(1, a * (0.9 + f.z * 0.3))
-        ctx.drawImage(glows[f.tint], f.x - d / 2, f.y - d / 2, d, d)
-        // the sharp ones throw a small starburst at the peak of a flare
-        if (f.sparker && pulse > 0.75) {
-          // the moment it flares, a small chime from its side of the screen
-          if (!f.flared && on > 0.6) ambience.sparkle((f.x / w) * 2 - 1, 1 - f.z)
+        const face = Math.atan2(f.vy, f.vx) || f.heading
+        // the tail is behind the middle of the body
+        const tx = f.x - Math.cos(face) * f.size * 0.28
+        const ty = f.y - Math.sin(face) * f.size * 0.28
+
+        // its light first, so the body sits on its own glow
+        ctx.globalCompositeOperation = 'lighter'
+        const g = f.size * (1.3 + pulse * 1.1)
+        ctx.globalAlpha = on * (0.45 + pulse * 0.55)
+        ctx.drawImage(light, tx - g / 2, ty - g / 2, g, g)
+
+        // the firefly, facing where it flies, wings a-flutter
+        if (bug.complete && bug.naturalWidth) {
+          ctx.globalCompositeOperation = 'source-over'
+          ctx.globalAlpha = on * (0.85 + pulse * 0.15)
+          const flutter = still ? 1 : 0.82 + 0.18 * Math.abs(Math.sin(t * f.beat * Math.PI))
+          const bw = f.size, bh = f.size * (bug.naturalHeight / bug.naturalWidth)
+          ctx.save()
+          ctx.translate(f.x, f.y)
+          ctx.rotate(face)
+          ctx.scale(1, flutter) // across the body: the wings
+          ctx.rotate(FACE)
+          ctx.drawImage(bug, -bw / 2, -bh / 2, bw, bh)
+          ctx.restore()
+        }
+
+        // the flare: a starburst at the tail, and a chime with the sound on
+        if (f.spark && pulse > 0.82) {
+          if (!f.flared && on > 0.6) ambience.sparkle((f.x / w) * 2 - 1, 0.7)
           f.flared = true
-          const r = d * 1.5
-          ctx.globalAlpha = Math.min(1, a * (pulse - 0.75) * 3.2)
-          ctx.drawImage(flares[f.tint], f.x - r / 2, f.y - r / 2, r, r)
-        } else if (pulse < 0.5) {
-          f.flared = false
+          ctx.globalCompositeOperation = 'lighter'
+          const r = f.size * 1.6
+          ctx.globalAlpha = Math.min(1, on * (pulse - 0.82) * 5)
+          ctx.drawImage(flare, tx - r / 2, ty - r / 2, r, r)
+        }
+        // at the dimmest point between breaths, decide the next one: about a
+        // third end in a sparkle
+        if (pulse < 0.05) {
+          if (!f.rolled) {
+            f.spark = Math.random() < 0.35
+            f.flared = false
+            f.rolled = true
+          }
+        } else if (pulse > 0.5) {
+          f.rolled = false
         }
       }
       ctx.globalAlpha = 1
@@ -206,43 +205,39 @@ export default function Fireflies({ className = '' }: { className?: string }) {
       last = now
       t += dt
       const k = dt * 60
-      for (const f of flies) {
+      for (let i = 0; i < flies.length; i++) {
+        const f = flies[i]
         f.life += dt
         // a slow curving path: the heading turns a little, and now and then
         // changes its mind about which way
         f.turn += (Math.random() - 0.5) * 0.08 * k
-        f.turn = Math.max(-1.1, Math.min(1.1, f.turn))
+        f.turn = Math.max(-1, Math.min(1, f.turn))
         f.heading += f.turn * 0.012 * k
-        const ax = Math.cos(f.heading) * f.speed, ay = Math.sin(f.heading) * f.speed * 0.7 - 0.02
+        const ax0 = Math.cos(f.heading) * f.speed, ay0 = Math.sin(f.heading) * f.speed
+        // stay over the garden: steer back from the edges and the sky
+        let ax = ax0, ay = ay0
+        if (f.y < h * 0.22) ay += 0.25
+        if (f.y > h * 0.94) ay -= 0.25
+        if (f.x < w * 0.04) ax += 0.25
+        if (f.x > w * 0.96) ax -= 0.25
+        if (ax !== ax0 || ay !== ay0) f.heading = Math.atan2(ay, ax)
         f.vx += (ax - f.vx) * 0.04 * k
         f.vy += (ay - f.vy) * 0.04 * k
         // shy of the pointer
         const dx = f.x - pointer.x, dy = f.y - pointer.y
         const dd = dx * dx + dy * dy
-        if (dd < 150 * 150 && dd > 1) {
-          const d = Math.sqrt(dd), push = (1 - d / 150) * 0.3 * k
+        if (dd < 160 * 160 && dd > 1) {
+          const d = Math.sqrt(dd), push = (1 - d / 160) * 0.3 * k
           f.vx += (dx / d) * push
           f.vy += (dy / d) * push
         }
         f.x += f.vx * k; f.y += f.vy * k
-        // keep off the sky, wrap round the sides
-        if (f.y < h * 0.15) f.heading = Math.PI / 2
-        if (f.y > h + 30) f.y = h * 0.6
-        if (f.x < -60) f.x = w + 60
-        if (f.x > w + 60) f.x = -60
-      }
-      // the ones that have faded turn up again somewhere else; the ones a
-      // click let loose are gone for good
-      flies = flies.filter((f) => !f.burst || f.life < f.ttl)
-      for (let i = 0; i < flies.length; i++) {
-        const f = flies[i]
-        if (!f.burst && f.life >= f.ttl) {
+        // faded out: it turns up again somewhere else
+        if (f.life >= f.ttl) {
           const p = spot()
           flies[i] = make(p.x, p.y)
         }
       }
-      for (const s of specks) s.y -= 0.03 * k
-      for (const s of specks) if (s.y < h * 0.2) { s.y = h; s.x = Math.random() * w }
       draw()
     }
 
@@ -256,33 +251,25 @@ export default function Fireflies({ className = '' }: { className?: string }) {
       raf = 0
     }
 
-    const inside = (e: PointerEvent) => {
+    const onMove = (e: PointerEvent) => {
       const r = canvas.getBoundingClientRect()
       const sx = r.width ? w / r.width : 1, sy = r.height ? h / r.height : 1
-      return { x: (e.clientX - r.left) * sx, y: (e.clientY - r.top) * sy, in: e.clientY >= r.top && e.clientY <= r.bottom }
-    }
-    const onMove = (e: PointerEvent) => {
-      const p = inside(e)
-      pointer.x = p.in ? p.x : -9999
-      pointer.y = p.in ? p.y : -9999
-    }
-    const onDown = (e: PointerEvent) => {
-      const p = inside(e)
-      if (!p.in || still) return
-      // not when the click is for a button or a link
-      if ((e.target as Element | null)?.closest('input, button, a, textarea, label')) return
-      const room = 84 - flies.length
-      for (let i = 0; i < Math.min(7, room); i++) flies.push(make(p.x, p.y, true))
+      const inside = e.clientY >= r.top && e.clientY <= r.bottom
+      pointer.x = inside ? (e.clientX - r.left) * sx : -9999
+      pointer.y = inside ? (e.clientY - r.top) * sy : -9999
     }
     const onVis = () => (document.visibilityState === 'hidden' ? halt() : run())
 
-    size()
-    if (still) {
-      // one quiet frame: everyone lit, nothing moving
+    // one quiet frame for reduced motion: everyone about, nothing moving
+    const stillFrame = () => {
       for (const f of flies) f.life = f.ttl / 2
       t = 1.3
       draw()
     }
+    bug.onload = () => { if (still) stillFrame() }
+
+    size()
+    if (still) stillFrame()
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting
       if (visible) run()
@@ -295,7 +282,6 @@ export default function Fireflies({ className = '' }: { className?: string }) {
     })
     ro.observe(canvas)
     window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('pointerdown', onDown)
     document.addEventListener('visibilitychange', onVis)
     run()
 
@@ -304,7 +290,6 @@ export default function Fireflies({ className = '' }: { className?: string }) {
       io.disconnect()
       ro.disconnect()
       window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerdown', onDown)
       document.removeEventListener('visibilitychange', onVis)
     }
   }, [])
