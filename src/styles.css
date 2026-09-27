@@ -3413,15 +3413,19 @@ a.ctile__line { cursor: pointer; }
     opacity 0.3s ease,
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.box__open svg { width: 13px; height: 13px; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.box__open svg {
+  width: 13px;
+  height: 13px;
+  /* the arrow's head carries its weight to the right, so the mark sits a
+     hair to the left (and a touch up) to look centred in the disc; it stays
+     put on hover */
+  transform: translate(-0.8px, -0.4px);
+}
 .box__hit:hover .box__open,
 .box__hit:focus-visible .box__open {
   opacity: 1;
   transform: none;
 }
-/* once it has landed the arrow gives a small nudge towards the corner */
-.box__hit:hover .box__open svg,
-.box__hit:focus-visible .box__open svg { transform: translate(1.5px, -1.5px); }
 
 .box__tools {
   position: absolute;
@@ -3456,10 +3460,9 @@ a.ctile__line { cursor: pointer; }
   transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
+  /* the arrow keeps its centring offset: it is a position, not a movement */
   .box__open,
-  .box__open svg,
   .box__tool { transition: opacity 0.2s ease; transform: none; }
-  .box__hit:hover .box__open svg { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
