@@ -1,7 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { ambience } from '../audio/ambience'
-import { pageCentre, releaseFirefly } from '../fly'
 import { intro } from '../data'
 import { marks } from '../logos'
 import { useTyped } from '../useTyped'
@@ -276,12 +275,6 @@ export default function Intro() {
   useEffect(() => () => window.clearTimeout(beeTimer.current), [])
   const flyBee = () => {
     if (bee.gone) return
-    // hand it over to a real flight, from exactly where it sits
-    const sat = document.querySelector('.intro__go .bee')
-    if (sat) {
-      const p = pageCentre(sat)
-      releaseFirefly(p.x, p.y, { size: 28 })
-    }
     setBee((b) => ({ ...b, gone: true }))
     ambience.sparkle(-0.2, 1)
     window.clearTimeout(beeTimer.current)
