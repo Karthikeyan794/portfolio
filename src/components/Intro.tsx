@@ -266,6 +266,20 @@ export default function Intro() {
   // downloads the night picture at all.
   const hasNight = Boolean(intro.imageDark)
   const showNight = dark && hasNight
+
+  // a firefly sits on the See my work button's top-right corner, at night.
+  // Hover the button and it takes off; another lands a little later. `n`
+  // remounts it, so each new one plays its landing again.
+  const [bee, setBee] = useState({ gone: false, n: 0 })
+  const beeTimer = useRef(0)
+  useEffect(() => () => window.clearTimeout(beeTimer.current), [])
+  const flyBee = () => {
+    if (bee.gone) return
+    setBee((b) => ({ ...b, gone: true }))
+    ambience.sparkle(-0.2, 1)
+    window.clearTimeout(beeTimer.current)
+    beeTimer.current = window.setTimeout(() => setBee((b) => ({ gone: false, n: b.n + 1 })), 14000)
+  }
   const [wantDay, setWantDay] = useState(!showNight)
   const [wantNight, setWantNight] = useState(showNight)
   const [dayReady, setDayReady] = useState(false)
@@ -466,7 +480,18 @@ export default function Intro() {
                 </svg>
               </span>
             </motion.a>
-            <motion.a className="intro__go" href={intro.cta.href} {...rise(T.cta + 0.1)}>
+            <motion.a
+              className="intro__go"
+              href={intro.cta.href}
+              onPointerEnter={flyBee}
+              onFocus={flyBee}
+              {...rise(T.cta + 0.1)}
+            >
+              {dark && (
+                <span className="bee" key={bee.n} data-gone={bee.gone} aria-hidden="true">
+                  <img src="/intro/firefly.png" alt="" />
+                </span>
+              )}
               {intro.cta.label}
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M12 5v14M6 13l6 6 6-6" />

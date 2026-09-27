@@ -12,9 +12,8 @@ import { ambience } from '../audio/ambience'
  * comes and goes — it fades in somewhere, wanders on a slow curving path,
  * and fades out, then turns up again elsewhere.
  *
- * One more sits on the "See my work" button, wings still but for a twitch
- * now and then, its tail glowing — visible even with the sound off. Press
- * the button and it takes off into the garden; a while later another lands.
+ * (The one that sits on the See my work button is its own element, in front
+ * of the button — see PerchedFirefly in Intro.tsx.)
  *
  * They drift away from the pointer when it comes near. The layer takes no
  * pointer events itself — it listens to the page — so the buttons above it
@@ -31,7 +30,6 @@ type Fly = {
   flared: boolean // mid-flare already: chime once per flare, not every frame
   spark: boolean // whether this breath ends in a sparkle — most just glow
   rolled: boolean // already decided at this dim point
-  free?: boolean // took off from the button: shows even with the sound off
 }
 
 const SRC = '/intro/firefly.png'
@@ -99,9 +97,6 @@ export default function Fireflies({ className = '', on = true }: { className?: s
     let visible = true
     // how far the swarm has come out (0 → 1), easing with the sound
     let fade = onRef.current ? 1 : 0
-    // the one sitting on the See my work button, and when the next one lands
-    let perched: Fly | null = null
-    let perchAt = 0.6
 
     // over the garden, not the sky: mostly low, a few up by the shelves
     const spot = () => ({ x: w * (0.08 + Math.random() * 0.84), y: h * (0.3 + Math.random() * 0.6) })
@@ -156,38 +151,19 @@ export default function Fireflies({ className = '', on = true }: { className?: s
       return Math.min(1, f.life / 1.6) * Math.min(1, Math.max(0, (f.ttl - f.life) / 2.2))
     }
 
-    /** where the perched one sits: on the top edge of the button, to the right */
-    const perch = () => {
-      const el = document.querySelector('.intro__go')
-      if (!el) return null
-      const r = el.getBoundingClientRect(), c = canvas.getBoundingClientRect()
-      if (!c.width || !r.width) return null
-      const sx = w / c.width, sy = h / c.height
-      return { x: (r.left - c.left + r.width * 0.8) * sx, y: (r.top - c.top) * sy }
-    }
-
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
-      for (const f of flies) drawFly(f, presence(f) * (f.free ? 1 : fade))
-      if (perched) {
-        const p = perch()
-        if (p) {
-          // settled on the edge, facing up and to the right
-          perched.x = p.x
-          perched.y = p.y - perched.size * 0.06
-          drawFly(perched, Math.min(1, perched.life / 1.2), -1.15, true)
-        }
-      }
+      for (const f of flies) drawFly(f, presence(f) * fade)
       ctx.globalAlpha = 1
       ctx.globalCompositeOperation = 'source-over'
     }
 
-    const drawFly = (f: Fly, on: number, faceAt?: number, sitting = false) => {
+    const drawFly = (f: Fly, on: number) => {
       {
         if (on < 0.01) return
         // the tail breathes; now and then it flares
         const pulse = Math.pow(Math.max(0, Math.sin(t * f.rate + f.phase)), 2)
-        const face = faceAt ?? (Math.atan2(f.vy, f.vx) || f.heading)
+        const face = Math.atan2(f.vy, f.vx) || f.heading
         // the tail is behind the middle of the body
         const tx = f.x - Math.cos(face) * f.size * 0.28
         const ty = f.y - Math.sin(face) * f.size * 0.28
@@ -202,13 +178,7 @@ export default function Fireflies({ className = '', on = true }: { className?: s
         if (bug.complete && bug.naturalWidth) {
           ctx.globalCompositeOperation = 'source-over'
           ctx.globalAlpha = on * (0.85 + pulse * 0.15)
-          // flying: wings a blur; sitting: folded, with a quick twitch now and then
-          const twitch = sitting && !still && (t + f.phase) % 3.4 < 0.28
-          const flutter = still
-            ? 1
-            : sitting && !twitch
-              ? 0.7
-              : 0.82 + 0.18 * Math.abs(Math.sin(t * f.beat * Math.PI))
+          const flutter = still ? 1 : 0.82 + 0.18 * Math.abs(Math.sin(t * f.beat * Math.PI))
           const bw = f.size, bh = f.size * (bug.naturalHeight / bug.naturalWidth)
           ctx.save()
           ctx.translate(f.x, f.y)
@@ -249,13 +219,6 @@ export default function Fireflies({ className = '', on = true }: { className?: s
       t += dt
       const k = dt * 60
       fade += ((onRef.current ? 1 : 0) - fade) * Math.min(1, dt * 1.6)
-      if (perched) perched.life += dt
-      else if (t >= perchAt) {
-        perched = make(0, 0)
-        perched.size = w < 720 ? 24 : 28
-        perched.life = 0
-        perched.ttl = Infinity
-      }
       for (let i = 0; i < flies.length; i++) {
         const f = flies[i]
         f.life += dt
@@ -285,14 +248,8 @@ export default function Fireflies({ className = '', on = true }: { className?: s
         f.x += f.vx * k; f.y += f.vy * k
         // faded out: it turns up again somewhere else
         if (f.life >= f.ttl) {
-          if (f.free) {
-            // the one from the button: gone, not replaced
-            flies.splice(i, 1)
-            i--
-          } else {
-            const p = spot()
-            flies[i] = make(p.x, p.y)
-          }
+          const p = spot()
+          flies[i] = make(p.x, p.y)
         }
       }
       draw()
@@ -317,34 +274,10 @@ export default function Fireflies({ className = '', on = true }: { className?: s
     }
     const onVis = () => (document.visibilityState === 'hidden' ? halt() : run())
 
-    // pressing See my work sends the perched one up and away
-    const onPress = (e: MouseEvent) => {
-      if (!perched || still) return
-      if (!(e.target as Element | null)?.closest('.intro__go')) return
-      const f = perched
-      perched = null
-      perchAt = t + 14 // another lands a while later
-      f.free = true
-      f.vx = 1.1 + Math.random() * 0.6
-      f.vy = -2.4 - Math.random() * 0.6
-      f.heading = -1.1
-      f.turn = 0.4
-      f.speed = 0.6
-      f.life = Math.max(f.life, 2)
-      f.ttl = f.life + 7 + Math.random() * 5
-      flies.push(f)
-      ambience.sparkle((f.x / w) * 2 - 1, 1)
-    }
 
     // one quiet frame for reduced motion: everyone about, nothing moving
     const stillFrame = () => {
       for (const f of flies) f.life = f.ttl / 2
-      if (!perched) {
-        perched = make(0, 0)
-        perched.size = w < 720 ? 24 : 28
-        perched.life = 2
-        perched.ttl = Infinity
-      }
       t = 1.3
       draw()
     }
@@ -364,7 +297,6 @@ export default function Fireflies({ className = '', on = true }: { className?: s
     })
     ro.observe(canvas)
     window.addEventListener('pointermove', onMove, { passive: true })
-    document.addEventListener('click', onPress, true)
     document.addEventListener('visibilitychange', onVis)
     run()
 
@@ -373,7 +305,6 @@ export default function Fireflies({ className = '', on = true }: { className?: s
       io.disconnect()
       ro.disconnect()
       window.removeEventListener('pointermove', onMove)
-      document.removeEventListener('click', onPress, true)
       document.removeEventListener('visibilitychange', onVis)
     }
   }, [])
