@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ambience } from '../audio/ambience'
+import { useTheme } from '../theme'
 
 type State = 'waiting' | 'on' | 'off'
 
@@ -17,6 +18,10 @@ export default function SoundToggle() {
   const [state, setState] = useState<State>(current)
 
   useEffect(() => ambience.subscribe(() => setState(current())), [])
+
+  // the dark theme is the night garden: crickets there, birds by day
+  const night = useTheme() === 'dark'
+  useEffect(() => ambience.setNight(night), [night])
 
   useEffect(() => {
     const onScroll = () => ambience.setLevel(window.scrollY > window.innerHeight * 0.7 ? 0.3 : 1)

@@ -3,6 +3,10 @@
  *   wind    : brown noise → low-pass whose cutoff drifts slowly (gusts)
  *   leaves  : occasional short high band-passed noise swells
  *   birds   : occasional 2–4 note chirps (sine sweeps) placed left/right in the stereo field
+ *             — by day. At night (the dark theme's garden) crickets take their place.
+ * And three small sounds for the page itself, only while the sound is on:
+ *   click   : a soft tick when a button or link is pressed
+ *   sparkle : a tiny glassy chime when a firefly flares (Fireflies.tsx calls it)
  * start() must be called from a user gesture (browser autoplay rule).
  */
 const MUTE_KEY = 'portfolio:sound' // 'off' when the visitor muted it
@@ -14,7 +18,14 @@ export class Ambience {
   private target = 0.28
   private starting: Promise<void> | null = null
   private listeners = new Set<() => void>()
+  private night = false
+  private lastSparkle = 0
   running = false
+
+  /** night garden (dark theme): crickets instead of birds */
+  setNight(v: boolean) {
+    this.night = v
+  }
 
   /** Did the visitor switch sound off on an earlier visit? */
   get muted() {
@@ -89,6 +100,8 @@ export class Ambience {
     this.wind(ctx, master)
     this.scheduleLeaves(ctx, master)
     this.scheduleBirds(ctx, master)
+    this.scheduleCrickets(ctx, master)
+    window.addEventListener('click', this.onClick, true)
 
     await ctx.resume()
     master.gain.linearRampToValueAtTime(this.target, ctx.currentTime + 4)
@@ -112,6 +125,7 @@ export class Ambience {
     this.timers.forEach((t) => window.clearTimeout(t))
     this.timers = []
     this.running = false
+    window.removeEventListener('click', this.onClick, true)
     this.emit()
     await new Promise((r) => setTimeout(r, 900))
     await ctx.close()
@@ -258,6 +272,11 @@ export class Ambience {
     }
     const tick = () => {
       if (!this.running && this.ctx !== ctx) return
+      if (this.night) {
+        // no birds after dark: check back soon in case the theme flips
+        this.timers.push(window.setTimeout(tick, 3000))
+        return
+      }
       const t = ctx.currentTime + 0.05
       const pan = Math.random() * 1.6 - 0.8
       song(t, 1800 + Math.random() * 1400, pan)
@@ -266,6 +285,115 @@ export class Ambience {
       this.timers.push(window.setTimeout(tick, 2500 + Math.random() * 4000))
     }
     this.timers.push(window.setTimeout(tick, 1800))
+  }
+
+  /** crickets at night: short trains of bright pulses, a few voices near and far */
+  private scheduleCrickets(ctx: AudioContext, out: GainNode) {
+    // one chirp is 3–4 very fast pulses of a pure ~4.5 kHz tone
+    const chirp = (at: number, freq: number, pan: number, level: number) => {
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.value = freq
+      const g = ctx.createGain()
+      g.gain.value = 0
+      const p = ctx.createStereoPanner()
+      p.pan.value = pan
+      const pulses = 3 + Math.floor(Math.random() * 2)
+      for (let i = 0; i < pulses; i++) {
+        const s = at + i * 0.028
+        g.gain.setValueAtTime(0, s)
+        g.gain.linearRampToValueAtTime(level, s + 0.006)
+        g.gain.linearRampToValueAtTime(0, s + 0.02)
+      }
+      osc.connect(g).connect(p).connect(out)
+      osc.start(at)
+      osc.stop(at + pulses * 0.028 + 0.05)
+    }
+    // each voice keeps its own pitch, place and pace, like a real cricket
+    const voices = [0, 1, 2].map((i) => ({
+      freq: 4200 + Math.random() * 900,
+      pan: [-0.7, 0.15, 0.65][i] + (Math.random() - 0.5) * 0.2,
+      level: [0.011, 0.007, 0.004][i],
+      gap: 0.34 + Math.random() * 0.22,
+    }))
+    const tick = () => {
+      if (!this.running && this.ctx !== ctx) return
+      if (this.night) {
+        const now = ctx.currentTime + 0.05
+        for (const v of voices) {
+          // a run of chirps, then a rest: not every voice sings every time
+          if (Math.random() < 0.3) continue
+          const runs = 3 + Math.floor(Math.random() * 5)
+          for (let i = 0; i < runs; i++) chirp(now + Math.random() * 0.2 + i * v.gap, v.freq, v.pan, v.level)
+        }
+      }
+      this.timers.push(window.setTimeout(tick, 2600 + Math.random() * 2400))
+    }
+    this.timers.push(window.setTimeout(tick, 1200))
+  }
+
+  /** a soft tick for a press — short and low, so it never gets tiring */
+  click() {
+    const ctx = this.ctx
+    if (!ctx || !this.running || !this.master) return
+    const t = ctx.currentTime
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(1150, t)
+    osc.frequency.exponentialRampToValueAtTime(520, t + 0.07)
+    const g = ctx.createGain()
+    g.gain.setValueAtTime(0, t)
+    g.gain.linearRampToValueAtTime(0.22, t + 0.004)
+    g.gain.exponentialRampToValueAtTime(0.0005, t + 0.09)
+    // straight to the speakers, not through the ducked ambience level
+    osc.connect(g).connect(ctx.destination)
+    osc.start(t)
+    osc.stop(t + 0.1)
+  }
+  private onClick = (e: MouseEvent) => {
+    if ((e.target as Element | null)?.closest('button, a, [role="button"], summary, label')) this.click()
+  }
+
+  /**
+   * A tiny glassy chime as a firefly flares. `pan` is where it is, -1 left to
+   * 1 right; `size` 0..1 how bright. Rationed, so a busy garden stays calm.
+   */
+  sparkle(pan = 0, size = 0.5) {
+    const ctx = this.ctx
+    if (!ctx || !this.running || !this.master) return
+    const now = performance.now()
+    if (now - this.lastSparkle < 420) return
+    this.lastSparkle = now
+    const t = ctx.currentTime
+    // a note from a high pentatonic, with a quieter fifth above it
+    const scale = [1568, 1760, 2093, 2349, 2637, 3136]
+    const base = scale[Math.floor(Math.random() * scale.length)]
+    const p = ctx.createStereoPanner()
+    p.pan.value = Math.max(-1, Math.min(1, pan))
+    // a short echo gives it the shimmer of glass
+    const echo = ctx.createDelay(0.5)
+    echo.delayTime.value = 0.13
+    const fb = ctx.createGain()
+    fb.gain.value = 0.32
+    echo.connect(fb).connect(echo)
+    const bus = ctx.createGain()
+    bus.gain.value = 0.55 + size * 0.45
+    bus.connect(p)
+    bus.connect(echo)
+    echo.connect(p)
+    p.connect(this.master)
+    for (const [mult, level] of [[1, 0.05], [1.5, 0.018], [3, 0.008]] as const) {
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.value = base * mult
+      const g = ctx.createGain()
+      g.gain.setValueAtTime(0, t)
+      g.gain.linearRampToValueAtTime(level, t + 0.008)
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1)
+      osc.connect(g).connect(bus)
+      osc.start(t)
+      osc.stop(t + 1.2)
+    }
   }
 }
 

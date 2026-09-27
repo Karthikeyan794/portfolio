@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { ambience } from '../audio/ambience'
 
 /**
  * Fireflies over the night garden on the landing screen.
  *
  * Canvas, not DOM. Each firefly has a depth: the far ones are small, sharp
- * points of light with a little starburst when they flare; the nearer ones
- * are bigger, softer glows. Every one
+ * points of light, the nearer ones bigger, softer glows. Only a few of them
+ * throw a little starburst when they flare (and, with the sound on, a small
+ * chime). Every one
  * comes and goes — it fades in somewhere, drifts on a slow curving path,
  * glows, and fades out, then turns up again elsewhere — so the garden is
  * always changing but never fills up. Tiny specks twinkle between them.
@@ -25,6 +27,8 @@ type Fly = {
   life: number; ttl: number
   tint: number
   burst: boolean // let loose by a click: gone for good when it fades
+  flared: boolean // mid-flare already: chime once per flare, not every frame
+  sparker: boolean // one of the few that throw a starburst when they flare
 }
 type Speck = { x: number; y: number; phase: number; rate: number; r: number }
 
@@ -110,6 +114,9 @@ export default function Fireflies({ className = '' }: { className?: string }) {
         ttl: burst ? 3 + Math.random() * 3 : 7 + Math.random() * 9,
         tint: Math.floor(Math.random() * WARM.length),
         burst,
+        flared: false,
+        // only a few ever sparkle; the rest just glow
+        sparker: !burst && z < 0.45 && Math.random() < 0.12,
       }
     }
 
@@ -178,10 +185,15 @@ export default function Fireflies({ className = '' }: { className?: string }) {
         ctx.globalAlpha = Math.min(1, a * (0.9 + f.z * 0.3))
         ctx.drawImage(glows[f.tint], f.x - d / 2, f.y - d / 2, d, d)
         // the sharp ones throw a small starburst at the peak of a flare
-        if (f.z < 0.45 && pulse > 0.75) {
+        if (f.sparker && pulse > 0.75) {
+          // the moment it flares, a small chime from its side of the screen
+          if (!f.flared && on > 0.6) ambience.sparkle((f.x / w) * 2 - 1, 1 - f.z)
+          f.flared = true
           const r = d * 1.5
           ctx.globalAlpha = Math.min(1, a * (pulse - 0.75) * 3.2)
           ctx.drawImage(flares[f.tint], f.x - r / 2, f.y - r / 2, r, r)
+        } else if (pulse < 0.5) {
+          f.flared = false
         }
       }
       ctx.globalAlpha = 1
