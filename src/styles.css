@@ -1646,8 +1646,8 @@ a { color: inherit; text-decoration: none; }
   /* pinned: the inset it had while floating over the banner is given back */
   padding: 11px clamp(18px, 4vw, 40px);
 }
-/* over the image the chips are glass, whatever the theme */
-.case__nav:not(.case__nav--solid) .case__back,
+/* over the image the chips are glass, whatever the theme (Back is plain
+   text, below) */
 .case__nav:not(.case__nav--solid) .case__demo,
 .case__nav:not(.case__nav--solid) .case__link {
   background: rgba(255, 255, 255, 0.14);
@@ -1655,7 +1655,6 @@ a { color: inherit; text-decoration: none; }
   color: #fff;
   backdrop-filter: blur(10px);
 }
-.case__nav:not(.case__nav--solid) .case__back:hover,
 .case__nav:not(.case__nav--solid) .case__demo:hover {
   background: rgba(255, 255, 255, 0.24);
 }
@@ -1674,7 +1673,15 @@ a { color: inherit; text-decoration: none; }
   color: var(--text);
   transition: background 0.2s ease, color 0.2s ease;
 }
-.case__back:hover { background: var(--bg-sunk); }
+/* Back is a text button: the arrow and the word, no box. White over the
+   picture, the page's text colour once the bar is pinned; the arrow steps
+   back a little on hover. */
+.case__back { padding: 9px 2px; border-color: transparent; background: none; }
+.case__back svg { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.case__back:hover { background: none; }
+.case__back:hover svg { transform: translateX(-3px); }
+.case__back:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 8px; }
+.case__nav:not(.case__nav--solid) .case__back { color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
 .case__demo { border-color: transparent; background: var(--primary); color: var(--on-primary); }
 .case__demo:hover { background: var(--primary-hover); }
 
@@ -1766,8 +1773,11 @@ a { color: inherit; text-decoration: none; }
 .case__hero-text {
   position: relative;
   z-index: 2;
-  /* clear of the frame's bottom inset, so the words sit on the picture */
-  padding-bottom: calc(clamp(38px, 7vh, 76px) + var(--hero-inset));
+  /* the words sit 32px in from the picture's bottom-left corner: the frame's
+     inset plus 32px, on both sides, instead of the page's reading column */
+  max-width: none;
+  margin: 0;
+  padding: 0 calc(var(--hero-inset) + 32px) calc(var(--hero-inset) + 32px);
   display: grid;
   gap: 14px;
   color: #fff;
