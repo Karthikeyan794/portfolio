@@ -3343,6 +3343,18 @@ a.ctile__line { cursor: pointer; }
   text-transform: uppercase;
 }
 .box__tag--ghost { background: transparent; color: rgba(255, 255, 255, 0.85); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+/* the newest work: a lime dot and "Latest" on frosted glass */
+.box__tag--latest {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  background: rgba(10, 12, 14, 0.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.26);
+}
+.box__tag--latest::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #a6e85b; box-shadow: 0 0 6px rgba(166, 232, 91, 0.8); }
 .box__title { font-family: var(--display); font-weight: 600; font-size: clamp(16px, 1.3vw, 20px); letter-spacing: -0.005em; line-height: 1.2; }
 .box--a .box__title, .box--b .box__title { font-size: clamp(18px, 1.6vw, 24px); }
 .box__tagline { font-size: 13px; color: rgba(255, 255, 255, 0.82); }
@@ -3386,19 +3398,22 @@ a.ctile__line { cursor: pointer; }
   z-index: 3;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  /* the same frosted disc as the tool marks in the other corner */
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
-  color: #0b0d0f;
-  background: #fff;
-  box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  background: rgba(10, 12, 14, 0.46);
+  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
   opacity: 0;
   transform: translateY(-8px) scale(0.82);
   transition:
     opacity 0.3s ease,
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.box__open svg { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.box__open svg { width: 13px; height: 13px; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
 .box__hit:hover .box__open,
 .box__hit:focus-visible .box__open {
   opacity: 1;

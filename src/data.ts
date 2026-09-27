@@ -342,6 +342,8 @@ export type Project = {
   group: 'product' | 'craft'
   /** its place on the home grid, 1 first — everything else lives on Behance */
   featured?: number
+  /** the newest work: a glass "Latest" tag beside the year on its tile */
+  latest?: boolean
   /** when present the tile opens a case-study page instead of an external link */
   detail?: {
     facts: { label: string; value: string }[]
@@ -365,6 +367,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'support-desk',
+    latest: true,
     group: 'product',
     title: 'Support Desk',
     tagline: 'A shared mailbox, turned into a support system',
@@ -553,6 +556,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'atom',
+    latest: true,
     group: 'product',
     title: 'Atom',
     tagline: 'One place to find, switch on and pay for AI',

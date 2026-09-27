@@ -109,6 +109,7 @@ function Box({ project, slot, index, onHot }: BoxProps) {
         <span className="box__label">
           <span className="box__kicker">
             {project.year}
+            {project.latest && <span className="box__tag box__tag--latest">Latest</span>}
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
           </span>
           <span className="box__title">{project.title}</span>
@@ -152,6 +153,7 @@ function Box({ project, slot, index, onHot }: BoxProps) {
         <span className="box__label">
           <span className="box__kicker">
             {project.year}
+            {project.latest && <span className="box__tag box__tag--latest">Latest</span>}
             {project.kind === 'practice' && <span className="box__tag box__tag--ghost">Practice</span>}
           </span>
           <span className="box__title">{project.title}</span>
