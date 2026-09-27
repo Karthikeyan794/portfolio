@@ -489,6 +489,13 @@ export default function About() {
     }
   }, [greetingSeen])
   const [job, setJob] = useState(-1)
+  // each time a job opens, a firefly rises from its dot and drifts away;
+  // the count remounts it, so every opening sends a new one
+  const [flight, setFlight] = useState(0)
+  const openJob = (n: number) => {
+    if (n !== job) setFlight((f) => f + 1)
+    setJob(n)
+  }
   const [school, setSchool] = useState(-1)
   const portraitGlow = useGlow<HTMLElement>()
   const shotGlow = useGlow<HTMLAnchorElement>()
@@ -537,7 +544,12 @@ export default function About() {
             <ol className="step" onPointerLeave={() => setJob(-1)}>
               {experience.map((r, n) => (
                 <li className="step__item" key={r.company} data-open={n === job}>
-                  <button type="button" className="step__head" onPointerEnter={() => setJob(n)} onFocus={() => setJob(n)} onClick={() => setJob(n)} aria-expanded={n === job}>
+                  {n === job && (
+                    <span className="flybee" key={flight} aria-hidden="true">
+                      <img src="/intro/firefly.png" alt="" />
+                    </span>
+                  )}
+                  <button type="button" className="step__head" onPointerEnter={() => openJob(n)} onFocus={() => openJob(n)} onClick={() => openJob(n)} aria-expanded={n === job}>
                     <span className="step__org">{r.short ?? r.company}</span>
                     <span className="step__role">{r.title}</span>
                     <span className="step__when">{r.period}</span>
