@@ -3822,12 +3822,13 @@ a.ctile__line { cursor: pointer; }
 }
 .about__sub:first-of-type { margin-top: 8px; }
 .about__greeting {
-  /* titled like Selected work: the small caps Problem and Solution wear */
-  font-family: var(--label-face);
-  font-weight: 400;
-  font-size: 20px;
-  letter-spacing: 0.02em;
-  line-height: 1.08;
+  /* the display serif, Playfair — a hair larger than the 20px small caps it
+     replaced, since lower case reads smaller than caps at the same size */
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
   margin-bottom: 4px;
   /* the page's own ink: white on the dark theme, near-black on the light */
   color: var(--text);
