@@ -4,7 +4,7 @@ import { ambience } from '../audio/ambience'
 /**
  * Fireflies over the night garden on the landing screen.
  *
- * Canvas, not DOM. Only a few of them — five on a wide screen, three on a
+ * Canvas, not DOM. Only a few of them — six on a wide screen, four on a
  * phone — each the drawn firefly (/intro/firefly.png) rather than a dot of
  * light. Each one faces the way it flies, flutters its wings, and its tail
  * glows in a slow breath. Now and then it flares: a little starburst, and
@@ -113,7 +113,7 @@ export default function Fireflies({ className = '', on = true }: { className?: s
     }
 
     const seed = () => {
-      const n = w < 720 ? 3 : 5
+      const n = w < 720 ? 4 : 6
       flies = Array.from({ length: n }, () => {
         const p = spot()
         const f = make(p.x, p.y)
