@@ -4039,15 +4039,15 @@ a.ctile__line { cursor: pointer; }
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 /* on the drawings photo the label sits on bright sky, where white type
-   alone disappears: a dark glass pill behind it, like the "now" tag, the
-   same height as the arrow badge opposite so the two line up */
+   alone disappears: a small dark glass pill behind it, like the "now" tag,
+   centred on the arrow badge opposite (30px tall at top 12px) */
 .pcard--shot .pcard__label--over {
-  top: 12px;
+  top: 15px;
   left: 12px;
   display: inline-flex;
   align-items: center;
-  height: 30px;
-  padding: 0 12px;
+  height: 24px;
+  padding: 0 10px;
   border-radius: 999px;
   background: rgba(10, 16, 14, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.16);
