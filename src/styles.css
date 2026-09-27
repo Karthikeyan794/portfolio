@@ -599,6 +599,15 @@ a { color: inherit; text-decoration: none; }
   .cdlg__link:not(:first-child) { flex: 1 1 0; }
   .cdlg__link:not(:first-child) .cdlg__out { margin-left: auto; }
 }
+/* with the phone number there are four, too many for one line: two rows of
+   two — email and phone, then the profiles — each tag its column's width */
+.cdlg__links--four { display: grid; grid-template-columns: 1fr 1fr; }
+.cdlg__links--four .cdlg__out { margin-left: auto; }
+/* on a phone the email and the number each take a whole row, so neither is
+   cut short; the profiles still share the last one */
+@media (max-width: 480px) {
+  .cdlg__links--four > .cdlg__link--wide { grid-column: 1 / -1; }
+}
 .cdlg__link {
   position: relative;
   display: flex;

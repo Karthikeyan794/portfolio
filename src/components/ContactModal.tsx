@@ -329,7 +329,7 @@ export default function ContactModal({ open, onClose }: { open: boolean; onClose
               </motion.div>
 
               {/* every other way to reach me, as small tags under the box */}
-              <motion.ul className="cdlg__links" variants={rise}>
+              <motion.ul className={profile.phone ? 'cdlg__links cdlg__links--four' : 'cdlg__links'} variants={rise}>
                 <li className="cdlg__link cdlg__link--wide">
                   <a className="cdlg__go" href={`mailto:${profile.email}`}>
                     <Icon name="mail" />
