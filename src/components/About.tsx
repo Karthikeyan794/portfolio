@@ -280,6 +280,44 @@ function MusicCard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cur])
 
+  const count = playlist.tracks.length
+  const next = () => setCur((c) => (c + 1) % count)
+  // a few seconds in, "previous" goes back to the start of this song first
+  const prev = () => {
+    const el = audio.current
+    if (el && el.currentTime > 3) {
+      el.currentTime = 0
+      return
+    }
+    setCur((c) => (c - 1 + count) % count)
+  }
+
+  /** jump to a point in the song (0..1), and play from there */
+  function seek(ratio: number) {
+    const el = audio.current
+    if (!el || !playable) return
+    const r = Math.max(0, Math.min(1, ratio))
+    const go = () => {
+      if (!el.duration) return
+      el.currentTime = r * el.duration
+      setPct(r * 100)
+      if (el.paused) void el.play().catch(() => setPlaying(false))
+    }
+    if (el.duration) go()
+    else {
+      // nothing loaded yet (preload is none): fetch enough to know its length
+      el.preload = 'auto'
+      el.addEventListener('loadedmetadata', go, { once: true })
+      el.load()
+    }
+  }
+  const bar = useRef<HTMLSpanElement>(null)
+  const dragging = useRef(false)
+  const ratioAt = (clientX: number) => {
+    const r = bar.current?.getBoundingClientRect()
+    return r && r.width ? (clientX - r.left) / r.width : 0
+  }
+
   function toggle() {
     const el = audio.current
     if (!el || !playable) return
@@ -336,13 +374,8 @@ function MusicCard() {
 
         {/* controls sit at the foot, to the right of the track */}
       <span className="np__ctrl">
-          <button
-            type="button"
-            className="np__skip"
-            onClick={() => setCur((c) => (c + 1) % playlist.tracks.length)}
-            aria-label="Next track"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" /></svg>
+          <button type="button" className="np__skip np__skip--prev" onClick={prev} aria-label="Previous track">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4 9 12l10 8zM4 4h3v16H4z" /></svg>
           </button>
           <button
             type="button"
@@ -358,10 +391,48 @@ function MusicCard() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3.5 20 12 7 20.5z" /></svg>
             )}
           </button>
+          <button type="button" className="np__skip" onClick={next} aria-label="Next track">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" /></svg>
+          </button>
         </span>
 
-        <span className="np__bar">
+        {/* the progress bar is also the way to jump: click or drag anywhere
+            on it to play from there; arrow keys step 5 seconds */}
+        <span
+          ref={bar}
+          className="np__bar"
+          role="slider"
+          tabIndex={playable ? 0 : -1}
+          aria-label={`Position in ${track.title}`}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(pct)}
+          onPointerDown={(e) => {
+            if (!playable) return
+            dragging.current = true
+            e.currentTarget.setPointerCapture(e.pointerId)
+            const r = ratioAt(e.clientX)
+            setPct(Math.max(0, Math.min(1, r)) * 100)
+          }}
+          onPointerMove={(e) => {
+            if (dragging.current) setPct(Math.max(0, Math.min(1, ratioAt(e.clientX))) * 100)
+          }}
+          onPointerUp={(e) => {
+            if (!dragging.current) return
+            dragging.current = false
+            seek(ratioAt(e.clientX))
+          }}
+          onPointerCancel={() => { dragging.current = false }}
+          onKeyDown={(e) => {
+            const el = audio.current
+            if (!el || !el.duration) return
+            const step = 5 / el.duration
+            if (e.key === 'ArrowRight') { e.preventDefault(); seek(el.currentTime / el.duration + step) }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); seek(el.currentTime / el.duration - step) }
+          }}
+        >
           <i style={{ width: `${pct}%` }} />
+          <b className="np__knob" style={{ left: `${pct}%` }} aria-hidden="true" />
         </span>
       </div>
 
@@ -371,6 +442,8 @@ function MusicCard() {
           src={track.src}
           preload="none"
           onTimeUpdate={(e) => {
+            // while the bar is being dragged, the finger decides where it is
+            if (dragging.current) return
             const el = e.currentTarget
             setPct(el.duration ? (el.currentTime / el.duration) * 100 : 0)
           }}
@@ -380,7 +453,7 @@ function MusicCard() {
           onPause={(e) => { if (!e.currentTarget.ended) setPlaying(false) }}
           onEnded={() => {
             setPct(0)
-            setCur((c) => (c + 1) % playlist.tracks.length)
+            next()
           }}
         />
       )}
