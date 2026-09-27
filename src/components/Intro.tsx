@@ -423,11 +423,14 @@ export default function Intro() {
         <div className="intro__main" ref={copy}>
           <Hello phrases={intro.hello} delay={T.hello} />
 
-          <Headline start={T.line} />
+          {/* the headline and the line under it are one block, 12px apart */}
+          <div className="intro__copy">
+            <Headline start={T.line} />
 
-          <motion.p className="intro__p" {...rise(T.para)}>
-            {intro.paragraph}
-          </motion.p>
+            <motion.p className="intro__p" {...rise(T.para)}>
+              {intro.paragraph}
+            </motion.p>
+          </div>
 
           {/* two ways on: talk to me, or down to the work */}
           <div className="intro__ctas">
