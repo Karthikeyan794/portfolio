@@ -165,7 +165,6 @@ export default function Bento() {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ type: 'spring', stiffness: 70, damping: 18 }}
       >
-        <span className="eyebrow">02 — Work</span>
         <h2>Selected work</h2>
       </motion.div>
 
