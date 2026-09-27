@@ -1162,9 +1162,8 @@ a { color: inherit; text-decoration: none; }
 }
 /* the fireflies over the picture, under the text */
 .fireflies { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-/* they come out with the sound, and slip away when it stops */
-.fireflies { transition: opacity 1.4s ease; }
-.fireflies[data-on='false'] { opacity: 0; }
+/* the swarm comes out with the sound and slips away when it stops — faded
+   in Fireflies.tsx, so the one perched on the button can stay */
 
 /* hairline frame, like the reference */
 /* the hairline frame: 56px in from the top and the bottom, 3.5% from the sides */
