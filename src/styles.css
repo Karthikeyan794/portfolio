@@ -1013,8 +1013,9 @@ a { color: inherit; text-decoration: none; }
   align-items: end;
   overflow: hidden;
   color: #fff;
-  margin-top: -74px; /* the picture runs under the transparent nav */
-  padding-top: 74px;
+  /* no top bar any more (sound and theme sit in the picture), so the
+     picture starts at the top of the page instead of tucking under one */
+  padding-top: 56px;
 }
 /* the picture, its shade, the fireflies and the frame — faded out together
    toward the bottom, so the page's own background and graph paper come up
@@ -1146,11 +1147,12 @@ a { color: inherit; text-decoration: none; }
 .fireflies { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
 /* hairline frame, like the reference */
+/* the hairline frame: 56px in from the top and the bottom, 3.5% from the sides */
 .intro__frame { position: absolute; inset: 0; pointer-events: none; }
 .intro__frame i { position: absolute; background: rgba(255, 255, 255, 0.22); }
-.intro__frame i:nth-child(1) { top: 74px; left: 3.5%; right: 3.5%; height: 1px; }
-.intro__frame i:nth-child(2) { top: 74px; bottom: 56px; left: 3.5%; width: 1px; } /* rails start at the top line */
-.intro__frame i:nth-child(3) { top: 74px; bottom: 56px; right: 3.5%; width: 1px; }
+.intro__frame i:nth-child(1) { top: 56px; left: 3.5%; right: 3.5%; height: 1px; }
+.intro__frame i:nth-child(2) { top: 56px; bottom: 56px; left: 3.5%; width: 1px; } /* rails start at the top line */
+.intro__frame i:nth-child(3) { top: 56px; bottom: 56px; right: 3.5%; width: 1px; }
 .intro__frame i:nth-child(4) { bottom: 56px; left: 3.5%; right: 3.5%; height: 1px; }
 @media (max-width: 720px) { .intro__frame { display: none; } }
 
