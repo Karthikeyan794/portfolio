@@ -388,6 +388,8 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
 - A case banner with a recording is as tall as the recording at the banner's width (`ratio` on
   `coverClip`), so it shows whole; phones keep 68% of the screen. The banner title is 24px, and
   Support Desk has no line under it any more.
+- Every case banner is inset 32px on all four sides (14px on a phone) with a 1px edge, and a
+  banner with a recording is never taller than the screen, so the inset always shows in view.
 - The Atom overview plays the "One console, five pages" recording, and that section is gone from
   How it works. Both clips are the exported files exactly (`public/work/atom/clips`).
 

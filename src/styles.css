@@ -1686,8 +1686,9 @@ a { color: inherit; text-decoration: none; }
      --grow is set per frame from the scroll position (0 resting, 1 open). */
   --hero-inset: 32px;
   --grow: 0;
-  min-height: calc(68vh + var(--hero-inset));
-  min-height: calc(68svh + var(--hero-inset));
+  /* 68% of the screen for the picture, plus the inset above and below it */
+  min-height: calc(68vh + 2 * var(--hero-inset));
+  min-height: calc(68svh + 2 * var(--hero-inset));
   display: grid;
   align-items: end;
 }
@@ -1696,20 +1697,34 @@ a { color: inherit; text-decoration: none; }
   top: calc(var(--hero-inset) * (1 - var(--grow)));
   left: calc(var(--hero-inset) * (1 - var(--grow)));
   right: calc(var(--hero-inset) * (1 - var(--grow)));
-  bottom: 0;
+  /* the same inset on all four sides, so it sits in the page like a card */
+  bottom: calc(var(--hero-inset) * (1 - var(--grow)));
   overflow: hidden;
   border-radius: calc(32px * (1 - var(--grow)));
   /* insets and radius only — no transform, so the picture never softens and
      nothing around it reflows on a scroll frame */
-  will-change: top, left, right, border-radius;
+  will-change: top, left, right, bottom, border-radius;
+}
+/* a one-pixel edge round the picture, over everything in it; it fades as the
+   frame opens out to the edges of the screen */
+.case__hero-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: inherit;
+  opacity: calc(1 - var(--grow));
+  pointer-events: none;
 }
 @media (max-width: 720px) { .case__hero { --hero-inset: 14px; } }
-/* a banner playing a recording: at least as tall as the recording is at the
-   frame's width, so it is not cut top and bottom; a phone keeps 68% of the
-   screen, where the width is the short side */
+/* a banner playing a recording: as tall as the recording is at the frame's
+   width, so it is not cut top and bottom — but never taller than the screen,
+   so its inset shows on all four sides within the view. A phone keeps 68% of
+   the screen, where the width is the short side. */
 .case__hero--clip {
-  min-height: max(calc(68vh + var(--hero-inset)), calc((100vw - 2 * var(--hero-inset)) / var(--clip-ratio) + var(--hero-inset)));
-  min-height: max(calc(68svh + var(--hero-inset)), calc((100vw - 2 * var(--hero-inset)) / var(--clip-ratio) + var(--hero-inset)));
+  min-height: min(100vh, max(calc(68vh + 2 * var(--hero-inset)), calc((100vw - 2 * var(--hero-inset)) / var(--clip-ratio) + 2 * var(--hero-inset))));
+  min-height: min(100svh, max(calc(68svh + 2 * var(--hero-inset)), calc((100vw - 2 * var(--hero-inset)) / var(--clip-ratio) + 2 * var(--hero-inset))));
 }
 .case__hero-media { position: absolute; inset: 0; }
 .case__hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -1751,7 +1766,8 @@ a { color: inherit; text-decoration: none; }
 .case__hero-text {
   position: relative;
   z-index: 2;
-  padding-bottom: clamp(38px, 7vh, 76px);
+  /* clear of the frame's bottom inset, so the words sit on the picture */
+  padding-bottom: calc(clamp(38px, 7vh, 76px) + var(--hero-inset));
   display: grid;
   gap: 14px;
   color: #fff;
