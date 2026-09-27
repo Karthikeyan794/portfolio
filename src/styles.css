@@ -5396,61 +5396,77 @@ a.ctile__line { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .ctag--wip i { animation: none; } }
 
 /* ── scroll motion ─────────────────────────────────────────────
-   Tied to the scroll itself, not a timer: as a card comes up the screen it
-   rises into place and comes to full strength, and the picture inside it
-   drifts a touch slower than the card, so it feels set back behind glass.
-   Run by the browser off the main thread (scroll-driven animations); a
-   browser without them simply shows everything still. The individual
-   `translate` / `scale` properties are used so none of it fights the hover
-   zooms, which use `transform`. Nothing moves for reduced motion. */
+   Tied to the scroll itself, not a timer, so it plays back when you scroll
+   up. As a card comes up the screen it rises, grows into place and comes to
+   full strength, and the picture inside it drifts slower than the card, so
+   it feels set back behind glass. Text arrives line by line, rising out of
+   a soft blur. Run by the browser off the main thread (scroll-driven
+   animations); a browser without them shows everything still. The
+   individual translate / scale properties are used so none of it fights the
+   hover zooms, which use transform. Nothing moves for reduced motion. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    /* the cards: rise and brighten while entering the screen */
+    /* the cards: rise, grow and brighten while entering the screen */
     .box__lift,
     .collage .pcard {
       /* the card's pass across the screen, named, so the picture inside can
          follow it — a picture's own view() would be measured against the
          card (its overflow makes it a scroller) and never move */
       view-timeline: --card block;
-      animation: scroll-rise linear both;
+      animation: scroll-card linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 75%;
+      animation-range: entry 0% entry 70%;
     }
-    /* stagger the About cards a little, the right-hand column trailing */
+    /* the right-hand column trails the left */
     .collage .pcard--shot,
     .collage .pcard--awards,
-    .collage .pcard--music { animation-range: entry 8% entry 85%; }
+    .collage .pcard--music,
+    .bento .box:nth-child(even) .box__lift { animation-range: entry 10% entry 85%; }
 
     /* the pictures inside: a slow parallax across the whole pass */
     .box__img,
     .pcard--portrait img,
     .pcard--shot img,
-    .awards__bg {
-      scale: 1.1;
+    .awards__bg,
+    .crate__video {
+      scale: 1.18;
       animation: scroll-drift linear both;
       animation-timeline: --card;
       animation-range: cover 0% cover 100%;
     }
 
-    /* the section titles rise in as they arrive */
+    /* titles and text: each rises out of a blur as it arrives */
     .work__head h2,
     .about__greeting,
-    #about .eyebrow {
-      animation: scroll-title linear both;
+    #about .eyebrow,
+    .about__text p,
+    .about__sub,
+    .step__item {
+      animation: scroll-text linear both;
       animation-timeline: view();
-      animation-range: entry 10% entry 90%;
+      animation-range: entry 5% entry 80%;
+    }
+    /* the section titles also drift a little slower than the page */
+    .work__head {
+      animation: scroll-float linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
     }
   }
 }
-@keyframes scroll-rise {
-  from { opacity: 0.25; translate: 0 56px; }
-  to { opacity: 1; translate: 0 0; }
+@keyframes scroll-card {
+  from { opacity: 0; translate: 0 110px; scale: 0.9; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
 }
 @keyframes scroll-drift {
-  from { translate: 0 -5%; }
-  to { translate: 0 5%; }
+  from { translate: 0 -9%; }
+  to { translate: 0 9%; }
 }
-@keyframes scroll-title {
-  from { opacity: 0; translate: 0 22px; }
-  to { opacity: 1; translate: 0 0; }
+@keyframes scroll-text {
+  from { opacity: 0; translate: 0 34px; filter: blur(8px); }
+  to { opacity: 1; translate: 0 0; filter: blur(0); }
+}
+@keyframes scroll-float {
+  from { translate: 0 40px; }
+  to { translate: 0 -40px; }
 }
