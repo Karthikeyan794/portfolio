@@ -151,7 +151,7 @@ function Headline({ start }: { start: number }) {
         {/* the top line stays put; a word between *asterisks* is the grey
             serif. Its groups (split at ` | `) never break inside, so a narrow
             screen can only wrap it between them. */}
-        <span className="intro__l">
+        <span className="intro__l intro__l--top">
           {intro.headlineTop.split(' | ').map((group, gi) => (
             <span key={gi}>
               {gi ? ' ' : ''}

@@ -1223,6 +1223,8 @@ a { color: inherit; text-decoration: none; }
 }
 .intro__l { display: block; white-space: nowrap; }
 .intro__keep { white-space: nowrap; }
+/* the fixed top line a size under the turning one, so the eye lands on the tool */
+.intro__l--top { font-size: 0.8em; }
 .intro__w { display: inline-block; }
 /* a word that turns over: its letters roll through a clipped line, the old
    ones out of the top, the new ones in from the bottom, fading as they go.
