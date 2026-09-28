@@ -96,6 +96,17 @@ u.useState("admin")  →  u.useState(localStorage.getItem("sd.demoRole")||"admin
 f("admin")           →  f(localStorage.getItem("sd.demoRole")||"admin")
 ```
 
+**When the build is re-copied, copy these too** (the bundle's CSS asks for them one
+level above `assets/`, and without them the home banner and a header are plain grey):
+`Frame 427318973.png` (the Welcome banner) and `Cinematic Environment Concept Art-2 Modern
+City 1.png`.
+
+**Never copy `sw.js`.** On any host but localhost the demo registers `/sw.js`, the site's
+root, so a service worker there would control the whole portfolio, not just the demo. With
+the file absent the registration fails quietly, which is what we want. The route folders
+(`access/`, `contacts/`, `homepage/`, `portal/`, `tickets/`) and `banner.png` /
+`comment empty.png` are not used by the embedded demo.
+
 ## Still to record
 
 The drawn diagrams are gone from the case study (25 Sep 2026) — every flow is words and, where one

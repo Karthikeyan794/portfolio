@@ -5902,3 +5902,22 @@ a.ctile__line { cursor: pointer; }
   .cdlg__back:focus-visible,
   .agal__pageback:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 8px; }
 }
+
+/* ── media shimmer: a picture or a clip that is still loading ───────────────
+   A soft band of light sweeps across its place until it arrives; the first
+   load (or an error) marks it data-loaded (src/mediaLoading.ts) and the
+   picture covers the spot. Not the landing picture, which has its own blurred
+   stand-in, nor the firefly. */
+:root { --shimmer-base: #e3e7ea; --shimmer-glint: rgba(255, 255, 255, 0.7); }
+:root[data-theme='dark'] { --shimmer-base: #15181b; --shimmer-glint: rgba(255, 255, 255, 0.07); }
+:where(img, video):not([data-loaded]):not(.intro *):not(.bee *) {
+  background-color: var(--shimmer-base);
+  background-image: linear-gradient(100deg, transparent 30%, var(--shimmer-glint) 50%, transparent 70%);
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  animation: media-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes media-shimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  :where(img, video):not([data-loaded]) { animation: none; }
+}
