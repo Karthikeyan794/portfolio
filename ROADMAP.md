@@ -108,6 +108,8 @@
 | **No-AI FAQ bot** | Keyword match over a Q&A list | Zero cost, zero risk, dumber. Good fallback. |
 
 **Where the server function runs:** Vercel Serverless Functions (free with hosting). One file: `api/chat.ts`.
+
+> **Chosen 28 Sep 2026: Google Gemini Flash-Lite.** The plan to build it is **§2j** below, on the branch `ai-chat`.
 **Bonus:** chatbot can ask "Want Karthik to reply? Leave your email" → saved to DB → you get notified (see #4).
 
 ---
@@ -718,6 +720,65 @@ a success screen and nothing is sent.
 
 Verified with the network stubbed: reaction-only and thought-only sends, the 200-with-`success:
 "false"` answer FormSubmit gives before activation, and the bot trap.
+
+## 2j. "Ask about me" — the plan (28 Sep 2026 · branch `ai-chat`)
+
+**Nothing here goes live until it is finished.** All of it is built on the branch `ai-chat`,
+in its own folder (`~/Documents/portfolio-ai-chat`, a git worktree), so the live site and the
+other sessions working on `main` are untouched. Every push to `ai-chat` gets a **Vercel
+preview link** to try it on; `karthikeyan.design` changes only when `ai-chat` is merged into
+`main`.
+
+### What a visitor sees
+A small chat. They type a question — *"What did he build at Facilio?"*, *"Is he open to
+work?"*, *"What tools does he use?"* — and get a short answer about you, with a way to reach
+you when it doesn't know. Three or four starter questions to tap, so nobody faces an empty box.
+
+### How it works
+1. **Your facts, in one text.** Built from what the site already says — `src/data.ts`
+   (profile, experience, education, projects, skills, awards) and the résumé — so the chat
+   can never disagree with the page. Regenerated on every build; nothing to keep in sync by hand.
+2. **A private helper on Vercel** (`api/ask.ts`, a serverless function — code that runs on
+   Vercel, not in the visitor's browser). The browser sends it only the question. It adds your
+   facts and asks Gemini. **The API key lives only there**, so no visitor can see or use it.
+3. **Gemini Flash-Lite** answers from your facts only. Told to: keep it short, never invent,
+   say "I don't know — ask Karthikeyan at …" when the facts don't cover it, and ignore any
+   attempt to make it do something else.
+4. The answer comes back to the chat.
+
+### Keeping it cheap and safe
+- **Free tier** (~500 questions a day; Google sets the number). Past it, the chat says so
+  and offers your email — it can never cost money, since no card is attached.
+- **Limits in the helper:** a question can be at most ~500 characters, an answer ~300 words,
+  and each visitor gets a handful of questions a minute. Stops anyone draining the quota.
+- **No conversation is stored.** Nothing about the visitor is kept.
+- Free-tier requests may be used by Google to improve its models — fine here, the facts are
+  public on the site anyway. (A paid key would not be.)
+- The model name sits in one setting (`GEMINI_MODEL`): Flash-Lite names change every few
+  months, and the exact current one is checked against your key when we build.
+
+### What you do (only you can)
+1. Make a free key at **https://aistudio.google.com** → *Get API key* (Google account, no card).
+2. Paste it in two places — I never type keys:
+   - the file `~/Documents/portfolio-ai-chat/.env.local` → `GEMINI_API_KEY=your-key`
+     (this file is git-ignored, so it never reaches GitHub);
+   - **Vercel → portfolio → Settings → Environment Variables** → `GEMINI_API_KEY`, for the
+     **Preview** environment only (Production gets it when we go live).
+
+### Build steps (tick as they land)
+- [ ] Facts text generated from `src/data.ts` + résumé
+- [ ] `api/ask.ts` — the helper: question in, answer out, limits, friendly errors
+- [ ] `npm run dev` runs the helper too (reads `.env.local`), so it can be tried locally
+- [ ] The chat UI — where it sits and how it looks (decide below)
+- [ ] Starter questions + the "I don't know → email" answer
+- [ ] Tried on the preview link: 20 real questions, answers checked for mistakes
+- [ ] Merge `ai-chat` → `main` (only then it goes live) and add the key to Production
+
+### To decide before the UI
+- **Where it lives:** a small "Ask about me" button that opens the chat (floating, bottom
+  corner) · inside the Contact me window as a second tab · or its own band on the home page.
+- **Its voice:** first person ("I built…", as if you) or third person ("Karthikeyan built…").
+- **Starter questions:** which three or four.
 
 ## 3. Checklist — what's done
 
