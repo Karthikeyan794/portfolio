@@ -25,7 +25,11 @@ export const INTRO_NAV_DELAY = T.nav
 
 const rise = (delay: number) => ({
   initial: { opacity: 0, y: 22, filter: 'blur(6px)' },
-  animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  // the filter goes once they have risen: even at blur(0px) it has the browser
+  // draw the headline as one flat picture, sized to the line it had then, so
+  // a longer turn ("front-end with Vibe Coding.") was cut off at that edge
+  // and its soft shadow ended in a hard-edged box
+  animate: { opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } },
   transition: { delay, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] as const },
 })
 
