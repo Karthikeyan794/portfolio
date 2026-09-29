@@ -1080,8 +1080,8 @@ export const intro = {
   headlineTop: 'Every day | I *design* & *build*',
   headline: [
     { what: 'interfaces', prep: 'in', tool: 'Figma', mark: 'figma', color: '#0ACF83' },
-    { what: 'front-ends', prep: 'in', tool: 'React', mark: 'react', color: '#7fdcff' },
-    { what: 'faster', prep: 'with', tool: 'Claude', mark: 'claude', color: '#ec9a76' },
+    { what: 'front-end', prep: 'with', tool: 'Vibe Coding', mark: 'vibe', color: '#7fdcff' },
+    { what: 'vibe faster', prep: 'with', tool: 'Claude', mark: 'claude', color: '#ec9a76' },
   ] as { what: string; prep: string; tool: string; mark: string; color: string }[],
   paragraph:
     'Product designer from Chennai. I go deep on research to find the real problem, design it in Figma, then build it in React.',

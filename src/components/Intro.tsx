@@ -75,8 +75,8 @@ function Hello({ phrases, delay }: { phrases: string[]; delay: number }) {
 
 /**
  * The headline: "I design and build" stays put, the line under it finishes
- * the sentence and turns over — "interfaces in Figma." then "front-ends in
- * React." then "faster with Claude." Only the words that change move, and
+ * the sentence and turns over — "interfaces in Figma." then "front-end with
+ * Vibe Coding." then "vibe faster with Claude." Only the words that change move, and
  * they roll: inside a clipped line, the old word's letters leave upward one
  * after another while the new word's letters rise in from below, so the two
  * never sit on top of each other half-blurred. The words go one after
@@ -112,6 +112,18 @@ const COLOUR_LOGOS: Record<string, { viewBox: string; paths: [string, string][] 
       ['M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z', '#A259FF'],
     ],
   },
+  // vibe coding has no logo of its own: code brackets with a spark of AI
+  // inside them, and a smaller one that twinkles at the corner, all in the
+  // blue this line has always had
+  vibe: {
+    viewBox: '2 0.5 21 18.5',
+    paths: [
+      ['M8.4 5.6 2.6 12l5.8 6.4 1.63-1.48L5.6 12l4.43-4.92z', '#7fdcff'],
+      ['M15.6 5.6 21.4 12l-5.8 6.4-1.63-1.48L18.4 12l-4.43-4.92z', '#7fdcff'],
+      ['M12 7c.4 3.3 1.3 4.4 4.2 5-2.9.6-3.8 1.7-4.2 5-.4-3.3-1.3-4.4-4.2-5 2.9-.6 3.8-1.7 4.2-5z', '#bfeeff'],
+      ['M20.4 1c.17 1.55.62 2.12 2.1 2.45-1.48.33-1.93.9-2.1 2.45-.17-1.55-.62-2.12-2.1-2.45 1.48-.33 1.93-.9 2.1-2.45z', '#e6f8ff'],
+    ],
+  },
 }
 
 /**
@@ -125,7 +137,8 @@ function Roll({ text, className, style, delay = 0, after }: { text: string; clas
         <motion.span key={text} className={className ? `intro__roll ${className}` : 'intro__roll'} style={style} initial="in" animate="rest" exit="out">
           {[...text].map((ch, k) => (
             <motion.span key={k} className="intro__ch" variants={letter} transition={{ duration: 0.52, ease: EASE, delay: delay + k * ROLL_STEP }}>
-              {ch}
+              {/* a plain space would collapse to nothing in its own box */}
+              {ch === ' ' ? '\u00a0' : ch}
             </motion.span>
           ))}
           {after}
@@ -188,13 +201,13 @@ function Headline({ start }: { start: number }) {
             after={
               (COLOUR_LOGOS[h.mark] || marks[h.mark]) && (
                 <motion.svg
-                  className={COLOUR_LOGOS[h.mark] ? 'intro__logo intro__logo--tall' : 'intro__logo'}
+                  className={`intro__logo intro__logo--${h.mark}`}
                   viewBox={COLOUR_LOGOS[h.mark]?.viewBox ?? '0 0 24 24'}
                   variants={logoPop}
                   transition={{ type: 'spring', stiffness: 320, damping: 15, delay: reduce ? 0 : WORD_GAP * 2 + (h.tool.length + 1) * ROLL_STEP + 0.3 }}
                 >
                   {COLOUR_LOGOS[h.mark]
-                    ? COLOUR_LOGOS[h.mark].paths.map(([d, fill]) => <path key={fill} d={d} fill={fill} />)
+                    ? COLOUR_LOGOS[h.mark].paths.map(([d, fill], k) => <path key={k} className={`intro__logo-p${k}`} d={d} fill={fill} />)
                     : <path d={marks[h.mark]} fill="currentColor" />}
                 </motion.svg>
               )

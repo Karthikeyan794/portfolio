@@ -1302,7 +1302,23 @@ a { color: inherit; text-decoration: none; }
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
 }
 /* the Figma mark is taller than it is wide */
-.intro__logo--tall { width: 0.3em; height: 0.45em; margin-top: 0.05em; }
+.intro__logo--figma { width: 0.3em; height: 0.45em; margin-top: 0.05em; }
+/* vibe coding: a little wider, and its two sparks twinkle */
+.intro__logo--vibe { width: 0.56em; height: 0.49em; margin-top: 0.04em; overflow: visible; }
+.intro__logo--vibe .intro__logo-p2,
+.intro__logo--vibe .intro__logo-p3 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-twinkle 2.4s ease-in-out infinite;
+}
+.intro__logo--vibe .intro__logo-p3 { animation-delay: -1.2s; }
+@keyframes intro-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.7) rotate(45deg); opacity: 0.75; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro__logo--vibe .intro__logo-p2, .intro__logo--vibe .intro__logo-p3 { animation: none; }
+}
 /* the line under the headline in Roboto italic, a voice rather than a
    label (the italic is loaded in index.html, so it is the real one, not a
    slanted upright) */
@@ -1505,6 +1521,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 720px) {
   .intro__h1 { font-size: clamp(30px, calc(7.6vw + 4px), 38px); max-width: 100%; }
   .intro__l { white-space: normal; }
+  /* the longer turns ("front-end with Vibe Coding.") take two rows here; the
+     turning line always keeps room for two, so the text under it never jumps */
+  .intro__l:not(.intro__l--top) { min-height: 2lh; }
   /* on a phone the reader fills the screen, so the base goes darker sooner
      and the words sit on night, not on the white shirt */
   .intro__shade {
