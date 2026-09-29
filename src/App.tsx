@@ -1,6 +1,7 @@
 import { MotionConfig } from 'motion/react'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { ambience } from './audio/ambience'
+import AskMe from './components/AskMe'
 import ProjectPage from './components/ProjectPage'
 import Site2D from './components/Site2D'
 import { useRoute } from './router'
@@ -48,6 +49,8 @@ export default function App() {
       ) : (
         <Site2D onEnterLab={canLab ? () => setMode('3d') : undefined} />
       )}
+      {/* outside the pages, so a conversation carries on from one to the next */}
+      <AskMe />
     </MotionConfig>
   )
 }

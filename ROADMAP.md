@@ -766,19 +766,19 @@ you when it doesn't know. Three or four starter questions to tap, so nobody face
      **Preview** environment only (Production gets it when we go live).
 
 ### Build steps (tick as they land)
-- [ ] Facts text generated from `src/data.ts` + résumé
-- [ ] `api/ask.ts` — the helper: question in, answer out, limits, friendly errors
-- [ ] `npm run dev` runs the helper too (reads `.env.local`), so it can be tried locally
-- [ ] The chat UI — where it sits and how it looks (decide below)
-- [ ] Starter questions + the "I don't know → email" answer
+- [x] Facts text generated from `src/data.ts` + résumé (`api/_facts.ts`, ~4.5k tokens)
+- [x] `api/ask.ts` — the helper: question in, answer out, limits, friendly errors
+- [x] `npm run dev` runs the helper too (reads `.env.local`), so it can be tried locally
+- [x] The chat UI — `src/components/AskMe.tsx` + `src/ask.css`: a green "Ask about me" pill bottom-right (a round button on phones), opening a glass chat that follows the theme; a bottom sheet on phones. Steps aside while a demo is on screen, Escape closes, the chat is kept for the visit and carries across pages, links and emails in answers are clickable
+- [x] Starter questions + the "I don't know → email" answer
 - [ ] Tried on the preview link: 20 real questions, answers checked for mistakes
 - [ ] Merge `ai-chat` → `main` (only then it goes live) and add the key to Production
 
-### To decide before the UI
-- **Where it lives:** a small "Ask about me" button that opens the chat (floating, bottom
-  corner) · inside the Contact me window as a second tab · or its own band on the home page.
-- **Its voice:** first person ("I built…", as if you) or third person ("Karthikeyan built…").
-- **Starter questions:** which three or four.
+### Decided (29 Sep 2026)
+- **Where it lives:** a floating "Ask about me" button, bottom-right, on every page.
+- **Its voice:** first person ("I built…"), and it says it is an AI in the chat's header.
+- **Starter questions:** What do you do? · Tell me about Support Desk · Are you open to
+  work? · What tools do you use? (all text in `askMe`, `src/data.ts`).
 
 ## 3. Checklist — what's done
 

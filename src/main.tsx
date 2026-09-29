@@ -6,6 +6,7 @@ import './mediaLoading'
 import './styles.css'
 import './lab.css'
 import './cube.css'
+import './ask.css'
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -1089,3 +1089,30 @@ export const intro = {
   // beside it: opens the contact dialog; `hover` is the label that slides in
   contactCta: { label: 'Contact me', hover: "Let's Talk.", href: '#contact' },
 }
+
+// ── "Ask about me" — the AI chat (branch ai-chat; ROADMAP §2j) ─────────────
+// The chat answers from this file and the résumé only. Everything the page
+// already says is read straight from the exports above (api/_facts.ts), so the
+// chat can never disagree with the site. `resume` holds only what the résumé
+// adds on top. `starters` are the questions a visitor can tap.
+export const askMe = {
+  label: 'Ask about me',
+  title: 'Ask me anything',
+  sub: 'An AI that answers from my portfolio and résumé. It can be wrong: for anything important, email me.',
+  hello: "Hi, I'm Karthikeyan's AI stand-in. Ask me about my work, my projects, or whether I'm open to a role.",
+  placeholder: 'Ask about my work…',
+  starters: ['What do you do?', 'Tell me about Support Desk', 'Are you open to work?', 'What tools do you use?'],
+  // said when the free AI quota runs out, or the AI is down
+  offline: "I can't answer right now, but I'd love to hear from you by email.",
+  resume: `Summary: Product Designer who goes deep on research to understand the real problem behind each role, then designs the solution in Figma and builds it with HTML, CSS, JavaScript and React, using vibe coding to ship complete, working apps.
+Titles: Product Designer, Design Engineer.
+Open to: Product Designer, Design Engineer, Front-end Developer, Design Technologist roles.
+Skills, product and UX design: wireframing and prototyping; design systems; component design; user flows and information architecture; UX research and personas; usability testing; accessibility (WCAG).
+Skills, design engineering: HTML; CSS; JavaScript (ES6); React; responsive design; Git and GitHub; REST API integration; vibe coding (AI-assisted development).
+Skills, graphic and motion: branding and logo; creative sketching; social media creatives; video editing.
+Tools, design: Figma, Miro, Balsamiq, Dora.
+Tools, code and AI: VS Code, Cursor, Lovable, Claude, GitHub, Midjourney.
+Tools, graphic: Photoshop, Illustrator, Canva.
+Facilio, more: owns FM (facility management) dashboards and Figma component libraries, and partners with developers on hand-off.
+Clickly: a social media management web app, one dashboard for every social platform; a personal project, designed and built as a web app.`,
+}
