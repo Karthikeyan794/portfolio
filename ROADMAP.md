@@ -420,6 +420,12 @@ One rule, `cardMode()` in `src/data.ts`, for the home grid and the Up next / Kee
   starts the right picture downloading before the app's code runs. A picture shown once is drawn
   at once, no fade, when you come back from a project page.
 
+## 2f-10. Vibe coding's mark is the pixel dino (29 Sep 2026)
+
+- The landing headline's "front-end with Vibe Coding." line shows the user's pixel dino as its
+  mark (`public/intro/vibe-dino.png`, the export exactly, transparent), a picture rather than a
+  drawing (`IMAGE_LOGOS` in `Intro.tsx`), fetched quietly 1.5s after load.
+
 ## 2g. Where the video files should live (21 Sep 2026)
 
 **The question: keep full quality, so a database, or what?**

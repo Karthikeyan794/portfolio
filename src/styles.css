@@ -1303,22 +1303,9 @@ a { color: inherit; text-decoration: none; }
 }
 /* the Figma mark is taller than it is wide */
 .intro__logo--figma { width: 0.3em; height: 0.45em; margin-top: 0.05em; }
-/* vibe coding: a little wider, and its two sparks twinkle */
-.intro__logo--vibe { width: 0.56em; height: 0.49em; margin-top: 0.04em; overflow: visible; }
-.intro__logo--vibe .intro__logo-p2,
-.intro__logo--vibe .intro__logo-p3 {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: intro-twinkle 2.4s ease-in-out infinite;
-}
-.intro__logo--vibe .intro__logo-p3 { animation-delay: -1.2s; }
-@keyframes intro-twinkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  50% { transform: scale(0.7) rotate(45deg); opacity: 0.75; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .intro__logo--vibe .intro__logo-p2, .intro__logo--vibe .intro__logo-p3 { animation: none; }
-}
+/* vibe coding: the pixel dino, a picture, kept to its own proportion
+   (1330 x 1182) and pixel-sharp */
+.intro__logo--vibe { width: 0.5em; height: 0.444em; margin-top: 0.02em; object-fit: contain; image-rendering: auto; }
 /* the line under the headline in Roboto italic, a voice rather than a
    label (the italic is loaded in index.html, so it is the real one, not a
    slanted upright) */

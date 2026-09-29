@@ -101,6 +101,12 @@ const logoPop = {
 }
 
 /** logos drawn in their own brand colours, where one colour would not do them justice */
+/** marks that are a picture rather than a drawing: vibe coding is the pixel
+ *  dino (your export, exact, transparent round the outline) */
+const IMAGE_LOGOS: Record<string, string> = {
+  vibe: '/intro/vibe-dino.png',
+}
+
 const COLOUR_LOGOS: Record<string, { viewBox: string; paths: [string, string][] }> = {
   figma: {
     viewBox: '0 0 38 57',
@@ -110,18 +116,6 @@ const COLOUR_LOGOS: Record<string, { viewBox: string; paths: [string, string][] 
       ['M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z', '#FF7262'],
       ['M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z', '#F24E1E'],
       ['M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z', '#A259FF'],
-    ],
-  },
-  // vibe coding has no logo of its own: code brackets with a spark of AI
-  // inside them, and a smaller one that twinkles at the corner, all in the
-  // blue this line has always had
-  vibe: {
-    viewBox: '2 0.5 21 18.5',
-    paths: [
-      ['M8.4 5.6 2.6 12l5.8 6.4 1.63-1.48L5.6 12l4.43-4.92z', '#7fdcff'],
-      ['M15.6 5.6 21.4 12l-5.8 6.4-1.63-1.48L18.4 12l-4.43-4.92z', '#7fdcff'],
-      ['M12 7c.4 3.3 1.3 4.4 4.2 5-2.9.6-3.8 1.7-4.2 5-.4-3.3-1.3-4.4-4.2-5 2.9-.6 3.8-1.7 4.2-5z', '#bfeeff'],
-      ['M20.4 1c.17 1.55.62 2.12 2.1 2.45-1.48.33-1.93.9-2.1 2.45-.17-1.55-.62-2.12-2.1-2.45 1.48-.33 1.93-.9 2.1-2.45z', '#e6f8ff'],
     ],
   },
 }
@@ -149,6 +143,14 @@ function Roll({ text, className, style, delay = 0, after }: { text: string; clas
 }
 
 function Headline({ start }: { start: number }) {
+  // the picture marks load quietly once the page has settled, so the dino is
+  // already here when its line comes round
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      for (const src of Object.values(IMAGE_LOGOS)) new Image().src = src
+    }, 1500)
+    return () => window.clearTimeout(t)
+  }, [])
   const reduce = useReducedMotion()
   const lines = intro.headline
   const [i, setI] = useState(0)
@@ -199,7 +201,16 @@ function Headline({ start }: { start: number }) {
             style={{ color: h.color }}
             delay={WORD_GAP * 2}
             after={
-              (COLOUR_LOGOS[h.mark] || marks[h.mark]) && (
+              IMAGE_LOGOS[h.mark] ? (
+                <motion.img
+                  className={`intro__logo intro__logo--${h.mark}`}
+                  src={IMAGE_LOGOS[h.mark]}
+                  alt=""
+                  draggable={false}
+                  variants={logoPop}
+                  transition={{ type: 'spring', stiffness: 320, damping: 15, delay: reduce ? 0 : WORD_GAP * 2 + (h.tool.length + 1) * ROLL_STEP + 0.3 }}
+                />
+              ) : (COLOUR_LOGOS[h.mark] || marks[h.mark]) && (
                 <motion.svg
                   className={`intro__logo intro__logo--${h.mark}`}
                   viewBox={COLOUR_LOGOS[h.mark]?.viewBox ?? '0 0 24 24'}
