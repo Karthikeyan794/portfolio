@@ -1079,7 +1079,7 @@ export const intro = {
   // splits into "Every day" / "I design & build" rather than orphaning a word.
   headlineTop: 'Every day | I *design* & *build*',
   headline: [
-    { what: 'Interfaces', prep: 'in', tool: 'Figma', mark: 'figma', color: '#0ACF83' },
+    { what: 'Interface', prep: 'in', tool: 'Figma', mark: 'figma', color: '#0ACF83' },
     { what: 'Front-end', prep: 'with', tool: 'Vibe Coding', mark: 'vibe', color: '#fad243' },
     { what: 'Vibe faster', prep: 'with', tool: 'Claude', mark: 'claude', color: '#ec9a76' },
   ] as { what: string; prep: string; tool: string; mark: string; color: string }[],
